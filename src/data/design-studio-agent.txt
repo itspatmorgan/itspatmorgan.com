@@ -73,7 +73,7 @@ Design Studio can live in the person's own private or company repository. They c
 
 ## Publish for your team
 
-Publishing is optional and separate from installation. Design Studio builds a static website for hosting services such as Vercel, Netlify, GitHub Pages, or the team's existing static-site host. Help the person choose a host if needed.
+Publishing is optional and separate from installation. Design Studio builds a static website for hosting services such as Vercel, Netlify, Cloudflare, or the team's existing static-site host. Help the person choose a host if needed.
 
 Publishing prompt:
 > Help me publish my Design Studio with [hosting service] so [audience] can explore it. Follow my Design Studio's publishing instructions and guide me through setting up hosting. Review what will be shared and verify the published link.
