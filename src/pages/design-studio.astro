@@ -134,7 +134,7 @@ const feedbackDemo = `${liveDemo}prototypes/ccncfpcyaa1hvjts`;
     </section>
 
     <section data-studio-entrance id="get-started" class="scroll-mt-8 border-t border-border py-14 sm:py-20" aria-labelledby="setup-title">
-      <div class="studio-action-grid">
+      <div class="studio-story-split studio-action-grid">
         <div>
           <h2 id="setup-title" class="text-3xl font-medium leading-tight tracking-tight sm:text-4xl">Install Design Studio</h2>
           <p class="studio-intro">A local workspace for prototyping with the agent harness you already use.</p>
@@ -148,7 +148,7 @@ const feedbackDemo = `${liveDemo}prototypes/ccncfpcyaa1hvjts`;
           </div>
         </div>
         <div class="studio-action-prompts">
-          <div class="setup-prompt max-w-3xl rounded-lg border border-border bg-card p-4 sm:p-5">
+          <div class="setup-prompt texture-bg max-w-3xl rounded-xl border border-border p-5 sm:p-7">
             <p class="text-base leading-relaxed" data-setup-prompt>{installationPrompt}</p>
             <button type="button" hidden data-copy-prompt class={buttonVariants({ className: "mt-4 h-10 px-4" })} aria-label="Copy Design Studio installation prompt">Copy installation prompt</button>
           </div>
@@ -158,7 +158,7 @@ const feedbackDemo = `${liveDemo}prototypes/ccncfpcyaa1hvjts`;
     </section>
 
     <section data-studio-entrance id="publish" class="scroll-mt-8 border-t border-border py-14 sm:py-20" aria-labelledby="publish-title">
-      <div class="studio-action-grid">
+      <div class="studio-story-split studio-action-grid">
         <div>
           <h2 id="publish-title" class="text-3xl font-medium leading-tight tracking-tight sm:text-4xl">Publish Design Studio</h2>
           <p class="studio-intro">Share your work as a static website on the host you choose.</p>
@@ -172,7 +172,7 @@ const feedbackDemo = `${liveDemo}prototypes/ccncfpcyaa1hvjts`;
           </div>
         </div>
         <div class="studio-action-prompts">
-          <div class="setup-prompt max-w-3xl rounded-lg border border-border bg-card p-4 sm:p-5">
+          <div class="setup-prompt texture-bg max-w-3xl rounded-xl border border-border p-5 sm:p-7">
             <p class="text-base leading-relaxed" data-setup-prompt>{publishingPrompt}</p>
             <button type="button" hidden data-copy-prompt class={buttonVariants({ className: "mt-4 h-10 px-4" })} aria-label="Copy Design Studio publishing prompt">Copy publishing prompt</button>
           </div>
@@ -285,11 +285,8 @@ const feedbackDemo = `${liveDemo}prototypes/ccncfpcyaa1hvjts`;
   .setup-expand { flex-shrink: 0; font: 1.5rem var(--font-mono); color: var(--muted-foreground); transition: transform 180ms ease; }
   .setup-path[open] .setup-expand { transform: rotate(45deg); }
   .setup-prompt { overflow-wrap: anywhere; }
-  .studio-action-grid { display: grid; gap: 2rem; }
+  .studio-action-grid { display: grid; gap: 2rem; align-items: start; }
   .studio-action-grid > div { min-width: 0; }
-  @container studio-page (min-width: 54rem) {
-    .studio-action-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 3.5rem; align-items: start; }
-  }
   @media (prefers-reduced-motion: reduce) { .setup-expand { transition: none; } }
   .creator-portrait-field::before {
     content: "";
