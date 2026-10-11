@@ -140,36 +140,38 @@ const feedbackDemo = `${liveDemo}prototypes/ccncfpcyaa1hvjts`;
         <section class="flex min-w-0 flex-col" aria-labelledby="install-title">
           <h3 id="install-title" class="text-xl font-medium tracking-tight sm:text-2xl">1. Install and run locally</h3>
           <p class="mt-3 text-base leading-relaxed text-muted-foreground">Use the agent harness you already use.</p>
-          <div class="mt-5 flex flex-wrap items-center gap-x-8 gap-y-5 text-foreground/80" aria-label="Example agent harnesses for Design Studio">
-            {agentHarnesses.map((harness) => (
-              <span class="inline-flex items-center gap-3 text-base font-medium">
-                <span class="hero-vendor-logo" style={"--vendor-logo: url(" + harness.logo + ")"} aria-hidden="true"></span>
-                <span>{harness.title}</span>
-              </span>
-            ))}
-            <span class="text-base text-muted-foreground">and more</span>
-          </div>
+
           <div class="setup-prompt texture-bg mt-6 flex flex-1 flex-col rounded-xl border border-border p-5 sm:p-7">
             <p class="mb-4 text-base leading-relaxed" data-setup-prompt>{installationPrompt}</p>
             <button type="button" hidden data-copy-prompt class={buttonVariants({ className: "mt-auto h-10 self-start px-4" })} aria-label="Copy Design Studio installation prompt">Copy installation prompt</button>
+          </div>
+          <div class="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 text-muted-foreground" aria-label="Example agent harnesses for Design Studio">
+            {agentHarnesses.map((harness) => (
+              <span class="inline-flex items-center gap-2 text-sm">
+                <span class="hero-vendor-logo setup-compatibility-logo" style={"--vendor-logo: url(" + harness.logo + ")"} aria-hidden="true"></span>
+                <span>{harness.title}</span>
+              </span>
+            ))}
+            <span class="whitespace-nowrap text-sm">and more</span>
           </div>
           <a href={setupGuide} class="mt-4 inline-flex items-center gap-2 self-start text-sm font-medium underline decoration-border underline-offset-4 hover:decoration-foreground">Full installation guide <span aria-hidden="true">↗</span></a>
         </section>
         <section id="publish" class="flex min-w-0 scroll-mt-8 flex-col" aria-labelledby="publish-title">
           <h3 id="publish-title" class="text-xl font-medium tracking-tight sm:text-2xl">2. Publish and share</h3>
           <p class="mt-3 text-base leading-relaxed text-muted-foreground">Publish a static website on the host you choose.</p>
-          <div class="mt-5 flex flex-wrap items-center gap-x-8 gap-y-5 text-foreground/80" aria-label="Example hosting services for Design Studio">
-            {publishingHosts.map((host) => (
-              <span class="inline-flex items-center gap-3 text-base font-medium">
-                <span class="hero-vendor-logo" style={"--vendor-logo: url(" + host.logo + ")"} aria-hidden="true"></span>
-                <span>{host.title}</span>
-              </span>
-            ))}
-            <span class="text-base text-muted-foreground">and more</span>
-          </div>
+
           <div class="setup-prompt texture-bg mt-6 flex flex-1 flex-col rounded-xl border border-border p-5 sm:p-7">
             <p class="mb-4 text-base leading-relaxed" data-setup-prompt>{publishingPrompt}</p>
             <button type="button" hidden data-copy-prompt class={buttonVariants({ className: "mt-auto h-10 self-start px-4" })} aria-label="Copy Design Studio publishing prompt">Copy publishing prompt</button>
+          </div>
+          <div class="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 text-muted-foreground" aria-label="Example hosting services for Design Studio">
+            {publishingHosts.map((host) => (
+              <span class="inline-flex items-center gap-2 text-sm">
+                <span class="hero-vendor-logo setup-compatibility-logo" style={"--vendor-logo: url(" + host.logo + ")"} aria-hidden="true"></span>
+                <span>{host.title}</span>
+              </span>
+            ))}
+            <span class="whitespace-nowrap text-sm">and more</span>
           </div>
           <a href={publishingGuide} class="mt-4 inline-flex items-center gap-2 self-start text-sm font-medium underline decoration-border underline-offset-4 hover:decoration-foreground">Full publishing guide <span aria-hidden="true">↗</span></a>
         </section>
@@ -280,6 +282,7 @@ const feedbackDemo = `${liveDemo}prototypes/ccncfpcyaa1hvjts`;
   .setup-expand { flex-shrink: 0; font: 1.5rem var(--font-mono); color: var(--muted-foreground); transition: transform 180ms ease; }
   .setup-path[open] .setup-expand { transform: rotate(45deg); }
   .setup-prompt { overflow-wrap: anywhere; }
+  .setup-compatibility-logo { width: 1.25rem; height: 1.25rem; }
   .studio-action-grid { display: grid; gap: 2rem; }
   .studio-action-grid > div { min-width: 0; }
   @media (prefers-reduced-motion: reduce) { .setup-expand { transition: none; } }
