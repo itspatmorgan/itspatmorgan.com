@@ -50,9 +50,12 @@ export default defineConfig({
     rehypePlugins: [rehypeFigure],
   },
   vite: {
+    // Serve the deployed demo under the same origin in local development.
+    // Starter's preview bridge intentionally rejects cross-origin hosts.
+    server: { proxy: { '/design-studio-starter/': { target: 'https://itspatmorgan.com', changeOrigin: true } } },
+    preview: { proxy: { '/design-studio-starter/': { target: 'https://itspatmorgan.com', changeOrigin: true } } },
     plugins: [tailwindcss()],
     optimizeDeps: {
-      // Pre-bundle the client-only tool's imports before its first visit.
       include: ['html-to-image', '@hugeicons/react', '@hugeicons/core-free-icons'],
     },
   },

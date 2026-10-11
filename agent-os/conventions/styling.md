@@ -19,7 +19,8 @@ restrained, content-first design over decorative complexity.
 - Dark mode is class-based with `.dark` on `<html>`.
 - Home page sections generally use `mx-auto max-w-3xl px-6 py-16`.
 - Section dividers use `border-t border-border`.
-- Section labels use mono, uppercase, small text with wide tracking.
+- Do not add eyebrow labels above headings. Establish hierarchy with headings,
+  supporting copy, spacing, and grouping.
 - Markdown prose uses custom `.prose` styles in `global.css`, not
   `@tailwindcss/typography`.
 - Keep visual work readable and consistent with the current portfolio aesthetic.
