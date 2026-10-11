@@ -13,7 +13,7 @@ import agentGuide from "@/data/design-studio-agent.txt?raw";
 import { setupGuide, publishingGuide, agentHarnesses, publishingHosts, installationPrompt, publishingPrompt } from "@/data/design-studio-setup";
 import { buttonVariants } from "@/components/ui/button";
 import { siteConfig } from "@/data/site-config";
-import { GithubIcon, UserIcon, Robot01Icon, ArrowUpRight01Icon, ArrowDown01Icon, ArrowUp01Icon } from "@hugeicons/core-free-icons";
+import { GithubIcon, UserIcon, Robot01Icon, ArrowUpRight01Icon, ArrowDown01Icon } from "@hugeicons/core-free-icons";
 
 const repository = "https://github.com/itspatmorgan/design-studio-starter";
 const liveDemo = "https://itspatmorgan.com/design-studio-starter/";
@@ -202,7 +202,6 @@ const feedbackDemo = `${liveDemo}prototypes/ccncfpcyaa1hvjts`;
 
       </div>
       <div class="mt-10">
-        <a href="#get-started" class={buttonVariants({ size: "lg", className: "h-11 px-5" })}>Install Design Studio <Icon icon={ArrowUp01Icon} size={14} class="shrink-0" /></a>
         <p class="mt-5 max-w-[65ch] text-base leading-relaxed text-muted-foreground">Share what you build and tag <a href={siteConfig.social.x} class="text-foreground underline underline-offset-4 transition-colors hover:text-accent">@itspatmorgan</a>. Follow more experiments in <a href={siteConfig.social.newsletter} class="text-foreground underline underline-offset-4 transition-colors hover:text-accent">Unknown Arts</a>.</p>
         <a href={repository} class="mt-3 inline-flex items-center gap-2 text-sm text-foreground underline underline-offset-4 transition-colors hover:text-accent">Feedback and contributions on GitHub <Icon icon={ArrowUpRight01Icon} size={14} class="shrink-0" /></a>
       </div>
