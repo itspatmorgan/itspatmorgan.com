@@ -10,7 +10,7 @@ import StudioTeamSpaces from "@/components/design-studio/StudioTeamSpaces.astro"
 import StudioFoundation from "@/components/design-studio/StudioFoundation.astro";
 import StudioAtmosphere from "@/components/design-studio/StudioAtmosphere.astro";
 import agentGuide from "@/data/design-studio-agent.txt?raw";
-import { setupGuide, publishingGuide, agentHarnesses, publishingHosts, installationPrompt, configurationPrompt, publishingPrompt } from "@/data/design-studio-setup";
+import { setupGuide, publishingGuide, agentHarnesses, publishingHosts, publishingPrompt } from "@/data/design-studio-setup";
 import { buttonVariants } from "@/components/ui/button";
 import { siteConfig } from "@/data/site-config";
 import { GithubIcon, UserIcon, Robot01Icon } from "@hugeicons/core-free-icons";
@@ -137,7 +137,7 @@ const feedbackDemo = `${liveDemo}prototypes/ccncfpcyaa1hvjts`;
       <div class="studio-action-grid">
         <div>
           <h2 id="setup-title" class="text-3xl font-medium leading-tight tracking-tight sm:text-4xl">Install Design Studio</h2>
-          <p class="studio-intro">Design Studio lives in a folder on your computer. Install it, open that folder in your preferred agent harness, and start with the included examples.</p>
+          <p class="studio-intro">A local workspace for prototyping with the agent harness you already use.</p>
           <div class="mt-8 flex flex-wrap items-center gap-x-8 gap-y-5 text-foreground/80" aria-label="Example agent harnesses for Design Studio">
             {agentHarnesses.map((harness) => (
               <span class="inline-flex items-center gap-3 text-base font-medium">
@@ -146,25 +146,15 @@ const feedbackDemo = `${liveDemo}prototypes/ccncfpcyaa1hvjts`;
               </span>
             ))}
           </div>
-          <ol class="mt-8 max-w-3xl list-decimal space-y-4 pl-5 text-base leading-relaxed text-muted-foreground">
-            <li><strong class="font-medium text-foreground">Install Design Studio.</strong> Follow the <a href={setupGuide} class="text-foreground underline underline-offset-4">installation guide</a> yourself or ask your agent to carry out the same steps. The default folder is <code>design-studio</code>.</li>
-            <li><strong class="font-medium text-foreground">Open the folder in your agent harness.</strong> Use an agent that can read files and run commands on your computer.</li>
-            <li><strong class="font-medium text-foreground">Explore, then make it yours.</strong> Ask your agent to configure Design Studio and help you build your first prototype.</li>
-          </ol>
-          <p class="mt-6 max-w-3xl text-base leading-relaxed text-muted-foreground">Your copy stays yours. Keep Design Studio locally or in your own private or company repository. You control access and choose when to take updates. Your agent can handle the Git details.</p>
-          <a href={setupGuide} class="mt-4 inline-flex items-center gap-2 text-sm font-medium underline decoration-border underline-offset-4 hover:decoration-foreground">Full installation guide <span aria-hidden="true">↗</span></a>
         </div>
-        <div class="studio-action-prompts">
-          <div class="setup-prompt max-w-3xl rounded-lg border border-border bg-card p-4 sm:p-5">
-            <h3 class="text-lg font-medium tracking-tight">Ask your agent to install it</h3>
-            <p class="mt-3 text-base leading-relaxed" data-setup-prompt>{installationPrompt}</p>
-            <button type="button" hidden data-copy-prompt class={buttonVariants({ className: "mt-4 h-10 px-4" })} aria-label="Copy Design Studio installation prompt">Copy prompt</button>
-          </div>
-          <div class="setup-prompt mt-4 max-w-3xl rounded-lg border border-border bg-card p-4 sm:p-5">
-            <h3 class="text-lg font-medium tracking-tight">Once your folder is open</h3>
-            <p class="mt-3 text-base leading-relaxed" data-setup-prompt>{configurationPrompt}</p>
-            <button type="button" hidden data-copy-prompt class={buttonVariants({ className: "mt-4 h-10 px-4" })} aria-label="Copy Design Studio configuration prompt">Copy prompt</button>
-          </div>
+        <div>
+          <ol class="space-y-3 text-base leading-relaxed text-foreground">
+            <li><span class="mr-3 text-muted-foreground" aria-hidden="true">1.</span>Clone the repo.</li>
+            <li><span class="mr-3 text-muted-foreground" aria-hidden="true">2.</span>Open the folder in your agent harness.</li>
+            <li><span class="mr-3 text-muted-foreground" aria-hidden="true">3.</span>Build with your agent.</li>
+          </ol>
+          <a href={setupGuide} class={buttonVariants({ className: "mt-6 h-11 px-5" })}>Open installation guide <span aria-hidden="true">↗</span></a>
+          <p class="mt-5 max-w-md text-sm leading-relaxed text-muted-foreground">Your own copy. Private or company repos welcome. Updates on your schedule.</p>
         </div>
       </div>
     </section>
@@ -173,7 +163,7 @@ const feedbackDemo = `${liveDemo}prototypes/ccncfpcyaa1hvjts`;
       <div class="studio-action-grid">
         <div>
           <h2 id="publish-title" class="text-3xl font-medium leading-tight tracking-tight sm:text-4xl">Publish Design Studio</h2>
-          <p class="studio-intro">Design Studio builds a static website you can publish with Vercel, Netlify, GitHub Pages, or your team’s hosting service. Ask your agent to guide you through setting up the host you use.</p>
+          <p class="studio-intro">Share your work as a static website on the host you choose.</p>
           <div class="mt-8 flex flex-wrap items-center gap-x-8 gap-y-5 text-foreground/80" aria-label="Example hosting services for Design Studio">
             {publishingHosts.map((host) => (
               <span class="inline-flex items-center gap-3 text-base font-medium">
@@ -186,10 +176,10 @@ const feedbackDemo = `${liveDemo}prototypes/ccncfpcyaa1hvjts`;
         <div class="studio-action-prompts">
           <div class="setup-prompt max-w-3xl rounded-lg border border-border bg-card p-4 sm:p-5">
             <p class="text-base leading-relaxed" data-setup-prompt>{publishingPrompt}</p>
-            <button type="button" hidden data-copy-prompt class={buttonVariants({ className: "mt-4 h-10 px-4" })} aria-label="Copy Design Studio publishing prompt">Copy prompt</button>
+            <button type="button" hidden data-copy-prompt class={buttonVariants({ className: "mt-4 h-10 px-4" })} aria-label="Copy Design Studio publishing prompt">Copy publishing prompt</button>
           </div>
-          <p class="mt-5 max-w-3xl text-base leading-relaxed text-muted-foreground">Not sure where to host it? Ask your agent to help you choose. You keep editing locally and publish again to share updates. Private viewing access depends on your hosting service.</p>
-          <a href={publishingGuide} class="mt-4 inline-flex items-center gap-2 text-sm font-medium underline decoration-border underline-offset-4 hover:decoration-foreground">Publishing instructions for your agent <span aria-hidden="true">↗</span></a>
+          <p class="mt-5 max-w-3xl text-sm leading-relaxed text-muted-foreground">Keep editing locally and publish updates when you’re ready. Private viewing access depends on your host.</p>
+          <a href={publishingGuide} class="mt-4 inline-flex items-center gap-2 text-sm font-medium underline decoration-border underline-offset-4 hover:decoration-foreground">Full publishing guide <span aria-hidden="true">↗</span></a>
         </div>
       </div>
       <p class="sr-only" data-copy-status role="status" aria-live="polite"></p>
