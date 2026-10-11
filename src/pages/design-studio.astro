@@ -10,7 +10,7 @@ import StudioTeamSpaces from "@/components/design-studio/StudioTeamSpaces.astro"
 import StudioFoundation from "@/components/design-studio/StudioFoundation.astro";
 import StudioAtmosphere from "@/components/design-studio/StudioAtmosphere.astro";
 import agentGuide from "@/data/design-studio-agent.txt?raw";
-import { setupGuide, publishingGuide, agentHarnesses, publishingHosts, publishingPrompt } from "@/data/design-studio-setup";
+import { setupGuide, publishingGuide, agentHarnesses, publishingHosts, installationPrompt, publishingPrompt } from "@/data/design-studio-setup";
 import { buttonVariants } from "@/components/ui/button";
 import { siteConfig } from "@/data/site-config";
 import { GithubIcon, UserIcon, Robot01Icon } from "@hugeicons/core-free-icons";
@@ -147,14 +147,13 @@ const feedbackDemo = `${liveDemo}prototypes/ccncfpcyaa1hvjts`;
             ))}
           </div>
         </div>
-        <div>
-          <ol class="space-y-3 text-base leading-relaxed text-foreground">
-            <li><span class="mr-3 text-muted-foreground" aria-hidden="true">1.</span>Clone the repo.</li>
-            <li><span class="mr-3 text-muted-foreground" aria-hidden="true">2.</span>Open the folder in your agent harness.</li>
-            <li><span class="mr-3 text-muted-foreground" aria-hidden="true">3.</span>Build with your agent.</li>
-          </ol>
-          <a href={setupGuide} class={buttonVariants({ className: "mt-6 h-11 px-5" })}>Open installation guide <span aria-hidden="true">↗</span></a>
-          <p class="mt-5 max-w-md text-sm leading-relaxed text-muted-foreground">Your own copy. Private or company repos welcome. Updates on your schedule.</p>
+        <div class="studio-action-prompts">
+          <div class="setup-prompt max-w-3xl rounded-lg border border-border bg-card p-4 sm:p-5">
+            <p class="text-base leading-relaxed" data-setup-prompt>{installationPrompt}</p>
+            <button type="button" hidden data-copy-prompt class={buttonVariants({ className: "mt-4 h-10 px-4" })} aria-label="Copy Design Studio installation prompt">Copy installation prompt</button>
+          </div>
+          <p class="mt-5 max-w-md text-sm leading-relaxed text-muted-foreground">Paste this into your agent harness to get started. Your own copy, with updates on your schedule.</p>
+          <a href={setupGuide} class="mt-4 inline-flex items-center gap-2 text-sm font-medium underline decoration-border underline-offset-4 hover:decoration-foreground">Full installation guide <span aria-hidden="true">↗</span></a>
         </div>
       </div>
     </section>
