@@ -10,7 +10,7 @@ import StudioTeamSpaces from "@/components/design-studio/StudioTeamSpaces.astro"
 import StudioFoundation from "@/components/design-studio/StudioFoundation.astro";
 import StudioAtmosphere from "@/components/design-studio/StudioAtmosphere.astro";
 import agentGuide from "@/data/design-studio-agent.txt?raw";
-import { setupGuide, publishingGuide, agentHarnesses, installationPrompt, configurationPrompt, publishingPrompt } from "@/data/design-studio-setup";
+import { setupGuide, publishingGuide, agentHarnesses, publishingHosts, installationPrompt, configurationPrompt, publishingPrompt } from "@/data/design-studio-setup";
 import { buttonVariants } from "@/components/ui/button";
 import { siteConfig } from "@/data/site-config";
 import { GithubIcon, UserIcon, Robot01Icon } from "@hugeicons/core-free-icons";
@@ -134,8 +134,16 @@ const feedbackDemo = `${liveDemo}prototypes/ccncfpcyaa1hvjts`;
     </section>
 
     <section data-studio-entrance id="get-started" class="scroll-mt-8 border-t border-border py-14 sm:py-20" aria-labelledby="setup-title">
-      <h2 id="setup-title" class="text-3xl font-medium leading-tight tracking-tight sm:text-4xl">Install once. Build with your agent.</h2>
+      <h2 id="setup-title" class="text-3xl font-medium leading-tight tracking-tight sm:text-4xl">Install Design Studio</h2>
       <p class="studio-intro">Design Studio lives in a folder on your computer. Install it, open that folder in your preferred agent harness, and start with the included examples.</p>
+      <div class="mt-8 flex flex-wrap items-center gap-x-8 gap-y-5 text-foreground/80" aria-label="Example agent harnesses for Design Studio">
+        {agentHarnesses.map((harness) => (
+          <span class="inline-flex items-center gap-3 text-base font-medium">
+            <span class="hero-vendor-logo" style={"--vendor-logo: url(" + harness.logo + ")"} aria-hidden="true"></span>
+            <span>{harness.title}</span>
+          </span>
+        ))}
+      </div>
       <ol class="mt-8 max-w-3xl list-decimal space-y-4 pl-5 text-base leading-relaxed text-muted-foreground">
         <li><strong class="font-medium text-foreground">Install Design Studio.</strong> Follow the <a href={setupGuide} class="text-foreground underline underline-offset-4">installation guide</a> yourself or ask your agent to carry out the same steps. The default folder is <code>design-studio</code>.</li>
         <li><strong class="font-medium text-foreground">Open the folder in your agent harness.</strong> Use an agent that can read files and run commands on your computer.</li>
@@ -154,16 +162,25 @@ const feedbackDemo = `${liveDemo}prototypes/ccncfpcyaa1hvjts`;
       <p class="mt-6 max-w-3xl text-base leading-relaxed text-muted-foreground">Your copy stays yours. Keep Design Studio locally or in your own private or company repository. You control access and choose when to take updates. Your agent can handle the Git details.</p>
       <a href={setupGuide} class="mt-4 inline-flex items-center gap-2 text-sm font-medium underline decoration-border underline-offset-4 hover:decoration-foreground">Full installation guide <span aria-hidden="true">↗</span></a>
 
-      <div id="publish" class="mt-12 scroll-mt-8 border-t border-border pt-10" aria-labelledby="publish-title">
-        <h3 id="publish-title" class="text-2xl font-medium tracking-tight">Publish when you’re ready</h3>
+    </section>
+
+    <section data-studio-entrance id="publish" class="scroll-mt-8 border-t border-border py-14 sm:py-20" aria-labelledby="publish-title">
+      <h2 id="publish-title" class="text-3xl font-medium leading-tight tracking-tight sm:text-4xl">Publish Design Studio</h2>
         <p class="studio-intro">Design Studio builds a static website you can publish with Vercel, Netlify, GitHub Pages, or your team’s hosting service. Ask your agent to guide you through setting up the host you use.</p>
+        <div class="mt-8 flex flex-wrap items-center gap-x-8 gap-y-5 text-foreground/80" aria-label="Example hosting services for Design Studio">
+          {publishingHosts.map((host) => (
+            <span class="inline-flex items-center gap-3 text-base font-medium">
+              {host.logo ? <span class="hero-vendor-logo" style={"--vendor-logo: url(" + host.logo + ")"} aria-hidden="true"></span> : <span aria-hidden="true"><Icon icon={GithubIcon} size={28} /></span>}
+              <span>{host.title}</span>
+            </span>
+          ))}
+        </div>
         <div class="setup-prompt mt-6 max-w-3xl rounded-lg border border-border bg-card p-4 sm:p-5">
           <p class="text-base leading-relaxed" data-setup-prompt>{publishingPrompt}</p>
           <button type="button" hidden data-copy-prompt class={buttonVariants({ className: "mt-4 h-10 px-4" })} aria-label="Copy Design Studio publishing prompt">Copy prompt</button>
         </div>
         <p class="mt-5 max-w-3xl text-base leading-relaxed text-muted-foreground">Not sure where to host it? Ask your agent to help you choose. You keep editing locally and publish again to share updates. Private viewing access depends on your hosting service.</p>
         <a href={publishingGuide} class="mt-4 inline-flex items-center gap-2 text-sm font-medium underline decoration-border underline-offset-4 hover:decoration-foreground">Publishing instructions for your agent <span aria-hidden="true">↗</span></a>
-      </div>
       <p class="sr-only" data-copy-status role="status" aria-live="polite"></p>
     </section>
 

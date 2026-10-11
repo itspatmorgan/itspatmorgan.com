@@ -8,6 +8,12 @@ export const agentHarnesses = [
   { title: 'Cursor', logo: '/images/logos/cursor.svg' },
 ];
 
+export const publishingHosts = [
+  { title: 'Vercel', logo: '/images/logos/vercel.svg' },
+  { title: 'Netlify', logo: '/images/logos/netlify.svg' },
+  { title: 'GitHub Pages', logo: null },
+];
+
 // One installation procedure, whether the person or their agent performs it.
 export const installationPrompt = `Install Design Studio using ${setupGuide}. Help me choose a folder, preserve existing files, and verify the running preview. Then help me open the Design Studio folder in my agent harness.`;
 export const configurationPrompt = 'Read AGENTS.md and help me configure my Design Studio. Start with the included examples and show me the running preview.';
