@@ -11,7 +11,7 @@ export const agentHarnesses = [
 export const publishingHosts = [
   { title: 'Vercel', logo: '/images/logos/vercel.svg' },
   { title: 'Netlify', logo: '/images/logos/netlify.svg' },
-  { title: 'GitHub Pages', logo: null },
+  { title: 'Cloudflare', logo: '/images/logos/cloudflare.svg' },
 ];
 
 // One installation procedure, whether the person or their agent performs it.

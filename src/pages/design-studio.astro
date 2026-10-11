@@ -166,7 +166,7 @@ const feedbackDemo = `${liveDemo}prototypes/ccncfpcyaa1hvjts`;
           <div class="mt-8 flex flex-wrap items-center gap-x-8 gap-y-5 text-foreground/80" aria-label="Example hosting services for Design Studio">
             {publishingHosts.map((host) => (
               <span class="inline-flex items-center gap-3 text-base font-medium">
-                {host.logo ? <span class="hero-vendor-logo" style={"--vendor-logo: url(" + host.logo + ")"} aria-hidden="true"></span> : <span aria-hidden="true"><Icon icon={GithubIcon} size={28} /></span>}
+                <span class="hero-vendor-logo" style={"--vendor-logo: url(" + host.logo + ")"} aria-hidden="true"></span>
                 <span>{host.title}</span>
               </span>
             ))}
