@@ -5,6 +5,14 @@
   for the plural. Do not shorten the product name to “studio.” Preserve literal
   source paths, commands, and upstream system names where required.
 
+## Design Studio installation and publishing
+
+- Use “agent harness” for the environment where someone works with their coding agent.
+- The starter repository owns the installation guide at `src/platform/context/installing.md`. Link to that guide rather than maintaining separate installation methods on the landing page.
+- Keep plugins out of the current launch flow. Agent harness logos are examples, not plugin installation choices.
+- Present publishing separately: Design Studio builds a static website; the person's agent helps configure their chosen host using `src/platform/context/publishing.md`.
+- Keep the Human page and `/design-studio/agent.txt` aligned about installation, repository ownership, updates, and publishing.
+
 ## Public Terminology
 
 - Use "Work", not "Projects" or "Experience", for the public portfolio/career section.

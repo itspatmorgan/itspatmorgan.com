@@ -36,7 +36,7 @@ A published link lets people try interactive prototypes and browse artifacts. Sh
 
 Design Studio is open source. The user owns the code and the work they create. Prototypes use React and TypeScript, canvases use Excalidraw, diagrams use Mermaid, and documents use Markdown. These source files can move with the user.
 
-Use Design Studio through a plugin in ChatGPT Codex, Claude Code, or Cursor, or set it up directly from GitHub. The agent helps build and edit in a local sandbox.
+Open your Design Studio folder in the agent harness you already use, such as Codex, Claude Code, or Cursor. The agent needs access to read files and run commands in that folder. It follows AGENTS.md and the linked repository instructions.
 
 Defaults are shaped by real product and marketing work. Bring your own components, change the interface, and adapt the code, folder structure, and workflows to fit your team.
 
@@ -50,58 +50,35 @@ https://itspatmorgan.com/design-studio-starter/prototypes/ccncfpcyaa1hvjts
 
 The published demo is read-only for artifact editing, but its prototypes are interactive. Published Design Studios share designs for others to explore. Run a local copy to edit artifacts and build with your coding agent.
 
-Use a desktop coding app with local access. Each request covers setup through opening your local Design Studio. A restart, reload, or new chat may still be needed. The four setup procedures are documented at:
-https://github.com/itspatmorgan/design-studio-starter/blob/main/SETUP.md
+Follow one installation procedure, whether the person or their agent performs the steps:
+https://github.com/itspatmorgan/design-studio-starter/blob/main/src/platform/context/installing.md
 
-Plugins are in beta and distributed through local/repository installs. Do not imply a reviewed public-directory listing.
+Use a session that can create files and run commands on the person's computer. Confirm the destination, preserve existing files, and install the tagged release described in the guide with its Git history. The default folder name is design-studio. Verify the actual local preview and help the person open that folder in their preferred agent harness.
 
-## 1. ChatGPT Codex plugin
-
-### Set up locally
-
-Copy this prompt into a local Codex chat to install the plugin and create your Design Studio. Your agent will guide you through any restart or new chat needed.
-
-> Install the Design Studio plugin locally for Codex from https://github.com/itspatmorgan/design-studio-starter. Read SETUP.md and follow its Codex plugin installation and linked create-studio instructions. Handle the technical steps, preserve my other plugins and existing files, and create my Design Studio on this computer. Open its local preview and help me continue working in its folder. Guide me through any restart, plugin activation, or new chat needed.
-
-## 2. Claude Code plugin
-
-Copy this prompt into a local Claude Code chat to install the plugin and create your Design Studio. Choose No folder for initial setup if available; your agent will guide you into your Design Studio folder.
-
-In the Claude desktop app, choose **Code**, then select **Local**.
-
-> Install the Design Studio plugin locally for Claude Code from https://github.com/itspatmorgan/design-studio-starter. Read SETUP.md and follow its Claude Code local plugin installation and linked create-studio instructions. Handle the technical steps, preserve my other plugins and existing files, and create my Design Studio on this computer. Open its local preview and help me continue working in its folder in Claude Desktop’s local Code view. Guide me through any restart, plugin activation, or new session needed.
-
-## 3. Cursor plugin
-
-Copy this prompt into a local Agent chat in Cursor to install the plugin and create your Design Studio. Your agent will guide you through any reload needed. If plugin imports are restricted, use Direct from GitHub.
-
-> Install the Design Studio plugin locally for Cursor from https://github.com/itspatmorgan/design-studio-starter. Read SETUP.md and follow its Cursor local plugin installation and linked create-studio instructions. Handle the technical steps, preserve my other plugins and existing files, and create my Design Studio on this computer. Open its local preview and help me continue working in its folder. Guide me through any window reload, plugin activation, or new Agent chat needed.
-
-## 4. Direct from the source repository
-
-Copy this prompt into your local coding agent to create Design Studio directly from GitHub. No plugin is required, so this also works when plugin installs are restricted.
-
-For manual setup without an agent, follow [manual installation](https://github.com/itspatmorgan/design-studio-starter/blob/main/SETUP.md#manual-installation): create a repository from the GitHub template or download the source, install mise, then run mise install, mise exec -- pnpm install, and mise exec -- pnpm dev in the repository folder. Open the local URL printed in the terminal.
-
-> Help me install Design Studio from https://github.com/itspatmorgan/design-studio-starter. Read its SETUP.md and follow the linked create-studio instructions. Handle downloading, setup, and opening it for me. Verify that setup will save files on my computer and help me choose the local folder. Preserve anything already there. Show me the running Design Studio and help me continue working in its folder.
+Installation prompt:
+> Install Design Studio using https://github.com/itspatmorgan/design-studio-starter/blob/main/src/platform/context/installing.md. Help me choose a folder, preserve existing files, and verify the running preview. Then help me open the Design Studio folder in my agent harness.
 
 ## What happens after setup
 
-Your agent may need permission to download tools or create the folder. It handles the technical steps and tells you when it needs help.
+Open the Design Studio folder in the agent harness and ask:
+> Read AGENTS.md and help me configure my Design Studio. Start with the included examples and show me the running preview.
 
-Your Design Studio and all its source files live in the local folder you confirm with your agent. It recommends a location based on your computer and permissions, preserves existing folders, and shows the actual absolute path and local preview URL. Continue working in that Design Studio folder, not in the plugin's files. A GitHub account is optional for personal use.
+Read the installed repository's instructions before making changes. Product and Marketing are example systems; Feedback Inbox and Design Studio Marketing are example prototypes. Keep the examples until the person decides what to customize. Keep Studio, the application's system.
 
-Product and Marketing are example systems. Feedback Inbox and Design Studio Marketing are example prototypes for learning. Explore them, then ask your agent to customize, replace, or remove them for your own needs. Keep Studio, the application's system.
+New Design Studios start in Personal mode. Team mode enables Contributors & Permissions for Admin and system access assignments. To return later, open the same folder and ask: “Open my Design Studio and show me the running preview.”
 
-New Design Studios start in Personal mode. When you are ready to collaborate, switch to Team in Design Studio settings. This enables Contributors & Permissions so you can assign Admins and system access.
+## Own your repository and choose updates
 
-To return later, open the same Design Studio folder and ask **“Open my Design Studio.”** Plugin updates do not automatically upgrade an existing Design Studio.
+Design Studio can live in the person's own private or company repository. They control access and when updates are taken; the Design Studio project needs no access to their environment. When requested, help connect their repository while preserving Git history and the ability to fetch release updates. Follow src/platform/context/ownership.md in their Design Studio. Preview proposed updates before applying them. Creating a hosted repository or pushing is separate from installation.
 
 ## Publish for your team
 
-Hosting is optional and configured separately from the local authoring environment. Open the existing Design Studio folder and ask the agent to assess ChatGPT Sites, GitHub Pages, Netlify, Vercel, or your team’s static-site host for your tools, accounts, and intended audience. GitHub Pages can be used with any of the local agent setup paths; publishing workflows are not preconfigured in agent-created working Design Studios.
+Publishing is optional and separate from installation. Design Studio builds a static website for hosting services such as Vercel, Netlify, GitHub Pages, or the team's existing static-site host. Help the person choose a host if needed.
 
-Read the owned repository’s AGENTS.md and current publishing guidance before configuring hosting; read DEPLOY.md if present. Preserve existing provider identities and deployment settings. Sites requires native Sites tools and the publish-studio procedure. Guide the user through account sign-in or authorization. Build the static viewing site, configure the host's base path and direct-link routing, and verify a direct prototype link and reload. Choose access settings appropriate for the work being shared. Published prototypes remain interactive, but source editing and the agent stay local. Local changes appear on the viewing site after publishing a new build.
+Publishing prompt:
+> Help me publish my Design Studio with [hosting service] so [audience] can explore it. Follow my Design Studio's publishing instructions and guide me through setting up hosting. Review what will be shared and verify the published link.
+
+Read the local repository's AGENTS.md and src/platform/context/publishing.md. Preserve existing deployment settings. Guide the person through any required account sign-in. Review what the build includes, configure routing and base paths, and verify the hosted site, direct prototype links, and reloads. Private viewing access depends on the host's access controls. Keep editing local; publish a new build to share updates.
 
 Publishing source:
 https://github.com/itspatmorgan/design-studio-starter/blob/main/src/platform/context/publishing.md
@@ -127,7 +104,7 @@ Repository and current setup instructions:
 https://github.com/itspatmorgan/design-studio-starter#readme
 
 Getting-started source:
-https://github.com/itspatmorgan/design-studio-starter/blob/main/src/modules/documentation/pages/index.md
+https://github.com/itspatmorgan/design-studio-starter/blob/main/src/platform/modules/documentation/pages/index.md
 
 Landing page:
 https://itspatmorgan.com/design-studio
