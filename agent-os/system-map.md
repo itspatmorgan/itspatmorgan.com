@@ -39,6 +39,12 @@ for related details. This file owns system orientation, not editing rules.
 | `/design-studio/agent.txt` | Plain-text Design Studio brief and setup guide, shared with the landing page's Agent mode |
 | `/resume` | Legacy resume-style route still present in the codebase |
 
+The Design Studio landing page embeds actual artifacts from the separately
+deployed `/design-studio-starter/` site. Its presentation and public-reader
+adapter live in `StudioLiveDemo.astro` and `src/scripts/studio-live-demo.ts`.
+See `agent-os/learnings/design-studio-live-demo.md` for the shared-origin
+requirement, deployment dependency, and sample-data boundaries.
+
 ## Commands
 
 ```bash
