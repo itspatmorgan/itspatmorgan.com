@@ -1,5 +1,5 @@
-export const setupGuide = 'https://github.com/itspatmorgan/design-studio-starter/blob/main/src/platform/context/installing.md';
-export const publishingGuide = 'https://github.com/itspatmorgan/design-studio-starter/blob/main/src/platform/context/publishing.md';
+export const setupGuide = 'https://github.com/itspatmorgan/design-studio/blob/main/src/platform/context/installing.md';
+export const publishingGuide = 'https://github.com/itspatmorgan/design-studio/blob/main/src/platform/context/publishing.md';
 
 // Examples of agent harnesses, independent of the installation procedure.
 export const agentHarnesses = [

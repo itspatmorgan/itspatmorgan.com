@@ -35,12 +35,13 @@ for related details. This file owns system orientation, not editing rules.
 | `/writing/<slug>` | Article detail pages |
 | `/community` | Community story, photos, and Kind Words |
 | `/colophon` | Public explanation of stack and workflow |
-| `/design-studio` | Design Studio project landing page, artifact previews, and starter-kit setup |
+| `/design-studio` | Design Studio project landing page, artifact previews, and setup |
+| `/design-studio-demo/` | Interactive Studio build included by the website deployment |
 | `/design-studio/agent.txt` | Plain-text Design Studio brief and setup guide, shared with the landing page's Agent mode |
 | `/resume` | Legacy resume-style route still present in the codebase |
 
-The Design Studio landing page embeds actual artifacts from the separately
-deployed `/design-studio-starter/` site. Its presentation and public-reader
+The Design Studio landing page embeds actual artifacts from the `/design-studio-demo/` build
+included in this website’s deployment. Its presentation and public-reader
 adapter live in `StudioLiveDemo.astro` and `src/scripts/studio-live-demo.ts`.
 See `agent-os/learnings/design-studio-live-demo.md` for the shared-origin
 requirement, deployment dependency, and sample-data boundaries.
@@ -145,7 +146,31 @@ Use these files for adjacent context:
 
 ## Deployment
 
-Pushes to `main` trigger `.github/workflows/deploy.yml`. The workflow uses `withastro/action@v3` to build and `actions/deploy-pages@v4` to publish to GitHub Pages.
+Pushes to `main` and manual dispatches trigger `.github/workflows/deploy.yml`.
+Design Studio's `Publish demo` workflow also dispatches it after successful source
+checks. The Studio repository owns the `WEBSITE_DEPLOY_TOKEN` secret: a fine-grained
+token with Actions read/write access to this website repository only.
+
+The workflow builds Astro with its declared pnpm version, resolves the Studio
+repository by permanent GitHub ID `1401250166`, and selects the latest successful
+`main` push of its `checks.yml` workflow. It checks out that exact source commit,
+builds with Studio's mise toolchain and `STUDIO_BASE_PATH=/design-studio-demo/`,
+then copies the result into `dist/design-studio-demo/`. The combined output is
+uploaded and published by GitHub Pages. Studio source stays in its own repository.
+A failed source run cannot replace the last passing demo. An absent passing run
+fails the website build rather than publishing an unverified source commit.
+
+Disable the Studio repository's old Pages site when switching deployments so it
+cannot claim the product page's `/design-studio/` path after the source rename.
+The root `404.html` supports direct demo URLs without redirecting their path and
+provides browser redirects from `/design-studio-starter/`. Pages fallback responses
+still return HTTP 404. Other missing website paths retain the website's 404 page.
+
+Local `pnpm build` builds Astro alone. To preview the combined output, first build
+Studio in its own checkout with `STUDIO_BASE_PATH=/design-studio-demo/ pnpm build`,
+then run `node scripts/include-studio-demo.mjs /absolute/path/to/studio/dist` after
+the Astro build. A host must serve root `404.html` for missing routes. Local Vite
+preview continues to proxy the live demo for ordinary website development.
 
 Before merging changes that affect routes, content schema, layouts, scripts, or generated assets, run:
 

@@ -1,5 +1,5 @@
-// Embed the deployed Studio; navigation and product behavior stay in Starter.
-const base = '/design-studio-starter/';
+// Embed the deployed Studio; navigation and product behavior stay in Design Studio.
+const base = '/design-studio-demo/';
 const publicOrigin = 'https://itspatmorgan.com';
 
 export function initStudioLiveDemo(root: HTMLElement) {
