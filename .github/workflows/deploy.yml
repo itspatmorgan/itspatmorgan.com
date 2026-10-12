@@ -16,17 +16,60 @@ concurrency:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - name: Checkout
+      - name: Checkout website
         uses: actions/checkout@v4
 
-      - name: Build with Astro
-        uses: withastro/action@v3
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.31.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: node --test scripts/studio-deployment.test.mjs
+      - run: pnpm build
+
+      - name: Select the latest passing Design Studio source
+        id: studio
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const selectSource = require('./scripts/select-studio-source.cjs');
+            await selectSource({ github, core });
+      - name: Checkout Design Studio at the tested commit
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ steps.studio.outputs.repository }}
+          ref: ${{ steps.studio.outputs.sha }}
+          path: studio-source
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: jdx/mise-action@v5
+        with:
+          working_directory: studio-source
+      - name: Install Studio dependencies
+        working-directory: studio-source
+        run: mise exec -- pnpm install --frozen-lockfile
+      - name: Build the demo for its public path
+        working-directory: studio-source
+        env:
+          STUDIO_BASE_PATH: /design-studio-demo/
+        run: |
+          mise exec -- pnpm build
+          mise exec -- pnpm build:inspect
+      - name: Include the demo in the website output
+        run: node scripts/include-studio-demo.mjs studio-source/dist
+      - name: Upload the combined website and demo
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
 
   deploy:
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

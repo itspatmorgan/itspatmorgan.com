@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Page not found</title>
+    <style>
+      html { font-family: system-ui, sans-serif; color: #292524; background: #fafaf9; }
+      main { max-width: 42rem; margin: 6rem auto; padding: 0 1.5rem; }
+      h1 { font-size: 2rem; font-weight: 500; letter-spacing: -.03em; }
+      p { line-height: 1.6; color: #57534e; }
+      nav { display: flex; gap: 1.5rem; margin-top: 1.5rem; }
+      a { color: inherit; text-underline-offset: .2em; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Page not found</h1>
+      <p>This page could not be found. You can return home or open Design Studio.</p>
+      <nav aria-label="Recovery links">
+        <a href="/">Home</a>
+        <a href="/design-studio-demo/">Design Studio demo</a>
+      </nav>
+    </main>
+  <script is:inline>
+    (() => {
+      const demo = '/design-studio-demo/';
+      const previous = '/design-studio-starter';
+      const pathname = location.pathname;
+      if (pathname === previous || pathname.startsWith(previous + '/')) {
+        location.replace(demo + pathname.slice(previous.length).replace(/^\//, '') + location.search + location.hash);
+        return;
+      }
+      if (pathname === demo.slice(0, -1)) {
+        location.replace(demo + location.search + location.hash);
+        return;
+      }
+      // Only application routes receive the Studio entry document. Missing assets
+      // keep the website 404 page instead of executing the app inside an asset URL.
+      const route = pathname.slice(demo.length);
+      if (!pathname.startsWith(demo) || !/^(prototypes|systems|documentation)(\/|$)/.test(route)) return;
+      document.documentElement.style.visibility = 'hidden';
+      fetch(demo + 'index.html', { cache: 'no-cache' })
+        .then(response => {
+          if (!response.ok) throw new Error('Demo unavailable');
+          return response.text();
+        })
+        .then(html => {
+          // Preserve the requested URL so Studio's history router opens that artifact.
+          document.open();
+          document.write(html);
+          document.close();
+          document.documentElement.style.visibility = '';
+        })
+        .catch(() => { document.documentElement.style.visibility = ''; });
+    })();
+  </script>
+  </body>
+</html>

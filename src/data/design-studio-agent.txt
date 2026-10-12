@@ -3,8 +3,8 @@
 A prototype sandbox for designers and product managers who build. Create connected prototypes and reusable systems that bring together components, theme, context, and skills. Work with your coding agent, your code, and your context, individually or with a team. Design Studio is open source and built on open file formats you can extend.
 
 Product: Design Studio
-Starter repository: https://github.com/itspatmorgan/design-studio-starter
-Published Design Studio demo: https://itspatmorgan.com/design-studio-starter/
+Source repository: https://github.com/itspatmorgan/design-studio
+Published Design Studio demo: https://itspatmorgan.com/design-studio-demo/
 License: MIT
 Creator: Patrick Morgan
 
@@ -43,20 +43,20 @@ Defaults are shaped by real product and marketing work. Bring your own component
 ## Create a Design Studio
 
 Set up a local Design Studio to create and edit with your agent. For a viewing example, explore the published demo:
-https://itspatmorgan.com/design-studio-starter/
+https://itspatmorgan.com/design-studio-demo/
 
 The Feedback Inbox sample includes a guided tour of connected artifacts:
-https://itspatmorgan.com/design-studio-starter/prototypes/ccncfpcyaa1hvjts
+https://itspatmorgan.com/design-studio-demo/prototypes/ccncfpcyaa1hvjts
 
 The published demo is read-only for artifact editing, but its prototypes are interactive. Published Design Studios share designs for others to explore. Run a local copy to edit artifacts and build with your coding agent.
 
 Follow one installation procedure, whether the person or their agent performs the steps:
-https://github.com/itspatmorgan/design-studio-starter/blob/main/src/platform/context/installing.md
+https://github.com/itspatmorgan/design-studio/blob/main/src/platform/context/installing.md
 
 Use a session that can create files and run commands on the person's computer. Confirm the destination, preserve existing files, and install the tagged release described in the guide with its Git history. The default folder name is design-studio. Verify the actual local preview and help the person open that folder in their preferred agent harness.
 
 Installation prompt:
-> Install Design Studio from release v0.3.0 using https://github.com/itspatmorgan/design-studio-starter/blob/main/src/platform/context/installing.md. Use the repository installation guide without a plugin installer. Help me choose a folder, preserve existing files, and verify the running preview. Then help me open the Design Studio folder in my agent harness.
+> Install Design Studio from release v0.3.0 using https://github.com/itspatmorgan/design-studio/blob/main/src/platform/context/installing.md. Use the repository installation guide without a plugin installer. Help me choose a folder, preserve existing files, and verify the running preview. Then help me open the Design Studio folder in my agent harness.
 
 ## What happens after setup
 
@@ -81,12 +81,12 @@ Publishing prompt:
 Read the local repository's AGENTS.md and src/platform/context/publishing.md. Preserve existing deployment settings. Guide the person through any required account sign-in. Review what the build includes, configure routing and base paths, and verify the hosted site, direct prototype links, and reloads. Private viewing access depends on the host's access controls. Keep editing local; publish a new build to share updates.
 
 Publishing source:
-https://github.com/itspatmorgan/design-studio-starter/blob/main/src/platform/context/publishing.md
+https://github.com/itspatmorgan/design-studio/blob/main/src/platform/context/publishing.md
 
 ## Stay involved
 
 Share work made with Design Studio and tag Patrick Morgan at https://x.com/itspatmorgan.
-Feedback and contributions: https://github.com/itspatmorgan/design-studio-starter
+Feedback and contributions: https://github.com/itspatmorgan/design-studio
 Follow Unknown Arts for experiments and ideas about building with agents: https://www.unknownarts.com
 
 
@@ -101,10 +101,10 @@ The local Design Studio Guide is available at /documentation/manual. This is a r
 ## Sources
 
 Repository and current setup instructions:
-https://github.com/itspatmorgan/design-studio-starter#readme
+https://github.com/itspatmorgan/design-studio#readme
 
 Getting-started source:
-https://github.com/itspatmorgan/design-studio-starter/blob/main/src/platform/modules/documentation/pages/index.md
+https://github.com/itspatmorgan/design-studio/blob/main/src/platform/modules/documentation/pages/index.md
 
 Landing page:
 https://itspatmorgan.com/design-studio
