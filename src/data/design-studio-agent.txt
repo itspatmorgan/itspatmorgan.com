@@ -4,7 +4,7 @@ A prototype sandbox for designers and product managers who build. Create connect
 
 Product: Design Studio
 Starter repository: https://github.com/itspatmorgan/design-studio-starter
-Published Design Studio demo: https://design-studio-foundation-demo.itspatmorgan.chatgpt.site/
+Published Design Studio demo: https://itspatmorgan.com/design-studio-starter/
 License: MIT
 Creator: Patrick Morgan
 
@@ -43,10 +43,10 @@ Defaults are shaped by real product and marketing work. Bring your own component
 ## Create a Design Studio
 
 Set up a local Design Studio to create and edit with your agent. For a viewing example, explore the published demo:
-https://design-studio-foundation-demo.itspatmorgan.chatgpt.site/
+https://itspatmorgan.com/design-studio-starter/
 
 The Feedback Inbox sample includes a guided tour of connected artifacts:
-https://design-studio-foundation-demo.itspatmorgan.chatgpt.site/prototypes/ccncfpcyaa1hvjts
+https://itspatmorgan.com/design-studio-starter/prototypes/ccncfpcyaa1hvjts
 
 The published demo is read-only for artifact editing, but its prototypes are interactive. Published Design Studios share designs for others to explore. Run a local copy to edit artifacts and build with your coding agent.
 
@@ -73,7 +73,7 @@ Design Studio can live in the person's own private or company repository. They c
 
 ## Publish for your team
 
-Publishing is optional and separate from installation. The public demo uses ChatGPT Sites. Teams choose their own host. Design Studio builds a static website for hosting services such as Vercel, Netlify, Cloudflare, or the team's existing static-site host. Help the person choose a host if needed.
+Publishing is optional and separate from installation. The ongoing public demo uses GitHub Pages on itspatmorgan.com. ChatGPT Sites is an optional publishing-workflow demonstration. Teams choose their own host. Design Studio builds a static website for hosting services such as Vercel, Netlify, Cloudflare, or the team's existing static-site host. Help the person choose a host if needed.
 
 Publishing prompt:
 > Help me publish my Design Studio with [hosting service] so [audience] can explore it. Follow my Design Studio's publishing instructions and guide me through setting up hosting. Review what will be shared and verify the published link.
