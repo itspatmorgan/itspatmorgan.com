@@ -25,9 +25,12 @@ const feedbackDemo = `${liveDemo}prototypes/ccncfpcyaa1hvjts`;
 <PageLayout title="Design Studio: Design with intent. Build with an agent." description="A prototype sandbox for designers and product managers who build. Work with your agent locally, then publish interactive prototypes for your team to explore." image="/images/design-studio/social-prototype-sandbox.jpg">
   <div class="studio-page mx-auto w-full max-w-[1200px] px-6 sm:px-8 lg:px-14">
     <header class="studio-header flex items-center justify-between gap-6 pt-9 sm:pt-12">
-      <a href="/design-studio" class="studio-brand flex shrink-0 items-center gap-3 font-medium tracking-tight" aria-label="Design Studio home">
+      <a href="/design-studio" class="studio-brand flex shrink-0 items-center gap-3 font-medium tracking-tight" aria-label="Design Studio home — public beta, under active development">
         <svg width="32" height="26" viewBox="0 0 40 32" fill="currentColor" aria-hidden="true"><path d="M0 0h11v32H0zM15 0h3a16 16 0 0 1 0 32h-3z" /></svg>
-        <span class="text-lg">Design Studio</span>
+        <span class="studio-brand-label flex items-center gap-2">
+          <span class="studio-brand-name text-lg">Design Studio</span>
+          <span class="rounded-full border border-border bg-muted px-2 py-0.5 font-mono text-xs leading-tight tracking-wide text-muted-foreground" title="Public beta · Under active development">Beta</span>
+        </span>
       </a>
       <div class="studio-header-controls ml-auto flex shrink-0 items-center gap-4 sm:gap-6">
         <a href={repository} aria-label="View Design Studio on GitHub" title="View Design Studio on GitHub" class="studio-github inline-flex min-h-11 items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring">
@@ -241,7 +244,8 @@ const feedbackDemo = `${liveDemo}prototypes/ccncfpcyaa1hvjts`;
     .studio-header { gap: 0.5rem; }
     .studio-brand { gap: 0.5rem; }
     .studio-brand > svg { width: 1.5rem; height: auto; }
-    .studio-brand > span { font-size: clamp(0.875rem, 4.5cqi, 1.125rem); white-space: nowrap; }
+    .studio-brand-label { flex-direction: column; align-items: flex-start; gap: 0.25rem; }
+    .studio-brand-name { font-size: clamp(0.875rem, 4.5cqi, 1.125rem); white-space: nowrap; }
     .studio-header-controls { gap: 0.25rem; }
     .studio-github { width: 2.75rem; justify-content: center; }
     .studio-control-label { display: none; }
