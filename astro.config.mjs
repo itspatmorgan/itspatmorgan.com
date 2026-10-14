@@ -4,6 +4,7 @@ import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
 import mdx from '@astrojs/mdx';
+import { unified } from '@astrojs/markdown-remark';
 
 /** Wraps <p><img title="Caption"></p> in <figure><img><figcaption>Caption</figcaption></figure> */
 function rehypeFigure() {
@@ -42,12 +43,15 @@ function rehypeFigure() {
 export default defineConfig({
   site: 'https://itspatmorgan.com',
   output: 'static',
+  // Preserve spaces between inline elements with Astro 7's new JSX default.
+  compressHTML: true,
   devToolbar: {
     enabled: false,
   },
   integrations: [react(), mdx()],
   markdown: {
-    rehypePlugins: [rehypeFigure],
+    // Keep the existing caption transform on the supported unified pipeline.
+    processor: unified({ rehypePlugins: [rehypeFigure] }),
   },
   vite: {
     // Serve the deployed demo under the same origin in local development.

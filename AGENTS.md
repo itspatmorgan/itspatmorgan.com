@@ -20,14 +20,14 @@ restrained, content-first design over decorative complexity.
 
 ## Tech Stack
 
-- Framework: Astro v5, static output
+- Framework: Astro v7, static output
 - Styling: Tailwind CSS v4 through `@tailwindcss/vite`
 - Components: shadcn/ui, base-nova style, configured in `components.json`
 - React: use for stateful UI and isolated Lab experiences that need client interactivity
 - Content: Astro content collections with Zod schemas
 - Fonts: Geist Sans for body text, Geist Mono for labels, metadata, and code
 - Package manager: pnpm 10+
-- Node: v20+
+- Node: v22.12.0+ (Node 24 pinned locally and used in CI)
 - Deployment: GitHub Pages through GitHub Actions on pushes to `main`
 
 ## Commands
