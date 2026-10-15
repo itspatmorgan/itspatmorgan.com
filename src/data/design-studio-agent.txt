@@ -56,7 +56,7 @@ https://github.com/itspatmorgan/design-studio/blob/main/src/platform/context/ins
 Use a session that can create files and run commands on the person's computer. Confirm the destination, preserve existing files, and install the tagged release described in the guide with its Git history. The default folder name is design-studio. Verify the actual local preview and help the person open that folder in their preferred agent harness.
 
 Installation prompt:
-> Install Design Studio from release v0.3.0 using https://github.com/itspatmorgan/design-studio/blob/main/src/platform/context/installing.md. Use the repository installation guide without a plugin installer. Help me choose a folder, preserve existing files, and verify the running preview. Then help me open the Design Studio folder in my agent harness.
+> Install Design Studio from release v0.1.0 using https://github.com/itspatmorgan/design-studio/blob/main/src/platform/context/installing.md. Use the repository installation guide without a plugin installer. Help me choose a folder, preserve existing files, and verify the running preview. Then help me open the Design Studio folder in my agent harness.
 
 ## What happens after setup
 
