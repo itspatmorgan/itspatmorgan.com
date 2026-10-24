@@ -12,4 +12,5 @@ written, styled, and verified.
 | `content.md` | Public terminology and frontmatter conventions |
 | `styling.md` | Visual design, Tailwind, prose, and interaction conventions |
 | `assets.md` | Image and embed conventions |
+| `security.md` | Dependency audits, automation permissions, and security maintenance |
 
