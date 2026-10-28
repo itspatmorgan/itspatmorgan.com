@@ -5,12 +5,12 @@ import { useDemoLoop } from './useDemoLoop';
 type Flow = 'select' | 'filter' | 'direction';
 const flowTitles = { select: 'entity selection', filter: 'property filtering', direction: 'relationship direction' };
 const timings = {
-  select: [450, 500, 2500, 850, 2400, 650, 700, 450],
-  filter: [550, 550, 1000, 950, 450, 850, 1600, 600, 800, 1600, 600, 700, 3200],
+  select: [450, 500, 1900, 1100, 2400, 650, 700, 450],
+  filter: [550, 550, 1000, 550, 450, 850, 1400, 700, 600, 1200, 500, 700, 3200],
   direction: [1700, 800, 2200, 2200, 2200, 1500],
 };
 const cursors = {
-  select: [[195, 70], [210, 70], [278, 228], [270, 228], [270, 228], [525, 70], [126, 65], [126, 65]],
+  select: [[195, 70], [210, 70], [430, 150], [270, 228], [270, 228], [525, 70], [126, 65], [126, 65]],
   filter: [[220, 71], [480, 69], [515, 69], [450, 120], [450, 120], [112, 138], [114, 138], [100, 170], [265, 138], [265, 138], [265, 141], [350, 138], [355, 138]],
   direction: [[240, 230], [105, 226], [69, 227], [69, 227], [69, 227], [235, 290]],
 };
@@ -60,21 +60,17 @@ function SelectionScene({ phase, choose }: { phase: number; choose: (phase: numb
 }
 
 export default function FigmaFlow({ sequence }: { sequence: Flow }) {
-  const loop = useDemoLoop(timings[sequence], sequence === 'select' ? 2 : 0);
+  const loop = useDemoLoop(timings[sequence], sequence === 'select' ? 2 : sequence === 'filter' ? timings.filter.length - 1 : 0);
   const phase = loop.step;
   const [width, height] = sequence === 'select' ? [932, 565] : [600, 400];
-  const crop = sequence === 'select' ? undefined : { x: sequence === 'filter' && phase >= 1 && phase <= 4 ? 88 : 12, y: 16, width: 480, height: 340 };
   const [sourceX, sourceY] = cursors[sequence][phase];
-  const closeup = sequence === 'select' && [0, 1, 6, 7].includes(phase);
-  const x = closeup ? 42 + sourceX * 1.55 : sourceX;
-  const y = closeup ? 110 + sourceY * 1.55 : sourceY;
   const direction = phase === 3 ? 1 : phase >= 4 ? 2 : 0;
   const tooltip = phase === 2 ? 'Bidirectional' : phase === 3 ? 'Toward source' : phase === 4 ? 'Toward target' : undefined;
   const nextDirection = () => loop.choose(direction === 0 ? 3 : direction === 1 ? 4 : 2);
   return <figure className={`qb-demo qb-flow qb-flow-${sequence} ${loop.resetting ? 'qb-loop-reset' : ''}`} ref={loop.ref} data-step={phase} aria-label={`${flowTitles[sequence]} design demo`} onKeyDown={e => { if (e.key === 'Escape') loop.choose(sequence === 'select' ? (phase >= 4 ? 6 : 0) : sequence === 'filter' ? (phase < 5 ? 0 : phase < 8 ? 5 : 8) : 0); }}>
-    <div className="qb-film-stage"><NativeStage width={width} height={height} crop={crop} interactive={!loop.playing}>
-      {sequence === 'select' ? <SelectionScene phase={phase} choose={loop.choose} /> : <NativeBuilder filterPhase={sequence === 'filter' ? phase : 12} onFilterPhase={sequence === 'filter' ? loop.choose : undefined} hoverRoot={sequence === 'filter' && phase >= 1 && phase <= 4} tooltip={sequence === 'filter' && (phase === 2 || phase === 3)} filterMenu={sequence === 'filter' && (phase === 3 || phase === 4)} menuHover={phase === 4} animated={sequence === 'filter' && loop.playing} relation={sequence === 'direction'} direction={direction} directionTooltip={sequence === 'direction' ? tooltip : undefined} relationHover={sequence === 'direction' && phase >= 1 && phase <= 4} onDirection={nextDirection} />}
-      <DemoCursor x={x} y={y} visible={loop.playing} reduced={loop.reduced} pressing={sequence === 'filter' ? [4, 7, 10].includes(phase) : sequence === 'select' ? phase === 4 : phase === 3 || phase === 4} />
+    <div className="qb-film-stage"><NativeStage width={width} height={height} crop={sequence === 'select' ? undefined : { x: 0, y: 12, width: 588, height: 360 }} interactive={!loop.playing}>
+      {sequence === 'select' ? <SelectionScene phase={phase} choose={loop.choose} /> : <NativeBuilder filterPhase={sequence === 'filter' ? phase : 12} onFilterPhase={sequence === 'filter' ? loop.choose : undefined} hoverRoot={sequence === 'filter' && phase >= 1 && phase <= 4} tooltip={sequence === 'filter' && phase === 2} filterMenu={sequence === 'filter' && (phase === 3 || phase === 4)} menuHover={phase === 4} animated={sequence === 'filter' && loop.playing} relation={sequence === 'direction'} direction={direction} directionTooltip={sequence === 'direction' ? tooltip : undefined} relationHover={sequence === 'direction' && phase >= 1 && phase <= 4} onDirection={nextDirection} />}
+      <DemoCursor x={sourceX} y={sourceY} visible={loop.playing} reduced={loop.reduced} pressing={sequence === 'filter' ? [4, 7, 10].includes(phase) : sequence === 'select' ? phase === 4 : phase === 3 || phase === 4} />
     </NativeStage></div>
     <DemoControls loop={loop} title={flowTitles[sequence]} caption={captions[sequence][phase]} />
   </figure>;
@@ -110,7 +106,7 @@ export function SyntaxSequence() {
       <div className="q-syntax-editor">
         <div className="q-editor-bar"><span className="q-editor-tab"><SourceIcon name="Code" size={14} />access-review.j1ql</span><span className="q-editor-language">J1QL</span></div>
         <div className="q-syntax-code"><code>{syntaxLines.map((line, row) => <div className="q-editor-line" key={row}><span className="q-editor-line-number" aria-hidden="true">{row + 1}</span><span className={`q-syntax-line ${row > 1 ? 'q-syntax-indent' : ''}`}>{line.map((token, i) => <span key={i} className={`q-syntax-token ${token.type ? `q-syntax-${token.type}` : ''} ${token.type === current.key ? 'q-token-active' : 'q-token-muted'}`} style={{ transitionDelay: `${i * 12}ms` }}>{token.text}</span>)}</span></div>)}</code></div>
-        <div className="q-editor-status" aria-hidden="true">{current.label}</div>
+        <div className="q-editor-status q-concept-steps" role="group" aria-label="J1QL concepts">{concepts.map((c, i) => <button type="button" key={c.key} className="q-concept-step" aria-pressed={i === loop.step} onClick={() => loop.choose(i)}>{c.label}</button>)}</div>
       </div>
     </div>
     <DemoControls loop={loop} title="syntax features" caption={current.description} />

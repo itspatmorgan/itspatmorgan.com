@@ -1,30 +1,36 @@
+import type { ReactNode } from 'react';
 import { NativeBuilder, NativeStage, DemoControls } from './NativeUI';
 import { useDemoLoop } from './useDemoLoop';
 import './query-builder.css';
 
-const durations = [1800, 2200, 2600, 2100, 2100, 2100, 4200] as const;
-const captions = ['Start with a graph entity.', 'Filter based on its properties.', 'Add a graph relationship.', 'Follow an optional connection.', 'Continue through the graph.', 'Keep optional paths distinct.', 'One question, expressed as code and UI.'];
 function Kw({ children }: { children: string }) { return <span className="q-code-keyword">{children}</span>; }
 function Arrow({ children }: { children: string }) { return <span className="q-code-arrow">{children}</span>; }
+function Clause({ part, indent = false, children }: { part: string; indent?: boolean; children: ReactNode }) {
+  return <span className={`q-code-clause ${indent ? 'q-code-indent' : ''}`} data-query-part={part}>{children}</span>;
+}
 
+const views = ['Code', 'Visual'] as const;
+const timings = [4200, 5200];
+
+/** One query, one view at a time: clauses translate in order between code and controls. */
 export default function QueryBuilderDemo() {
-  const loop = useDemoLoop(durations, 6);
-  const step = loop.step;
-  return <figure className={`qb-demo qb-query-demo ${loop.resetting ? 'qb-loop-reset' : ''}`} ref={loop.ref} aria-label="Query builder walkthrough" data-step={step}>
-    <div className="qb-query-stage"><NativeStage width={1000} height={716} interactive={false}>
-      <div className="q-query-comparison">
-        <div className="q-query-code" aria-label="J1QL query"><code>
-          <div className="q-code-line"><Kw>FIND</Kw> DataStore</div>
-          <div className={`q-code-line q-code-appearing ${step >= 1 ? 'q-code-shown' : ''}`}><Kw>WITH</Kw> tag.pltfm_env <Arrow>=</Arrow> “production”</div>
-          <div className={`q-code-line q-code-indent q-code-appearing ${step >= 2 ? 'q-code-shown' : ''}`}><Kw>THAT</Kw> ALLOWS <Arrow>&lt;&lt;</Arrow> AccessPolicy</div>
-          <div className={`q-code-line q-code-indent q-code-appearing ${step >= 3 ? 'q-code-shown' : ''}`}>(<Kw>THAT</Kw> ASSIGNED <Arrow>&gt;&gt;</Arrow> AccessRole)?</div>
-          <div className={`q-code-line q-code-indent q-code-appearing ${step >= 4 ? 'q-code-shown' : ''}`}>(<Kw>THAT</Kw> USES <Arrow>&lt;&lt;</Arrow> google_iam_binding)?</div>
-          <div className={`q-code-line q-code-indent q-code-appearing ${step >= 5 ? 'q-code-shown' : ''}`}>(<Kw>THAT</Kw> ASSIGNED <Arrow>&gt;&gt;</Arrow> UserGroup)?</div>
-          <div className={`q-code-line q-code-indent q-code-appearing ${step >= 6 ? 'q-code-shown' : ''}`}><Kw>THAT</Kw> (ASSIGNED|HAS) <Arrow>&gt;&gt;</Arrow> User <Kw>WITH</Kw> _type <Arrow>!=</Arrow> “google_iam_service_account”</div>
+  const loop = useDemoLoop(timings, 0, false);
+  const view = loop.step;
+  return <figure className="qb-demo qb-query-demo qb-query-toggle" ref={loop.ref} data-view={views[view]} aria-label="The same query as J1QL and as visual controls">
+    <div className="qb-view-toggle" role="group" aria-label="Query view">
+      {views.map((label, i) => <button type="button" key={label} aria-pressed={view === i} onClick={() => loop.choose(i)}>{label}</button>)}
+    </div>
+    <div className="qb-query-stage"><NativeStage width={960} height={600}>
+      <div className="q-toggle-canvas">
+        <div className="q-toggle-view q-toggle-code" data-active={view === 0} aria-hidden={view !== 0}><code>
+          <Clause part="0"><Kw>FIND</Kw> DataStore</Clause>
+          <Clause part="1"><Kw>WITH</Kw> tag.pltfm_env <Arrow>=</Arrow> “production”</Clause>
+          <Clause part="2" indent><Kw>THAT</Kw> ALLOWS <Arrow>&lt;&lt;</Arrow> AccessPolicy</Clause>
+          <Clause part="optional" indent>(<Kw>THAT</Kw> ASSIGNED <Arrow>&gt;&gt;</Arrow> AccessRole)?</Clause>
         </code></div>
-        <div className="q-query-builder"><NativeBuilder queryStep={step} filterPhase={step >= 1 ? 12 : -1} relation={step >= 2} /></div>
+        <div className="q-toggle-view q-toggle-builder q-query-builder" data-active={view === 1} aria-hidden={view !== 1} inert><NativeBuilder queryStep={3} filterPhase={12} relation /></div>
       </div>
     </NativeStage></div>
-    <DemoControls loop={loop} title="query walkthrough" caption={captions[step]} />
+    <DemoControls loop={loop} title="query translation" caption={`Showing the ${views[view].toLowerCase()} view of the query`} />
   </figure>;
 }

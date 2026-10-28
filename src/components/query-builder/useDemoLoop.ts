@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 /** Deterministic, visible-only playback; manual interaction pauses the script. */
-export function useDemoLoop(durations: readonly number[], initial = 0) {
+export function useDemoLoop(durations: readonly number[], initial = 0, resetFade = true) {
   const ref = useRef<HTMLElement>(null);
   const [step, setStep] = useState(initial);
   const [playing, setPlaying] = useState(true);
@@ -37,7 +37,7 @@ export function useDemoLoop(durations: readonly number[], initial = 0) {
       setResetting(false);
     };
     const timer = window.setTimeout(() => {
-      if (step === durations.length - 1 && !reduced) {
+      if (resetFade && step === durations.length - 1 && !reduced) {
         setResetting(true);
         resetTimer = window.setTimeout(advance, 180);
       } else advance();
@@ -48,7 +48,7 @@ export function useDemoLoop(durations: readonly number[], initial = 0) {
       if (resetTimer !== undefined) setResetting(false);
       if (!finished && current === version.current) elapsed.current += performance.now() - start;
     };
-  }, [step, playing, visible, foreground, generation, durations, reduced]);
+  }, [step, playing, visible, foreground, generation, durations, reduced, resetFade]);
 
   const choose = (next: number) => { version.current++; elapsed.current = 0; setPlaying(false); setResetting(false); setStep(Math.max(0, Math.min(durations.length - 1, next))); setGeneration(g => g + 1); };
   const replay = () => { version.current++; elapsed.current = 0; setStep(0); setResetting(false); setPlaying(true); setGeneration(g => g + 1); };
