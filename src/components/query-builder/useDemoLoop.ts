@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
-/** Deterministic, visible-only playback; manual interaction pauses the script. */
-export function useDemoLoop(durations: readonly number[], initial = 0, resetFade = true) {
+/** Deterministic, visible-only playback; manual interaction pauses the script. With `once`, it plays through a single time and holds the last step. */
+export function useDemoLoop(durations: readonly number[], initial = 0, resetFade = true, once = false) {
   const ref = useRef<HTMLElement>(null);
   const [step, setStep] = useState(initial);
   const [playing, setPlaying] = useState(true);
@@ -17,7 +17,7 @@ export function useDemoLoop(durations: readonly number[], initial = 0, resetFade
     const observer = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting), { threshold: .12 });
     if (ref.current) observer.observe(ref.current);
     const media = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const motion = () => { setReduced(media.matches); if (media.matches) setPlaying(false); };
+    const motion = () => { setReduced(media.matches); if (media.matches) { setPlaying(false); if (once) setStep(durations.length - 1); } };
     const visibility = () => setForeground(!document.hidden);
     motion(); visibility();
     media.addEventListener('change', motion);
@@ -26,7 +26,7 @@ export function useDemoLoop(durations: readonly number[], initial = 0, resetFade
   }, []);
 
   useEffect(() => {
-    if (!playing || !visible || !foreground) return;
+    if (!playing || !visible || !foreground || (once && step === durations.length - 1)) return;
     const start = performance.now();
     const current = version.current;
     let finished = false;
@@ -48,7 +48,7 @@ export function useDemoLoop(durations: readonly number[], initial = 0, resetFade
       if (resetTimer !== undefined) setResetting(false);
       if (!finished && current === version.current) elapsed.current += performance.now() - start;
     };
-  }, [step, playing, visible, foreground, generation, durations, reduced, resetFade]);
+  }, [step, playing, visible, foreground, generation, durations, reduced, resetFade, once]);
 
   const choose = (next: number) => { version.current++; elapsed.current = 0; setPlaying(false); setResetting(false); setStep(Math.max(0, Math.min(durations.length - 1, next))); setGeneration(g => g + 1); };
   const replay = () => { version.current++; elapsed.current = 0; setStep(0); setResetting(false); setPlaying(true); setGeneration(g => g + 1); };
