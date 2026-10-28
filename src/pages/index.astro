@@ -28,9 +28,8 @@ const professionalProjects = allProjects
   .filter((p) => p.data.type === "professional")
   .sort((a, b) => a.data.sortOrder - b.data.sortOrder);
 const featuredProjectDescriptions: Record<string, string> = {
-  "query-language": "Guided enterprise users through a powerful graph query language without flattening the product.",
-  expansion: "Extended a security platform into new use cases through a modular systems approach.",
-  vision: "Led strategic product vision work through facilitation, synthesis, and storytelling.",
+  "query-language": "Designed a visual query builder that taught a complex query language as customers used it.",
+  expansion: "Shaped how a new SKU came to market by extending the platform, not rebuilding it.",
 };
 
 const heroHeadline = "Patrick is a designer who builds.";
@@ -83,6 +82,8 @@ const homeSection = `${homeShell} py-12 sm:py-14 lg:py-16`;
 const homeFirstSection = `${homeShell} pt-5 pb-12 sm:pt-10 sm:pb-14 lg:pt-10 lg:pb-16`;
 const homeSectionHeader = "mb-7 flex items-center justify-between";
 const homeCardGrid = "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6";
+// Featured work runs two wide cards side by side, using the wide thumbnails.
+const homeWorkGrid = "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:gap-6";
 ---
 
 <PageLayout>
@@ -216,8 +217,8 @@ const homeCardGrid = "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:ga
       <p class="font-mono text-xs uppercase tracking-widest text-muted-foreground">Work</p>
       <a href="/work" class="text-xs text-muted-foreground transition-colors hover:text-foreground">View all →</a>
     </div>
-    <div class={homeCardGrid}>
-      {professionalProjects.slice(0, 3).map((project, i) => (
+    <div class={homeWorkGrid}>
+      {professionalProjects.slice(0, 2).map((project, i) => (
         <div data-project-card-item>
           <ProjectCard
             title={project.data.title}
@@ -230,7 +231,6 @@ const homeCardGrid = "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:ga
             slug={project.id}
             index={i}
             variant="compact"
-            squareDesktop
             showDescription
           />
         </div>

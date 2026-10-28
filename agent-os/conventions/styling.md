@@ -30,8 +30,12 @@ restrained, content-first design over decorative complexity.
   without transition support use ordinary document navigation; reduced motion
   disables the route transition.
 - Keep automatic load effects off the navigation logo. Preserve intentional
-  hover, click, tabs, and demo effects. Home pixel hover setup lives in
-  `src/scripts/home-interactions.ts`.
+  hover, click, tabs, and demo effects. Home pixel effects live in
+  `src/scripts/home-interactions.ts`: the hero headline's quick pixel-to-sans
+  dissolve on the first home visit of a session, and the same dissolve on the
+  closing line when it scrolls into view. Those two are the only home load and
+  scroll motion; keep them on the fast `dissolvePixelWave`, not the slower
+  glyph-cycling `pixelWave`.
 - Navigation remains document-based; there is no Astro ClientRouter. If one is
   introduced later, review script initialization and timer/observer cleanup
   before relying on `astro:*` lifecycle listeners.
