@@ -6,29 +6,18 @@
    The product has no dark theme, so dark values are drawn to match the site's warm dark surfaces. */
 .sb {
   --sb-card: #fff; --sb-subtle: #FAFAF9; --sb-strong: #1A1B16; --sb-weak: #666560; --sb-border: #E8E8E6; --sb-border-strong: #D1D1CF;
-  --sb-link: #4471D4; --sb-button: #4471D4; --sb-button-text: #fff; --sb-secondary: #F2F2F1;
+  --sb-link: #4471D4; --sb-button: #4471D4; --sb-button-text: #fff; --sb-secondary: #F2F2F1; --sb-cell-head: #F2F2F1; --sb-hover: #F2F2F1; --sb-reject: #54534D; --sb-banner: linear-gradient(90deg, #72221F 0%, #CC4837 100%); --sb-agentic: linear-gradient(90deg, #4E81F4, #41FFC0, #B5F6FF, #4E81F4);
   --sb-success: #0BC486; --sb-success-ink: #0EA471; --sb-brand: #04E69B; --sb-malicious: #CC4837; --sb-spam: #ED6E00; --sb-graymail: #31312D; --sb-box: #31312D; --sb-box-ink: #fff; --sb-benign: #A370FF;
   --sb-code: #1f252c; --sb-code-line: #858585; --sb-code-text: #d4d4d4; --sb-code-keyword: #569cd6; --sb-code-fn: #4ec9b0; --sb-code-path: #9cdcfe; --sb-code-string: #ce9178; --sb-code-number: #b5cea8;
-  /* Design OS "product shot" style used by the ADÉ education graphics: green-cast ink, glass panes on an aqua and mint stage. */
-  --sb-g-strong: #1F3531; --sb-g-weak: #5E847C; --sb-g-hairline: #C3E2DB; --sb-g-ade: #028257; --sb-g-placeholder: color-mix(in srgb, #1F3531 16%, transparent);
-  --sb-g-pane: rgba(255, 255, 255, .7); --sb-g-pane-back: rgba(255, 255, 255, .2); --sb-g-rim: rgba(255, 255, 255, .75);
-  --sb-g-shadow: 0 20px 40px 0 rgba(17, 95, 77, .3), 0 5px 10px 0 rgba(17, 95, 77, .1), inset 0 .5px 0 rgba(255, 255, 255, .55);
-  --sb-g-shadow-back: 0 12px 24px 0 rgba(17, 95, 77, .16), 0 2px 6px 0 rgba(17, 95, 77, .05), inset 0 .5px 0 rgba(255, 255, 255, .55);
-  --sb-g-stage: #fff;
   --sb-glow: rgba(176, 244, 229, .65); --sb-glow-2: rgba(176, 244, 229, .2);
   --sb-ring: rgba(255, 255, 255, .15);
   --sb-drop: 0 4px 4px rgba(0, 0, 0, .25);
 }
 .dark .sb {
   --sb-card: #2a2725; --sb-subtle: #302d2a; --sb-strong: #ede9e4; --sb-weak: #a8a29b; --sb-border: #3d3a36; --sb-border-strong: #4b4742;
-  --sb-link: #8fb0f5; --sb-button: #5182EB; --sb-secondary: #34312e;
+  --sb-link: #8fb0f5; --sb-button: #5182EB; --sb-secondary: #34312e; --sb-cell-head: #322f2c; --sb-hover: #36332f; --sb-reject: #6b6862;
   --sb-success: #0BC486; --sb-success-ink: #3fd7a4; --sb-malicious: #e0604f; --sb-spam: #fe8644; --sb-graymail: #d1d1cf; --sb-box: #171513; --sb-box-ink: #a8a29b; --sb-benign: #bc92ff;
   --sb-code: #1d1b1a;
-  --sb-g-strong: #e6f2ee; --sb-g-weak: #9cbcb4; --sb-g-hairline: #3d4a46; --sb-g-ade: #3fd7a4; --sb-g-placeholder: color-mix(in srgb, #e6f2ee 18%, transparent);
-  --sb-g-pane: rgba(48, 56, 53, .78); --sb-g-pane-back: rgba(48, 56, 53, .35); --sb-g-rim: rgba(255, 255, 255, .08);
-  --sb-g-shadow: 0 20px 40px 0 rgba(0, 0, 0, .45), 0 5px 10px 0 rgba(0, 0, 0, .2), inset 0 .5px 0 rgba(255, 255, 255, .08);
-  --sb-g-shadow-back: 0 12px 24px 0 rgba(0, 0, 0, .3), 0 2px 6px 0 rgba(0, 0, 0, .12), inset 0 .5px 0 rgba(255, 255, 255, .06);
-  --sb-g-stage: #262423;
   --sb-glow: rgba(40, 120, 104, .45); --sb-glow-2: rgba(40, 120, 104, .14);
   --sb-ring: rgba(255, 255, 255, .06);
   --sb-drop: 0 4px 4px rgba(0, 0, 0, .4);
@@ -51,7 +40,7 @@
 .sb-swap.is-out { opacity: 0; visibility: hidden; transition: opacity 180ms ease, visibility 0s linear 180ms; }
 .sb-dim { transition: opacity 350ms ease; }
 .sb-dim.is-dim { opacity: .4; }
-@media (prefers-reduced-motion: reduce) { .sb-swap, .sb-fade, .sb-dim, .sb-bar > i, .sb-meter i { transition: none !important; } }
+@media (prefers-reduced-motion: reduce) { .sb-swap, .sb-fade, .sb-dim, .sb-scroll { transition: none !important; } }
 
 /* Product primitives. */
 .sb-h { font-size: 18px; font-weight: 600; line-height: 27px; letter-spacing: -.18px; }
@@ -66,20 +55,13 @@
 .sb-severity { display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 10px; border-radius: 999px; background: var(--sb-malicious); color: #fff; font-size: 12px; font-weight: 500; }
 
 /* MQL, read-only, in the product editor's colors. */
-.sb-code { display: grid; grid-template-columns: 32px 1fr; column-gap: 16px; padding: 12px 0; background: var(--sb-code); border-radius: 4px; font: 13px/20px 'SB JetBrains Mono', 'JetBrains Mono', ui-monospace, monospace; color: var(--sb-code-text); white-space: pre; overflow: hidden; }
+.sb-code { display: grid; grid-template-columns: 32px 1fr; column-gap: 16px; padding: 12px 0; background: var(--sb-code); border-radius: 4px; font: 13px/20px 'SB JetBrains Mono', 'JetBrains Mono', ui-monospace, monospace; color: var(--sb-code-text); white-space: pre-wrap; overflow-wrap: anywhere; overflow: hidden; }
 .sb-code .n { text-align: right; color: var(--sb-code-line); }
 .sb-code .k { color: var(--sb-code-keyword); }
 .sb-code .f { color: var(--sb-code-fn); }
 .sb-code .p { color: var(--sb-code-path); }
 .sb-code .s { color: var(--sb-code-string); }
 .sb-code .d { color: var(--sb-code-number); }
-
-/* Glass panes on the aqua and mint stage (AdeEducationShot). */
-.sb-stage-g { position: absolute; inset: 0; background-color: var(--sb-g-stage); background-image: radial-gradient(109% 109% at 12% 9%, rgba(194, 248, 255, .5), transparent), radial-gradient(167% 167% at 24% 92%, rgba(173, 255, 228, .5), transparent), radial-gradient(78% 78% at 60% 15%, rgba(235, 255, 252, .5), transparent), radial-gradient(102% 102% at 95% 53%, rgba(255, 255, 255, .5), transparent); }
-.dark .sb-stage-g { background-image: radial-gradient(109% 109% at 12% 9%, rgba(40, 110, 118, .35), transparent), radial-gradient(167% 167% at 24% 92%, rgba(30, 110, 84, .3), transparent), radial-gradient(78% 78% at 60% 15%, rgba(60, 90, 86, .25), transparent); }
-.sb-glass { position: relative; border-radius: 16px; background: var(--sb-g-pane); backdrop-filter: blur(4px); border: 1px solid var(--sb-g-rim); box-shadow: var(--sb-g-shadow); color: var(--sb-g-strong); }
-.sb-glass.is-back { background: var(--sb-g-pane-back); box-shadow: var(--sb-g-shadow-back); }
-.sb-g-weak { color: var(--sb-g-weak); }
 
 /* Agent cards (AgentCard, Figma "Agent Hub R3"). */
 .sb-agent { position: relative; height: 529px; overflow: hidden; border-radius: 4px; border: 1px solid var(--sb-border); background: var(--sb-card); font-weight: 500; }
@@ -88,50 +70,83 @@
 .sb-agent-name { font-size: 54px; line-height: 1; letter-spacing: -.54px; font-weight: 500; }
 .sb-agent-caption { margin-top: 8px; font-size: 11px; line-height: 16px; letter-spacing: .11px; color: var(--sb-weak); }
 
-/* Meter for the backtest: a match rate against the auto-accept threshold. */
-.sb-meter { position: relative; height: 8px; border-radius: 4px; background: var(--sb-border); }
-.sb-meter i { position: absolute; top: 0; bottom: 0; left: 0; border-radius: 4px; transition: width 700ms cubic-bezier(.22, 1, .36, 1), background-color 300ms ease; }
-.sb-bar { position: relative; height: 8px; border-radius: 4px; background: var(--sb-border); overflow: hidden; }
-.sb-bar > i { position: absolute; top: 0; bottom: 0; left: 0; background: var(--sb-strong); transition: width 600ms cubic-bezier(.22, 1, .36, 1); }
+/* The agent renders carry a white bloom made for white cards; on dark surfaces, fade it out under the shape. */
+.dark .sb-art { mask-image: linear-gradient(to bottom, #000 50%, transparent 82%); }
 
-/* Toggle (bet slide). */
-.sb-toggle { display: inline-flex; padding: 3px; border-radius: 8px; background: var(--sb-secondary); box-shadow: inset 0 0 0 1px var(--sb-border); }
-.sb-toggle button { height: 34px; padding: 0 16px; border-radius: 6px; font-size: 14px; font-weight: 500; color: var(--sb-weak); transition: background 200ms ease, color 200ms ease, box-shadow 200ms ease; }
-.sb-toggle button[aria-pressed='true'] { background: var(--sb-card); color: var(--sb-strong); box-shadow: 0 1px 2px rgba(0, 0, 0, .12), 0 0 0 1px var(--sb-border); }
+/* Product screens: one page shell for every slide, so the screens read as one product. */
+.sb-page { background: var(--sb-card); }
+.sb-crumbs { position: relative; z-index: 2; background: var(--sb-card); display: flex; align-items: center; gap: 8px; height: 48px; padding: 0 32px; border-bottom: 1px solid var(--sb-border); font-size: 13px; line-height: 20px; color: var(--sb-weak); white-space: nowrap; }
+.sb-crumbs a { color: var(--sb-link); }
+.sb-crumbs b { font-weight: 500; color: var(--sb-strong); overflow: hidden; text-overflow: ellipsis; }
+.sb-cells { border: 1px solid var(--sb-border-strong); border-radius: 4px; overflow: hidden; background: var(--sb-card); }
+.sb-box { border: 1px solid var(--sb-border-strong); border-radius: 4px; background: var(--sb-card); }
+.sb-cells > * + * { border-top: 1px solid var(--sb-border-strong); }
+.sb-cell-head { display: flex; align-items: center; min-height: 40px; padding: 8px 16px; background: var(--sb-cell-head); font-size: 14px; font-weight: 600; line-height: 20px; }
+.sb-list-row { display: flex; align-items: center; justify-content: space-between; height: 36px; padding: 0 12px; font-size: 14px; transition: background 200ms ease; }
+.sb-list-row.is-hover { background: var(--sb-hover); }
+.sb-chev { flex: none; color: var(--sb-weak); }
+.sb-field { display: grid; gap: 8px; }
+.sb-field > span:first-child { font-size: 12px; line-height: 16px; color: var(--sb-weak); }
+.sb-pill.is-fill { height: 28px; padding: 0 10px; font-size: 13px; color: #fff; }
+.sb-pill.is-fill.is-success { background: var(--sb-success); box-shadow: none; }
+.sb-pill.is-fill.is-caution { background: var(--sb-spam); box-shadow: none; }
+.sb-pill.is-fill.is-rejected { background: var(--sb-reject); box-shadow: none; }
+.sb-pill.is-outline { height: 28px; padding: 0 10px; font-size: 13px; box-shadow: inset 0 0 0 1px var(--sb-border-strong); }
+.sb-ext { display: inline-flex; align-items: center; gap: 8px; max-width: 100%; height: 30px; padding: 0 10px; border-radius: 999px; box-shadow: inset 0 0 0 1px var(--sb-border-strong); font-size: 14px; white-space: nowrap; }
+.sb-ext span { overflow: hidden; text-overflow: ellipsis; }
 
-/* Manual path: small step art, and Gantt bars that stack the analyst's time. */
-.sb-mini { display: flex; flex-direction: column; justify-content: center; flex: none; width: 52px; height: 44px; padding: 6px 7px; border-radius: 4px; border: 1px solid var(--sb-border); background: var(--sb-card); }
-.sb-mini.is-code { background: var(--sb-code); border-color: var(--sb-code); }
-.sb-gantt { position: absolute; top: 26px; height: 24px; border-radius: 4px; background: var(--sb-strong); transition: width 900ms cubic-bezier(.22, 1, .36, 1); }
-@media (prefers-reduced-motion: reduce) { .sb-gantt { transition: none; } }
+/* The ASA verdict banner. */
+.sb-banner { display: flex; justify-content: space-between; align-items: center; height: 96px; padding: 0 32px; background: var(--sb-banner); color: #fff; }
 
-/* Handoff loop panes (AdeEducationShot Loop). */
-.sb-g-step { display: flex; flex-direction: column; gap: 20px; width: 100%; padding: 16px; }
-.sb-g-message { display: grid; gap: 6px; width: 100%; padding: 10px; border-radius: 8px; background: color-mix(in srgb, var(--sb-card) 80%, transparent); border: .5px solid var(--sb-g-hairline); }
-.sb-g-tag { width: fit-content; padding: 2px 6px; border-radius: 4px; border: .5px solid var(--sb-g-hairline); font-size: 11px; line-height: 16px; color: var(--sb-g-weak); }
-.sb-g-verdict { display: inline-flex; align-items: center; gap: 4px; padding: 4px 6px; border-radius: 4px; background: #CC4837; color: #fff; font-size: 11px; line-height: 16px; }
-.sb-g-verdict svg path:first-child { fill: #fff; stroke: #fff; }
-.sb-g-verdict svg path:last-child { stroke: #CC4837; }
-.sb-g-track { position: relative; display: block; width: 100%; height: 4px; border-radius: 2px; background: var(--sb-g-placeholder); overflow: hidden; }
-.sb-g-track > i { position: absolute; inset: 0 auto 0 0; background: var(--sb-brand); border-radius: 2px; transition: width 900ms cubic-bezier(.22, 1, .36, 1); }
-@media (prefers-reduced-motion: reduce) { .sb-g-track > i { transition: none; } }
+/* A highlight for the part of a screen the slide is about. */
+.sb-mark { border-radius: 4px; transition: box-shadow 350ms ease, background 350ms ease; }
+.sb-mark.is-on { box-shadow: 0 0 0 2px var(--sb-spam); background: color-mix(in srgb, var(--sb-spam) 8%, transparent); }
 
-/* ADÉ job: outcome header, backtest meter, rule. */
-.sb-job { border: 1px solid var(--sb-border); border-radius: 4px; overflow: hidden; }
-.sb-job-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; min-height: 84px; padding: 20px 24px; background: var(--sb-subtle); border-bottom: 1px solid var(--sb-border); }
-.sb-job-head.is-auto { align-items: center; background: var(--sb-success); border-color: var(--sb-success); color: #fff; font-size: 14px; line-height: 20px; }
-.sb-tick { position: absolute; top: -4px; width: 2px; height: 16px; margin-left: -1px; border-radius: 1px; background: var(--sb-weak); }
-.sb-tick.is-threshold { background: var(--sb-strong); }
-.sb-zone { position: absolute; top: 16px; display: flex; padding: 0 6px; font-size: 12px; line-height: 16px; color: var(--sb-weak); white-space: nowrap; }
-.sb-zone.is-strong { color: var(--sb-strong); font-weight: 500; padding-right: 0; }
-.sb-level { display: flex; flex-direction: column; width: 100%; padding: 24px; }
+/* The ADÉ card in the message sidebar; an animated agentic border while a job runs (AnimatedGradientBorder). */
+.sb-ade-card { position: relative; border-radius: 5px; padding: 1px; background: var(--sb-border-strong); }
+.sb-ade-card > div { border-radius: 4px; overflow: hidden; background: var(--sb-card); }
+.sb-ade-card::before { content: ''; position: absolute; inset: 0; border-radius: 5px; background: var(--sb-agentic); background-size: 300% 100%; opacity: 0; transition: opacity 400ms ease; animation: sb-agentic 3s linear infinite; }
+.sb-ade-card.is-running::before { opacity: 1; }
+.sb-ade-card > div { position: relative; }
+@keyframes sb-agentic { to { background-position: 300% 0; } }
+@media (prefers-reduced-motion: reduce) { .sb-ade-card::before { animation: none; } }
+
+/* ADÉ job page: a timeline down the left. */
+.sb-timeline { position: relative; display: grid; gap: 24px; padding-left: 40px; }
+.sb-timeline::before { content: ''; position: absolute; left: 11px; top: 12px; bottom: 0; width: 1px; background: var(--sb-border-strong); }
+.sb-tl-item { position: relative; }
+.sb-tl-dot { position: absolute; left: -40px; top: 0; display: grid; place-items: center; width: 23px; height: 23px; border-radius: 50%; border: 1px solid var(--sb-border-strong); background: var(--sb-card); color: var(--sb-weak); }
+.sb-tl-dot.is-active { border-color: var(--sb-button); background: var(--sb-button); color: #fff; }
+.sb-tl-dot.is-success { border-color: var(--sb-success); background: var(--sb-success); color: #fff; }
+.sb-accepted { border: 1px solid var(--sb-success); border-radius: 4px; overflow: hidden; }
+.sb-accepted-head { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background: var(--sb-success); color: #fff; font-size: 14px; line-height: 20px; }
+.sb-collapse { display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows 500ms cubic-bezier(.22, 1, .36, 1), opacity 300ms ease, margin 500ms cubic-bezier(.22, 1, .36, 1); }
+.sb-collapse > div { min-height: 0; overflow: hidden; }
+.sb-collapse.is-open { grid-template-rows: 1fr; opacity: 1; }
+.sb-scroll { transition: transform 900ms cubic-bezier(.65, 0, .35, 1); }
+@media (prefers-reduced-motion: reduce) { .sb-collapse { transition: none; } }
+
+/* Modal over the page. */
+.sb-scrim { position: absolute; inset: 0; z-index: 20; display: grid; place-items: start center; padding-top: 140px; background: rgba(16, 17, 13, .35); transition: opacity 250ms ease, visibility 0s linear 0s; }
+.sb-scrim.is-out { opacity: 0; visibility: hidden; transition: opacity 200ms ease, visibility 0s linear 200ms; }
+.sb-modal { width: 520px; border-radius: 6px; background: var(--sb-card); box-shadow: 0 16px 40px rgba(0, 0, 0, .25); overflow: hidden; }
+.sb-input { display: flex; align-items: center; height: 32px; padding: 0 10px; border-radius: 4px; box-shadow: inset 0 0 0 1px var(--sb-border-strong); background: var(--sb-card); font-size: 14px; white-space: nowrap; }
+.sb-textarea { height: 72px; border-radius: 4px; box-shadow: inset 0 0 0 1px var(--sb-border-strong); padding: 8px 10px; font-size: 14px; color: var(--sb-weak); }
+
+/* Automation settings: switch and select. */
+.sb-switch { position: relative; display: inline-block; width: 36px; height: 20px; border-radius: 10px; background: var(--sb-border-strong); transition: background 250ms ease; }
+.sb-switch i { position: absolute; top: 2px; left: 2px; display: grid; place-items: center; width: 16px; height: 16px; border-radius: 50%; background: #fff; color: var(--sb-weak); transition: transform 250ms cubic-bezier(.22, 1, .36, 1), color 250ms ease; }
+.sb-switch.is-on { background: var(--sb-success); }
+.sb-switch.is-on i { transform: translateX(16px); color: var(--sb-success); }
+.sb-select { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 8px; height: 32px; padding: 0 10px; border-radius: 4px; box-shadow: inset 0 0 0 1px var(--sb-border-strong); background: var(--sb-card); font-size: 14px; white-space: nowrap; transition: box-shadow 200ms ease; }
+.sb-select.is-open { box-shadow: inset 0 0 0 1px var(--sb-button), 0 0 0 3px color-mix(in srgb, var(--sb-button) 20%, transparent); }
+.sb-menu { position: absolute; left: 0; right: 0; top: 36px; z-index: 5; padding: 4px; border-radius: 4px; background: var(--sb-card); box-shadow: 0 0 0 1px var(--sb-border-strong), 0 8px 20px rgba(0, 0, 0, .14); transition: opacity 180ms ease, transform 180ms ease, visibility 0s linear 0s; }
+.sb-menu.is-out { opacity: 0; visibility: hidden; transform: translateY(-4px); transition: opacity 150ms ease, transform 150ms ease, visibility 0s linear 150ms; }
+.sb-menu > div { display: flex; align-items: center; height: 32px; padding: 0 8px; border-radius: 3px; font-size: 14px; }
+.sb-menu > div.is-hover { background: var(--sb-hover); }
+.sb-status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--sb-weak); transition: background 250ms ease; }
+.sb-status-dot.is-on { background: var(--sb-success); }
 
 /* ADÉ jobs table. */
 .sb-row { display: grid; align-items: center; column-gap: 16px; min-height: 57px; padding: 0 24px; border-top: 1px solid var(--sb-border); font-size: 14px; line-height: 20px; white-space: nowrap; }
 .sb-row.is-head { min-height: 37px; border-top: 0; background: var(--sb-subtle); font-size: 11px; line-height: 16px; }
-.sb-pill.is-success { box-shadow: inset 0 0 0 1px var(--sb-success); }
-.sb-pill.is-review { box-shadow: inset 0 0 0 1px var(--sb-spam); }
-.sb-pill.is-muted { background: var(--sb-secondary); }
-
-/* The agent renders carry a white bloom made for white cards; on dark surfaces, fade it out under the shape. */
-.dark .sb-art { mask-image: linear-gradient(to bottom, #000 50%, transparent 82%); }

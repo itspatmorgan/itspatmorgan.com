@@ -4,11 +4,10 @@ import PageLayout from '@/layouts/PageLayout.astro';
 import Icon from '@/components/icons/Icon.astro';
 import { ArrowLeft01Icon } from '@hugeicons/core-free-icons';
 import HeroAgents from '@/components/sublime/HeroAgents';
-import ManualPath from '@/components/sublime/ManualPath';
-import BlackBox from '@/components/sublime/BlackBox';
-import AgentHandoff from '@/components/sublime/AgentHandoff';
-import BacktestReview from '@/components/sublime/BacktestReview';
-import AutonomyLevels from '@/components/sublime/AutonomyLevels';
+import MessageDetail from '@/components/sublime/MessageDetail';
+import JobReview from '@/components/sublime/JobReview';
+import AutoAccepted from '@/components/sublime/AutoAccepted';
+import AutomationConfig from '@/components/sublime/AutomationConfig';
 import AdeJobs from '@/components/sublime/AdeJobs';
 import '@/components/query-builder/query-builder.css';
 import '@/components/case-study/case-study.css';
@@ -39,32 +38,32 @@ const description = 'I designed how Sublime’s agents turn a missed threat into
 
     <section class="qb-slide" aria-labelledby="problem">
       <h2 id="problem">Every missed threat became detection engineering work</h2>
-      <p>Teams had to spot the gap, investigate it, then spend hours writing and testing a rule.</p>
-      <div class="qb-stage texture-bg sb-frame"><ManualPath client:visible /></div>
+      <p>A threat no rule caught meant a trip to the Rule Editor and hours of writing and testing.</p>
+      <div class="qb-stage texture-bg sb-frame"><MessageDetail variant="gap" client:visible /></div>
+    </section>
+
+    <section class="qb-slide" aria-labelledby="handoff">
+      <h2 id="handoff">Hand the miss to ADÉ where you find it</h2>
+      <p>ADÉ sits beside ASA’s verdict. One click starts a job that hunts, writes and tests a rule.</p>
+      <div class="qb-stage texture-bg sb-frame"><MessageDetail variant="handoff" client:visible /></div>
     </section>
 
     <section class="qb-slide" aria-labelledby="bet">
       <h2 id="bet">Agents should write rules, not hide them</h2>
-      <p>Black‑box agents wait on the vendor. Ours write rules in the language customers already use.</p>
-      <div class="qb-stage texture-bg sb-frame"><BlackBox client:visible /></div>
-    </section>
-
-    <section class="qb-slide" aria-labelledby="team">
-      <h2 id="team">Show how your agent team works for you</h2>
-      <p>ASA hands a missed threat to ADÉ, which writes a rule and calls you in only to review it.</p>
-      <div class="qb-stage texture-bg sb-frame"><AgentHandoff client:visible /></div>
+      <p>Black‑box agents return verdicts. ADÉ returns MQL your team can read, accept and edit later.</p>
+      <div class="qb-stage texture-bg sb-frame"><JobReview client:visible /></div>
     </section>
 
     <section class="qb-slide" aria-labelledby="efficacy">
       <h2 id="efficacy">Let the backtest decide how much review a rule needs</h2>
-      <p>A strong match goes live on its own, a weaker one waits for you, a poor one is dropped.</p>
-      <div class="qb-stage texture-bg sb-frame"><BacktestReview client:visible /></div>
+      <p>ADÉ hunts recent mail with its rule. A match that clears your threshold goes live on its own.</p>
+      <div class="qb-stage texture-bg sb-frame"><AutoAccepted client:visible /></div>
     </section>
 
     <section class="qb-slide" aria-labelledby="trust">
       <h2 id="trust">Trust in autonomy has to be earned</h2>
-      <p>Send threats to ADÉ by hand, then let it start on its own, then let it accept what clears your bar.</p>
-      <div class="qb-stage texture-bg sb-frame"><AutonomyLevels client:visible /></div>
+      <p>Teams choose, per verdict, when ADÉ starts on its own and when it can accept its own rules.</p>
+      <div class="qb-stage texture-bg sb-frame"><AutomationConfig client:visible /></div>
     </section>
 
     <section class="qb-slide" aria-labelledby="outcome">
