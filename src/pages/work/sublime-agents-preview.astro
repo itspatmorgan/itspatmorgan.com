@@ -1,0 +1,77 @@
+---
+// Draft: the Sublime agents case study on an unlinked, unindexed preview route. Move it onto its live slug only when Patrick says to.
+import PageLayout from '@/layouts/PageLayout.astro';
+import Icon from '@/components/icons/Icon.astro';
+import { ArrowLeft01Icon } from '@hugeicons/core-free-icons';
+import HeroAgents from '@/components/sublime/HeroAgents';
+import ManualPath from '@/components/sublime/ManualPath';
+import BlackBox from '@/components/sublime/BlackBox';
+import AgentHandoff from '@/components/sublime/AgentHandoff';
+import BacktestReview from '@/components/sublime/BacktestReview';
+import AutonomyLevels from '@/components/sublime/AutonomyLevels';
+import AdeJobs from '@/components/sublime/AdeJobs';
+import '@/components/query-builder/query-builder.css';
+import '@/components/case-study/case-study.css';
+import '@/components/sublime/sublime.css';
+
+const title = 'Closing detection gaps as fast as new threats appear';
+const description = 'I designed how Sublime’s agents turn a missed threat into a detection rule, cutting time to coverage while customers stay in control.';
+---
+
+<PageLayout title={title} description={description} noindex>
+  <article class="qb-page qb-case sb">
+    <nav class="qb-case-nav" aria-label="Case study navigation">
+      <a href="/work"><Icon icon={ArrowLeft01Icon} size={16} />Work</a>
+    </nav>
+
+    <header class="qb-slide qb-hero">
+      <p class="qb-company"><img src="/images/logos/square-sublime.svg" width="30" height="30" alt="" />Sublime Security</p>
+      <h1>{title}</h1>
+      <p>I designed how Sublime’s agents turn a missed threat into a rule, while customers stay in control.</p>
+      <dl class="qb-brief">
+        <div><dt>When</dt><dd>2025 to now</dd></div>
+        <div><dt>Role</dt><dd>Staff Product Designer</dd></div>
+        <div><dt>Team</dt><dd>Sublime design team</dd></div>
+        <div><dt>Outcome</dt><dd>Faster time to coverage</dd></div>
+      </dl>
+      <div class="qb-stage texture-bg sb-frame"><HeroAgents client:load /></div>
+    </header>
+
+    <section class="qb-slide" aria-labelledby="problem">
+      <h2 id="problem">Every missed threat became detection engineering work</h2>
+      <p>Teams had to spot the gap, investigate it, then spend hours writing and testing a rule.</p>
+      <div class="qb-stage texture-bg sb-frame"><ManualPath client:visible /></div>
+    </section>
+
+    <section class="qb-slide" aria-labelledby="bet">
+      <h2 id="bet">Agents should write rules, not hide them</h2>
+      <p>Black‑box agents wait on the vendor. Ours write rules in the language customers already use.</p>
+      <div class="qb-stage texture-bg sb-frame"><BlackBox client:visible /></div>
+    </section>
+
+    <section class="qb-slide" aria-labelledby="team">
+      <h2 id="team">Show how your agent team works for you</h2>
+      <p>ASA hands a missed threat to ADÉ, which writes a rule and calls you in only to review it.</p>
+      <div class="qb-stage texture-bg sb-frame"><AgentHandoff client:visible /></div>
+    </section>
+
+    <section class="qb-slide" aria-labelledby="efficacy">
+      <h2 id="efficacy">Let the backtest decide how much review a rule needs</h2>
+      <p>A strong match goes live on its own, a weaker one waits for you, a poor one is dropped.</p>
+      <div class="qb-stage texture-bg sb-frame"><BacktestReview client:visible /></div>
+    </section>
+
+    <section class="qb-slide" aria-labelledby="trust">
+      <h2 id="trust">Trust in autonomy has to be earned</h2>
+      <p>Send threats to ADÉ by hand, then let it start on its own, then let it accept what clears your bar.</p>
+      <div class="qb-stage texture-bg sb-frame"><AutonomyLevels client:visible /></div>
+    </section>
+
+    <section class="qb-slide" aria-labelledby="outcome">
+      <h2 id="outcome">Design the on‑ramp, not the chat</h2>
+      <p>Agents work out of sight, so I designed for trust and steering. All of it has shipped or is shipping.</p>
+      <div class="qb-stage texture-bg sb-frame"><AdeJobs client:visible /></div>
+    </section>
+
+  </article>
+</PageLayout>
