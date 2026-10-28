@@ -4,8 +4,8 @@ import { render } from "astro:content";
 import ProjectLayout from "@/layouts/ProjectLayout.astro";
 
 export async function getStaticPaths() {
-  // Query Builder has a dedicated page at src/pages/work/query-language.astro.
-  const projects = await getCollection("projects", ({ id, data }) => !data.draft && id !== "query-language");
+  // Query Builder and Expansion have dedicated pages at src/pages/work/query-language.astro and expansion.astro.
+  const projects = await getCollection("projects", ({ id, data }) => !data.draft && id !== "query-language" && id !== "expansion");
   return projects.map((project) => ({
     params: { slug: project.id },
     props: { project },

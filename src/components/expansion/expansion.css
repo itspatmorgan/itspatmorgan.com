@@ -1,0 +1,146 @@
+@import '@fontsource-variable/inter';
+@import '@fontsource/ibm-plex-mono/400.css';
+@import '@fontsource/ibm-plex-mono/600.css';
+@import '@fontsource/ibm-plex-mono/700.css';
+
+/* Signal Sciences screens, rebuilt from the Figma source (Portfolio Website 2025 › SS Expansion).
+   Positions, type and color come from the source's exported CSS; screens render at their frame size and scale to fit. */
+.xp {
+  --x-card: #fff; --x-ink: #272B33; --x-ink-2: #626A7A; --x-line: #D7DAE0; --x-block: #F2F4F7; --x-black: #000; --x-dark-ink: #1C2029;
+  --x-indigo: #6649F5; --x-indigo-08: rgba(102, 73, 245, .08); --x-indigo-16: rgba(102, 73, 245, .16); --x-indigo-40: rgba(102, 73, 245, .4);
+  --x-orange: #F28A00; --x-blue: #17A4EB; --x-red: #F46049; --x-green: #5CE68A; --x-yellow: #FFC524; --x-gray: #969AA3; --x-brand: #F05322;
+  --x-client: rgba(92, 230, 138, .16); --x-cloud: #FFEFC1; --x-box: #F2F4F7;
+  --x-ring: rgba(255, 255, 255, .15);
+  --x-drop: 0 4px 4px rgba(0, 0, 0, .25);
+  --x-inner-shadow: rgba(0, 0, 0, .16);
+}
+.dark .xp {
+  --x-card: #2a2725; --x-ink: #ede9e4; --x-ink-2: #a8a29b; --x-line: #45413c; --x-block: #34312e; --x-black: #f5f2ee; --x-dark-ink: #ede9e4;
+  --x-indigo: #8f86ff; --x-indigo-08: rgba(143, 134, 255, .1); --x-indigo-16: rgba(143, 134, 255, .2); --x-indigo-40: rgba(143, 134, 255, .45);
+  --x-client: rgba(92, 230, 138, .14); --x-cloud: #4a4131; --x-box: #34312e;
+  --x-ring: rgba(255, 255, 255, .06);
+  --x-drop: 0 4px 4px rgba(0, 0, 0, .4);
+  --x-inner-shadow: rgba(0, 0, 0, .5);
+}
+
+/* Frame stages: the screen composition carries its own margins, so the stage drops its padding and the card bleeds off the bottom. */
+.xp .xp-frame { padding: 0; overflow: hidden; }
+.xp .xp-frame .qb-native-stage, .xp .xp-frame .qb-native { background: transparent; }
+/* Playback control pinned to the stage's corner, not the demo's. */
+.xp .qb-stage .qb-demo { position: static; }
+.xp .qb-stage .qb-play { right: 16px; bottom: 16px; }
+.xp .qb-native { font-family: 'Inter Variable', 'Inter', sans-serif; color: var(--x-ink); letter-spacing: 0; }
+.xp .qb-native-stage { transition: opacity 240ms ease; }
+.xp-t { position: absolute; white-space: nowrap; }
+.xp-mono { font-family: 'IBM Plex Mono', monospace; }
+.xp-sf { font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Inter Variable', sans-serif; color: var(--x-black); }
+/* Ring and radius are in frame units; a frame drawn at another size sets --x-card-ring and --x-card-radius so they match the 1240 frames on screen. */
+.xp-card { position: absolute; left: 110px; top: 80px; width: 1020px; bottom: 0; background: var(--x-card); border-radius: var(--x-card-radius, 24px) var(--x-card-radius, 24px) 0 0; box-shadow: 0 0 0 var(--x-card-ring, 16px) var(--x-ring), var(--x-drop); }
+.xp-card > * { position: absolute; }
+/* Bare: one flat surface behind the dashboard cards, the frame card plus its ring's width, with no shadow or seam. */
+.xp-card.is-bare { background: none; box-shadow: none; }
+.xp-card.is-bare::before { content: ''; position: absolute; inset: -16px -16px 0; border-radius: 40px 40px 0 0; background: var(--x-ring); }
+.xp-rule { background: var(--x-ink); }
+.xp-hair { background: var(--x-line); }
+
+/* Signal tag: a label with a pointed tail, sized by font-size. */
+.xp-tag { position: absolute; display: inline-flex; align-items: stretch; height: 2.066em; font-weight: 600; line-height: 1.586; white-space: nowrap; color: var(--x-orange); --tag-bg: rgba(242, 138, 0, .16); }
+.xp-tag > span { display: flex; align-items: center; padding: 0 .4em; background: var(--tag-bg); }
+.xp-tag::after { content: ''; width: .6em; background: var(--tag-bg); clip-path: polygon(0 0, 100% 50%, 0 100%); }
+.xp-tag.is-blue { color: var(--x-blue); --tag-bg: rgba(23, 164, 235, .16); }
+.xp-tag.is-red { color: var(--x-red); --tag-bg: rgba(244, 96, 73, .16); }
+
+/* Inputs (rule editor). */
+.xp-field { display: flex; align-items: center; height: 41.07px; padding: 0 13.69px; background: var(--x-card); border: .85px solid var(--x-line); font-size: 11.97px; font-weight: 600; letter-spacing: -.13px; line-height: 21px; }
+.xp-field svg { position: absolute; right: 13px; top: 50%; translate: 0 -50%; color: var(--x-ink); }
+.xp-caret { display: inline-block; width: 1px; height: 15px; margin-left: 1px; background: var(--x-ink); animation: xp-blink 1s steps(1) infinite; }
+@keyframes xp-blink { 50% { opacity: 0; } }
+.xp-radio { width: 13.69px; height: 13.69px; border-radius: 50%; background: var(--x-card); border: .85px solid var(--x-line); }
+.xp-radio.is-on { border-color: var(--x-indigo); }
+.xp-radio.is-on::after { content: ''; position: absolute; inset: 25%; border-radius: 50%; background: var(--x-indigo); }
+.xp-link { text-decoration: underline; text-underline-offset: 2px; }
+
+/* Timeline dots and sparkline bars. */
+.xp-dot { border-radius: 50%; }
+.xp-spark { position: absolute; display: block; width: 2.57px; background: var(--x-ink-2); }
+.xp-event { transition: opacity 350ms ease; }
+.xp-event.is-hidden { opacity: 0; }
+
+/* Dashboard cards. */
+.xp-dash { background: var(--x-card); box-shadow: 0 0 13.69px var(--x-inner-shadow); }
+.xp-dash > * { position: absolute; }
+.xp-bar { position: absolute; transform-origin: bottom; transition: transform 700ms cubic-bezier(.22, 1, .36, 1); }
+.xp-bar > i { position: absolute; left: 0; right: 0; }
+@media (prefers-reduced-motion: reduce) { .xp-bar, .xp-dash polyline { transition: none !important; } }
+.xp-plot { position: absolute; }
+.xp-dotted { border-top-style: dashed; border-top-color: var(--x-line); }
+.xp-buttons { display: flex; border: .85px solid var(--x-line); font-size: 11.97px; font-weight: 600; letter-spacing: -.13px; line-height: 21px; }
+.xp-buttons > span { flex: 1; display: flex; align-items: center; justify-content: center; }
+.xp-buttons > span + span { border-left: .85px solid var(--x-line); }
+.xp-trend { display: flex; align-items: center; gap: 3.42px; font: 600 11.97px/21px 'IBM Plex Mono', monospace; }
+.xp-trend i { width: 8.56px; height: 4.28px; clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+.xp-trend.is-down i { clip-path: polygon(0 0, 100% 0, 50% 100%); }
+
+/* Agent processing diagram. */
+.xp-agent { position: absolute; inset: 0; background: var(--x-card); }
+.xp-agent .xp-box { position: absolute; display: flex; align-items: center; justify-content: center; font-size: 40px; line-height: 48px; color: var(--x-black); }
+.xp-agent .xp-node { background: var(--x-client); border: 2px solid var(--x-ink); border-radius: 10px; }
+.xp-agent .xp-msg { font-size: 32px; line-height: 39px; background: var(--x-box); border: 5px solid var(--x-black); }
+.xp-agent .xp-container { background: var(--x-indigo-08); border: 5px solid var(--x-indigo); }
+.xp-agent .xp-phase { position: absolute; display: flex; align-items: center; border: 1px solid var(--x-indigo); padding: 20px 16px; }
+.xp-agent .xp-chip { display: flex; align-items: center; height: 43px; padding: 7px 15px; background: var(--x-indigo-16); font-size: 24px; font-weight: 700; line-height: 29px; color: var(--x-black); }
+.xp-agent .xp-chip.is-main { background: var(--x-indigo-40); }
+.xp-agent .xp-label { position: absolute; font-size: 32px; font-weight: 700; line-height: 39px; color: var(--x-black); }
+.xp-agent svg { position: absolute; inset: 0; overflow: visible; }
+.xp-agent .xp-line { fill: none; stroke: var(--x-black); stroke-width: 5; }
+.xp-agent .xp-arrowhead { fill: var(--x-black); }
+.xp-agent .xp-collector { position: absolute; display: flex; align-items: center; padding: 8px 16px; border: 2px solid var(--x-blue); border-radius: 200px; background: rgba(23, 164, 235, .16); font-size: 16px; font-weight: 800; line-height: 24px; letter-spacing: -.08px; color: var(--x-black); transform: rotate(-45deg); }
+.xp-agent .xp-cloud { position: absolute; width: 280px; height: 171px; }
+.xp-agent .xp-cloud > i { position: absolute; display: block; background: var(--x-cloud); border-radius: 200px; }
+.xp-agent .xp-cloud > span { position: absolute; left: 0; top: 43px; width: 271px; height: 112px; display: flex; align-items: center; justify-content: center; font-size: 40px; line-height: 48px; color: var(--x-black); }
+.xp-agent .xp-script { position: absolute; left: 120px; top: 120px; font-size: 64px; line-height: 77px; color: var(--x-black); white-space: nowrap; }
+.xp-fade { transition: opacity 400ms ease; }
+/* Sequential: the outgoing screen fades out before the next fades in, so two screens of text never overlap. */
+.xp-fade.xp-seq { transition: opacity 260ms ease; }
+.xp-fade.xp-seq:not(.xp-off) { transition-delay: 260ms; }
+.xp-card > .xp-seq > * { position: absolute; }
+.xp-off { opacity: 0; }
+
+/* Deck diagrams: the deck's tan pills, on the same stage as every other slide. */
+.xp-pill { position: absolute; display: flex; align-items: center; height: 56px; padding: 0 20px; border-radius: 6px; background: #A08368; color: #fff; font-size: 24px; letter-spacing: -.02em; white-space: nowrap; }
+.xp-pill b { font-weight: 700; }
+.xp-chip-white { position: absolute; display: flex; align-items: center; height: 56px; padding: 0 22px; border-radius: 6px; background: var(--x-card); color: var(--x-ink); box-shadow: 0 0 0 1px var(--x-line), 0 1px 2px rgba(0, 0, 0, .06); font-size: 24px; font-weight: 700; white-space: nowrap; transition: opacity 350ms ease 150ms; }
+.xp-elbow { position: absolute; border-left: 2px solid #A08368; border-bottom: 2px solid #A08368; transition: opacity 300ms ease; }
+.xp-kits { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 48px; }
+.xp-kits > div { display: grid; gap: 16px; }
+.xp-kitrow { display: flex; align-items: center; gap: 16px; padding: 12px; border-radius: 10px; background: var(--x-card); box-shadow: 0 0 0 1px var(--x-line); transition: opacity 350ms ease; }
+.xp-kitrow b { color: #A08368; font-weight: 400; font-size: 28px; }
+.xp-kitrow > span > span { display: flex; align-items: center; height: 52px; padding: 0 20px; border-radius: 6px; background: #A08368; color: #fff; font-size: 22px; font-weight: 600; white-space: nowrap; }
+.xp-kitname { font-size: 24px; color: var(--x-ink); white-space: nowrap; }
+.xp-dim { opacity: .25; }
+
+/* Live agent diagram: elements hold their place and transition between the source frames' positions. */
+.xp-live .xp-seg { position: absolute; display: block; background: var(--x-black); }
+.xp-live .xp-head { position: absolute; display: block; width: 24px; height: 24px; background: var(--x-black); }
+.xp-head.is-right { clip-path: polygon(0 0, 100% 50%, 0 100%); }
+.xp-head.is-left { clip-path: polygon(100% 0, 0 50%, 100% 100%); }
+.xp-head.is-up { clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+.xp-head.is-down { clip-path: polygon(0 0, 100% 0, 50% 100%); }
+.xp-live :is(.xp-seg, .xp-head, .xp-box, .xp-phase, .xp-chip, .xp-label, .xp-script, .xp-collector, .xp-pop, .xp-container > span) {
+  transition: left 700ms cubic-bezier(.65, 0, .35, 1), top 700ms cubic-bezier(.65, 0, .35, 1), width 700ms cubic-bezier(.65, 0, .35, 1), height 700ms cubic-bezier(.65, 0, .35, 1), opacity 450ms ease, transform 600ms cubic-bezier(.22, 1, .36, 1);
+}
+.xp-live .xp-draw { transition: stroke-dashoffset 800ms cubic-bezier(.65, 0, .35, 1), opacity 300ms ease; }
+.xp-live.is-jump, .xp-live.is-jump * { transition: none !important; }
+
+/* Deck diagrams lay out in flow and center as a group, so their balance holds whatever the text measures. */
+.xp-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.xp-center :is(.xp-pill, .xp-chip-white, .xp-elbow) { position: relative; }
+.xp-pieces { display: grid; gap: 34px; }
+.xp-pieces .xp-pill { justify-self: start; }
+.xp-answer { display: flex; align-items: flex-start; margin-left: 30px; }
+.xp-answer .xp-elbow { width: 34px; height: 52px; }
+.xp-answer .xp-chip-white { margin-top: 24px; }
+
+/* The agent diagram's 1920-unit frames, fitted into the standard frame card. */
+.xp-agent-fit .xp-agent { background: none; }
+.xp-agent-fit { position: absolute; left: 0; top: 0; width: 1920px; height: 1500px; transform: scale(.53125); transform-origin: top left; }
