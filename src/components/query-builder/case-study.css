@@ -17,7 +17,7 @@
 .qb-slide > p { max-width: 36em; margin: 20px auto 0; font-size: clamp(17px, 1.4vw, 19px); line-height: 1.5; letter-spacing: -.012em; color: var(--muted-foreground); text-wrap: balance; }
 .qb-slide > .qb-stage, .qb-slide > .qb-days { margin-top: 48px; }
 /* Hero rhythm: a tight title group (company, title, subline), a clear step to the brief, a larger step to the visual. */
-.qb-hero { padding-top: 22px; }
+.qb-hero { padding-top: 22px; container-type: inline-size; }
 .qb-hero h1 { font-size: clamp(40px, 4.4vw, 60px); }
 .qb-hero > p { margin-top: 20px; }
 .qb-hero > .qb-company { display: inline-flex; align-items: center; gap: 7px; margin: 0 0 24px; color: var(--foreground); font-size: 17px; font-weight: 500; letter-spacing: -.01em; }
@@ -25,10 +25,17 @@
 .qb-hero > .qb-stage { margin-top: 56px; }
 /* Project brief: four facts, read at a glance before the visuals take over. */
 .qb-brief { display: grid; grid-template-columns: repeat(4, auto); justify-content: center; margin: 40px auto 0; }
-.qb-brief > div { padding: 2px 24px; }
+/* Facts are about 735px wide; padding takes whatever room is left, then the row wraps. */
+.qb-brief > div { padding: 2px clamp(12px, calc((100cqi - 740px) / 8), 24px); }
 .qb-brief > div + div { border-left: 1px solid var(--border); }
 .qb-brief dt { font-size: 13px; line-height: 1.4; color: var(--muted-foreground); }
 .qb-brief dd { margin-top: 6px; font-size: 15px; line-height: 1.4; font-weight: 500; letter-spacing: -.005em; white-space: nowrap; }
+/* One row while the four facts fit; a 2x2 grid only once the hero is narrower than the row. */
+@container (max-width: 840px) {
+  .qb-brief { grid-template-columns: repeat(2, minmax(0, 260px)); gap: 20px 0; }
+  .qb-brief > div:nth-child(3) { border-left: 0; }
+  .qb-brief dd { white-space: normal; text-wrap: balance; }
+}
 
 /* Stage: the site texture surface; the source UI floats on it as a product shot. Capped so the panel hugs its window on wide screens. */
 .qb-stage { position: relative; max-width: 1040px; margin: 0 auto; text-align: left; padding: clamp(16px, 4.5vw, 64px); border-radius: 16px; }
@@ -60,12 +67,7 @@
 
 
 @media (max-width: 1050px) { .qb-case { padding-inline: 30px; } }
-/* The four-fact brief needs about 800px on one row; below that it becomes a 2x2 grid. */
-@media (max-width: 1180px) {
-  .qb-brief { grid-template-columns: repeat(2, minmax(0, 260px)); gap: 20px 0; }
-  .qb-brief > div:nth-child(3) { border-left: 0; }
-  .qb-brief dd { white-space: normal; text-wrap: balance; }
-}
+
 @media (max-width: 760px) {
   .qb-case { padding-inline: 20px; }
   .qb-case-nav { padding-block: 24px; }
