@@ -29,6 +29,7 @@ for related details. This file owns system orientation, not editing rules.
 | `/about` | Personal narrative and context |
 | `/work` | Career timeline plus related portfolio work |
 | `/work/<slug>` | Project/case-study detail pages |
+| `/work/query-builder-preview` | Noindex Query Builder presentation using native recreations of the Figma UI, automatic looping walkthroughs, and curated original prototype flows in `src/components/query-builder/` |
 | `/lab` | Lab index |
 | `/lab/<slug>` | Individual Lab tools or demos |
 | `/writing` | Curated writing index with theme filters |

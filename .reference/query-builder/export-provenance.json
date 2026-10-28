@@ -1,0 +1,351 @@
+{
+  "fileKey": "JXS8636MGkJVpYxvgYNgEX",
+  "exported": "2026-10-24",
+  "method": "Figma desktop PNG exports. Exact rectangular crops, lossless WebP. Query slide headings excluded; UI untouched. Syntax frames proportionally downsampled to 1280px for local reference comparison.",
+  "sequences": [
+    {
+      "key": "query",
+      "file": "Query 2 Ways.png",
+      "ids": [
+        "191:40837",
+        "191:40867",
+        "191:40907",
+        "191:40970",
+        "191:41058",
+        "191:41170",
+        "191:41306"
+      ],
+      "rects": [
+        {
+          "left": 324,
+          "top": 774,
+          "width": 2000,
+          "height": 1432
+        },
+        {
+          "left": 2524,
+          "top": 774,
+          "width": 2000,
+          "height": 1432
+        },
+        {
+          "left": 4724,
+          "top": 774,
+          "width": 2000,
+          "height": 1432
+        },
+        {
+          "left": 6924,
+          "top": 774,
+          "width": 2000,
+          "height": 1432
+        },
+        {
+          "left": 9124,
+          "top": 774,
+          "width": 2000,
+          "height": 1432
+        },
+        {
+          "left": 11324,
+          "top": 774,
+          "width": 2000,
+          "height": 1432
+        },
+        {
+          "left": 13524,
+          "top": 774,
+          "width": 2000,
+          "height": 1432
+        }
+      ]
+    },
+    {
+      "key": "select",
+      "file": "Select Data Class.png",
+      "ids": [
+        "132:27440",
+        "132:27765",
+        "132:26386",
+        "132:27183",
+        "132:26908",
+        "132:27801",
+        "132:26651",
+        "132:28068"
+      ],
+      "rects": [
+        {
+          "left": 278,
+          "top": 372,
+          "width": 1864,
+          "height": 1130
+        },
+        {
+          "left": 2346,
+          "top": 372,
+          "width": 1864,
+          "height": 1130
+        },
+        {
+          "left": 278,
+          "top": 1728,
+          "width": 1864,
+          "height": 1130
+        },
+        {
+          "left": 2346,
+          "top": 1728,
+          "width": 1864,
+          "height": 1130
+        },
+        {
+          "left": 4414,
+          "top": 1728,
+          "width": 1864,
+          "height": 1130
+        },
+        {
+          "left": 6432,
+          "top": 1728,
+          "width": 1864,
+          "height": 1130
+        },
+        {
+          "left": 278,
+          "top": 3084,
+          "width": 1864,
+          "height": 1130
+        },
+        {
+          "left": 2346,
+          "top": 3084,
+          "width": 1864,
+          "height": 1130
+        }
+      ]
+    },
+    {
+      "key": "filter",
+      "file": "Add Property Filter.png",
+      "ids": [
+        "152:31696",
+        "152:31795",
+        "152:31772",
+        "152:31749",
+        "152:31717",
+        "152:31166",
+        "152:31445",
+        "152:31555",
+        "152:31197",
+        "152:31259",
+        "152:31352",
+        "152:31228",
+        "152:31665"
+      ],
+      "rects": [
+        {
+          "left": 334,
+          "top": 530,
+          "width": 1200,
+          "height": 800
+        },
+        {
+          "left": 1748,
+          "top": 530,
+          "width": 1200,
+          "height": 800
+        },
+        {
+          "left": 3160,
+          "top": 530,
+          "width": 1200,
+          "height": 800
+        },
+        {
+          "left": 4574,
+          "top": 530,
+          "width": 1200,
+          "height": 800
+        },
+        {
+          "left": 5988,
+          "top": 530,
+          "width": 1200,
+          "height": 800
+        },
+        {
+          "left": 336,
+          "top": 1762,
+          "width": 1200,
+          "height": 800
+        },
+        {
+          "left": 1748,
+          "top": 1762,
+          "width": 1200,
+          "height": 800
+        },
+        {
+          "left": 3160,
+          "top": 1762,
+          "width": 1200,
+          "height": 800
+        },
+        {
+          "left": 336,
+          "top": 3022,
+          "width": 1200,
+          "height": 800
+        },
+        {
+          "left": 1748,
+          "top": 3022,
+          "width": 1200,
+          "height": 800
+        },
+        {
+          "left": 3160,
+          "top": 3022,
+          "width": 1200,
+          "height": 800
+        },
+        {
+          "left": 4566,
+          "top": 3022,
+          "width": 1200,
+          "height": 800
+        },
+        {
+          "left": 336,
+          "top": 4238,
+          "width": 1200,
+          "height": 800
+        }
+      ]
+    },
+    {
+      "key": "direction",
+      "file": "Toggle Directionality.png",
+      "ids": [
+        "138:28743",
+        "138:28240",
+        "138:28293",
+        "138:28347",
+        "138:28401",
+        "138:28869"
+      ],
+      "rects": [
+        {
+          "left": 266,
+          "top": 390,
+          "width": 1154,
+          "height": 702
+        },
+        {
+          "left": 1568,
+          "top": 390,
+          "width": 1154,
+          "height": 702
+        },
+        {
+          "left": 266,
+          "top": 1298,
+          "width": 1154,
+          "height": 702
+        },
+        {
+          "left": 1568,
+          "top": 1298,
+          "width": 1154,
+          "height": 702
+        },
+        {
+          "left": 2870,
+          "top": 1298,
+          "width": 1154,
+          "height": 702
+        },
+        {
+          "left": 266,
+          "top": 2206,
+          "width": 1154,
+          "height": 702
+        }
+      ]
+    },
+    {
+      "key": "syntax",
+      "file": "Slideshow/QB J1QL.png",
+      "ids": [
+        "268:10273",
+        "268:10277",
+        "268:10281",
+        "268:10285",
+        "268:10289",
+        "268:10293",
+        "268:10297",
+        "268:10301"
+      ],
+      "rects": [
+        {
+          "left": 551,
+          "top": 781,
+          "width": 3656,
+          "height": 2654
+        },
+        {
+          "left": 4504,
+          "top": 781,
+          "width": 3656,
+          "height": 2654
+        },
+        {
+          "left": 8514,
+          "top": 781,
+          "width": 3656,
+          "height": 2654
+        },
+        {
+          "left": 12523,
+          "top": 781,
+          "width": 3656,
+          "height": 2654
+        },
+        {
+          "left": 16533,
+          "top": 781,
+          "width": 3656,
+          "height": 2654
+        },
+        {
+          "left": 20542,
+          "top": 781,
+          "width": 3656,
+          "height": 2654
+        },
+        {
+          "left": 24551,
+          "top": 781,
+          "width": 3656,
+          "height": 2654
+        },
+        {
+          "left": 28561,
+          "top": 781,
+          "width": 3656,
+          "height": 2654
+        }
+      ],
+      "outputWidth": 1280,
+      "note": "Resized proportionally from the original export for local reference comparison; no artwork changes.",
+      "outputFrames": [
+        0,
+        2,
+        3,
+        5,
+        7
+      ]
+    }
+  ],
+  "usage": "Reference-only visual comparison. These images are not served or rendered by the presentation. Runtime demos use native React, CSS, fonts, and SVG paths."
+}
