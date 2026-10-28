@@ -40,3 +40,4 @@ resources when a skill needs them.
 | Skill | Purpose |
 | --- | --- |
 | `refactor-radar/` | Find targeted refactors and maintenance opportunities for approval |
+| `case-study-shaping/` | Shape a Work entry into a slide-like case study, from fact-finding to launch |
