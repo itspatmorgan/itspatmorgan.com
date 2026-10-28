@@ -1,6 +1,6 @@
 ---
 name: case-study-shaping
-description: Use when shaping, restructuring, or redesigning a Work case study on this site (for example the Expansion or Characters entries) into the slide-like format proven by the Query Builder case study. Covers fact-finding, the story outline, copy rules, native demos, layout rhythm, review, and launch.
+description: Use when shaping, restructuring, or redesigning a Work case study on this site into the slide-like format proven by the Query Builder and Expansion case studies. Covers fact-finding (including pulling exact values from Figma), the story outline, copy rules, native demos, motion, layout rhythm, review, launch, and cleanup.
 ---
 
 # Case Study Shaping
@@ -11,20 +11,24 @@ Turn an existing Work entry into a case study a hiring manager can read in two
 minutes: one point per slide, visuals carrying the argument, and every claim
 true to what Patrick actually did.
 
-The reference implementation is the Query Builder case study:
+Two reference implementations exist:
 
-- Page: `src/pages/work/query-language.astro`
-- Layout and rhythm: `src/components/query-builder/case-study.css`
-- Native demos and tokens: `src/components/query-builder/` (`NativeUI.tsx`,
-  `useDemoLoop.ts`, `query-builder.css`, and the demo components)
+- Query Builder: `src/pages/work/query-language.astro` with demos in
+  `src/components/query-builder/`
+- Expansion: `src/pages/work/expansion.astro` with screens rebuilt from Figma in
+  `src/components/expansion/`
+- Shared layout and rhythm: `src/components/query-builder/case-study.css`
+- Shared demo plumbing: `NativeStage`, `DemoControls` (`NativeUI.tsx`) and
+  `useDemoLoop.ts`, currently in the Query Builder folder
 
-Reuse its patterns before inventing new ones. If a second case study needs the
-same pieces, propose extracting them into shared components first.
+Reuse these patterns before inventing new ones. Before a third case study,
+move the shared plumbing and `case-study.css` into a `case-study/` folder.
 
 ## Skill Contract
 
-- Facts come from Patrick, not from inference. Ask before stating any number,
-  date, attribution, or team detail you cannot verify in the repo.
+- Facts come from Patrick and his source material, not from inference. Ask
+  before stating any number, date, attribution, ship status, or team detail you
+  cannot verify.
 - All copy is a draft for Patrick's own words. Keep it short so it is easy to
   rewrite, and say so when presenting it.
 - Outline before building. Get the headline sequence approved before touching
@@ -35,135 +39,170 @@ same pieces, propose extracting them into shared components first.
 
 ## Inputs
 
-- The current entry in `src/content/projects/<slug>.mdx` and its images
+- The current entry in `src/content/projects/<slug>.{md,mdx}` and its images
+- Any linked deck, Figma file, or video the entry embeds
 - `agent-os/conventions/content.md` and `agent-os/conventions/styling.md`
 - The roles Patrick is targeting, if he names them
 - Patrick's answers to the fact-finding questions below
 
 ## Workflow
 
-### 1. Fact-find
+### 1. Read the sources, then fact-find
 
-Ask in one batch, and only for what the current entry doesn't already answer:
+Read everything first: the entry, its embedded deck, and its Figma frames. Then
+ask, in one batch, only what those sources don't answer:
 
-- When was it, and what was true about the world then that matters?
-- What was Patrick's role, and who else was on the team? How long did it take?
+- When was it, and what was Patrick's title? Who was on the team, and for how long?
 - What was the problem in the user's own terms?
-- What did Patrick believe that others didn't, and was it actually a bet?
-- What were the two or three moves that solved it?
-- What changed, and how was it measured? Is there a before and after?
+- What was the expected answer, and what did Patrick bet on instead?
+- Which parts did Patrick design for this project, and which existed already?
+- What changed, and how was it measured? Did it ship?
 - Is there a quote, and who said it, in what capacity?
-- With hindsight, what would Patrick do differently today?
+- What did Patrick learn, in his own words?
 
 Write down anything unverified as an open question. Never smooth it over in the
-copy.
+copy. If there is no hard outcome, say so plainly rather than implying one.
 
-### 2. Outline the story
+### 2. Get exact values from Figma
 
-Draft the outline as a Claude Doc (or in chat if Patrick prefers) with one row
-per slide: headline, optional one-line support, and the visual. The arc that
-worked:
+When source screens exist, rebuild them from the source's values, not by eye.
 
-1. **Hero**: company mark, headline (the achievement), one-line subline, and a
-   brief with When / Role / Team / Outcome. Then the strongest demo.
+- Prefer the Figma connector (`get_design_context`). If it is unavailable or
+  rate-limited, use the signed-in browser: right-click the frame's layer, choose
+  Copy/Paste as → Copy as code → CSS (all layers), and read the clipboard with
+  `pbpaste`. That gives position, size, type, color, and radius for every layer.
+- Use Copy as SVG for vector shapes (chart lines, logos). Its text is outlined,
+  so it is not a substitute for real text.
+- Layer names can be stale. Confirm visible text against a zoomed view of the frame.
+- Extract repeated data (chart bars, sparklines) with a script into a data
+  module, as in `src/components/expansion/figma-bars.ts`.
+- Diagrams with no source frame follow the deck's visual style instead.
+
+### 3. Outline the story
+
+Draft the outline as a Claude Doc with one row per slide: headline, one-line
+support, and the visual. Keep the doc in sync as copy changes. The arc that has
+worked twice:
+
+1. **Hero**: company mark, headline, one-line subline, and a brief with When /
+   Role / Team / Outcome. Then the strongest visual.
 2. **Problem**: what users faced, shown as it was.
-3. **Insight or bet**: the belief that shaped the solution.
-4. **Two to three moves**: "First, I…", "Then, I…", "And I…", each with its
-   own visual.
-5. **Outcome**: a before/after graphic plus at most one quote.
-6. **Today**: what Patrick would do now. Only include it if it's true for him.
+3. **Bet**: the expected answer, and what Patrick bet on instead.
+4. **Two or three moves**, each with its own visual.
+5. **Ending**: what Patrick learned, plus what actually happened. If there is no
+   measured outcome, pair the transferable lesson with the honest ending.
 
-Cut any slide that is just another example of the previous one. Fold it into
-the slide it supports or drop it.
+Cut any slide that only repeats the one before it. Merge an outcome slide and a
+lessons slide when they make the same point.
 
-Keep the outline doc in sync with the page as copy changes.
+### 4. Write the copy
 
-### 3. Write the copy
+- First person, past tense.
+- Frame the strategy, not the feature. Expansion's hero is the go-to-market
+  move ("for a new use case"), not the first use case ("bot defense").
+- Each headline says why its step mattered. No sequence words ("First,",
+  "Then,", "And"), no eyebrows, no step numbers.
+- At most one supporting line per slide, aiming for one line at desktop width.
+  Never text beside a headline.
+- Keep brief values tight. Outcome can be qualitative ("A repeatable kit
+  pattern") when there is no metric.
+- Check every visual and value against the claim. Flag illustrative values
+  (example inputs, sample counts) to Patrick.
+- Use non-breaking hyphens (`‑`) in compound words that break badly on phones.
+- Update the entry's `title` and `description` to match the new framing.
 
-- First person, past tense ("I designed", "New customers were querying").
-- The headline is the point. If the slide needs a label to explain it, rewrite
-  the headline.
-- At most one supporting line per slide, and never text set beside a headline.
-- No eyebrows, step numbers, or A/B labels.
-- Let headlines wrap naturally. Never force line breaks.
-- Keep brief values tight ("2022, pre-ChatGPT", not a clause). Outcome is a
-  comparison ("First query in 1 day, not 21").
-- Name things the way the user knows them, and explain jargon only once
-  ("hundreds of cyber asset types", not "classes").
-- Check every visual against the claim. A demo that implies a capability the
-  product didn't have is a false claim.
+### 5. Build the visuals
 
-### 4. Build the visuals
-
-- Prefer native React demos over screenshots or videos. Render them at a fixed
-  canvas inside `NativeStage` so they scale crisply.
-- Every demo works in both light and dark. Use the `--q-*` token pattern. In
-  dark mode, surfaces step lighter with elevation: page, then stage, then
-  window, then popover.
-- Stages use the site's `texture-bg` class, not a dot grid.
-- Use one window width across the page (880px in the reference).
+- Prefer native React demos over screenshots. Render each screen at its source
+  frame size inside `NativeStage` so it scales crisply.
+- Every demo works in light and dark. Namespace demo tokens (`--x-*`, `--q-*`).
+  Never reuse site token names like `--radius` or `--ring`.
+- One backdrop for every slide: the stage's `texture-bg`. No extra dark panels
+  or nested containers.
+- Give every stage the same proportions (1240 × 900) so the slides keep an even
+  rhythm. Crop larger frames rather than letting stages differ in height.
+- Frame cards share one ring and radius on screen. A frame drawn at another
+  size sets `--x-card-ring` and `--x-card-radius` scaled by its width over 1240.
+- Charts: fewer, thinner bars read better at card size than every source
+  column. Snap bars to device pixels on one shared baseline, and stack merged
+  series in legend order (see `Bars` in `ExpansionUI.tsx`).
 - When two representations of one thing need comparing, use a toggle that
   takes the full stage, not a side-by-side split.
-- Loops run through `useDemoLoop`. They play only when visible, respect
-  reduced motion, and can be paused. Start on the final frame when the end
-  state is the point.
-- Tune the timing until there are no dead pauses or lingering hovers.
-- Give every interactive state one consistent treatment: the same hover fill,
-  outlined badges, and radii (6px for chips and fields, 8px for panels and
-  menus). Brand accent colors are not hover states.
-- Show outcomes visually, such as day blocks for 21 versus 1. Don't repeat the
-  numbers in prose.
 
-### 5. Lay out the page
+### 6. Set the motion
 
-Match the reference rhythm in `case-study.css`:
+- Loop only the visuals that explain a process (Expansion's agent flow and
+  Signals sequence). Everything else plays once on scroll and holds
+  (`useDemoLoop(..., once = true)` or `useRevealOnce`).
+- Looping demos start on a complete frame. Under reduced motion, every demo
+  shows its final frame without animating.
+- On a loop restart, fade out, jump to the first frame with transitions off,
+  then fade in. Never animate backward through the steps.
+- Fade a text-heavy screen out before the next fades in. Keep shared chrome
+  (the card) still and fade only its content.
+- Prefer one live diagram whose elements move between states over crossfading
+  whole frames.
+- Show playback controls only on looping demos, pinned to the stage corner.
+- Tune timing until there are no dead pauses.
 
-- Slides are centered, with 168px between them.
-- Headline to supporting line is 20px. Line to stage is 48px.
-- The hero headline is smaller than the slide headlines it introduces.
-- Navigation is "← Work" only, with no footer CTA unless Patrick asks for one.
-- The brief stays on one row whenever it fits. Use a container query, not a
-  viewport breakpoint, and fall back to a 2×2 grid.
-- Check 390px, about 965px, and 1300px or wider for wrapping, overflow, and
+### 7. Lay out the page
+
+Use the shared rhythm in `case-study.css`:
+
+- Section titles cap at 40px; the hero title at 52px.
+- One 960px measure: titles and stages fit within it, descriptions up to 840px
+  with `text-wrap: pretty`.
+- Spacing scale: 24 within a group, 48 to its visual, 72 from the hero brief,
+  144 between sections (88 on phones).
+- The brief stays on one row whenever it fits, via a container query.
+- Navigation is "← Work" only.
+- Check 390px, about 1140px, 1300px, and 1600px for wrapping, overflow, and
   centering.
 
-### 6. Review holistically
+### 8. Review holistically
 
-Before calling a pass done, review it in the browser in light and dark across
-four lenses:
+Review in the browser in light and dark across narrative, layout, spacing, and
+typography. Measure, don't eyeball: line counts per headline and description,
+stage widths and heights, ring and radius on screen. Present ranked findings
+(must fix, should fix, worth considering) before changing anything.
 
-- **Narrative**: does each slide make exactly one true point, in order?
-- **Layout**: centering, alignment, and consistent widths.
-- **Spacing**: is the vertical rhythm the same everywhere, with no cramped hover
-  padding?
-- **Typography**: wrapping, size steps, and no orphaned words in headlines.
-
-Fix what you find, then report what changed in a few bullets.
-
-### 7. Launch
+### 9. Launch
 
 On Patrick's go-ahead:
 
-1. Move the page onto the live slug.
+1. Move the page onto the live slug and remove `noindex` and draft comments.
 2. Exclude that slug from `src/pages/work/[...slug].astro`.
-3. Remove `noindex` and draft comments.
-4. Build, open a PR, and merge on his say-so.
-5. Confirm the live URL loads without console errors.
+3. Update the homepage card summary in `featuredProjectDescriptions`
+   (`src/pages/index.astro`), which is separate from the entry description.
+4. Build, open a PR, merge on his say-so, and confirm the deploy and live page.
 
-List any open fact questions in the closing message.
+### 10. Clean up
+
+- Delete merged branches (local, and on GitHub if permitted).
+- Stop dev servers you started, and any orphaned ones running from removed
+  dependencies.
+- Ask before deleting untracked files; their deletion is permanent.
 
 ## Guardrails
 
-- Never invent metrics, quotes, team members, or dates.
+- Never invent metrics, quotes, team members, dates, or ship status.
 - Don't ship to the live site, merge, or publish without explicit approval.
-- Don't delete original assets. Leave unused ones and mention them.
 - Keep pages free of text-heavy sections. If something needs a paragraph, it
   probably belongs in an interview, not on the page.
 
+## Gotchas
+
+- After installing dependencies or restarting work, the dev server can serve a
+  stale render (hydration mismatches, old styles). Touch the changed files, or
+  stop and restart the server with `pnpm astro dev stop`.
+- Don't mix the `transition` shorthand with `transitionDelay` in React inline
+  styles; use separate properties.
+- Flex containers drop spaces around inline elements; wrap mixed text in a span.
+
 ## Verification
 
-- Run `pnpm build` cleanly.
-- Check in the browser at 390px, about 965px, and 1300px, in light and dark,
-  with no horizontal overflow and no console errors.
-- Every claim on the page maps to an answer from fact-finding or the original
-  entry.
+- `pnpm build` passes.
+- In the browser at 390px, about 1140px, and 1600px, in light and dark: no
+  horizontal overflow, no console errors, and every description on one line at
+  desktop width.
+- Every claim on the page maps to an answer from fact-finding or a source.
