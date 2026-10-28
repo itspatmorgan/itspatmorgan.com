@@ -9,7 +9,7 @@ thumbnailWide: "/images/projects/vision/thumbnail-vision-light-wide.webp"
 thumbnailWideDark: "/images/projects/vision/thumbnail-vision-dark-wide.webp"
 heroImage: "/images/projects/vision/vision-hero.webp"
 sortOrder: 3
-draft: false
+draft: true
 ---
 
 > How might we transform scattered customer feedback into a unified product vision that aligns technical and business stakeholders?
