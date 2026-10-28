@@ -5,11 +5,11 @@ import { ART, Zoom } from './SublimeUI';
 
 // The Agents hub (patrick/mttc agents-hub.jsx): "Your Agentic Teammates" with the two fluid agent cards, 380 × 529 in Figma R3.
 // Laid out at 900 source pixels across the 1020 card. Art offsets are the source's, measured from the right edge of a 378px card,
-// moved left by each card's `nudge` as in the fluid hub. The stats row is left out: its values in the prototype are mock.
+// moved left by each card's `nudge` as in the fluid hub. Stats are the hub's "both agents with data" state (mttc hub-states/both-data).
 const CARD_W = 414;
 const agents = [
-  { name: 'ASA', caption: 'Autonomous Security Analyst', role: 'Security Analyst', description: 'Triages messages with detailed verdict and analysis.', art: { src: ART.asa, left: 124, top: 41.5, width: 268.5, nudge: 20 } },
-  { name: 'ADÉ', caption: 'Autonomous Detection Engineer', role: 'Detection Engineer', description: 'Creates detections tailored to your environment.', art: { src: ART.ade, left: 140, top: 70, width: 235, nudge: 46 } },
+  { name: 'ASA', caption: 'Autonomous Security Analyst', role: 'Security Analyst', description: 'Triages messages with detailed verdict and analysis.', stats: [['375', 'Hrs Saved'], ['450', 'Investigations']], art: { src: ART.asa, left: 124, top: 41.5, width: 268.5, nudge: 20 } },
+  { name: 'ADÉ', caption: 'Autonomous Detection Engineer', role: 'Detection Engineer', description: 'Creates detections tailored to your environment.', stats: [['50 mins', 'Time to Coverage'], ['1.1k', 'Hrs Saved'], ['55k', 'Attacks Blocked']], art: { src: ART.ade, left: 140, top: 70, width: 235, nudge: 46 } },
 ];
 
 /** The two agents as customers meet them. */
@@ -32,6 +32,7 @@ export default function HeroAgents() {
                 <div style={{ position: 'absolute', left: 29, right: 29, bottom: 29 }}>
                   <p className="sb-h">{agent.role}</p>
                   <p className="sb-body" style={{ marginTop: 4, fontWeight: 500 }}>{agent.description}</p>
+                  <div style={{ display: 'flex', gap: 44, marginTop: 28 }}>{agent.stats.map(([value, label]) => <div key={label}><p style={{ fontSize: 20, fontWeight: 500, lineHeight: '26px' }}>{value}</p><p className="sb-label" style={{ marginTop: 2, fontSize: 11 }}>{label}</p></div>)}</div>
                 </div>
               </div>)}
             </div>

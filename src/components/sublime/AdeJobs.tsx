@@ -3,7 +3,7 @@ import { useRevealOnce } from '../case-study/useRevealOnce';
 import { ART, CheckCircle, Icon, Page, StatusPill, VerdictLabel, Zoom, type Status } from './SublimeUI';
 
 // The ADÉ page with data (patrick/mttc ade-states/active): the agent header and its jobs, most of them started and accepted by ADÉ.
-// Rows are sample data from the prototypes' job lists. The Performance tiles are left out: their values in the prototype are mock.
+// Rows are sample data from the prototypes' job lists; the Performance tiles are the active state's (mttc ade-states/active).
 const jobs: { subject: string; verdict: 'malicious' | 'spam' | 'graymail'; by: string; started: string; report: 'Completed' | 'In Progress'; status: Status | null }[] = [
   { subject: 'Invoice payment confirmation required today', verdict: 'malicious', by: 'ADÉ', started: '9h ago', report: 'In Progress', status: null },
   { subject: 'Benefits enrollment form from rare sender', verdict: 'graymail', by: 'ADÉ', started: '18h ago', report: 'Completed', status: 'auto' },
@@ -32,10 +32,12 @@ export default function AdeJobs() {
               </div>
               <span className="sb-btn is-secondary">Go to Settings</span>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 36 }}>
-              <span className="sb-chip" style={{ height: 28, gap: 8, background: 'var(--sb-secondary)' }}>Recommendation Status <b style={{ fontWeight: 500 }}>All</b></span>
-              <span className="sb-btn is-secondary">Configure ADÉ</span>
+            <p style={{ marginTop: 28, fontSize: 14, fontWeight: 600 }}>Performance <span className="sb-label" style={{ fontWeight: 400, marginLeft: 4 }}>(Last 30 days)</span></p>
+            <div style={{ display: 'flex', marginTop: 10 }}>
+              {[['50 mins', 'Time to Coverage'], ['1.1k', 'Hours Saved'], ['55k', 'Attacks Blocked']].map(([value, label], i) => <div key={label} className={`sb-fade ${reveal.shown ? '' : 'is-out'}`} style={{ width: 180, padding: '14px 16px', border: '1px solid var(--sb-border)', marginLeft: i ? -1 : 0, transitionDelay: `${100 + i * 90}ms` }}><p style={{ fontSize: 22, fontWeight: 500, lineHeight: '28px' }}>{value}</p><p className="sb-label sb-verdict" style={{ fontSize: 11, gap: 4 }}>{label}{Icon.info}</p></div>)}
             </div>
+            <p style={{ marginTop: 28, fontSize: 14, fontWeight: 600 }}>Jobs</p>
+            <span className="sb-chip" style={{ marginTop: 10, height: 28, gap: 8, background: 'var(--sb-secondary)' }}>Recommendation Status <b style={{ fontWeight: 500 }}>All</b></span>
             <div style={{ marginTop: 12, border: '1px solid var(--sb-border)', borderRadius: 4 }}>
               <div className="sb-row is-head" style={{ gridTemplateColumns: cols }}>
                 {['Message Subject', 'ASA Verdict', 'Started By', 'Started', 'Report Status', 'Recommendation Status'].map(h => <span key={h}>{h}</span>)}
