@@ -96,14 +96,14 @@ export function StatusPill({ status }: { status: Status }) {
 export const job = { subject: 'Action required: payroll profile verification', id: '019f3d5a-ff42-7706-b615-a83297b00479' };
 
 /** ADÉ's recommendation (JobCompletedCard): rule fields beside the MQL, with Accept and Reject while it waits for review.
- *  Liberty taken: the header carries the hunt's result (the source keeps it in the hunt entry below), so the reason to accept sits beside
- *  the button. */
+ *  Liberty taken: the header reads "ADÉ Recommended Rule" and carries the hunt's result in place of the source's "Create a new rule…"
+ *  line, so the reason to accept or reject sits beside the buttons. */
 export function Recommendation({ actions = false, pressed = false, style }: { actions?: boolean; pressed?: boolean; style?: CSSProperties }) {
   return <div className="sb-cells" style={style}>
     <div data-frame="rec-head" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: 24, padding: 24, background: 'var(--sb-cell-head)' }}>
-      <div style={{ display: 'grid', gap: 10 }}>
-        <div><p className="sb-body" style={{ fontWeight: 600 }}>ADÉ Recommendation</p><p className="sb-body" style={{ marginTop: 4 }}>Create a new rule and set it as active in your environment.</p></div>
-        <span className="sb-proof" data-target="proof">{Icon.bullseye}<b>93% match</b><span>in a 14-day hunt · 40 malicious matches · 2 possible false positives</span></span>
+      <div>
+        <p className="sb-body" style={{ fontWeight: 600 }}>ADÉ Recommended Rule</p>
+        <p className="sb-body" style={{ marginTop: 4 }} data-target="proof"><b style={{ fontWeight: 600 }}>93% match</b> in a 14-day hunt, with 40 malicious matches and 2 possible false positives.</p>
       </div>
       <div className={`sb-fade ${actions ? '' : 'is-out'}`} style={{ display: 'flex', gap: 8 }}><span className={`sb-btn ${pressed ? 'is-pressed' : ''}`} data-target="accept">Accept</span><span className="sb-btn is-secondary">Reject</span></div>
     </div>

@@ -138,10 +138,6 @@
 .sb-disclose { display: grid; place-items: center; width: 24px; height: 24px; flex-shrink: 0; border-radius: 50%; border: 1px solid var(--sb-border); color: var(--sb-weak); }
 .sb-disclose svg { transition: transform 300ms var(--sb-ease-out); }
 .sb-disclose.is-open svg { transform: rotate(-90deg) !important; }
-/* The hunt's result in the recommendation header: the reason to accept, beside the button. */
-.sb-proof { display: inline-flex; align-items: center; gap: 8px; width: fit-content; padding: 5px 10px 5px 8px; border-radius: 4px; background: var(--sb-card); box-shadow: inset 0 0 0 1px var(--sb-border); font-size: 13px; line-height: 18px; color: var(--sb-weak); transition: box-shadow 300ms ease, background 300ms ease; }
-.sb-proof b { color: var(--sb-strong); font-weight: 600; }
-.sb-proof svg { color: var(--sb-strong); }
 .sb-hunt-box { border-radius: 4px; box-shadow: inset 0 0 0 1px var(--sb-border-strong); background: var(--sb-card); overflow: hidden; transition: box-shadow 300ms ease; }
 .sb-hunt-table { border-top: 1px solid var(--sb-border); }
 .sb-hunt-table .sb-row { min-height: 44px; padding: 0 16px; font-size: 13px; }
