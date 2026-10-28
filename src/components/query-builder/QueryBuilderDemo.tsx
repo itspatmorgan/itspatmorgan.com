@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
-import { NativeBuilder, NativeStage, DemoControls } from './NativeUI';
-import { useDemoLoop } from './useDemoLoop';
+import { NativeBuilder } from './NativeUI';
+import { NativeStage, DemoControls } from '../case-study/NativeStage';
+import { useDemoLoop } from '../case-study/useDemoLoop';
 import './query-builder.css';
 
 function Kw({ children }: { children: string }) { return <span className="q-code-keyword">{children}</span>; }

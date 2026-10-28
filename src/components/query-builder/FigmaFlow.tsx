@@ -1,6 +1,7 @@
 import { AnimatePresence, MotionConfig, motion } from 'motion/react';
-import { SourceIcon, NativeStage, NativeBuilder, EntityPill, AddConnection, DemoControls, DemoCursor, menuMotion, type SourceGlyph } from './NativeUI';
-import { useDemoLoop } from './useDemoLoop';
+import { SourceIcon, NativeBuilder, EntityPill, AddConnection, menuMotion, type SourceGlyph } from './NativeUI';
+import { NativeStage, DemoControls, DemoCursor } from '../case-study/NativeStage';
+import { useDemoLoop } from '../case-study/useDemoLoop';
 
 type Flow = 'select' | 'filter' | 'direction';
 const flowTitles = { select: 'entity selection', filter: 'property filtering', direction: 'relationship direction' };

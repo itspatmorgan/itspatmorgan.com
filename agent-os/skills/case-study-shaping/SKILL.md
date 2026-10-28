@@ -17,12 +17,13 @@ Two reference implementations exist:
   `src/components/query-builder/`
 - Expansion: `src/pages/work/expansion.astro` with screens rebuilt from Figma in
   `src/components/expansion/`
-- Shared layout and rhythm: `src/components/query-builder/case-study.css`
-- Shared demo plumbing: `NativeStage`, `DemoControls` (`NativeUI.tsx`) and
-  `useDemoLoop.ts`, currently in the Query Builder folder
+- Shared layout and rhythm: `src/components/case-study/case-study.css`
+- Shared demo plumbing in `src/components/case-study/`: `NativeStage`,
+  `DemoControls` and `DemoCursor` (`NativeStage.tsx`), `useDemoLoop.ts` and
+  `useRevealOnce.ts`. Stage and playback styles still live in
+  `query-builder.css`, which every case-study page imports.
 
-Reuse these patterns before inventing new ones. Before a third case study,
-move the shared plumbing and `case-study.css` into a `case-study/` folder.
+Reuse these patterns before inventing new ones.
 
 ## Skill Contract
 
@@ -147,7 +148,7 @@ lessons slide when they make the same point.
 
 ### 7. Lay out the page
 
-Use the shared rhythm in `case-study.css`:
+Use the shared rhythm in `case-study/case-study.css`:
 
 - Section titles cap at 40px; the hero title at 52px.
 - One 960px measure: titles and stages fit within it, descriptions up to 840px

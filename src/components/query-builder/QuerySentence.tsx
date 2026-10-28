@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
-import { NativeStage, DemoControls } from './NativeUI';
-import { useDemoLoop } from './useDemoLoop';
+import { NativeStage, DemoControls } from '../case-study/NativeStage';
+import { useDemoLoop } from '../case-study/useDemoLoop';
 
 function Kw({ children }: { children: string }) { return <span className="q-code-keyword">{children}</span>; }
 function Arrow({ children }: { children: string }) { return <span className="q-code-arrow">{children}</span>; }

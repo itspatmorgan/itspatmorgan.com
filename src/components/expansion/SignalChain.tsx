@@ -1,5 +1,5 @@
-import { NativeStage, DemoControls } from '../query-builder/NativeUI';
-import { useDemoLoop } from '../query-builder/useDemoLoop';
+import { NativeStage, DemoControls } from '../case-study/NativeStage';
+import { useDemoLoop } from '../case-study/useDemoLoop';
 import { T, Tag } from './ExpansionUI';
 import { SigSciLogo } from './SigSciLogo';
 
