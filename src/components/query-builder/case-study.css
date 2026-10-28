@@ -60,16 +60,20 @@
 
 
 @media (max-width: 1050px) { .qb-case { padding-inline: 30px; } }
+/* The four-fact brief needs about 800px on one row; below that it becomes a 2x2 grid. */
+@media (max-width: 1180px) {
+  .qb-brief { grid-template-columns: repeat(2, minmax(0, 260px)); gap: 20px 0; }
+  .qb-brief > div:nth-child(3) { border-left: 0; }
+  .qb-brief dd { white-space: normal; text-wrap: balance; }
+}
 @media (max-width: 760px) {
   .qb-case { padding-inline: 20px; }
   .qb-case-nav { padding-block: 24px; }
   .qb-slide { padding-top: 104px; }
   .qb-hero { padding-top: 28px; }
   .qb-slide h1 { font-size: 40px; }
-  .qb-brief { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 0; margin-top: 28px; }
+  .qb-brief { margin-top: 28px; }
   .qb-brief > div { padding: 0 12px; }
-  .qb-brief > div:nth-child(3) { border-left: 0; }
-  .qb-brief dd { font-size: 15px; white-space: normal; }
   .qb-slide h2 { font-size: 32px; }
   .qb-slide > .qb-stage, .qb-slide > .qb-days { margin-top: 28px; }
   .qb-stage { border-radius: 12px; }
