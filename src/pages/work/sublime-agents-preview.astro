@@ -9,6 +9,7 @@ import JobReview from '@/components/sublime/JobReview';
 import AutoAccepted from '@/components/sublime/AutoAccepted';
 import AutomationConfig from '@/components/sublime/AutomationConfig';
 import AdeJobs from '@/components/sublime/AdeJobs';
+import AdeSetup from '@/components/sublime/AdeSetup';
 import '@/components/query-builder/query-builder.css';
 import '@/components/case-study/case-study.css';
 import '@/components/sublime/sublime.css';
@@ -42,9 +43,15 @@ const description = 'I designed how Sublime’s agents turn a missed threat into
       <div class="qb-stage texture-bg sb-frame"><MessageDetail variant="gap" client:visible /></div>
     </section>
 
+    <section class="qb-slide" aria-labelledby="setup">
+      <h2 id="setup">Introduce the agent before asking for trust</h2>
+      <p>Before ADÉ is on, its page explains what it does and what teams control, then leads to settings.</p>
+      <div class="qb-stage texture-bg sb-frame"><AdeSetup client:visible /></div>
+    </section>
+
     <section class="qb-slide" aria-labelledby="handoff">
       <h2 id="handoff">Hand the miss to ADÉ where you find it</h2>
-      <p>ADÉ sits beside ASA’s verdict. One click starts a job that hunts, writes and tests a rule.</p>
+      <p>ADÉ leads the sidebar next to ASA’s verdict. One click starts a job that drafts a rule and tests it on your mail.</p>
       <div class="qb-stage texture-bg sb-frame"><MessageDetail variant="handoff" client:visible /></div>
     </section>
 
@@ -68,7 +75,7 @@ const description = 'I designed how Sublime’s agents turn a missed threat into
 
     <section class="qb-slide" aria-labelledby="outcome">
       <h2 id="outcome">Design the on‑ramp, not the chat</h2>
-      <p>Agents work out of sight, so I designed for trust and steering. All of it has shipped or is shipping.</p>
+      <p>Agents work out of sight, so ADÉ’s page shows its impact and every job it starts, for teams to watch and steer. All of it has shipped or is shipping.</p>
       <div class="qb-stage texture-bg sb-frame"><AdeJobs client:visible /></div>
     </section>
 

@@ -7,6 +7,7 @@ export function useDemoLoop(durations: readonly number[], initial = 0, resetFade
   const [playing, setPlaying] = useState(true);
   const [resetting, setResetting] = useState(false);
   const [visible, setVisible] = useState(false);
+  const [seen, setSeen] = useState(false);
   const [foreground, setForeground] = useState(true);
   const [reduced, setReduced] = useState(false);
   const [generation, setGeneration] = useState(0);
@@ -14,7 +15,7 @@ export function useDemoLoop(durations: readonly number[], initial = 0, resetFade
   const elapsed = useRef(0);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting), { threshold: .12 });
+    const observer = new IntersectionObserver(([entry]) => { setVisible(entry.isIntersecting); if (entry.isIntersecting) setSeen(true); }, { threshold: .12 });
     if (ref.current) observer.observe(ref.current);
     const media = window.matchMedia('(prefers-reduced-motion: reduce)');
     const motion = () => { setReduced(media.matches); if (media.matches) { setPlaying(false); if (once) setStep(durations.length - 1); } };
@@ -52,6 +53,6 @@ export function useDemoLoop(durations: readonly number[], initial = 0, resetFade
 
   const choose = (next: number) => { version.current++; elapsed.current = 0; setPlaying(false); setResetting(false); setStep(Math.max(0, Math.min(durations.length - 1, next))); setGeneration(g => g + 1); };
   const replay = () => { version.current++; elapsed.current = 0; setStep(0); setResetting(false); setPlaying(true); setGeneration(g => g + 1); };
-  return { ref, step, playing, reduced, resetting, count: durations.length, choose, replay, toggle: () => setPlaying(p => !p), pause: () => setPlaying(false) };
+  return { ref, step, playing, reduced, seen, resetting, count: durations.length, choose, replay, toggle: () => setPlaying(p => !p), pause: () => setPlaying(false) };
 }
 export type DemoLoop = ReturnType<typeof useDemoLoop>;

@@ -1,52 +1,49 @@
-import { useEffect, useRef, useState } from 'react';
-import { NativeStage, DemoControls } from '../case-study/NativeStage';
-import { useDemoLoop } from '../case-study/useDemoLoop';
-import { HuntSummary, Icon, Page, Recommendation, Zoom, job } from './SublimeUI';
-import { Accepted, JobHeading, TimelineItem } from './JobReview';
+import { NativeStage } from '../case-study/NativeStage';
+import { Accepted, Icon, JobHeading, Page, Recommendation, TimelineItem, VerdictIcon, Zoom, job } from './SublimeUI';
+import { CountUp, Expand as Open, SceneControls, useScene } from './scene';
 
 // The same job when automation is on (patrick/ade-workflow ade/ade-job-completed-auto-accepted): ADÉ accepted its own rule because the
-// hunt's match cleared the threshold. The page scrolls from the outcome down to the hunt that justified it. Counts are the source's sample data.
+// hunt's match cleared the threshold. The scene plays cause, then effect: the hunt's counts land, the threshold line follows, and the
+// accepted entry opens at the top of the timeline. Liberties taken: the hunt sits directly under the outcome so the two read together, and the outcome's green bar is a tint.
+// Counts are the source's sample data.
 const W = 940;
-const timings = [1200, 2200, 4200];
-const captions = ['A finished job', 'ADÉ auto-accepted and activated the rule', 'Because the rule’s hunt cleared the auto-accept threshold'];
+const timings = [2200, 1500, 4200];
+const captions = ['ADÉ hunted with its rule: a 93% match', 'That meets the auto-accept threshold', 'ADÉ auto-accepted and activated the rule'];
 
-/** The outcome, then the evidence for it. */
+/** The hunt summary (HuntSummaryContent), with its counts landing as the scene reaches them. */
+function Hunt({ run, meets, reduced }: { run: boolean; meets: boolean; reduced: boolean }) {
+  const n = (to: number) => <CountUp to={to} run={run} reduced={reduced} />;
+  return <div style={{ display: 'grid', gap: 12 }}>
+    <p style={{ fontSize: 15, fontWeight: 600 }}>ADÉ hunted across 14 days and found {n(43)} message groups ({n(58)} total messages)</p>
+    <div className="sb-box" style={{ padding: '16px 20px', display: 'grid', gap: 12 }}>
+      <span className="sb-verdict">{Icon.bullseye}<span>Recommended Rule is a <b style={{ fontWeight: 600 }}><CountUp to={93} run={run} reduced={reduced} format={v => `${Math.round(v)}%`} /></b> match with {n(40)} malicious matches and may introduce {n(2)} false positives (Benign).</span></span>
+      <Open open={meets}><span className="sb-meets">{Icon.sparkles}It meets the threshold to auto-accept the Rule.</span></Open>
+      <div style={{ display: 'flex', gap: 20 }}><span className="sb-verdict"><VerdictIcon verdict="malicious" />{n(40)} Malicious</span><span className="sb-verdict"><VerdictIcon verdict="spam" />{n(1)} Spam</span><span className="sb-verdict"><VerdictIcon verdict="benign" />{n(2)} Benign</span></div>
+    </div>
+  </div>;
+}
+
+/** The evidence, then the outcome it earned. */
 export default function AutoAccepted() {
-  const loop = useDemoLoop(timings, timings.length - 1);
-  const step = loop.step;
-  const hunt = useRef<HTMLDivElement>(null);
-  const page = useRef<HTMLDivElement>(null);
-  const [offset, setOffset] = useState(0);
-  // Measured in source pixels once the outcome has opened, so the scroll lands the hunt just under the heading space.
-  useEffect(() => {
-    const root = page.current, target = hunt.current;
-    if (!root || !target) return;
-    const box = root.getBoundingClientRect();
-    setOffset(Math.max(0, (target.getBoundingClientRect().top - box.top) / (box.width / root.offsetWidth || 1) - 220));
-  }, [step]);
-  return <figure className={`qb-demo ${loop.resetting ? 'qb-loop-reset' : ''}`} ref={loop.ref} aria-label="An ADÉ job page with automation on: ADÉ auto-accepted and activated the recommended rule. Further down, the hunt summary says the rule is a 93% match with 40 malicious matches and meets the threshold to auto-accept">
+  const scene = useScene(timings);
+  const step = scene.step;
+  return <figure className={`qb-demo ${scene.fade ? 'qb-loop-reset' : ''}`} ref={scene.ref} aria-label="An ADÉ job page with automation on: the hunt summary says the rule is a 93% match with 40 malicious matches and meets the threshold to auto-accept, and ADÉ auto-accepted and activated the recommended rule">
     <NativeStage width={1240} height={900}>
       <div className="sb-card">
-        <Zoom width={W}>
-          <Page crumbs={['Agents', 'ADÉ', job.subject]}>
-            <div ref={page} className="sb-scroll" style={{ position: 'relative', display: 'grid', gap: 28, padding: '28px 40px', transform: step === 2 ? `translateY(${-offset}px)` : 'none' }}>
+        <Zoom key={scene.take} width={W}>
+          <div style={{ minHeight: 1100 }}>
+            <Page crumbs={['Agents', 'ADÉ', job.subject]} style={{ display: 'grid', gap: 28, padding: '28px 40px' }}>
               <JobHeading />
               <div className="sb-timeline">
-                <div className={`sb-collapse ${step >= 1 ? 'is-open' : ''}`} style={{ marginBottom: step >= 1 ? 0 : -24 }}><div><TimelineItem dot="success"><Accepted by="ADÉ" auto /></TimelineItem></div></div>
+                <TimelineItem open={step === 2} dot="success"><Accepted by="ADÉ" auto /></TimelineItem>
+                <TimelineItem dot={step === 2 ? undefined : 'active'}><Hunt run={scene.seen} meets={step >= 1} reduced={scene.reduced} /></TimelineItem>
                 <TimelineItem><Recommendation /></TimelineItem>
-                <div ref={hunt}><TimelineItem><div className={`sb-mark ${step === 2 ? 'is-on' : ''}`} style={{ margin: -8, padding: 8 }}><HuntSummary autoAccepted /></div></TimelineItem></div>
-                <TimelineItem>
-                  <div style={{ display: 'grid', gap: 12 }}>
-                    <p style={{ fontSize: 15, fontWeight: 600 }}>ADÉ worked for 17m</p>
-                    <div className="sb-box sb-body" style={{ display: 'grid', gap: 8, padding: '16px 20px' }}><span className="sb-verdict">{Icon.sparkles}Collaborated with ASA Agent to generate a threat report</span><span className="sb-verdict">{Icon.bullseye}Validated recommendation with 1 hunt</span></div>
-                  </div>
-                </TimelineItem>
               </div>
-            </div>
-          </Page>
+            </Page>
+          </div>
         </Zoom>
       </div>
     </NativeStage>
-    <DemoControls loop={loop} title="the auto-accepted job" caption={captions[step]} />
+    <SceneControls scene={scene} title="the auto-accepted job" caption={captions[step]} />
   </figure>;
 }

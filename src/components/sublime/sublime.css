@@ -111,15 +111,18 @@
 @keyframes sb-agentic { to { background-position: 300% 0; } }
 @media (prefers-reduced-motion: reduce) { .sb-ade-card::before { animation: none; } }
 
-/* ADÉ job page: a timeline down the left. */
-.sb-timeline { position: relative; display: grid; gap: 24px; padding-left: 40px; }
-.sb-timeline::before { content: ''; position: absolute; left: 11px; top: 12px; bottom: 0; width: 1px; background: var(--sb-border-strong); }
-.sb-tl-item { position: relative; }
-.sb-tl-dot { position: absolute; left: -40px; top: 0; display: grid; place-items: center; width: 23px; height: 23px; border-radius: 50%; border: 1px solid var(--sb-border-strong); background: var(--sb-card); color: var(--sb-weak); }
+/* ADÉ job page: a timeline down the left. Each entry draws the rail from its own dot to the next one, so the line always connects. */
+.sb-timeline { display: flex; flex-direction: column; }
+.sb-tl-item { position: relative; padding: 0 0 24px 40px; }
+.sb-tl-item:last-child { padding-bottom: 0; }
+.sb-tl-item:not(:last-child)::after { content: ''; position: absolute; left: 11px; top: 27px; bottom: 4px; width: 1px; background: var(--sb-border-strong); }
+.sb-tl-dot { position: absolute; left: 0; top: 0; display: grid; place-items: center; width: 23px; height: 23px; border-radius: 50%; border: 1px solid var(--sb-border-strong); background: var(--sb-card); color: var(--sb-weak); transition: background 300ms ease, border-color 300ms ease, color 300ms ease; }
 .sb-tl-dot.is-active { border-color: var(--sb-button); background: var(--sb-button); color: #fff; }
 .sb-tl-dot.is-success { border-color: var(--sb-success); background: var(--sb-success); color: #fff; }
-.sb-accepted { border: 1px solid var(--sb-success); border-radius: 4px; overflow: hidden; }
-.sb-accepted-head { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background: var(--sb-success); color: #fff; font-size: 14px; line-height: 20px; }
+.sb-accepted { border: 1px solid color-mix(in srgb, var(--sb-success) 45%, var(--sb-border)); border-radius: 4px; overflow: hidden; }
+/* Inverted like the verdict head: a tint with the outcome in its ink, instead of the product's solid green bar. */
+.sb-accepted-head { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background: color-mix(in srgb, var(--sb-success) 9%, var(--sb-card)); border-bottom: 1px solid color-mix(in srgb, var(--sb-success) 22%, var(--sb-card)); color: var(--sb-success-ink); font-size: 14px; line-height: 20px; }
+.sb-accepted-head > span:last-child { color: var(--sb-weak); }
 .sb-collapse { display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows 500ms cubic-bezier(.22, 1, .36, 1), opacity 300ms ease, margin 500ms cubic-bezier(.22, 1, .36, 1); }
 .sb-collapse > div { min-height: 0; overflow: hidden; }
 .sb-collapse.is-open { grid-template-rows: 1fr; opacity: 1; }
@@ -150,3 +153,86 @@
 /* ADÉ jobs table. */
 .sb-row { display: grid; align-items: center; column-gap: 16px; min-height: 57px; padding: 0 24px; border-top: 1px solid var(--sb-border); font-size: 14px; line-height: 20px; white-space: nowrap; }
 .sb-row.is-head { min-height: 37px; border-top: 0; background: var(--sb-subtle); font-size: 11px; line-height: 16px; }
+
+/* Motion: one ease-out for things arriving, one ease-in-out for things moving on screen. */
+.sb { --sb-ease-out: cubic-bezier(.23, 1, .32, 1); --sb-ease-in-out: cubic-bezier(.65, 0, .35, 1); }
+.sb-camera { position: relative; transform-origin: 0 0; transition: transform 1100ms var(--sb-ease-in-out); will-change: transform; }
+.sb-pointer { position: absolute; z-index: 50; }
+.sb-btn, .sb-select, .sb-switch, .sb-list-row { transition: transform 160ms var(--sb-ease-out), background 200ms ease, box-shadow 200ms ease, opacity 200ms ease; }
+.sb-btn.is-pressed, .sb-select.is-pressed, .sb-list-row.is-pressed { transform: scale(.97); }
+.sb-enter { transition: opacity 360ms var(--sb-ease-out), transform 480ms var(--sb-ease-out), filter 360ms var(--sb-ease-out); }
+.sb-enter.is-out { opacity: 0; transform: translateY(6px); filter: blur(2px); }
+@media (prefers-reduced-motion: reduce) { .sb-camera, .sb-enter, .sb-btn, .sb-select { transition: none !important; } }
+
+/* The verdict head, inverted from the product's red banner so the page isn't shouting. */
+.sb-verdict-head { display: flex; align-items: center; gap: 14px; padding: 18px 24px; background: color-mix(in srgb, var(--sb-malicious) 7%, var(--sb-card)); border-bottom: 1px solid color-mix(in srgb, var(--sb-malicious) 18%, var(--sb-card)); }
+.sb-verdict-name { margin-top: 2px; font-size: 20px; font-weight: 600; line-height: 26px; color: var(--sb-malicious-ink); }
+.sb { --sb-malicious-ink: #A93127; }
+.dark .sb { --sb-malicious-ink: #f08a7d; }
+
+/* ADÉ card, redesigned for the sidebar: the agent's mark, and its working steps while a job runs. */
+.sb-ade-mark { display: grid; place-items: center; flex: none; width: 34px; height: 34px; border-radius: 6px; border: 1px solid var(--sb-border); background: var(--sb-subtle); overflow: hidden; }
+.sb-ade-mark img { width: 26px; }
+.sb-work { display: flex; align-items: center; gap: 10px; font-size: 13px; line-height: 18px; color: var(--sb-weak); transition: color 300ms ease; }
+.sb-work.is-now, .sb-work.is-done { color: var(--sb-strong); }
+.sb-work-icon { display: grid; place-items: center; width: 14px; height: 14px; flex: none; }
+.sb-work-icon > i { width: 6px; height: 6px; border-radius: 50%; background: var(--sb-border-strong); }
+.sb-work.is-done .sb-work-icon svg { animation: sb-pop 360ms var(--sb-ease-out); }
+.sb-tick-path { stroke-dasharray: 12; stroke-dashoffset: 0; animation: sb-draw 360ms var(--sb-ease-out) 80ms both; }
+.sb-spin { animation: sb-spin 900ms linear infinite; }
+@keyframes sb-spin { to { transform: rotate(360deg); } }
+@keyframes sb-pop { from { transform: scale(.6); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+@keyframes sb-draw { from { stroke-dashoffset: 12; } }
+@media (prefers-reduced-motion: reduce) { .sb-spin, .sb-work-icon svg, .sb-tick-path { animation: none !important; } }
+.sb-mark-row { box-shadow: inset 0 0 0 2px var(--sb-spam); background: color-mix(in srgb, var(--sb-spam) 8%, var(--sb-card)) !important; }
+
+/* Message content preview. */
+.sb-tabs-row { display: flex; gap: 18px; font-size: 13px; color: var(--sb-weak); border-bottom: 1px solid var(--sb-border); padding-bottom: 8px; }
+.sb-tabs-row b { font-weight: 500; color: var(--sb-strong); box-shadow: 0 10px 0 -8px var(--sb-button); }
+.sb-mail { position: relative; padding: 16px 18px 120px; border: 1px solid var(--sb-border); border-radius: 4px; }
+.sb-mail-caution { margin: -16px -18px 12px; padding: 8px 18px; background: color-mix(in srgb, #F5C542 22%, var(--sb-card)); font-size: 13px; }
+.sb-mail-caution b { font-weight: 600; }
+.sb-mail-qr { position: absolute; left: 18px; bottom: 16px; width: 88px; height: 88px; border-radius: 4px; background: repeating-conic-gradient(var(--sb-strong) 0 25%, transparent 0 50%) 0 0 / 14px 14px; opacity: .85; }
+
+/* ADÉ page tiles and empty state. */
+.sb-tile { width: 180px; padding: 14px 16px; border: 1px solid var(--sb-border); }
+.sb-tile > p { font-size: 22px; font-weight: 500; line-height: 28px; font-variant-numeric: tabular-nums; }
+.sb-empty { display: grid; justify-items: center; align-content: center; gap: 10px; height: 300px; margin-top: 12px; border: 1px solid var(--sb-border); border-radius: 4px; background: var(--sb-subtle); font-size: 13px; color: var(--sb-weak); }
+.sb-empty > span { color: var(--sb-border-strong); transform: scale(1.8); }
+
+/* How ADÉ works dialog: it rises in, the segmented control's pill slides between tabs. */
+.sb-dialog { transform-origin: 50% 30%; transition: transform 420ms var(--sb-ease-out), opacity 260ms ease; }
+.sb-dialog.is-out { transform: scale(.96) translateY(8px); opacity: 0; }
+.sb-scrim .sb-modal:not(.sb-dialog) { transform-origin: 50% 40%; transition: transform 360ms var(--sb-ease-out); }
+.sb-scrim.is-out .sb-modal:not(.sb-dialog) { transform: scale(.96); }
+.sb-close { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 4px; box-shadow: inset 0 0 0 1px var(--sb-border-strong); color: var(--sb-strong); }
+.sb-seg { display: inline-flex; gap: 2px; width: fit-content; padding: 3px; border-radius: 999px; background: var(--sb-secondary); box-shadow: inset 0 0 0 1px var(--sb-border); }
+.sb-seg-item { position: relative; display: inline-flex; align-items: center; height: 28px; padding: 0 14px; border-radius: 999px; font-size: 13px; font-weight: 500; color: var(--sb-weak); transition: color 250ms ease, transform 160ms var(--sb-ease-out); }
+.sb-seg-item > span { position: relative; }
+.sb-seg-item.is-on { color: var(--sb-strong); }
+.sb-seg-item.is-pressed { transform: scale(.97); }
+.sb-seg-pill { position: absolute; inset: 0; border-radius: 999px; background: var(--sb-card); box-shadow: 0 1px 2px rgba(0, 0, 0, .1), 0 0 0 1px var(--sb-border); }
+.sb-shot-stage { min-height: 290px; padding: 20px; border-radius: 8px; border: 1px solid var(--sb-border); background: var(--sb-subtle); }
+.sb-shot { display: flex; flex-direction: column; gap: 6px; padding: 14px; border-radius: 8px; background: var(--sb-card); border: 1px solid var(--sb-border); box-shadow: 0 1px 2px rgba(0, 0, 0, .04), 0 6px 16px -8px rgba(0, 0, 0, .12); }
+.sb-shot.is-current { box-shadow: 0 0 0 1.5px var(--sb-success), 0 6px 16px -8px rgba(0, 0, 0, .12); }
+.sb-shot-art { display: grid; place-items: center; height: 104px; margin-bottom: 6px; border-radius: 6px; background: var(--sb-subtle); }
+.sb-mini-mail { display: grid; gap: 4px; width: 86%; padding: 8px; border-radius: 6px; background: var(--sb-card); border: 1px solid var(--sb-border); font-size: 11px; line-height: 14px; }
+.sb-mini-mail b { font-weight: 600; }
+.sb-ttc-bar { display: block; height: 3px; border-radius: 2px; background: var(--sb-success); transform-origin: left; }
+.sb-level-bars { display: flex; align-items: flex-end; gap: 3px; height: 16px; margin-bottom: 4px; }
+.sb-level-bars i { width: 5px; border-radius: 1px; background: var(--sb-border-strong); }
+.sb-level-bars i.is-on { background: var(--sb-success); }
+.sb-start { margin-left: 8px; padding: 2px 6px; border-radius: 4px; background: color-mix(in srgb, var(--sb-success) 14%, var(--sb-card)); color: var(--sb-success-ink); font-size: 11px; font-weight: 500; vertical-align: 2px; }
+
+/* Header info popover (the threshold explainer): opens from its icon, scale and fade from the anchor corner. */
+.sb-popover { position: absolute; right: 0; top: calc(100% + 8px); z-index: 6; width: 340px; padding: 14px 16px; display: grid; gap: 10px; border-radius: 6px; background: var(--sb-card); color: var(--sb-strong); font-size: 13px; line-height: 19px; font-weight: 400; text-transform: none; letter-spacing: 0; white-space: normal; box-shadow: 0 0 0 1px var(--sb-border-strong), 0 12px 28px rgba(0, 0, 0, .16); transform-origin: top right; transition: opacity 200ms var(--sb-ease-out), transform 200ms var(--sb-ease-out), visibility 0s linear 0s; }
+.sb-popover.is-out { opacity: 0; visibility: hidden; transform: scale(.96) translateY(-2px); transition: opacity 150ms ease, transform 150ms ease, visibility 0s linear 150ms; }
+.sb-popover dl { display: grid; grid-template-columns: 1fr auto; row-gap: 4px; margin: 0; padding: 8px 10px; border-radius: 4px; background: var(--sb-secondary); }
+.sb-popover dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }
+@media (prefers-reduced-motion: reduce) { .sb-popover, .sb-menu { transition: none !important; } }
+
+/* The threshold line in the hunt summary: a quiet success tint, the cause the outcome above points to. */
+.sb-meets { display: inline-flex; align-items: center; gap: 8px; width: fit-content; padding: 4px 10px 4px 8px; border-radius: 4px; background: color-mix(in srgb, var(--sb-success) 10%, var(--sb-card)); color: var(--sb-success-ink); font-weight: 500; }
+/* A job row that just arrived: tinted while it runs, then the tint fades once it lands. */
+.sb-row.is-new { background: color-mix(in srgb, var(--sb-success) 6%, var(--sb-card)); }
+.sb-row { transition: background 1200ms ease; }

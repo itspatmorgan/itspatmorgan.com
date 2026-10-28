@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState, type CSSProperties, type ReactNode, type RefObject } from 'react';
+import type { CSSProperties, ReactNode, RefObject } from 'react';
+import { Expand } from './scene';
 
 // Primitives for the Sublime screens. Sizes are the source's Tailwind values in CSS pixels; `Zoom` scales a source-sized layout to fill the frame card.
 
@@ -7,26 +8,6 @@ export const ART = { asa: '/images/work/sublime/asa_cube.png', ade: '/images/wor
 /** Lays out children at `width` source pixels and scales them to fill `to` frame pixels. */
 export function Zoom({ width, to = 1020, children, style, zoomRef }: { width: number; to?: number; children: ReactNode; style?: CSSProperties; zoomRef?: RefObject<HTMLDivElement | null> }) {
   return <div className="sb-zoom" ref={zoomRef} style={{ width, transform: `scale(${to / width})`, ...style }}>{children}</div>;
-}
-
-/** Where the demo cursor should point: each `[data-target]` inside the zoomed screen, in its source pixels, re-measured on every step. */
-export function useAim(step: number) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [points, setPoints] = useState<Record<string, { x: number; y: number }>>({});
-  useEffect(() => {
-    const root = ref.current;
-    if (!root) return;
-    const box = root.getBoundingClientRect();
-    const scale = box.width / root.offsetWidth || 1;
-    const next: Record<string, { x: number; y: number }> = {};
-    root.querySelectorAll<HTMLElement>('[data-target]').forEach(el => {
-      const r = el.getBoundingClientRect();
-      next[el.dataset.target!] = { x: (r.left - box.left + Math.min(r.width * .55, 60)) / scale, y: (r.top - box.top + r.height * .55) / scale };
-    });
-    setPoints(next);
-  }, [step]);
-  const at = (key: string) => points[key] ?? { x: -40, y: -40 };
-  return { ref, at };
 }
 
 type Verdict = 'malicious' | 'spam' | 'graymail' | 'benign';
@@ -115,11 +96,11 @@ export function StatusPill({ status }: { status: Status }) {
 export const job = { subject: 'Action required: payroll profile verification', id: '019f3d5a-ff42-7706-b615-a83297b00479' };
 
 /** ADÉ's recommendation (JobCompletedCard): rule fields beside the MQL, with Accept and Reject while it waits for review. */
-export function Recommendation({ actions = false, style }: { actions?: boolean; style?: CSSProperties }) {
+export function Recommendation({ actions = false, pressed = false, style }: { actions?: boolean; pressed?: boolean; style?: CSSProperties }) {
   return <div className="sb-cells" style={style}>
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: 24, padding: 24, background: 'var(--sb-cell-head)' }}>
       <div><p className="sb-body" style={{ fontWeight: 600 }}>ADÉ Recommendation</p><p className="sb-body" style={{ marginTop: 4 }}>Create a new rule and set it as active in your environment.</p></div>
-      <div className={`sb-fade ${actions ? '' : 'is-out'}`} style={{ display: 'flex', gap: 8 }}><span className="sb-btn" data-target="accept">Accept</span><span className="sb-btn is-secondary">Reject</span></div>
+      <div className={`sb-fade ${actions ? '' : 'is-out'}`} style={{ display: 'flex', gap: 8 }}><span className={`sb-btn ${pressed ? 'is-pressed' : ''}`} data-target="accept">Accept</span><span className="sb-btn is-secondary">Reject</span></div>
     </div>
     <div style={{ display: 'grid', gridTemplateColumns: '280px minmax(0, 1fr)', gap: 40, padding: 24 }}>
       <div style={{ display: 'grid', gap: 20, alignContent: 'start' }}>
@@ -147,6 +128,48 @@ export function HuntSummary({ autoAccepted = false }: { autoAccepted?: boolean }
         {autoAccepted && <span className="sb-verdict">{Icon.sparkles}It meets the threshold to auto-accept the Rule.</span>}
       </div>
       <div style={{ display: 'flex', gap: 20 }}><span className="sb-verdict"><VerdictIcon verdict="malicious" />40 Malicious</span><span className="sb-verdict"><VerdictIcon verdict="spam" />1 Spam</span><span className="sb-verdict"><VerdictIcon verdict="benign" />2 Benign</span></div>
+    </div>
+  </div>;
+}
+
+/** ASA's verdict, quieter than the product's full-bleed red banner: a tinted head with the verdict in its color. */
+export function VerdictPanel({ children }: { children?: ReactNode }) {
+  return <div className="sb-box" style={{ overflow: 'hidden' }}>
+    <div className="sb-verdict-head">
+      <svg width="30" height="33" viewBox="0 0 16 17.6" aria-hidden="true"><path d="M8 .8l6.6 3.8v8.4L8 16.8 1.4 13V4.6z" fill="var(--sb-malicious)" /><path d="M8 5.4v4.6M8 12.4v.2" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" /></svg>
+      <div><span className="sb-label" style={{ display: 'flex', alignItems: 'center', gap: 4 }}>Verdict (ASA){Icon.info}</span><p className="sb-verdict-name">Malicious</p></div>
+    </div>
+    {children}
+  </div>;
+}
+
+/** One entry on the ADÉ job timeline; the rail runs from its dot to the next entry's. */
+/** With `open`, the entry opens to its height when it arrives (an outcome landing on the timeline). */
+export function TimelineItem({ dot, children, style, open }: { dot?: 'active' | 'success'; children: ReactNode; style?: CSSProperties; open?: boolean }) {
+  const inner = <>
+    <span className={`sb-tl-dot ${dot ? `is-${dot}` : ''}`}>{dot === 'success' ? Icon.check : <i style={{ width: 7, height: 7, borderRadius: '50%', background: dot ? '#fff' : 'var(--sb-weak)' }} />}</span>
+    {children}
+  </>;
+  if (open !== undefined) return <Expand open={open} className="sb-tl-item" style={style}>{inner}</Expand>;
+  return <div className="sb-tl-item" style={style}>{inner}</div>;
+}
+
+/** Page heading for an ADÉ job. */
+export function JobHeading({ duration = '17m' }: { duration?: string }) {
+  return <div style={{ display: 'grid', gap: 6 }}>
+    <p style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 22, fontWeight: 600, lineHeight: '30px' }}>{job.subject}<span style={{ color: 'var(--sb-link)', display: 'inline-flex' }}>{Icon.external}</span></p>
+    <p className="sb-label">Job ID: {job.id}</p>
+    <span className="sb-verdict sb-body"><CheckCircle size={14} color="var(--sb-button)" />Completed in {duration}</span>
+  </div>;
+}
+
+/** The accepted outcome at the top of the timeline (AcceptedTimelineItem). */
+export function Accepted({ by, auto = false }: { by: string; auto?: boolean }) {
+  return <div className="sb-accepted">
+    <div className="sb-accepted-head"><span><b style={{ fontWeight: 700 }}>{by}</b> {auto ? 'auto-' : ''}accepted and activated the recommended rule</span><span style={{ fontSize: 12 }}>Jul 3, 2026, 2:29 PM</span></div>
+    <div style={{ display: 'flex', gap: 40, padding: '16px 20px 18px' }}>
+      <div className="sb-field" style={{ minWidth: 0 }}><span>Rule Detail</span><span className="sb-ext" style={{ maxWidth: 380 }}><span>{ruleName}</span>{Icon.external}</span></div>
+      <div className="sb-field"><span>Flagged Message</span><span className="sb-ext" style={{ width: 'fit-content' }}>View Flagged Messages{Icon.external}</span></div>
     </div>
   </div>;
 }

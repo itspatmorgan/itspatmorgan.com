@@ -1,15 +1,18 @@
-import { NativeStage, DemoControls, DemoCursor } from '../case-study/NativeStage';
-import { useDemoLoop } from '../case-study/useDemoLoop';
-import { Icon, Page, VerdictIcon, Zoom, useAim } from './SublimeUI';
+import { NativeStage } from '../case-study/NativeStage';
+import { Icon, Page, VerdictIcon, Zoom } from './SublimeUI';
+import { Pointer, SceneControls, useScene, useTargets } from './scene';
 
 // ADÉ Automation (patrick/ade-workflow ade/ade-automation-config): per disposition, whether ADÉ starts a job on its own and the rule
-// auto-acceptance threshold. The demo walks one customer up the on-ramp for malicious mail. Recommended thresholds are the source's defaults.
-const W = 980;
-const timings = [1600, 900, 1000, 900, 700, 900, 800, 900, 3600];
+// auto-acceptance threshold. The scene walks one customer up the on-ramp for malicious mail. The threshold explainer is the column
+// header's info popover; its copy and the recommended thresholds are the source's.
+const W = 860;
+const timings = [1400, 800, 900, 800, 4200, 800, 900, 700, 900, 800, 3800];
 const captions = [
   'Manual: ADÉ runs only when someone triggers it',
   'Auto-start for malicious messages',
   'Auto-start for malicious messages',
+  'What the threshold means',
+  'A rule is auto-accepted once its hunt’s match rate meets the threshold',
   'Set when ADÉ may accept its own rules',
   'Set when ADÉ may accept its own rules',
   'Set when ADÉ may accept its own rules',
@@ -22,7 +25,13 @@ const rows = [
   { verdict: 'spam', label: 'Spam', recommended: 85 },
   { verdict: 'graymail', label: 'Graymail', recommended: 95 },
 ] as const;
-const cols = '150px 190px minmax(0, 1fr) 230px';
+const cols = '128px 150px minmax(0, 1fr) 214px';
+// Where the pointer is, and whether it is pressing, at each step.
+const path: ({ key: string; pressing?: boolean } | null)[] = [
+  null, { key: 'switch' }, { key: 'switch', pressing: true }, { key: 'info' }, { key: 'info' },
+  { key: 'threshold' }, { key: 'threshold', pressing: true }, { key: 'option' }, { key: 'option', pressing: true },
+  { key: 'status' }, { key: 'status', pressing: true },
+];
 
 function Switch({ on }: { on: boolean }) {
   return <span className={`sb-switch ${on ? 'is-on' : ''}`}><i>{on ? Icon.check : Icon.x}</i></span>;
@@ -30,62 +39,74 @@ function Switch({ on }: { on: boolean }) {
 
 /** The on-ramp to autonomy, as settings. */
 export default function AutomationConfig() {
-  const loop = useDemoLoop(timings, timings.length - 1);
-  const step = loop.step;
-  const aim = useAim(step);
+  const scene = useScene(timings);
+  const step = scene.step;
+  const t = useTargets(step);
   const autoStart = step >= 2;
-  const menuOpen = step === 4 || step === 5;
-  const threshold = step >= 6;
-  const active = step >= 8;
-  const target = step === 0 ? 'rest' : step <= 2 ? 'switch' : step <= 4 ? 'threshold' : step <= 6 ? 'option' : 'status';
-  const cursor = aim.at(target);
-  return <figure className={`qb-demo ${loop.resetting ? 'qb-loop-reset' : ''}`} ref={loop.ref} aria-label="ADÉ Automation settings: for malicious messages, Automatically start ADÉ job is switched on, the rule auto-acceptance threshold changes from Require review to Recommended (90%), and the automation is set to Active">
+  const explain = step === 4;
+  const menuOpen = step >= 6 && step <= 7;
+  const threshold = step >= 8;
+  const active = step >= 10;
+  const pointer = path[step];
+  return <figure className={`qb-demo ${scene.fade ? 'qb-loop-reset' : ''}`} ref={scene.ref} aria-label="ADÉ Automation settings: for malicious messages, Automatically start ADÉ job is switched on; the threshold's info explains that a rule is auto-accepted once its hunt's match rate meets the threshold, with Sublime's recommendations of 90% for malicious, 85% for spam and 95% for graymail; the threshold changes from Require review to Recommended (90%), and the automation is set to Active">
     <NativeStage width={1240} height={900}>
       <div className="sb-card">
-        <Zoom width={W} zoomRef={aim.ref}>
-          <Page crumbs={['Agents', 'ADÉ', 'ADÉ Automation']}>
-            <div style={{ display: 'grid', gridTemplateColumns: '60% 40%', borderBottom: '1px solid var(--sb-border)' }}>
-              <div style={{ display: 'grid', gap: 20, padding: '24px 32px', borderRight: '1px solid var(--sb-border)' }}>
-                <div><p style={{ fontSize: 20, fontWeight: 600, lineHeight: '28px' }}>ADÉ Automation</p><p className="sb-label" style={{ marginTop: 2 }}>Automatically run ADÉ and accept generated rules when validation meets your threshold.</p></div>
-                <div className="sb-field"><span>Trigger</span><span className="sb-input" style={{ maxWidth: 435, background: 'var(--sb-secondary)' }}>Unflagged Message Classified, Manually Triggered</span></div>
-                <div className="sb-field"><span>Author</span><span className="sb-body">Sublime Security <span className="sb-label" style={{ marginLeft: 6 }}>Created on Apr 14, 2026 • Last updated Jul 2, 2026</span></span></div>
-              </div>
-              <div style={{ padding: '24px 32px' }}>
-                <div className="sb-field" style={{ maxWidth: 170 }}><span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>Current Status {Icon.info}</span>
-                  <span className="sb-select" data-target="status"><span className="sb-verdict"><i className={`sb-status-dot ${active ? 'is-on' : ''}`} />{active ? 'Active' : 'Inactive'}</span>{Icon.chevron('down')}</span>
+        <Zoom key={scene.take} width={W}>
+          <div ref={t.ref} style={{ position: 'relative' }}>
+            <Page crumbs={['Agents', 'ADÉ', 'ADÉ Automation']} style={{ minHeight: 900 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 220px', borderBottom: '1px solid var(--sb-border)' }}>
+                <div style={{ display: 'grid', gap: 20, padding: '24px 32px', borderRight: '1px solid var(--sb-border)' }}>
+                  <div><p style={{ fontSize: 20, fontWeight: 600, lineHeight: '28px' }}>ADÉ Automation</p><p className="sb-label" style={{ marginTop: 2 }}>Automatically run ADÉ and accept generated rules when validation meets your threshold.</p></div>
+                  <div className="sb-field"><span>Trigger</span><span className="sb-input" style={{ maxWidth: 435, background: 'var(--sb-secondary)' }}>Unflagged Message Classified, Manually Triggered</span></div>
+                  <div className="sb-field"><span>Author</span><span className="sb-body">Sublime Security <span className="sb-label" style={{ marginLeft: 6 }}>Created on Apr 14, 2026 • Last updated Jul 2, 2026</span></span></div>
+                </div>
+                <div style={{ padding: '24px 32px' }}>
+                  <div className="sb-field"><span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>Current Status {Icon.info}</span>
+                    <span className={`sb-select ${step === 10 ? 'is-pressed' : ''}`} data-target="status"><span className="sb-verdict"><i className={`sb-status-dot ${active ? 'is-on' : ''}`} />{active ? 'Active' : 'Inactive'}</span>{Icon.chevron('down')}</span>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div style={{ display: 'grid', gap: 12, padding: '24px 32px' }}>
-              <p style={{ fontSize: 15, fontWeight: 600 }} data-target="rest">Configure ADÉ Jobs</p>
-              <p className="sb-body" style={{ maxWidth: 820 }}>ADÉ can run automatically when a message group is unflagged but has a disposition of Malicious, Spam, or Graymail. It can also automatically accept a new generated Rule based on how well its Hunt results match the disposition of the originating message group.</p>
-              <div className="sb-cells" style={{ marginTop: 8, overflow: 'visible' }}>
-                <div className="sb-row is-head" style={{ gridTemplateColumns: cols, background: 'var(--sb-cell-head)', borderRadius: '4px 4px 0 0' }}>
-                  <span className="sb-verdict" style={{ fontSize: 11 }}>Disposition {Icon.info}</span><span>Automatically start ADÉ job</span><span>Alerts</span><span className="sb-verdict" style={{ fontSize: 11 }}>Rule auto-acceptance threshold {Icon.info}</span>
-                </div>
-                {rows.map((row, i) => {
-                  const first = i === 0;
-                  return <div key={row.verdict} className="sb-row" style={{ gridTemplateColumns: cols, minHeight: 60, borderTop: '1px solid var(--sb-border-strong)', overflow: 'visible' }}>
-                    <span className="sb-chip" style={{ width: 'fit-content', gap: 6 }}><VerdictIcon verdict={row.verdict} size={14} />{row.label}</span>
-                    <span data-target={first ? 'switch' : undefined} style={{ width: 'fit-content' }}><Switch on={first && autoStart} /></span>
-                    <span className="sb-select" style={{ maxWidth: 220 }}>No Alert{Icon.chevron('down')}</span>
-                    <span style={{ position: 'relative' }}>
-                      <span className={`sb-select ${first && menuOpen ? 'is-open' : ''}`} data-target={first ? 'threshold' : undefined}>{first && threshold ? `Recommended (${row.recommended}%)` : 'Require review'}{Icon.chevron('down')}</span>
-                      {first && <span className={`sb-menu ${menuOpen ? '' : 'is-out'}`} style={{ display: 'block' }}>
-                        <div className={step === 5 || step === 6 ? 'is-hover' : ''} data-target="option">Recommended ({row.recommended}%)</div>
-                        <div>Custom</div>
-                        <div>Require review</div>
-                      </span>}
+              <div style={{ display: 'grid', gap: 12, padding: '24px 32px 40px' }}>
+                <p style={{ fontSize: 15, fontWeight: 600 }}>Configure ADÉ Jobs</p>
+                <p className="sb-body">ADÉ can run automatically when a message group is unflagged but has a disposition of Malicious, Spam, or Graymail. It can also automatically accept a new generated Rule based on how well its Hunt results match the disposition of the originating message group.</p>
+                <div className="sb-cells" style={{ marginTop: 8, overflow: 'visible' }}>
+                  <div className="sb-row is-head" style={{ gridTemplateColumns: cols, background: 'var(--sb-cell-head)', borderRadius: '4px 4px 0 0', overflow: 'visible' }}>
+                    <span className="sb-verdict" style={{ fontSize: 11 }}>Disposition {Icon.info}</span><span>Auto-start ADÉ job</span><span>Alerts</span>
+                    <span className="sb-verdict" style={{ fontSize: 11, position: 'relative' }}>Rule auto-acceptance threshold <span data-target="info" style={{ display: 'inline-flex', color: explain ? 'var(--sb-strong)' : undefined }}>{Icon.info}</span>
+                      <span className={`sb-popover ${explain ? '' : 'is-out'}`} role="tooltip">
+                        <span>ADÉ uses the rule to hunt for similar message groups from the last 14 days and checks how often the verdict matches the original message.</span>
+                        <span>A rule is auto-accepted once the match rate meets the threshold.</span>
+                        <span><span className="sb-label" style={{ display: 'block', marginBottom: 4 }}>Sublime recommendations</span>
+                          <dl>{rows.flatMap(r => [<dt key={`t-${r.label}`} className="sb-verdict"><VerdictIcon verdict={r.verdict} size={13} />{r.label}</dt>, <dd key={`d-${r.label}`}>{r.recommended}%</dd>])}</dl>
+                        </span>
+                        <span className="sb-label">Custom thresholds and manual review are also supported.</span>
+                      </span>
                     </span>
-                  </div>;
-                })}
+                  </div>
+                  {rows.map((row, i) => {
+                    const first = i === 0;
+                    return <div key={row.verdict} className="sb-row" style={{ gridTemplateColumns: cols, minHeight: 60, borderTop: '1px solid var(--sb-border-strong)', overflow: 'visible' }}>
+                      <span className="sb-chip" style={{ width: 'fit-content', gap: 6 }}><VerdictIcon verdict={row.verdict} size={14} />{row.label}</span>
+                      <span data-target={first ? 'switch' : undefined} style={{ width: 'fit-content' }}><Switch on={first && autoStart} /></span>
+                      <span className="sb-select" style={{ maxWidth: 200 }}>No Alert{Icon.chevron('down')}</span>
+                      <span style={{ position: 'relative' }}>
+                        <span className={`sb-select ${first && menuOpen ? 'is-open' : ''} ${first && step === 6 ? 'is-pressed' : ''}`} data-target={first ? 'threshold' : undefined}>{first && threshold ? `Recommended (${row.recommended}%)` : 'Require review'}{Icon.chevron('down')}</span>
+                        {first && <span className={`sb-menu ${menuOpen || step === 8 ? '' : 'is-out'}`} style={{ display: 'block' }}>
+                          <div className={step >= 7 ? 'is-hover' : ''} data-target="option">Recommended ({row.recommended}%)</div>
+                          <div>Custom</div>
+                          <div>Require review</div>
+                        </span>}
+                      </span>
+                    </div>;
+                  })}
+                </div>
               </div>
-            </div>
-          </Page>
-          <DemoCursor x={cursor.x} y={cursor.y} visible={!loop.reduced} reduced={loop.reduced} pressing={step === 2 || step === 4 || step === 6 || step === 8} />
+            </Page>
+            <Pointer at={pointer ? t.at(pointer.key) : null} visible={!!pointer} pressing={pointer?.pressing} reduced={scene.reduced} />
+          </div>
         </Zoom>
       </div>
     </NativeStage>
-    <DemoControls loop={loop} title="the automation settings" caption={captions[step]} />
+    <SceneControls scene={scene} title="the automation settings" caption={captions[step]} />
   </figure>;
 }
