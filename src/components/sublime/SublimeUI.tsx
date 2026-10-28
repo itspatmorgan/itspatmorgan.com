@@ -1,5 +1,5 @@
 import type { CSSProperties, ReactNode, RefObject } from 'react';
-import { Expand } from './scene';
+import { CountUp, Expand } from './scene';
 
 // Primitives for the Sublime screens. Sizes are the source's Tailwind values in CSS pixels; `Zoom` scales a source-sized layout to fill the frame card.
 
@@ -95,11 +95,16 @@ export function StatusPill({ status }: { status: Status }) {
 
 export const job = { subject: 'Action required: payroll profile verification', id: '019f3d5a-ff42-7706-b615-a83297b00479' };
 
-/** ADÉ's recommendation (JobCompletedCard): rule fields beside the MQL, with Accept and Reject while it waits for review. */
-export function Recommendation({ actions = false, pressed = false, style }: { actions?: boolean; pressed?: boolean; style?: CSSProperties }) {
+/** ADÉ's recommendation (JobCompletedCard): rule fields beside the MQL, with Accept and Reject while it waits for review.
+ *  Liberty taken: the header carries the hunt's result (the source keeps it in the hunt entry below), so the reason to accept sits beside
+ *  the button; `linked` lights the line while the hunt that backs it is in view. */
+export function Recommendation({ actions = false, pressed = false, linked = false, style }: { actions?: boolean; pressed?: boolean; linked?: boolean; style?: CSSProperties }) {
   return <div className="sb-cells" style={style}>
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: 24, padding: 24, background: 'var(--sb-cell-head)' }}>
-      <div><p className="sb-body" style={{ fontWeight: 600 }}>ADÉ Recommendation</p><p className="sb-body" style={{ marginTop: 4 }}>Create a new rule and set it as active in your environment.</p></div>
+      <div style={{ display: 'grid', gap: 10 }}>
+        <div><p className="sb-body" style={{ fontWeight: 600 }}>ADÉ Recommendation</p><p className="sb-body" style={{ marginTop: 4 }}>Create a new rule and set it as active in your environment.</p></div>
+        <span className={`sb-proof ${linked ? 'is-linked' : ''}`} data-target="proof">{Icon.bullseye}<b>93% match</b><span>in a 14-day hunt · 40 malicious matches · 2 possible false positives</span></span>
+      </div>
       <div className={`sb-fade ${actions ? '' : 'is-out'}`} style={{ display: 'flex', gap: 8 }}><span className={`sb-btn ${pressed ? 'is-pressed' : ''}`} data-target="accept">Accept</span><span className="sb-btn is-secondary">Reject</span></div>
     </div>
     <div style={{ display: 'grid', gridTemplateColumns: '280px minmax(0, 1fr)', gap: 40, padding: 24 }}>
@@ -118,20 +123,6 @@ export function Recommendation({ actions = false, pressed = false, style }: { ac
   </div>;
 }
 
-/** The hunt summary (HuntSummaryContent) with the source's sample counts. */
-export function HuntSummary({ autoAccepted = false }: { autoAccepted?: boolean }) {
-  return <div style={{ display: 'grid', gap: 12 }}>
-    <p style={{ fontSize: 15, fontWeight: 600 }}>ADÉ hunted across 14 days and found 43 message groups (58 total messages)</p>
-    <div className="sb-box" style={{ padding: '16px 20px', display: 'grid', gap: 12 }}>
-      <div style={{ display: 'grid', gap: 8 }}>
-        <span className="sb-verdict">{Icon.bullseye}Recommended Rule is a 93% match with 40 malicious matches and may introduce 2 false positives (Benign).</span>
-        {autoAccepted && <span className="sb-verdict">{Icon.sparkles}It meets the threshold to auto-accept the Rule.</span>}
-      </div>
-      <div style={{ display: 'flex', gap: 20 }}><span className="sb-verdict"><VerdictIcon verdict="malicious" />40 Malicious</span><span className="sb-verdict"><VerdictIcon verdict="spam" />1 Spam</span><span className="sb-verdict"><VerdictIcon verdict="benign" />2 Benign</span></div>
-    </div>
-  </div>;
-}
-
 /** ASA's verdict, quieter than the product's full-bleed red banner: a tinted head with the verdict in its color. */
 export function VerdictPanel({ children }: { children?: ReactNode }) {
   return <div className="sb-box" style={{ overflow: 'hidden' }}>
@@ -143,23 +134,43 @@ export function VerdictPanel({ children }: { children?: ReactNode }) {
   </div>;
 }
 
-/** One entry on the ADÉ job timeline; the rail runs from its dot to the next entry's. */
-/** With `open`, the entry opens to its height when it arrives (an outcome landing on the timeline). */
-export function TimelineItem({ dot, children, style, open }: { dot?: 'active' | 'success'; children: ReactNode; style?: CSSProperties; open?: boolean }) {
+// The job timeline's marks (AdeJobTimeline): each entry's 24px circle carries the icon of what happened.
+const tlIcon = {
+  check: <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2l2 2 4-4.4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>,
+  shield: <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M6 .9l4.4 1.7v3.1c0 2.7-1.8 4.6-4.4 5.4C3.4 10.3 1.6 8.4 1.6 5.7V2.6z" fill="currentColor" /></svg>,
+  hunt: <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.2c3.4.6 6.2 3.4 6.8 6.8M3 1.2C2.4 4.6 4.4 8.4 7.6 10M1.2 10.8l7-7M8.2 3.8h-2M8.2 3.8v2" fill="none" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round" /></svg>,
+  clipboard: <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><rect x="2.2" y="1.9" width="7.6" height="9.2" rx="1" fill="none" stroke="currentColor" strokeWidth="1" /><rect x="4.2" y=".9" width="3.6" height="2" rx=".5" fill="var(--sb-card)" stroke="currentColor" strokeWidth="1" /><path d="M4.2 5.6h3.6M4.2 7.6h3.6" stroke="currentColor" strokeWidth="1" strokeLinecap="round" /></svg>,
+  play: <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M4 2.6v6.8l5.2-3.4z" fill="none" stroke="currentColor" strokeWidth="1.1" strokeLinejoin="round" /></svg>,
+  spinner: <svg className="sb-spin" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M6 1.2A4.8 4.8 0 0 1 10.8 6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" /></svg>,
+};
+export type TlIcon = keyof typeof tlIcon;
+
+/** One entry on the ADÉ job timeline (TimelineItem): a 24px mark, then the rail running unbroken to the next entry's mark.
+ *  `tone` fills the mark (success for an outcome, active for what waits on you). With `open`, the entry opens to its height when it arrives. */
+export function TimelineItem({ icon, tone, children, style, open }: { icon: TlIcon; tone?: 'success' | 'active' | 'running'; children: ReactNode; style?: CSSProperties; open?: boolean }) {
   const inner = <>
-    <span className={`sb-tl-dot ${dot ? `is-${dot}` : ''}`}>{dot === 'success' ? Icon.check : <i style={{ width: 7, height: 7, borderRadius: '50%', background: dot ? '#fff' : 'var(--sb-weak)' }} />}</span>
-    {children}
+    <span className="sb-tl-rail" aria-hidden="true"><span className={`sb-tl-dot ${tone ? `is-${tone}` : ''}`}>{tlIcon[icon]}</span><i /></span>
+    <div className="sb-tl-body">{children}</div>
   </>;
   if (open !== undefined) return <Expand open={open} className="sb-tl-item" style={style}>{inner}</Expand>;
   return <div className="sb-tl-item" style={style}>{inner}</div>;
 }
 
-/** Page heading for an ADÉ job. */
-export function JobHeading({ duration = '17m' }: { duration?: string }) {
-  return <div style={{ display: 'grid', gap: 6 }}>
-    <p style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 22, fontWeight: 600, lineHeight: '30px' }}>{job.subject}<span style={{ color: 'var(--sb-link)', display: 'inline-flex' }}>{Icon.external}</span></p>
-    <p className="sb-label">Job ID: {job.id}</p>
-    <span className="sb-verdict sb-body"><CheckCircle size={14} color="var(--sb-button)" />Completed in {duration}</span>
+/** An entry's heading, set on the mark's center line (Text h4). */
+export function TimelineTitle({ children }: { children: ReactNode }) {
+  return <p className="sb-tl-title"><span>{children}</span></p>;
+}
+
+/** Page heading for an ADÉ job (AdeJobDetailView), with room around it. */
+export function JobHeading({ status = 'done' }: { status?: 'done' | 'running' }) {
+  return <div style={{ display: 'grid', gap: 10, paddingLeft: 48 }}>
+    <p style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 24, fontWeight: 600, lineHeight: '32px', letterSpacing: '-.2px' }}>{job.subject}<span style={{ color: 'var(--sb-link)', display: 'inline-flex' }}>{Icon.external}</span></p>
+    <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
+      {status === 'done'
+        ? <span className="sb-verdict sb-body"><CheckCircle size={14} color="var(--sb-button)" />Completed in 17m</span>
+        : <span className="sb-verdict sb-body">{Icon.progress}In Progress</span>}
+      <span className="sb-label">Job ID: {job.id}</span>
+    </div>
   </div>;
 }
 
@@ -170,6 +181,62 @@ export function Accepted({ by, auto = false }: { by: string; auto?: boolean }) {
     <div style={{ display: 'flex', gap: 40, padding: '16px 20px 18px' }}>
       <div className="sb-field" style={{ minWidth: 0 }}><span>Rule Detail</span><span className="sb-ext" style={{ maxWidth: 380 }}><span>{ruleName}</span>{Icon.external}</span></div>
       <div className="sb-field"><span>Flagged Message</span><span className="sb-ext" style={{ width: 'fit-content' }}>View Flagged Messages{Icon.external}</span></div>
+    </div>
+  </div>;
+}
+
+/** "ADÉ worked for 17m" (ChainOfThoughtTimelineItem), collapsed. */
+export function Worked() {
+  return <div style={{ display: 'grid', gap: 16 }}>
+    <TimelineTitle>ADÉ worked for 17m</TimelineTitle>
+    <div className="sb-box sb-body" style={{ display: 'flex', justifyContent: 'space-between', padding: 16 }}>
+      <span style={{ display: 'grid', gap: 8 }}><span className="sb-verdict">{Icon.sparkles}Collaborated with ASA Agent to generate a threat report</span><span className="sb-verdict">{Icon.bullseye}Validated recommendation with 1 hunt</span></span>
+      <span className="sb-disclose">{Icon.chevron('down')}</span>
+    </div>
+  </div>;
+}
+
+/** "Patrick Morgan triggered ADÉ" (TriggeredTimelineItem): the message the job started from. */
+export function Triggered({ when = 'Jul 3, 2026, 2:12 PM' }: { when?: string }) {
+  return <div style={{ display: 'grid', gap: 16 }}>
+    <TimelineTitle>Patrick Morgan triggered ADÉ at {when}</TimelineTitle>
+    <div className="sb-box sb-body" style={{ display: 'grid', gridTemplateColumns: '96px 1fr', rowGap: 12, columnGap: 16, padding: 16 }}>
+      <span className="sb-label">Subject</span><span>{job.subject}</span>
+      <span className="sb-label">Sender</span><span>payroll-verify@employee-benefits.co</span>
+      <span className="sb-label">Recipient</span><span>alex.morgan@acme.com</span>
+      <span className="sb-label">ASA Verdict</span><VerdictLabel verdict="malicious" />
+    </div>
+  </div>;
+}
+
+const huntRows = [
+  { subject: 'Action required: payroll profile verification', sender: 'payroll-security@adp-verify.com', received: 'Jul 2', verdict: 'malicious' as const },
+  { subject: 'New direct deposit document shared with you', sender: 'hr-notify@payroll-docs.co', received: 'Jul 1', verdict: 'malicious' as const },
+  { subject: 'Reminder: update your payroll information', sender: 'benefits@company-payroll-support.net', received: 'Jun 29', verdict: 'benign' as const },
+];
+
+/** The hunt entry (HuntTimelineItem): the hunt's summary, which opens onto its results (HuntResultsTable). Counts are the source's sample
+ *  data; with `run` false they wait at zero, and `run` counts them up. `meets` adds the auto-accept line. */
+export function HuntEntry({ run = true, reduced = false, meets = false, open = false, linked = false }: { run?: boolean; reduced?: boolean; meets?: boolean; open?: boolean; linked?: boolean }) {
+  const n = (to: number) => <CountUp to={to} run={run} reduced={reduced} />;
+  return <div style={{ display: 'grid', gap: 16 }} data-frame="hunt">
+    <TimelineTitle>ADÉ hunted across 14 days and found {n(43)}&nbsp;message groups ({n(58)}&nbsp;total messages)</TimelineTitle>
+    <div className={`sb-hunt-box ${linked ? 'is-linked' : ''}`}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', gap: 16, padding: 16 }}>
+        <div className="sb-body" style={{ display: 'grid', gap: 12 }}>
+          <span className="sb-verdict">{Icon.bullseye}<span>Recommended Rule is a <b style={{ fontWeight: 600 }}><CountUp to={93} run={run} reduced={reduced} format={v => `${Math.round(v)}%`} /></b> match with {n(40)} malicious matches and may introduce {n(2)} false positives (Benign).</span></span>
+          <Expand open={meets}><span className="sb-meets">{Icon.sparkles}It meets the threshold to auto-accept the Rule.</span></Expand>
+          <div style={{ display: 'flex', gap: 20 }}><span className="sb-verdict"><VerdictIcon verdict="malicious" />{n(40)} Malicious</span><span className="sb-verdict"><VerdictIcon verdict="spam" />{n(1)} Spam</span><span className="sb-verdict"><VerdictIcon verdict="benign" />{n(2)} Benign</span></div>
+        </div>
+        <span className={`sb-disclose ${open ? 'is-open' : ''}`} data-target="hunt-toggle">{Icon.chevron('down')}</span>
+      </div>
+      <Expand open={open}>
+        <div className="sb-hunt-table">
+          <div className="sb-row is-head" style={{ gridTemplateColumns: 'minmax(0, 1fr) 210px 64px 110px' }}><span>Subject</span><span>Sender</span><span>Received</span><span>ASA Verdict</span></div>
+          {huntRows.map(r => <div key={r.subject} className="sb-row" style={{ gridTemplateColumns: 'minmax(0, 1fr) 210px 64px 110px' }}><span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{r.subject}</span><span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{r.sender}</span><span>{r.received}</span><VerdictLabel verdict={r.verdict} /></div>)}
+          <div className="sb-label" style={{ padding: '10px 16px', borderTop: '1px solid var(--sb-border)' }}>Showing 3 of 43 message groups</div>
+        </div>
+      </Expand>
     </div>
   </div>;
 }

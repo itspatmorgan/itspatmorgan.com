@@ -5,7 +5,7 @@ import { Pointer, SceneControls, useScene, useTargets } from './scene';
 // ADÉ Automation (patrick/ade-workflow ade/ade-automation-config): per disposition, whether ADÉ starts a job on its own and the rule
 // auto-acceptance threshold. The scene walks one customer up the on-ramp for malicious mail. The threshold explainer is the column
 // header's info popover; its copy and the recommended thresholds are the source's.
-const W = 860;
+const W = 820;
 const timings = [1400, 800, 900, 800, 4200, 800, 900, 700, 900, 800, 3800];
 const captions = [
   'Manual: ADÉ runs only when someone triggers it',
@@ -25,7 +25,7 @@ const rows = [
   { verdict: 'spam', label: 'Spam', recommended: 85 },
   { verdict: 'graymail', label: 'Graymail', recommended: 95 },
 ] as const;
-const cols = '128px 150px minmax(0, 1fr) 214px';
+const cols = '120px 140px minmax(0, 1fr) 206px';
 // Where the pointer is, and whether it is pressing, at each step.
 const path: ({ key: string; pressing?: boolean } | null)[] = [
   null, { key: 'switch' }, { key: 'switch', pressing: true }, { key: 'info' }, { key: 'info' },
@@ -54,19 +54,20 @@ export default function AutomationConfig() {
         <Zoom key={scene.take} width={W}>
           <div ref={t.ref} style={{ position: 'relative' }}>
             <Page crumbs={['Agents', 'ADÉ', 'ADÉ Automation']} style={{ minHeight: 900 }}>
-              <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 220px', borderBottom: '1px solid var(--sb-border)' }}>
-                <div style={{ display: 'grid', gap: 20, padding: '24px 32px', borderRight: '1px solid var(--sb-border)' }}>
-                  <div><p style={{ fontSize: 20, fontWeight: 600, lineHeight: '28px' }}>ADÉ Automation</p><p className="sb-label" style={{ marginTop: 2 }}>Automatically run ADÉ and accept generated rules when validation meets your threshold.</p></div>
-                  <div className="sb-field"><span>Trigger</span><span className="sb-input" style={{ maxWidth: 435, background: 'var(--sb-secondary)' }}>Unflagged Message Classified, Manually Triggered</span></div>
-                  <div className="sb-field"><span>Author</span><span className="sb-body">Sublime Security <span className="sb-label" style={{ marginLeft: 6 }}>Created on Apr 14, 2026 • Last updated Jul 2, 2026</span></span></div>
+              {/* Liberty taken: the source's three bordered boxes become one header, a quiet details row, and the table. */}
+              <div style={{ display: 'grid', gap: 22, padding: '32px 32px 28px' }}>
+                <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 32 }}>
+                  <div><p style={{ fontSize: 22, fontWeight: 600, lineHeight: '30px', letterSpacing: '-.2px' }}>ADÉ Automation</p><p className="sb-body" style={{ marginTop: 4, color: 'var(--sb-weak)' }}>Automatically run ADÉ and accept generated rules when validation meets your threshold.</p></div>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}><span className="sb-label sb-verdict" style={{ gap: 4 }}>Status{Icon.info}</span>
+                    <span className={`sb-select ${step === 10 ? 'is-pressed' : ''}`} data-target="status" style={{ width: 128 }}><span className="sb-verdict"><i className={`sb-status-dot ${active ? 'is-on' : ''}`} />{active ? 'Active' : 'Inactive'}</span>{Icon.chevron('down')}</span>
+                  </span>
                 </div>
-                <div style={{ padding: '24px 32px' }}>
-                  <div className="sb-field"><span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>Current Status {Icon.info}</span>
-                    <span className={`sb-select ${step === 10 ? 'is-pressed' : ''}`} data-target="status"><span className="sb-verdict"><i className={`sb-status-dot ${active ? 'is-on' : ''}`} />{active ? 'Active' : 'Inactive'}</span>{Icon.chevron('down')}</span>
-                  </div>
+                <div className="sb-body" style={{ display: 'flex', gap: 40, whiteSpace: 'nowrap' }}>
+                  <span><span className="sb-label" style={{ marginRight: 10 }}>Trigger</span>Unflagged Message Classified, Manually Triggered</span>
+                  <span><span className="sb-label" style={{ marginRight: 10 }}>Author</span>Sublime Security</span>
                 </div>
               </div>
-              <div style={{ display: 'grid', gap: 12, padding: '24px 32px 40px' }}>
+              <div style={{ display: 'grid', gap: 12, padding: '28px 32px 40px', borderTop: '1px solid var(--sb-border)' }}>
                 <p style={{ fontSize: 15, fontWeight: 600 }}>Configure ADÉ Jobs</p>
                 <p className="sb-body">ADÉ can run automatically when a message group is unflagged but has a disposition of Malicious, Spam, or Graymail. It can also automatically accept a new generated Rule based on how well its Hunt results match the disposition of the originating message group.</p>
                 <div className="sb-cells" style={{ marginTop: 8, overflow: 'visible' }}>

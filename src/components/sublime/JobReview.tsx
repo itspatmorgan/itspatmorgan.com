@@ -1,13 +1,13 @@
 import { NativeStage } from '../case-study/NativeStage';
-import { Accepted, JobHeading, Page, Recommendation, TimelineItem, Zoom, job } from './SublimeUI';
+import { Accepted, HuntEntry, JobHeading, Page, Recommendation, TimelineItem, Triggered, Worked, Zoom, job } from './SublimeUI';
 import { Camera, Pointer, SceneControls, focus, useScene, useTargets } from './scene';
 
 // The ADÉ job page (patrick/ade-workflow ade/ade-job-completed-review, AdeJobTimeline and JobCompletedCard): ADÉ's recommended rule
 // waits for review, and accepting it runs through the product's Accept Recommendation modal. Copy is the source's; dates are its sample data.
 const W = 940;
 const H = 820 * W / 1020;
-const timings = [1800, 1000, 350, 2100, 350, 3800];
-const captions = ['ADÉ’s recommendation: a rule in MQL your team can read', 'Accept', 'Accept', 'Accept and activate', 'Accept and activate', 'The rule is live, and stays editable'];
+const timings = [2400, 1000, 350, 2100, 350, 3800];
+const captions = ['ADÉ’s recommendation: a rule your team can read, with the hunt result that backs it', 'Accept', 'Accept', 'Accept and activate', 'Accept and activate', 'The rule is live, and stays editable'];
 
 /** Read ADÉ's rule, then accept it. */
 export default function JobReview() {
@@ -24,12 +24,15 @@ export default function JobReview() {
     <NativeStage width={1240} height={900}>
       <div className="sb-card">
         <Zoom key={scene.take} width={W}>
-          <Camera view={view} cameraRef={t.ref} style={{ minHeight: 1100 }}>
-            <Page crumbs={['Agents', 'ADÉ', job.subject]} style={{ display: 'grid', gap: 28, padding: '28px 40px' }}>
+          <Camera view={view} cameraRef={t.ref} style={{ minHeight: 1600 }}>
+            <Page crumbs={['Agents', 'ADÉ', job.subject]} style={{ display: 'grid', gap: 40, padding: '40px 40px 48px' }}>
               <JobHeading />
               <div className="sb-timeline">
-                <TimelineItem open={accepted} dot="success"><Accepted by="Patrick Morgan" /></TimelineItem>
-                <TimelineItem dot={accepted ? undefined : 'active'}><div data-frame="rule"><Recommendation actions={!accepted} pressed={step === 2} /></div></TimelineItem>
+                <TimelineItem open={accepted} icon="check" tone="success"><Accepted by="Patrick Morgan" /></TimelineItem>
+                <TimelineItem icon="shield" tone={accepted ? undefined : 'active'}><div data-frame="rule"><Recommendation actions={!accepted} pressed={step === 2} /></div></TimelineItem>
+                <TimelineItem icon="hunt"><HuntEntry /></TimelineItem>
+                <TimelineItem icon="clipboard"><Worked /></TimelineItem>
+                <TimelineItem icon="play"><Triggered /></TimelineItem>
               </div>
             </Page>
             <div className={`sb-scrim ${modal ? '' : 'is-out'}`}>

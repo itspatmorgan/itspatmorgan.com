@@ -61,7 +61,7 @@ export default function AdeJobs() {
               {tiles.map((tile, i) => <div key={tile.label} className="sb-tile" style={{ marginLeft: i ? -1 : 0 }}><p><CountUp to={tile.to} run={shown} duration={1.3} format={tile.format} reduced={scene.reduced} /></p><span className="sb-label sb-verdict" style={{ fontSize: 11, gap: 4 }}>{tile.label}{Icon.info}</span></div>)}
             </div>
             <p style={{ marginTop: 28, fontSize: 14, fontWeight: 600 }}>Jobs</p>
-            <span className="sb-chip" style={{ marginTop: 10, height: 28, gap: 8, background: 'var(--sb-secondary)' }}>Recommendation Status <b style={{ fontWeight: 500 }}>All</b></span>
+            <span className="sb-filter" style={{ marginTop: 12 }}>Recommendation Status<b>All</b></span>
             <div style={{ marginTop: 12, border: '1px solid var(--sb-border)', borderRadius: 4 }}>
               <div className="sb-row is-head" style={{ gridTemplateColumns: cols }}>
                 {['Message Subject', 'ASA Verdict', 'Started By', 'Started', 'Report Status', 'Recommendation Status'].map(h => <span key={h}>{h}</span>)}

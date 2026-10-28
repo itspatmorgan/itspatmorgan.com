@@ -115,3 +115,25 @@ export function CountUp({ to, run, duration = 1.1, format = (n: number) => Strin
   }, [run, to, duration, reduced]);
   return <span style={{ fontVariantNumeric: 'tabular-nums' }}>{format(value)}</span>;
 }
+
+/** One screen at a time, keyed by `id`: going to the next screen fades the old one out and brings the new one up, like a page load
+ *  that has already happened. */
+export function Screens({ id, children }: { id: string; children: ReactNode }) {
+  return <AnimatePresence mode="wait" initial={false}>
+    <motion.div key={id} initial={{ opacity: 0, y: 10, filter: 'blur(3px)' }} animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }} exit={{ opacity: 0, y: -6, filter: 'blur(2px)', transition: { duration: .18, ease: [.65, 0, .35, 1] } }}
+      transition={{ duration: .42, ease: [.23, 1, .32, 1] }}>{children}</motion.div>
+  </AnimatePresence>;
+}
+
+/** Text typed out a character at a time once `run` is true, at a person's pace; reduced motion shows it whole. */
+export function Typing({ text, run, every = 55, reduced = false }: { text: string; run: boolean; every?: number; reduced?: boolean }) {
+  const [shown, setShown] = useState(reduced ? text.length : 0);
+  useEffect(() => {
+    if (reduced) { setShown(text.length); return; }
+    if (!run) { setShown(0); return; }
+    let i = 0;
+    const timer = window.setInterval(() => { i += 1; setShown(i); if (i >= text.length) window.clearInterval(timer); }, every);
+    return () => window.clearInterval(timer);
+  }, [run, text, every, reduced]);
+  return <>{text.slice(0, shown)}</>;
+}

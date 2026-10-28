@@ -64,9 +64,19 @@
 .sb-code .d { color: var(--sb-code-number); }
 
 /* Agent cards (AgentCard, Figma "Agent Hub R3"). */
-.sb-agent { position: relative; height: 529px; overflow: hidden; border-radius: 4px; border: 1px solid var(--sb-border); background: var(--sb-card); font-weight: 500; }
-.sb-agent::before { content: ''; position: absolute; inset: 0; opacity: .8; background: radial-gradient(ellipse 80% 45% at 70% 28%, var(--sb-glow) 0%, var(--sb-glow-2) 50%, transparent 80%); }
+.sb-agent { position: relative; height: 529px; overflow: hidden; border-radius: 4px; border: 1px solid var(--sb-border); background: var(--sb-card); font-weight: 500; transition: background-color 150ms ease, box-shadow 150ms ease, border-color 150ms ease, transform 160ms var(--sb-ease-out); }
+.sb-agent::before { content: ''; position: absolute; inset: 0; opacity: .8; background: radial-gradient(ellipse 80% 45% at 70% 28%, var(--sb-glow) 0%, var(--sb-glow-2) 50%, transparent 80%); transition: opacity 500ms ease; }
 .sb-agent img { position: absolute; pointer-events: none; user-select: none; }
+.sb-agent-art { transform-origin: 50% 40%; transition: transform 500ms var(--sb-ease-out); }
+/* AgentCard hover: a faint mint fill on a teal shadow, the glow up, the art eased up and grown. */
+.sb-agent.is-hover { border-color: transparent; background: var(--sb-agent-hover); box-shadow: 0 4px 10px rgba(27, 86, 74, .2), 0 0 1px rgba(0, 0, 0, .3); }
+.sb-agent.is-hover::before { opacity: 1; }
+.sb-agent.is-hover .sb-agent-art { transform: scale(1.1) translateY(-6px); }
+.sb-agent.is-pressed { transform: scale(.99); }
+.sb-agent-stat { font-size: 22px; font-weight: 600; line-height: 33px; letter-spacing: -.22px; }
+.sb { --sb-agent-hover: #f0fffb; }
+.dark .sb { --sb-agent-hover: #263431; }
+@media (prefers-reduced-motion: reduce) { .sb-agent, .sb-agent::before, .sb-agent-art { transition: none !important; } }
 .sb-agent-name { font-size: 54px; line-height: 1; letter-spacing: -.54px; font-weight: 500; }
 .sb-agent-caption { margin-top: 8px; font-size: 11px; line-height: 16px; letter-spacing: .11px; color: var(--sb-weak); }
 
@@ -113,12 +123,29 @@
 
 /* ADÉ job page: a timeline down the left. Each entry draws the rail from its own dot to the next one, so the line always connects. */
 .sb-timeline { display: flex; flex-direction: column; }
-.sb-tl-item { position: relative; padding: 0 0 24px 40px; }
-.sb-tl-item:last-child { padding-bottom: 0; }
-.sb-tl-item:not(:last-child)::after { content: ''; position: absolute; left: 11px; top: 27px; bottom: 4px; width: 1px; background: var(--sb-border-strong); }
-.sb-tl-dot { position: absolute; left: 0; top: 0; display: grid; place-items: center; width: 23px; height: 23px; border-radius: 50%; border: 1px solid var(--sb-border-strong); background: var(--sb-card); color: var(--sb-weak); transition: background 300ms ease, border-color 300ms ease, color 300ms ease; }
+/* AdeJobTimeline: a 24px mark column with a 24px gutter; the rail is the column's remaining height, so it meets the next mark exactly. */
+.sb-tl-item { display: flex; }
+.sb-tl-rail { display: flex; flex-direction: column; align-items: center; width: 24px; flex-shrink: 0; margin-right: 24px; }
+.sb-tl-rail > i { flex: 1; width: 1px; background: var(--sb-border-strong); }
+.sb-tl-item:last-child .sb-tl-rail > i { display: none; }
+.sb-tl-body { flex: 1; min-width: 0; padding-bottom: 32px; }
+.sb-tl-item:last-child .sb-tl-body { padding-bottom: 0; }
+.sb-tl-dot { position: relative; z-index: 1; display: grid; place-items: center; width: 24px; height: 24px; flex-shrink: 0; border-radius: 50%; border: 1px solid var(--sb-border-strong); background: var(--sb-card); color: var(--sb-weak); transition: background 300ms ease, border-color 300ms ease, color 300ms ease; }
 .sb-tl-dot.is-active { border-color: var(--sb-button); background: var(--sb-button); color: #fff; }
 .sb-tl-dot.is-success { border-color: var(--sb-success); background: var(--sb-success); color: #fff; }
+.sb-tl-dot.is-running { border-color: var(--sb-button); color: var(--sb-button); }
+.sb-tl-title { min-height: 24px; display: flex; align-items: center; font-size: 15px; font-weight: 600; line-height: 22px; }
+.sb-disclose { display: grid; place-items: center; width: 24px; height: 24px; flex-shrink: 0; border-radius: 50%; border: 1px solid var(--sb-border); color: var(--sb-weak); }
+.sb-disclose svg { transition: transform 300ms var(--sb-ease-out); }
+.sb-disclose.is-open svg { transform: rotate(-90deg) !important; }
+/* The hunt's result in the recommendation header: the reason to accept, beside the button. */
+.sb-proof { display: inline-flex; align-items: center; gap: 8px; width: fit-content; padding: 5px 10px 5px 8px; border-radius: 4px; background: var(--sb-card); box-shadow: inset 0 0 0 1px var(--sb-border); font-size: 13px; line-height: 18px; color: var(--sb-weak); transition: box-shadow 300ms ease, background 300ms ease; }
+.sb-proof b { color: var(--sb-strong); font-weight: 600; }
+.sb-proof svg { color: var(--sb-strong); }
+.sb-proof.is-linked, .sb-hunt-box.is-linked { box-shadow: inset 0 0 0 1.5px var(--sb-button), 0 0 0 3px color-mix(in srgb, var(--sb-button) 14%, transparent); }
+.sb-hunt-box { border-radius: 4px; box-shadow: inset 0 0 0 1px var(--sb-border-strong); background: var(--sb-card); overflow: hidden; transition: box-shadow 300ms ease; }
+.sb-hunt-table { border-top: 1px solid var(--sb-border); }
+.sb-hunt-table .sb-row { min-height: 44px; padding: 0 16px; font-size: 13px; }
 .sb-accepted { border: 1px solid color-mix(in srgb, var(--sb-success) 45%, var(--sb-border)); border-radius: 4px; overflow: hidden; }
 /* Inverted like the verdict head: a tint with the outcome in its ink, instead of the product's solid green bar. */
 .sb-accepted-head { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background: color-mix(in srgb, var(--sb-success) 9%, var(--sb-card)); border-bottom: 1px solid color-mix(in srgb, var(--sb-success) 22%, var(--sb-card)); color: var(--sb-success-ink); font-size: 14px; line-height: 20px; }
@@ -236,3 +263,43 @@
 /* A job row that just arrived: tinted while it runs, then the tint fades once it lands. */
 .sb-row.is-new { background: color-mix(in srgb, var(--sb-success) 6%, var(--sb-card)); }
 .sb-row { transition: background 1200ms ease; }
+
+/* The Rule Editor, redrawn: the hand-written path a missed threat took before ADÉ. */
+.sb-editor { display: grid; grid-template-columns: minmax(0, 1fr) 340px; min-height: 760px; border-top: 1px solid var(--sb-border); }
+.sb-editor-code { display: grid; grid-template-columns: 32px 1fr; align-content: start; column-gap: 16px; padding: 14px 0; background: var(--sb-code); font: 13px/22px 'SB JetBrains Mono', 'JetBrains Mono', ui-monospace, monospace; color: var(--sb-code-text); white-space: pre; }
+.sb-editor-code .n { text-align: right; color: var(--sb-code-line); }
+.sb-editor-code .k { color: var(--sb-code-keyword); }
+.sb-editor-code .p { color: var(--sb-code-path); }
+.sb-caret { display: inline-block; width: 2px; height: 16px; margin-left: 1px; vertical-align: -3px; background: #e8e8e8; animation: sb-caret 1s steps(1) infinite; }
+@keyframes sb-caret { 50% { opacity: 0; } }
+.sb-editor-side { display: grid; grid-template-columns: minmax(0, 1fr); align-content: start; gap: 16px; padding: 20px; border-left: 1px solid var(--sb-border); background: var(--sb-subtle); }
+.sb-eml { display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-radius: 4px; background: var(--sb-card); box-shadow: inset 0 0 0 1px var(--sb-border-strong); font-size: 13px; }
+/* The in-progress job (InProgressTimelineItem): ADÉ's mark over its working line, inside the agentic border. */
+.sb-working { position: relative; padding: 1.5px; border-radius: 6px; }
+.sb-working::before { content: ''; position: absolute; inset: 0; border-radius: 6px; background: var(--sb-agentic); background-size: 300% 100%; animation: sb-agentic 3s linear infinite; }
+.sb-working > div { position: relative; display: grid; place-items: center; align-content: center; gap: 22px; height: 384px; border-radius: 5px; background: var(--sb-card); }
+.sb-working-text { font-size: 16px; font-weight: 500; background: linear-gradient(90deg, var(--sb-strong) 0%, var(--sb-strong) 35%, #2fbf90 50%, var(--sb-strong) 65%, var(--sb-strong) 100%); background-size: 300% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: sb-shimmer 2.4s linear infinite; }
+@keyframes sb-shimmer { from { background-position: 100% 0; } to { background-position: -200% 0; } }
+.sb-octa { width: 168px; animation: sb-float 4s ease-in-out infinite; }
+@keyframes sb-float { 50% { transform: translateY(-6px); } }
+.sb-section-h { font-size: 15px; font-weight: 600; line-height: 22px; }
+@media (prefers-reduced-motion: reduce) { .sb-caret, .sb-working::before, .sb-working-text, .sb-octa { animation: none !important; } }
+/* The jobs filter (RecommendationStatusSelection): a lavender chip holding its value in an inset pill. */
+.sb-filter { display: inline-flex; align-items: center; gap: 6px; width: fit-content; height: 30px; padding: 0 4px 0 10px; border-radius: 4px; background: var(--sb-filter-bg); box-shadow: inset 0 0 0 1px var(--sb-filter-border); font-size: 13px; font-weight: 500; }
+.sb-filter b { display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 3px; background: var(--sb-filter-value); box-shadow: inset 0 0 0 1px var(--sb-filter-value-border); font-weight: 500; }
+.sb { --sb-filter-bg: #EDE9FE; --sb-filter-border: #DDD6FE; --sb-filter-value: #F5F3FF; --sb-filter-value-border: #C4B5FD; }
+.dark .sb { --sb-filter-bg: #2e2a3d; --sb-filter-border: #3d3754; --sb-filter-value: #26233a; --sb-filter-value-border: #5b4f8a; }
+/* AdeOffLoop, on a neutral stage: four marks on a ring with Time to Coverage in the middle; the marks settle in, then the arcs draw. */
+.sb-loop { position: relative; width: 400px; height: 400px; flex-shrink: 0; border-radius: 16px; background: var(--sb-subtle); box-shadow: inset 0 0 0 1px var(--sb-border); }
+.sb-loop-center { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: grid; justify-items: center; }
+.sb-loop-center b { font-size: 34px; font-weight: 500; line-height: 42px; letter-spacing: -.8px; }
+.sb-loop-tile { position: absolute; display: grid; justify-items: center; align-content: center; gap: 12px; width: 116px; height: 112px; border-radius: 10px; background: var(--sb-card); box-shadow: 0 0 0 1px var(--sb-border), 0 6px 16px -10px rgba(0, 0, 0, .18); animation: sb-tile-in 520ms var(--sb-ease-out) both; }
+.sb-loop-mark { display: grid; place-items: center; height: 50px; }
+.sb-loop-label { font-size: 12px; font-weight: 500; white-space: nowrap; }
+.sb-disc { position: relative; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--sb-secondary); color: var(--sb-strong); }
+.sb-disc i { position: absolute; right: -3px; top: -3px; display: flex; padding: 1px; border-radius: 50%; background: var(--sb-card); }
+.sb-loop-arc { animation: sb-fade-in 420ms ease both; }
+@keyframes sb-tile-in { from { opacity: 0; transform: translateY(6px) scale(.97); filter: blur(2px); } to { opacity: 1; transform: none; filter: none; } }
+@keyframes sb-fade-in { from { opacity: 0; } }
+.sb-btn.is-ghost { background: transparent; color: var(--sb-link); box-shadow: none; }
+@media (prefers-reduced-motion: reduce) { .sb-loop-tile, .sb-loop-arc { animation: none !important; } }
