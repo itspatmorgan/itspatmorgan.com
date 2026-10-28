@@ -142,7 +142,6 @@
 .sb-proof { display: inline-flex; align-items: center; gap: 8px; width: fit-content; padding: 5px 10px 5px 8px; border-radius: 4px; background: var(--sb-card); box-shadow: inset 0 0 0 1px var(--sb-border); font-size: 13px; line-height: 18px; color: var(--sb-weak); transition: box-shadow 300ms ease, background 300ms ease; }
 .sb-proof b { color: var(--sb-strong); font-weight: 600; }
 .sb-proof svg { color: var(--sb-strong); }
-.sb-proof.is-linked, .sb-hunt-box.is-linked { box-shadow: inset 0 0 0 1.5px var(--sb-button), 0 0 0 3px color-mix(in srgb, var(--sb-button) 14%, transparent); }
 .sb-hunt-box { border-radius: 4px; box-shadow: inset 0 0 0 1px var(--sb-border-strong); background: var(--sb-card); overflow: hidden; transition: box-shadow 300ms ease; }
 .sb-hunt-table { border-top: 1px solid var(--sb-border); }
 .sb-hunt-table .sb-row { min-height: 44px; padding: 0 16px; font-size: 13px; }
@@ -258,8 +257,8 @@
 .sb-popover dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }
 @media (prefers-reduced-motion: reduce) { .sb-popover, .sb-menu { transition: none !important; } }
 
-/* The threshold line in the hunt summary: a quiet success tint, the cause the outcome above points to. */
-.sb-meets { display: inline-flex; align-items: center; gap: 8px; width: fit-content; padding: 4px 10px 4px 8px; border-radius: 4px; background: color-mix(in srgb, var(--sb-success) 10%, var(--sb-card)); color: var(--sb-success-ink); font-weight: 500; }
+/* The threshold line in the hunt summary (HuntSummaryContent). */
+.sb-meets { display: inline-flex; align-items: center; gap: 8px; }
 /* A job row that just arrived: tinted while it runs, then the tint fades once it lands. */
 .sb-row.is-new { background: color-mix(in srgb, var(--sb-success) 6%, var(--sb-card)); }
 .sb-row { transition: background 1200ms ease; }
@@ -303,3 +302,8 @@
 @keyframes sb-fade-in { from { opacity: 0; } }
 .sb-btn.is-ghost { background: transparent; color: var(--sb-link); box-shadow: none; }
 @media (prefers-reduced-motion: reduce) { .sb-loop-tile, .sb-loop-arc { animation: none !important; } }
+
+/* Section headings sit flat on the page, the content in its container below (a liberty on the product's gray header bars). */
+.sb-sec { display: grid; gap: 10px; }
+.sb-sec-h { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 14px; font-weight: 600; line-height: 20px; }
+.sb-sec-h svg { color: var(--sb-weak); }

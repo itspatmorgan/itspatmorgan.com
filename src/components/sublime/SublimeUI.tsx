@@ -97,13 +97,13 @@ export const job = { subject: 'Action required: payroll profile verification', i
 
 /** ADÉ's recommendation (JobCompletedCard): rule fields beside the MQL, with Accept and Reject while it waits for review.
  *  Liberty taken: the header carries the hunt's result (the source keeps it in the hunt entry below), so the reason to accept sits beside
- *  the button; `linked` lights the line while the hunt that backs it is in view. */
-export function Recommendation({ actions = false, pressed = false, linked = false, style }: { actions?: boolean; pressed?: boolean; linked?: boolean; style?: CSSProperties }) {
+ *  the button. */
+export function Recommendation({ actions = false, pressed = false, style }: { actions?: boolean; pressed?: boolean; style?: CSSProperties }) {
   return <div className="sb-cells" style={style}>
-    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: 24, padding: 24, background: 'var(--sb-cell-head)' }}>
+    <div data-frame="rec-head" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: 24, padding: 24, background: 'var(--sb-cell-head)' }}>
       <div style={{ display: 'grid', gap: 10 }}>
         <div><p className="sb-body" style={{ fontWeight: 600 }}>ADÉ Recommendation</p><p className="sb-body" style={{ marginTop: 4 }}>Create a new rule and set it as active in your environment.</p></div>
-        <span className={`sb-proof ${linked ? 'is-linked' : ''}`} data-target="proof">{Icon.bullseye}<b>93% match</b><span>in a 14-day hunt · 40 malicious matches · 2 possible false positives</span></span>
+        <span className="sb-proof" data-target="proof">{Icon.bullseye}<b>93% match</b><span>in a 14-day hunt · 40 malicious matches · 2 possible false positives</span></span>
       </div>
       <div className={`sb-fade ${actions ? '' : 'is-out'}`} style={{ display: 'flex', gap: 8 }}><span className={`sb-btn ${pressed ? 'is-pressed' : ''}`} data-target="accept">Accept</span><span className="sb-btn is-secondary">Reject</span></div>
     </div>
@@ -217,11 +217,11 @@ const huntRows = [
 
 /** The hunt entry (HuntTimelineItem): the hunt's summary, which opens onto its results (HuntResultsTable). Counts are the source's sample
  *  data; with `run` false they wait at zero, and `run` counts them up. `meets` adds the auto-accept line. */
-export function HuntEntry({ run = true, reduced = false, meets = false, open = false, linked = false }: { run?: boolean; reduced?: boolean; meets?: boolean; open?: boolean; linked?: boolean }) {
+export function HuntEntry({ run = true, reduced = false, meets = false, open = false }: { run?: boolean; reduced?: boolean; meets?: boolean; open?: boolean }) {
   const n = (to: number) => <CountUp to={to} run={run} reduced={reduced} />;
   return <div style={{ display: 'grid', gap: 16 }} data-frame="hunt">
     <TimelineTitle>ADÉ hunted across 14 days and found {n(43)}&nbsp;message groups ({n(58)}&nbsp;total messages)</TimelineTitle>
-    <div className={`sb-hunt-box ${linked ? 'is-linked' : ''}`}>
+    <div className="sb-hunt-box">
       <div style={{ display: 'flex', justifyContent: 'space-between', gap: 16, padding: 16 }}>
         <div className="sb-body" style={{ display: 'grid', gap: 12 }}>
           <span className="sb-verdict">{Icon.bullseye}<span>Recommended Rule is a <b style={{ fontWeight: 600 }}><CountUp to={93} run={run} reduced={reduced} format={v => `${Math.round(v)}%`} /></b> match with {n(40)} malicious matches and may introduce {n(2)} false positives (Benign).</span></span>
