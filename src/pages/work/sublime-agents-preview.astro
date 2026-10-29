@@ -40,12 +40,18 @@ const description = 'I designed how Sublime’s agents turn a missed threat into
 
     <section class="qb-slide" aria-labelledby="problem">
       <h2 id="problem">Every missed threat became detection engineering work</h2>
-      <p>A malicious verdict with no matching rule meant a trip to the Rule Editor, and hours of writing and testing by hand.</p>
+      <p>A threat no rule caught meant a trip to the Rule Editor, and hours of writing and testing by hand.</p>
       <MessageDetail variant="gap" client:visible />
     </section>
 
+    <section class="qb-slide" aria-labelledby="bet">
+      <h2 id="bet">The agent hands over work people can read and own</h2>
+      <p>Instead of a black box, ADÉ writes an MQL rule your team can read, edit and deploy.</p>
+      <JobReview client:visible />
+    </section>
+
     <section class="qb-slide" aria-labelledby="setup">
-      <h2 id="setup">Introduce the agent before asking for trust</h2>
+      <h2 id="setup">Explain the agent before it’s turned on</h2>
       <p>From the hub, ADÉ’s page explains the loop it runs, and how fast, before anything is turned on.</p>
       <AdeSetup client:visible />
     </section>
@@ -56,27 +62,21 @@ const description = 'I designed how Sublime’s agents turn a missed threat into
       <MessageDetail variant="handoff" client:visible />
     </section>
 
-    <section class="qb-slide" aria-labelledby="bet">
-      <h2 id="bet">The agent hands over work people can read and own</h2>
-      <p>A black‑box agent hides its logic. ADÉ puts its intelligence into a detection rule in MQL that your team can read, edit and deploy at scale, so people and the agent work on the same thing.</p>
-      <JobReview client:visible />
-    </section>
-
     <section class="qb-slide" aria-labelledby="efficacy">
       <h2 id="efficacy">Let the backtest decide how much review a rule needs</h2>
-      <p>Every recommendation carries its hunt result. When the match clears your threshold, the rule goes live on its own.</p>
+      <p>Each rule carries its hunt result, and one that clears your threshold goes live on its own.</p>
       <AutoAccepted client:visible />
     </section>
 
     <section class="qb-slide" aria-labelledby="trust">
-      <h2 id="trust">Trust in autonomy has to be earned</h2>
+      <h2 id="trust">Let teams turn up autonomy one step at a time</h2>
       <p>Teams choose, per verdict, when ADÉ starts on its own and when it can accept its own rules.</p>
       <AutomationConfig client:visible />
     </section>
 
     <section class="qb-slide" aria-labelledby="outcome">
-      <h2 id="outcome">Design the on‑ramp, not the chat</h2>
-      <p>Agents work out of sight, so ADÉ’s page shows its impact and every job it starts. The headline is Time to Coverage: from a missed threat to a rule ready to accept, it averages under two hours across customers. All of it has shipped or is shipping.</p>
+      <h2 id="outcome">Missed threats get covered in under two hours</h2>
+      <p>ADÉ’s page tracks Time to Coverage: from a missed threat to a rule ready to accept.</p>
       <AdeJobs client:visible />
     </section>
 
