@@ -5,6 +5,7 @@ export function switchTheme(next: "light" | "dark", onApply?: () => void) {
   const apply = () => {
     root.classList.add("theme-switching");
     root.classList.toggle("dark", next === "dark");
+    root.style.colorScheme = next; // scrollbars and form controls follow too, even inside a viewer that set its own
     try { localStorage.setItem("theme", next); } catch { /* storage can be unavailable, e.g. in an embedded preview */ }
     onApply?.();
     // Commit the new colors before transitions come back, so none of them animate from the old theme.
