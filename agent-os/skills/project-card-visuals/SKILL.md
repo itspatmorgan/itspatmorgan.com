@@ -134,8 +134,12 @@ Present ranked findings before changing anything, as with case studies.
 - Set a card's own variables (`--pc-surface`, `--pc-line`, accents) on the
   element where the product's tokens are defined. Query Builder's tokens live on
   `.qb-native`, so its card variables are set there, not on the figure.
-- The shared `.pc-bg` offsets can win over a card's own; raise the card's
-  selector (`.sb-pc .sb-pc-agent`) when its offsets don't apply.
+- Production bundles the stylesheets in a different order from development, so
+  equal-specificity rules can resolve differently once deployed. The shared
+  base rules (`.pc-bg`, `.pc-fg`, `.pc-title`, `.pc-cue`) are wrapped in
+  `:where()` so a card's own rules always win; keep new shared rules that way.
+  Check cards in a production build (`pnpm build`, then the `preview` launch
+  configuration on port 4322) before shipping, not only in `pnpm dev`.
 - The dev server often keeps serving old modules and styles after edits to
   these components. Restart it before judging a change.
 - Background browser tabs pause the card's timers. Test motion and hover in a
