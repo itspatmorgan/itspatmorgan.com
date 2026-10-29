@@ -401,6 +401,7 @@ const elsewhere = [
 </style>
 
 <script>
+  import { switchTheme } from "@/scripts/theme";
   function applyCollapsed(sidebar: HTMLElement, collapsed: boolean) {
     const elsewhereGroup = sidebar.querySelector(".elsewhere-group") as HTMLElement | null;
     const rollupBtn = sidebar.querySelector("#elsewhere-rollup-btn") as HTMLButtonElement | null;
@@ -544,18 +545,7 @@ const elsewhere = [
       const isDark = document.documentElement.classList.contains("dark");
       const next = isDark ? "light" : "dark";
 
-      const apply = () => {
-        document.documentElement.classList.toggle("dark", next === "dark");
-        localStorage.setItem("theme", next);
-        updateThemeLabel();
-      };
-
-      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if (!reduced && "startViewTransition" in document) {
-        (document as Document & { startViewTransition: (cb: () => void) => void }).startViewTransition(apply);
-      } else {
-        apply();
-      }
+      switchTheme(next, updateThemeLabel);
     });
   }
 

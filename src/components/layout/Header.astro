@@ -43,6 +43,7 @@ import { Moon02Icon, Sun03Icon, Menu01Icon } from "@hugeicons/core-free-icons";
 </style>
 
 <script>
+  import { switchTheme } from "@/scripts/theme";
   function initMobileThemeToggle() {
     const themeToggle = document.getElementById("mobile-theme-toggle") as HTMLButtonElement | null;
     if (!themeToggle) return;
@@ -62,18 +63,7 @@ import { Moon02Icon, Sun03Icon, Menu01Icon } from "@hugeicons/core-free-icons";
       const isDark = document.documentElement.classList.contains("dark");
       const next = isDark ? "light" : "dark";
 
-      const apply = () => {
-        document.documentElement.classList.toggle("dark", next === "dark");
-        localStorage.setItem("theme", next);
-        updateThemeLabel();
-      };
-
-      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if (!reduced && "startViewTransition" in document) {
-        (document as Document & { startViewTransition: (cb: () => void) => void }).startViewTransition(apply);
-      } else {
-        apply();
-      }
+      switchTheme(next, updateThemeLabel);
     });
   }
 

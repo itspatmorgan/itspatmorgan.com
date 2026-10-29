@@ -282,6 +282,9 @@ html:active-view-transition-type(page-navigation)::view-transition-new(root) {
     url('/images/textures/debut_dark.png');
 }
 
+/* While the theme switches, every color changes at once: see src/scripts/theme.ts. */
+.theme-switching *, .theme-switching *::before, .theme-switching *::after { transition: none !important; }
+
 /* Subtle writing-list signal, inspired by the editorial generator language */
 [data-article-item] {
   position: relative;
