@@ -215,9 +215,11 @@ The repo has no deploy previews, so Patrick reviews a published preview:
 - Build, then publish the preview route's page and only the files it reaches
   as a private artifact. Rewrite absolute paths to relative ones (including
   JS template strings) and rename `_astro/` to `assets/`.
-- The artifact viewer blocks browser storage. Test the page with
-  `localStorage` throwing: the theme must still follow the system and the
-  toggle must still switch it.
+- The artifact viewer sets `data-theme` on the page's root after it loads and
+  changes it when the viewer switches theme; the page must follow it (see the
+  theme bootstrap in `BaseLayout.astro`). Check the theme in the real viewer
+  (the artifact-emulator skill), switching both ways, and with `localStorage`
+  throwing, before telling Patrick it works.
 - Work through his comments one thread at a time. Reply with what changed, then
   resolve the thread. Republish to the same artifact so the link stays the same.
 
@@ -266,5 +268,6 @@ On Patrick's go-ahead:
 - Every animated scene checked frame by frame (contact sheets about 250ms
   apart) at desktop and phone widths before each publish, not only its end
   state.
-- The theme works with browser storage blocked.
+- The theme follows the viewer and the system, and works with browser storage
+  blocked.
 - Every claim on the page maps to an answer from fact-finding or a source.
