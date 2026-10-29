@@ -222,29 +222,9 @@
 .sb-empty { display: grid; justify-items: center; align-content: center; gap: 10px; height: 300px; margin-top: 12px; border: 1px solid var(--sb-border); border-radius: 4px; background: var(--sb-subtle); font-size: 13px; color: var(--sb-weak); }
 .sb-empty > span { color: var(--sb-border-strong); transform: scale(1.8); }
 
-/* How ADÉ works dialog: it rises in, the segmented control's pill slides between tabs. */
-.sb-dialog { transform-origin: 50% 30%; transition: transform 420ms var(--sb-ease-out), opacity 260ms ease; }
-.sb-dialog.is-out { transform: scale(.96) translateY(8px); opacity: 0; }
-.sb-scrim .sb-modal:not(.sb-dialog) { transform-origin: 50% 40%; transition: transform 360ms var(--sb-ease-out); }
-.sb-scrim.is-out .sb-modal:not(.sb-dialog) { transform: scale(.96); }
-.sb-close { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 4px; box-shadow: inset 0 0 0 1px var(--sb-border-strong); color: var(--sb-strong); }
-.sb-seg { display: inline-flex; gap: 2px; width: fit-content; padding: 3px; border-radius: 999px; background: var(--sb-secondary); box-shadow: inset 0 0 0 1px var(--sb-border); }
-.sb-seg-item { position: relative; display: inline-flex; align-items: center; height: 28px; padding: 0 14px; border-radius: 999px; font-size: 13px; font-weight: 500; color: var(--sb-weak); transition: color 250ms ease, transform 160ms var(--sb-ease-out); }
-.sb-seg-item > span { position: relative; }
-.sb-seg-item.is-on { color: var(--sb-strong); }
-.sb-seg-item.is-pressed { transform: scale(.97); }
-.sb-seg-pill { position: absolute; inset: 0; border-radius: 999px; background: var(--sb-card); box-shadow: 0 1px 2px rgba(0, 0, 0, .1), 0 0 0 1px var(--sb-border); }
-.sb-shot-stage { min-height: 290px; padding: 20px; border-radius: 8px; border: 1px solid var(--sb-border); background: var(--sb-subtle); }
-.sb-shot { display: flex; flex-direction: column; gap: 6px; padding: 14px; border-radius: 8px; background: var(--sb-card); border: 1px solid var(--sb-border); box-shadow: 0 1px 2px rgba(0, 0, 0, .04), 0 6px 16px -8px rgba(0, 0, 0, .12); }
-.sb-shot.is-current { box-shadow: 0 0 0 1.5px var(--sb-success), 0 6px 16px -8px rgba(0, 0, 0, .12); }
-.sb-shot-art { display: grid; place-items: center; height: 104px; margin-bottom: 6px; border-radius: 6px; background: var(--sb-subtle); }
-.sb-mini-mail { display: grid; gap: 4px; width: 86%; padding: 8px; border-radius: 6px; background: var(--sb-card); border: 1px solid var(--sb-border); font-size: 11px; line-height: 14px; }
-.sb-mini-mail b { font-weight: 600; }
-.sb-ttc-bar { display: block; height: 3px; border-radius: 2px; background: var(--sb-success); transform-origin: left; }
-.sb-level-bars { display: flex; align-items: flex-end; gap: 3px; height: 16px; margin-bottom: 4px; }
-.sb-level-bars i { width: 5px; border-radius: 1px; background: var(--sb-border-strong); }
-.sb-level-bars i.is-on { background: var(--sb-success); }
-.sb-start { margin-left: 8px; padding: 2px 6px; border-radius: 4px; background: color-mix(in srgb, var(--sb-success) 14%, var(--sb-card)); color: var(--sb-success-ink); font-size: 11px; font-weight: 500; vertical-align: 2px; }
+/* A modal rises in over its scrim. */
+.sb-scrim .sb-modal { transform-origin: 50% 40%; transition: transform 360ms var(--sb-ease-out); }
+.sb-scrim.is-out .sb-modal { transform: scale(.96); }
 
 /* Header info popover (the threshold explainer): opens from its icon, scale and fade from the anchor corner. */
 .sb-popover { position: absolute; right: 0; top: calc(100% + 8px); z-index: 6; width: 340px; padding: 14px 16px; display: grid; gap: 10px; border-radius: 6px; background: var(--sb-card); color: var(--sb-strong); font-size: 13px; line-height: 19px; font-weight: 400; text-transform: none; letter-spacing: 0; white-space: normal; box-shadow: 0 0 0 1px var(--sb-border-strong), 0 12px 28px rgba(0, 0, 0, .16); transform-origin: top right; transition: opacity 200ms var(--sb-ease-out), transform 200ms var(--sb-ease-out), visibility 0s linear 0s; }
