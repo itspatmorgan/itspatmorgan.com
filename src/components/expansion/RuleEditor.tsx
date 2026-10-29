@@ -32,7 +32,7 @@ export default function RuleEditor() {
   const loop = useDemoLoop(durations, 0, true, true);
   const { chars, focus } = frames[loop.step];
   const value = (i: number) => <>{typed[i].text.slice(0, chars[i])}{focus === i && <i className="xp-caret" />}</>;
-  return <figure className={`qb-demo xp-rule-editor ${loop.resetting ? 'qb-loop-reset' : ''}`} ref={loop.ref} aria-label="A custom rule: requests from a python-requests user agent to /products/* are tagged with a suspected-bot signal, and IPs over 100 signals a minute are blocked">
+  return <figure className={`cs-demo xp-rule-editor ${loop.resetting ? 'cs-loop-reset' : ''}`} ref={loop.ref} aria-label="A custom rule: requests from a python-requests user agent to /products/* are tagged with a suspected-bot signal, and IPs over 100 signals a minute are blocked">
     <NativeStage width={1240} height={900}>
       <div className="xp-card">
         {heading(27.38, 'Conditions')}

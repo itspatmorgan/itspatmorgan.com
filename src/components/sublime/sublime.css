@@ -24,9 +24,9 @@
   --sb-drop: 0 4px 4px rgba(0, 0, 0, .4);
 }
 
-.sb .cs-frame .qb-native-stage, .sb .cs-frame .qb-native { background: transparent; }
-.sb .qb-native { font-family: 'Inter Variable', 'Inter', sans-serif; font-weight: 400; color: var(--sb-strong); letter-spacing: 0; font-feature-settings: 'cv11'; }
-.sb .qb-native-stage { transition: opacity 240ms ease; }
+.sb .cs-frame .cs-native-stage, .sb .cs-frame .cs-native { background: transparent; }
+.sb .cs-native { font-family: 'Inter Variable', 'Inter', sans-serif; font-weight: 400; color: var(--sb-strong); letter-spacing: 0; font-feature-settings: 'cv11'; }
+.sb .cs-native-stage { transition: opacity 240ms ease; }
 /* The scene card takes the product's surface, ring and shadow. */
 .sb { --cs-card: var(--sb-card); --cs-ring: var(--sb-ring); --cs-drop: var(--sb-drop); }
 
@@ -274,7 +274,7 @@
 
 /* The project card (SublimeCard), in the shared card frame: ADÉ's hub card behind, the rule it auto-accepted in front. */
 .sb-pc { --pc-surface: var(--sb-card); --pc-line: var(--sb-border); }
-.sb-pc .qb-native { font-family: 'Inter Variable', 'Inter', sans-serif; color: var(--sb-strong); letter-spacing: 0; }
+.sb-pc .cs-native { font-family: 'Inter Variable', 'Inter', sans-serif; color: var(--sb-strong); letter-spacing: 0; }
 /* The hub card's glow and art, at card size; `is-up` is the hub card's hover: the glow comes up and the art eases up and grows. */
 .sb-pc .sb-pc-agent { top: 16px; right: 28px; bottom: 42px; padding: 20px 22px; -webkit-mask-image: none; mask-image: none; }
 .sb-pc-agent::before { content: ''; position: absolute; inset: 0; opacity: .7; background: radial-gradient(ellipse 60% 70% at 72% 34%, var(--sb-glow) 0%, var(--sb-glow-2) 50%, transparent 80%); transition: opacity 700ms ease; }

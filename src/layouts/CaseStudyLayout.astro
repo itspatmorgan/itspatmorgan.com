@@ -20,16 +20,16 @@ const { title, description, image, product, company, heading, subline, brief } =
 ---
 
 <PageLayout title={title} description={description} image={image}>
-  <article class:list={['qb-page qb-case', product]}>
-    <nav class="qb-case-nav" aria-label="Case study navigation">
+  <article class:list={['cs-page', product]}>
+    <nav class="cs-nav" aria-label="Case study navigation">
       <a href="/work"><Icon icon={ArrowLeft01Icon} size={16} />Work</a>
     </nav>
 
-    <header class="qb-slide qb-hero">
-      <p class="qb-company"><img src={company.logo} width="30" height="30" alt="" />{company.name}</p>
+    <header class="cs-slide cs-hero">
+      <p class="cs-company"><img src={company.logo} width="30" height="30" alt="" />{company.name}</p>
       <h1>{heading}</h1>
       <p>{subline}</p>
-      <dl class="qb-brief">
+      <dl class="cs-brief">
         {brief.map(([label, value]) => <div><dt>{label}</dt><dd>{value}</dd></div>)}
       </dl>
       <slot name="hero" />

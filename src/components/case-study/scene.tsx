@@ -84,8 +84,8 @@ export function SceneFrame({ scene, stage, label, title, size = 'wide', controls
   // The server renders the wide layout; on a phone the stage stays hidden until it has laid itself out for the phone.
   const [ready, setReady] = useState(false);
   useEffect(() => setReady(true), []);
-  return <figure className={`cs-scene ${scene.fade ? 'qb-loop-reset' : ''}`} ref={scene.ref as RefObject<HTMLElement>} aria-label={label}>
-    <div className={`qb-stage texture-bg cs-frame is-${size} ${ready ? 'is-ready' : ''}`}>
+  return <figure className={`cs-scene ${scene.fade ? 'cs-loop-reset' : ''}`} ref={scene.ref as RefObject<HTMLElement>} aria-label={label}>
+    <div className={`cs-stage texture-bg cs-frame is-${size} ${ready ? 'is-ready' : ''}`}>
       <NarrowLayout.Provider value={stage.narrow}>
         <NativeStage width={g.width} height={g.height}>
           <div className={`cs-shell ${g.bottom ? 'is-contained' : ''}`} style={{ left: g.inset - g.ring, top: g.top - g.ring, bottom: g.bottom ? g.bottom - g.ring : 0, width: card + g.ring * 2, padding: g.bottom ? g.ring : `${g.ring}px ${g.ring}px 0` }}>
@@ -248,7 +248,7 @@ export function Pointer({ at, visible, pressing = false, reduced = false }: { at
     const ax = animate(x, at!.x, glide), ay = animate(y, at!.y, glide);
     return () => { ax.stop(); ay.stop(); };
   }, [show, at?.x, at?.y]);
-  return <motion.div className="q-cursor cs-pointer" aria-hidden="true" style={{ left: 0, top: 0, x, y, opacity }}>
+  return <motion.div className="cs-cursor cs-pointer" aria-hidden="true" style={{ left: 0, top: 0, x, y, opacity }}>
     <motion.div style={{ scale: counter, transformOrigin: '4px 3px' }}>
       <motion.div initial={false} animate={{ scale: pressing ? .86 : 1 }} transition={{ type: 'spring', bounce: 0, duration: .22 }} style={{ transformOrigin: '4px 3px' }}>
         <HugeiconsIcon icon={Cursor01Icon} size={23} strokeWidth={1.7} />

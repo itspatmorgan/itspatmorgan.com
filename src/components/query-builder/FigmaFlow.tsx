@@ -68,7 +68,7 @@ export default function FigmaFlow({ sequence }: { sequence: Flow }) {
   const direction = phase === 3 ? 1 : phase >= 4 ? 2 : 0;
   const tooltip = phase === 2 ? 'Bidirectional' : phase === 3 ? 'Toward source' : phase === 4 ? 'Toward target' : undefined;
   const nextDirection = () => loop.choose(direction === 0 ? 3 : direction === 1 ? 4 : 2);
-  return <figure className={`qb-demo qb-flow qb-flow-${sequence} ${loop.resetting ? 'qb-loop-reset' : ''}`} ref={loop.ref} data-step={phase} aria-label={`${flowTitles[sequence]} design demo`} onKeyDown={e => { if (e.key === 'Escape') loop.choose(sequence === 'select' ? (phase >= 4 ? 6 : 0) : sequence === 'filter' ? (phase < 5 ? 0 : phase < 8 ? 5 : 8) : 0); }}>
+  return <figure className={`cs-demo qb-flow qb-flow-${sequence} ${loop.resetting ? 'cs-loop-reset' : ''}`} ref={loop.ref} data-step={phase} aria-label={`${flowTitles[sequence]} design demo`} onKeyDown={e => { if (e.key === 'Escape') loop.choose(sequence === 'select' ? (phase >= 4 ? 6 : 0) : sequence === 'filter' ? (phase < 5 ? 0 : phase < 8 ? 5 : 8) : 0); }}>
     <div className="qb-film-stage"><NativeStage width={width} height={height} crop={sequence === 'select' ? undefined : { x: 0, y: 12, width: 588, height: 360 }} interactive={!loop.playing}>
       {sequence === 'select' ? <SelectionScene phase={phase} choose={loop.choose} /> : <NativeBuilder filterPhase={sequence === 'filter' ? phase : 12} onFilterPhase={sequence === 'filter' ? loop.choose : undefined} hoverRoot={sequence === 'filter' && phase >= 1 && phase <= 4} tooltip={sequence === 'filter' && phase === 2} filterMenu={sequence === 'filter' && (phase === 3 || phase === 4)} menuHover={phase === 4} animated={sequence === 'filter' && loop.playing} relation={sequence === 'direction'} direction={direction} directionTooltip={sequence === 'direction' ? tooltip : undefined} relationHover={sequence === 'direction' && phase >= 1 && phase <= 4} onDirection={nextDirection} />}
       <DemoCursor x={sourceX} y={sourceY} visible={loop.playing} reduced={loop.reduced} pressing={sequence === 'filter' ? [4, 7, 10].includes(phase) : sequence === 'select' ? phase === 4 : phase === 3 || phase === 4} />
@@ -102,8 +102,8 @@ const syntaxTimings = [3000, 3000, 3000, 3000, 3000, 3000, 3600];
 export function SyntaxSequence() {
   const loop = useDemoLoop(syntaxTimings);
   const current = concepts[loop.step];
-  return <MotionConfig reducedMotion="user"><figure className={`qb-demo qb-syntax-sequence ${loop.resetting ? 'qb-loop-reset' : ''}`} ref={loop.ref} aria-label="Query syntax features" data-concept={current.key}>
-    <div className="q-syntax-surface qb-native">
+  return <MotionConfig reducedMotion="user"><figure className={`cs-demo qb-syntax-sequence ${loop.resetting ? 'cs-loop-reset' : ''}`} ref={loop.ref} aria-label="Query syntax features" data-concept={current.key}>
+    <div className="q-syntax-surface cs-native">
       <div className="q-syntax-editor">
         <div className="q-editor-bar"><span className="q-editor-tab"><SourceIcon name="Code" size={14} />access-review.j1ql</span><span className="q-editor-language">J1QL</span></div>
         <div className="q-syntax-code"><code>{syntaxLines.map((line, row) => <div className="q-editor-line" key={row}><span className="q-editor-line-number" aria-hidden="true">{row + 1}</span><span className={`q-syntax-line ${row > 1 ? 'q-syntax-indent' : ''}`}>{line.map((token, i) => <span key={i} className={`q-syntax-token ${token.type ? `q-syntax-${token.type}` : ''} ${token.type === current.key ? 'q-token-active' : 'q-token-muted'}`} style={{ transitionDelay: `${i * 12}ms` }}>{token.text}</span>)}</span></div>)}</code></div>

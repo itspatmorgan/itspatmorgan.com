@@ -17,7 +17,7 @@ const timings = [4200, 5200];
 export default function QueryBuilderDemo() {
   const loop = useDemoLoop(timings, 0, false);
   const view = loop.step;
-  return <figure className="qb-demo qb-query-demo qb-query-toggle" ref={loop.ref} data-view={views[view]} aria-label="The same query as J1QL and as visual controls">
+  return <figure className="cs-demo qb-query-demo qb-query-toggle" ref={loop.ref} data-view={views[view]} aria-label="The same query as J1QL and as visual controls">
     <div className="qb-view-toggle" role="group" aria-label="Query view">
       {views.map((label, i) => <button type="button" key={label} aria-pressed={view === i} onClick={() => loop.choose(i)}>{label}</button>)}
     </div>

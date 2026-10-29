@@ -112,7 +112,7 @@ const captions = ['Templated Signals tag common bots', 'A rule flags and blocks 
 export default function SignalChain() {
   const loop = useDemoLoop(steps.map(s => s.ms), steps.length - 1);
   const step = steps[loop.step];
-  return <figure className={`qb-demo xp-chain ${loop.resetting ? 'qb-loop-reset' : ''}`} ref={loop.ref} aria-label="Bot Signals for search engines, scrapers, scanners and bad bots; a Scraper rule that flags and blocks IPs over 50 signals a minute; and the timeline of one IP being flagged and blocked">
+  return <figure className={`cs-demo xp-chain ${loop.resetting ? 'cs-loop-reset' : ''}`} ref={loop.ref} aria-label="Bot Signals for search engines, scrapers, scanners and bad bots; a Scraper rule that flags and blocks IPs over 50 signals a minute; and the timeline of one IP being flagged and blocked">
     <NativeStage width={1240} height={900}>
       <div className="xp-card">{screens.map((name, i) => <div key={name} className={`xp-fade xp-seq ${i === step.screen ? '' : 'xp-off'}`} style={{ inset: 0 }} aria-hidden={i !== step.screen}>
         {i === 0 && <SignalsTable />}{i === 1 && <ScraperRule />}{i === 2 && <Timeline shown={step.screen === 2 ? step.events : events.length} />}

@@ -30,7 +30,7 @@ export default function QueryNaturalLanguage() {
   const loop = useDemoLoop(durations, frames.length - 1);
   const { typed, shown, active } = frames[loop.step];
   const complete = typed === question.length;
-  return <figure className={`qb-demo qb-nl ${loop.resetting ? 'qb-loop-reset' : ''}`} ref={loop.ref} aria-label="A plain-language question translated into J1QL">
+  return <figure className={`cs-demo qb-nl ${loop.resetting ? 'cs-loop-reset' : ''}`} ref={loop.ref} aria-label="A plain-language question translated into J1QL">
     <div className="qb-film-stage"><NativeStage width={960} height={400}>
       <div className="q-nl-canvas">
         <div className="q-blank-field q-nl-field">

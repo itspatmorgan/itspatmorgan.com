@@ -15,7 +15,7 @@ const durations = frames.map(f => f.ms);
 export default function QuerySearchBlank() {
   const loop = useDemoLoop(durations, 0, false);
   const text = frames[loop.step].text;
-  return <figure className="qb-demo qb-search-blank" ref={loop.ref} aria-label="The original free-form search box">
+  return <figure className="cs-demo qb-search-blank" ref={loop.ref} aria-label="The original free-form search box">
     <div className="qb-film-stage"><NativeStage width={720} height={200}>
       <div className="q-blank-search">
         <div className="q-blank-field">

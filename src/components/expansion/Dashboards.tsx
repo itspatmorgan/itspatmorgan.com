@@ -44,7 +44,7 @@ const lines: [string, string][] = [
 export default function Dashboards() {
   const reveal = useRevealOnce<HTMLElement>();
   const grow = reveal.shown ? 1 : 0;
-  return <figure className="qb-demo xp-dashboards" ref={reveal.ref} aria-label="Bot dashboards: bot signal trends, bot signals by type, bad bots, bot score trends, bot score, and bot versus non-bot traffic">
+  return <figure className="cs-demo xp-dashboards" ref={reveal.ref} aria-label="Bot dashboards: bot signal trends, bot signals by type, bad bots, bot score trends, bot score, and bot versus non-bot traffic">
     <NativeStage width={1240} height={900}>
       <div className="xp-card is-bare">
         {card(col[0], row[0], 463.79, <>

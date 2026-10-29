@@ -18,7 +18,7 @@ export default function QuerySentence() {
   const loop = useDemoLoop(timings, timings.length - 1);
   const active = loop.step >= 1 && loop.step <= parts.length ? loop.step - 1 : -1;
   const labelled = loop.step === 0 ? 0 : Math.min(loop.step, parts.length);
-  return <figure className={`qb-demo qb-sentence ${loop.resetting ? 'qb-loop-reset' : ''}`} ref={loop.ref} aria-label="A J1QL query split into three parts: what to find, which ones, and how it connects">
+  return <figure className={`cs-demo qb-sentence ${loop.resetting ? 'cs-loop-reset' : ''}`} ref={loop.ref} aria-label="A J1QL query split into three parts: what to find, which ones, and how it connects">
     <div className="qb-film-stage"><NativeStage width={1160} height={300}>
       <div className="q-sentence">
         {parts.map((part, i) => <div key={part.label} className={`q-part ${i === active ? 'is-active' : ''} ${i < labelled ? 'is-labelled' : ''}`}>

@@ -14,7 +14,7 @@ const timings = [900, 1400, 1400, 1400, 3600];
 export default function ThreePieces() {
   const loop = useDemoLoop(timings, 0, true, true);
   const answered = loop.step;
-  return <figure className={`qb-demo xp-pieces ${loop.resetting ? 'qb-loop-reset' : ''}`} ref={loop.ref} aria-label="Three questions, each answered by an existing platform piece: detect with Signals, take action with Rules and Alerts, monitor with Dashboards">
+  return <figure className={`cs-demo xp-pieces ${loop.resetting ? 'cs-loop-reset' : ''}`} ref={loop.ref} aria-label="Three questions, each answered by an existing platform piece: detect with Signals, take action with Rules and Alerts, monitor with Dashboards">
     <NativeStage width={960} height={697}>
       <div className="xp-center"><div className="xp-pieces">{pieces.map((row, i) => {
         const shown = i < answered;

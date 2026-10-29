@@ -9,7 +9,7 @@ interface Props {
 const { id, title, line } = Astro.props;
 ---
 
-<section class="qb-slide" aria-labelledby={id}>
+<section class="cs-slide" aria-labelledby={id}>
   <h2 id={id}>{title}</h2>
   {line && <p>{line}</p>}
   <slot />

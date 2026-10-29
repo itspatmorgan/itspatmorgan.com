@@ -19,15 +19,15 @@ export function NativeStage({ width, height, children, className = '', interacti
     observer.observe(node);
     return () => observer.disconnect();
   }, [viewportWidth]);
-  return <div className={`qb-native-stage ${className}`} ref={ref} style={{ aspectRatio: `${viewportWidth} / ${viewportHeight}`, containerType: 'inline-size' }}>
-    <div className="qb-native q-canvas" inert={!interactive} style={{ width, height, transform: `${scale ? `scale(${scale})` : `scale(calc(100cqw / ${viewportWidth}px))`} ${offset}` }}><MotionConfig reducedMotion="user">{children}</MotionConfig></div>
+  return <div className={`cs-native-stage ${className}`} ref={ref} style={{ aspectRatio: `${viewportWidth} / ${viewportHeight}`, containerType: 'inline-size' }}>
+    <div className="cs-native cs-canvas" inert={!interactive} style={{ width, height, transform: `${scale ? `scale(${scale})` : `scale(calc(100cqw / ${viewportWidth}px))`} ${offset}` }}><MotionConfig reducedMotion="user">{children}</MotionConfig></div>
   </div>;
 }
 
 export function DemoControls({ loop, title, caption }: { loop: DemoLoop; title: string; caption: string }) {
-  return <><figcaption className="sr-only" aria-live={loop.playing ? 'off' : 'polite'}>{caption}</figcaption><button type="button" className="qb-play" aria-label={`${loop.playing ? 'Pause' : 'Play'} ${title}`} title={`${loop.playing ? 'Pause' : 'Play'} animation`} onClick={loop.toggle}><HugeiconsIcon icon={loop.playing ? PauseIcon : PlayIcon} size={14} strokeWidth={1.7} /></button></>;
+  return <><figcaption className="sr-only" aria-live={loop.playing ? 'off' : 'polite'}>{caption}</figcaption><button type="button" className="cs-play" aria-label={`${loop.playing ? 'Pause' : 'Play'} ${title}`} title={`${loop.playing ? 'Pause' : 'Play'} animation`} onClick={loop.toggle}><HugeiconsIcon icon={loop.playing ? PauseIcon : PlayIcon} size={14} strokeWidth={1.7} /></button></>;
 }
 
 export function DemoCursor({ x, y, visible, reduced = false, pressing = false }: { x: number; y: number; visible: boolean; reduced?: boolean; pressing?: boolean }) {
-  return <AnimatePresence>{visible && <motion.div className="q-cursor" aria-hidden="true" initial={{ opacity: 0, left: x, top: y }} animate={{ left: x, top: y, opacity: 1, scale: pressing ? .86 : 1 }} exit={{ opacity: 0 }} transition={{ left: { duration: reduced ? 0 : .55, ease: [.22, 1, .36, 1] }, top: { duration: reduced ? 0 : .55, ease: [.22, 1, .36, 1] }, scale: { duration: .14 }, opacity: { duration: .14 } }}><HugeiconsIcon icon={Cursor01Icon} size={23} strokeWidth={1.7} /></motion.div>}</AnimatePresence>;
+  return <AnimatePresence>{visible && <motion.div className="cs-cursor" aria-hidden="true" initial={{ opacity: 0, left: x, top: y }} animate={{ left: x, top: y, opacity: 1, scale: pressing ? .86 : 1 }} exit={{ opacity: 0 }} transition={{ left: { duration: reduced ? 0 : .55, ease: [.22, 1, .36, 1] }, top: { duration: reduced ? 0 : .55, ease: [.22, 1, .36, 1] }, scale: { duration: .14 }, opacity: { duration: .14 } }}><HugeiconsIcon icon={Cursor01Icon} size={23} strokeWidth={1.7} /></motion.div>}</AnimatePresence>;
 }

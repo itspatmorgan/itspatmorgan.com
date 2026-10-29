@@ -70,7 +70,7 @@ export default function AgentFlow() {
   const phases = s.agent >= 2, full = s.agent === 3;
   // Connector ends from the source: they meet the message boxes before the agent exists, and the agent after.
   const inEnd = wide ? 833 : 650, outStart = wide ? 1090 : 1263;
-  return <figure className={`qb-demo xp-agent-flow ${loop.resetting ? 'qb-loop-reset' : ''}`} ref={loop.ref} aria-label="The Signal Sciences agent processing flow: requests and responses pass through the agent's pre and post phases, and collectors send data to the cloud">
+  return <figure className={`cs-demo xp-agent-flow ${loop.resetting ? 'cs-loop-reset' : ''}`} ref={loop.ref} aria-label="The Signal Sciences agent processing flow: requests and responses pass through the agent's pre and post phases, and collectors send data to the cloud">
     <NativeStage width={1240} height={900}><div className="xp-card"><div className="xp-agent-fit">
       <div className={`xp-agent xp-live ${jump ? 'is-jump' : ''}`}>
         {titles.map((t, i) => titles.indexOf(t) === i && <div key={i} className="xp-script" style={show(titles[loop.step] === t, { fontWeight: states[t].bold ? 700 : 400 })} aria-hidden={titles[loop.step] !== t}>{states[t].title}</div>)}

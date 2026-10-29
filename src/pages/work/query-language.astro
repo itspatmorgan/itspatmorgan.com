@@ -28,26 +28,26 @@ if (!project) throw new Error('Query language case study is missing');
     ['Outcome', 'First query in 1 day, not 21'],
   ]}
 >
-  <div slot="hero" class="qb-stage texture-bg"><QueryBuilderDemo client:load /></div>
+  <div slot="hero" class="cs-stage texture-bg"><QueryBuilderDemo client:load /></div>
 
   <Slide id="problem" title="A blank box. No guidance." line="Every question had to be written in J1QL, a proprietary graph query language. New customers didn’t know what to ask, or how.">
-    <div class="qb-stage texture-bg"><QuerySearchBlank client:visible /></div>
+    <div class="cs-stage texture-bg"><QuerySearchBlank client:visible /></div>
   </Slide>
 
   <Slide id="insight" title="I bet the language was worth teaching" line="The language was feature-rich but simple at its core. Getting the most out of the platform meant learning it.">
-    <div class="qb-stage texture-bg"><QuerySentence client:visible /></div>
+    <div class="cs-stage texture-bg"><QuerySentence client:visible /></div>
   </Slide>
 
   <Slide id="explore" title="First, I showed people what they could ask" line="With our security team and customers, I organized hundreds of cyber asset types into categories anyone could browse.">
-    <div class="qb-stage texture-bg"><FigmaFlow sequence="select" client:visible /></div>
+    <div class="cs-stage texture-bg"><FigmaFlow sequence="select" client:visible /></div>
   </Slide>
 
   <Slide id="filtering" title="Then, I showed them how to ask for it" line="They built the query visually, and every control mapped to a piece of the language.">
-    <div class="qb-stage texture-bg"><FigmaFlow sequence="filter" client:visible /></div>
+    <div class="cs-stage texture-bg"><FigmaFlow sequence="filter" client:visible /></div>
   </Slide>
 
   <Slide id="relationships" title="And I pushed toward full parity with the language" line="Even direction, written as << or >> in a query, became a control people could see and switch.">
-    <div class="qb-stage texture-bg"><FigmaFlow sequence="direction" client:visible /></div>
+    <div class="cs-stage texture-bg"><FigmaFlow sequence="direction" client:visible /></div>
   </Slide>
 
   <Slide id="outcome" title="New customers were querying on day one">
@@ -62,6 +62,6 @@ if (!project) throw new Error('Query language case study is missing');
   </Slide>
 
   <Slide id="today" title="Today, I’d start with natural language" line="I’d let people ask in plain language, translate it into a query, and teach the language through that translation.">
-    <div class="qb-stage texture-bg"><QueryNaturalLanguage client:visible /></div>
+    <div class="cs-stage texture-bg"><QueryNaturalLanguage client:visible /></div>
   </Slide>
 </CaseStudyLayout>

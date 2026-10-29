@@ -3,28 +3,28 @@
 @font-face { font-family: 'QB Ubuntu Mono'; src: url('/fonts/query-builder/ubuntu-mono-regular.woff2') format('woff2'); font-style: normal; font-weight: 400; font-display: swap; }
 @font-face { font-family: 'QB Ubuntu Mono'; src: url('/fonts/query-builder/ubuntu-mono-bold.woff2') format('woff2'); font-style: normal; font-weight: 700; font-display: swap; }
 
-.qb-page { max-width: 1248px; margin: auto; padding: 0 48px; }
-.qb-page *, .qb-page *::before, .qb-page *::after { box-sizing: border-box; }
-.qb-page a:hover { color: var(--foreground); }
-.qb-demo { margin: 0; min-width: 0; }
+.cs-page { max-width: 1248px; margin: auto; padding: 0 48px; }
+.cs-page *, .cs-page *::before, .cs-page *::after { box-sizing: border-box; }
+.cs-page a:hover { color: var(--foreground); }
+.cs-demo { margin: 0; min-width: 0; }
 .qb-query-stage { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px -4px #00000018; }
 .qb-film-stage { background: var(--card); border: 1px solid var(--border); padding: 24px; border-radius: 10px; }
-.qb-native-stage { position: relative; width: 100%; overflow: clip; background: var(--q-bg); border-radius: 3px; }
-.q-canvas { position: absolute; top: 0; left: 0; transform-origin: top left; }
-.qb-play { display: inline-flex; justify-content: center; align-items: center; gap: 7px; min-height: 32px; background: transparent; border-radius: 6px; cursor: pointer; transition: background 150ms ease, transform 150ms ease; color: var(--foreground); }
-.qb-play { padding: 0 8px; margin-left: -6px; flex-shrink: 0; }
-.qb-play:hover { background: #f0f0f0; }.qb-play:active { transform: scale(.95); }
-.qb-page button:focus-visible, .qb-page a:focus-visible { outline: 2px solid var(--ring); outline-offset: 3px; }
+.cs-native-stage { position: relative; width: 100%; overflow: clip; background: var(--q-bg); border-radius: 3px; }
+.cs-canvas { position: absolute; top: 0; left: 0; transform-origin: top left; }
+.cs-play { display: inline-flex; justify-content: center; align-items: center; gap: 7px; min-height: 32px; background: transparent; border-radius: 6px; cursor: pointer; transition: background 150ms ease, transform 150ms ease; color: var(--foreground); }
+.cs-play { padding: 0 8px; margin-left: -6px; flex-shrink: 0; }
+.cs-play:hover { background: #f0f0f0; }.cs-play:active { transform: scale(.95); }
+.cs-page button:focus-visible, .cs-page a:focus-visible { outline: 2px solid var(--ring); outline-offset: 3px; }
 
 /* Source UI: measured Lato / Ubuntu Mono, Material-era dimensions and colors. */
-.qb-native, .qb-native-stage, .qb-film-stage { --q-bg: #fff; --q-popover: #fff; --q-paper: #fafafa; --q-code-bg: #f8f8f8; --q-text: #212121; --q-secondary: #757575; --q-disabled: #bdbdbd; --q-line: #e0e0e0; --q-field-line: #d3d3d3; --q-hover: #f5f5f5; --q-hover-strong: #ebebeb; --q-selected: #f5f5f5; --q-teal: #009688; --q-blue: #0d47a1; --q-green: #4caf50; --q-gold: #ffc107; --q-cyan: #03a9f4; --q-check: #3f51b5; --q-optional: #b8cfff; --q-unchecked: #858585; --q-row-action: #aaa; --q-tooltip: #242424; --q-tooltip-text: #fff; --q-specific: #e3edff; --q-specific-hover: #d5e4ff; --q-anything: #e1f2f2; --q-shadow: 0 2px 4px #0004, 0 4px 7px #0002; }
+.cs-native, .cs-native-stage, .qb-film-stage { --q-bg: #fff; --q-popover: #fff; --q-paper: #fafafa; --q-code-bg: #f8f8f8; --q-text: #212121; --q-secondary: #757575; --q-disabled: #bdbdbd; --q-line: #e0e0e0; --q-field-line: #d3d3d3; --q-hover: #f5f5f5; --q-hover-strong: #ebebeb; --q-selected: #f5f5f5; --q-teal: #009688; --q-blue: #0d47a1; --q-green: #4caf50; --q-gold: #ffc107; --q-cyan: #03a9f4; --q-check: #3f51b5; --q-optional: #b8cfff; --q-unchecked: #858585; --q-row-action: #aaa; --q-tooltip: #242424; --q-tooltip-text: #fff; --q-specific: #e3edff; --q-specific-hover: #d5e4ff; --q-anything: #e1f2f2; --q-shadow: 0 2px 4px #0004, 0 4px 7px #0002; }
 /* Dark adaptation: surfaces step lighter as they stack (page, stage, window, popover); lighter tints of the source semantic colors. */
-.dark :is(.qb-native, .qb-native-stage, .qb-film-stage) { --q-bg: #2a2725; --q-paper: #302d2a; --q-code-bg: #262422; --q-text: #ede9e4; --q-secondary: #a8a29b; --q-disabled: #6f6a64; --q-line: #3d3a36; --q-field-line: #4b4742; --q-hover: #34312e; --q-hover-strong: #3d3a36; --q-selected: #34312e; --q-popover: #33302d; --q-teal: #4db6ac; --q-blue: #8ab4ff; --q-green: #81c784; --q-gold: #ffd54f; --q-cyan: #4fc3f7; --q-check: #9fa8ff; --q-optional: #4f6290; --q-unchecked: #8a857f; --q-row-action: #8a857f; --q-tooltip: #46423e; --q-tooltip-text: #f5f2ee; --q-specific: #22314d; --q-specific-hover: #2a3c5e; --q-anything: #1f3533; --q-shadow: 0 2px 6px #0009, 0 8px 18px #0006; }
-.qb-native { background: var(--q-bg); color: var(--q-text); font: 400 16px/1.5 'QB Lato', sans-serif; letter-spacing: .15px; }
-.qb-native button, .qb-native input { font: inherit; letter-spacing: inherit; color: inherit; }
-.qb-native button { border: 0; background: transparent; cursor: pointer; }
-.qb-native button:focus-visible { outline: 2px solid var(--q-teal); outline-offset: 2px; }
-.qb-native h4, .qb-native p, .qb-native ul { margin: 0; padding: 0; font-family: inherit; }.qb-native ul { list-style: none; }
+.dark :is(.cs-native, .cs-native-stage, .qb-film-stage) { --q-bg: #2a2725; --q-paper: #302d2a; --q-code-bg: #262422; --q-text: #ede9e4; --q-secondary: #a8a29b; --q-disabled: #6f6a64; --q-line: #3d3a36; --q-field-line: #4b4742; --q-hover: #34312e; --q-hover-strong: #3d3a36; --q-selected: #34312e; --q-popover: #33302d; --q-teal: #4db6ac; --q-blue: #8ab4ff; --q-green: #81c784; --q-gold: #ffd54f; --q-cyan: #4fc3f7; --q-check: #9fa8ff; --q-optional: #4f6290; --q-unchecked: #8a857f; --q-row-action: #8a857f; --q-tooltip: #46423e; --q-tooltip-text: #f5f2ee; --q-specific: #22314d; --q-specific-hover: #2a3c5e; --q-anything: #1f3533; --q-shadow: 0 2px 6px #0009, 0 8px 18px #0006; }
+.cs-native { background: var(--q-bg); color: var(--q-text); font: 400 16px/1.5 'QB Lato', sans-serif; letter-spacing: .15px; }
+.cs-native button, .cs-native input { font: inherit; letter-spacing: inherit; color: inherit; }
+.cs-native button { border: 0; background: transparent; cursor: pointer; }
+.cs-native button:focus-visible { outline: 2px solid var(--q-teal); outline-offset: 2px; }
+.cs-native h4, .cs-native p, .cs-native ul { margin: 0; padding: 0; font-family: inherit; }.cs-native ul { list-style: none; }
 .q-icon { display: inline-block; vertical-align: middle; flex: 0 0 auto; }
 .q-teal { color: var(--q-teal); }.q-gold { color: var(--q-gold); }.q-green { color: var(--q-green); }.q-cyan, .q-blue { color: var(--q-cyan); }
 .q-keyword { font: 400 14px/18px 'QB Ubuntu Mono', monospace; letter-spacing: 0; color: var(--q-teal); display: block; }
@@ -87,8 +87,8 @@
 .q-relationship-optional { border-left: 2px dashed var(--q-optional); }
 .q-optional-stack { margin-top: 24px; }.q-optional-stack:empty { display: none; }
 .q-optional-stack .q-relationship { margin-top: 0; }.q-optional-stack .q-reveal + .q-reveal { margin-top: 28px; }
-.q-cursor { position: absolute; z-index: 100; color: #111; width: 26px; height: 28px; pointer-events: none; filter: drop-shadow(0 1px 1px #fff9) drop-shadow(0 2px 2px #0003); }
-.q-cursor svg { fill: white; }
+.cs-cursor { position: absolute; z-index: 100; color: #111; width: 26px; height: 28px; pointer-events: none; filter: drop-shadow(0 1px 1px #fff9) drop-shadow(0 2px 2px #0003); }
+.cs-cursor svg { fill: white; }
 
 /* Query two ways: original 456 / 544 split, source control geometry and scaled inner UI. */
 .q-code-indent { padding-left: 24px; }.q-code-keyword { color: var(--q-teal); }.q-code-arrow { color: var(--q-blue); }
@@ -143,9 +143,9 @@
 .q-syntax-token { border-radius: 2px; transition: opacity 260ms ease, background 260ms ease, box-shadow 260ms ease, color 260ms ease; }
 .q-token-muted { opacity: .45; }.q-token-active { opacity: 1; background: color-mix(in srgb, var(--q-teal) 9%, var(--q-bg)); box-shadow: 0 0 0 3px color-mix(in srgb, var(--q-teal) 9%, var(--q-bg)); color: var(--q-text); }
 
-@media (max-width: 1050px) { .qb-page { padding: 0 30px; }.q-syntax-surface { padding: 22px; }.q-syntax-code { padding: 20px 14px; }.q-syntax-code code { font-size: 12px; line-height: 24px; } }
-@media (max-width: 760px) { .qb-page { padding: 0 20px; }.qb-film-stage { padding: 14px; }.q-syntax-code code { font-size: 12px; line-height: 23px; }.q-syntax-code { padding: 20px 12px; }.q-syntax-surface { padding: 22px 18px; } }
-@media (prefers-reduced-motion: reduce) { .qb-page *, .qb-page *::before, .qb-page *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+@media (max-width: 1050px) { .cs-page { padding: 0 30px; }.q-syntax-surface { padding: 22px; }.q-syntax-code { padding: 20px 14px; }.q-syntax-code code { font-size: 12px; line-height: 24px; } }
+@media (max-width: 760px) { .cs-page { padding: 0 20px; }.qb-film-stage { padding: 14px; }.q-syntax-code code { font-size: 12px; line-height: 23px; }.q-syntax-code { padding: 20px 12px; }.q-syntax-surface { padding: 22px 18px; } }
+@media (prefers-reduced-motion: reduce) { .cs-page *, .cs-page *::before, .cs-page *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
 /* Source-measured corrections from the matching-state comparison. */
 .q-chip { font-size: 14px; gap: 6px; }
 .q-selection-prompt { font-size: 14px; }
@@ -168,7 +168,7 @@
 .q-query-ui .q-user-filter .q-field-property { width: 130.99px; }.q-query-ui .q-user-filter .q-field-operator { width: 69.01px; }.q-query-ui .q-user-filter .q-field-value { width: 242.69px; }
 .q-query-ui .q-add-connection { height: 28px; }
 .q-chip { padding-inline: 7px; }
-.qb-native svg { overflow: hidden; }
+.cs-native svg { overflow: hidden; }
 .q-selection-row:has(.q-selection-prompt) { background: var(--q-hover); padding-inline: 12px; }
 .q-selection-prompt { gap: 6px; }
 .q-specific-entities, .q-query-anything { padding-block: 4px; }
@@ -181,10 +181,10 @@
 .q-query-ui .q-keyword, .q-query-ui .q-relation-label { font-size: 14px; line-height: 18px; }
 
 /* Presentation chrome stays subordinate to the source UI. */
-.qb-native-stage, .q-syntax-code { transition: opacity 240ms ease; }
-.qb-loop-reset .qb-native-stage, .qb-loop-reset .q-syntax-code { opacity: 0; transition-duration: 180ms; }
+.cs-native-stage, .q-syntax-code { transition: opacity 240ms ease; }
+.cs-loop-reset .cs-native-stage, .cs-loop-reset .q-syntax-code { opacity: 0; transition-duration: 180ms; }
 .q-query-ui .q-optional-stack { margin-top: 14px; padding-bottom: 0; }
-.qb-flow-select .qb-native-stage { background: var(--q-bg, #fff); }
+.qb-flow-select .cs-native-stage { background: var(--q-bg, #fff); }
 .q-syntax-surface { border: 0; padding: 0; background: transparent; }
 .q-syntax-code { padding: 27px 23px; border-radius: 8px; margin-top: 12px; }
 @media (max-width: 760px) { .q-syntax-code { padding: 23px 17px; } }
@@ -199,15 +199,15 @@
 .q-model-summary li { font-size: 12px; }
 
 /* Autoplay visuals sit directly in the editorial flow. */
-.qb-demo { position: relative; }
+.cs-demo { position: relative; }
 .qb-query-stage, .qb-film-stage { padding: 0; border: 0; border-radius: 0; box-shadow: none; background: transparent; }
-.qb-flow .qb-native-stage, .qb-flow .q-canvas { background: var(--q-bg); }
-.qb-native-stage { border-radius: 0; }
-.qb-play { position: absolute; right: 8px; bottom: 8px; width: 30px; height: 30px; min-height: 30px; margin: 0; padding: 0; border-radius: 50%; opacity: .7; color: #616161; }
-.qb-demo:hover > .qb-play, .qb-play:hover, .qb-play:focus-visible { opacity: 1; }
+.qb-flow .cs-native-stage, .qb-flow .cs-canvas { background: var(--q-bg); }
+.cs-native-stage { border-radius: 0; }
+.cs-play { position: absolute; right: 8px; bottom: 8px; width: 30px; height: 30px; min-height: 30px; margin: 0; padding: 0; border-radius: 50%; opacity: .7; color: #616161; }
+.cs-demo:hover > .cs-play, .cs-play:hover, .cs-play:focus-visible { opacity: 1; }
 .q-syntax-code { padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; margin: 0; }
-.qb-syntax-sequence > .qb-play { bottom: 0; right: 0; }
-@media (max-width: 760px) { .qb-play { opacity: .6; } }
+.qb-syntax-sequence > .cs-play { bottom: 0; right: 0; }
+@media (max-width: 760px) { .cs-play { opacity: .6; } }
 
 /* A single quiet surface grounds each graphic; both details share one camera scale. */
 .qb-film-stage { padding: 24px; border: 1px solid var(--border); border-radius: 10px; background: var(--q-bg); }
@@ -226,7 +226,7 @@
 .q-editor-line-number { color: var(--q-secondary); opacity: .55; text-align: right; user-select: none; font-variant-numeric: tabular-nums; }
 .q-syntax-editor .q-token-muted { opacity: .28; }
 .q-editor-status { height: 34px; display: flex; align-items: center; padding: 0 42px 0 17px; border-top: 1px solid var(--q-line); background: var(--q-paper); color: var(--q-secondary); font: 10px var(--font-mono); }
-.qb-syntax-sequence > .qb-play { bottom: 3px; right: 6px; height: 28px; min-height: 28px; width: 28px; }
+.qb-syntax-sequence > .cs-play { bottom: 3px; right: 6px; height: 28px; min-height: 28px; width: 28px; }
 @media (max-width: 760px) { .q-syntax-editor .q-syntax-code { padding: 20px 13px 22px 7px; }.q-editor-line { grid-template-columns: 19px minmax(0, 1fr); column-gap: 12px; }.q-editor-tab { font-size: 10px; padding-inline: 13px; } }
 
 /* Query translation: one view at a time; clauses leave and arrive in query order. */
@@ -234,7 +234,7 @@
 .qb-view-toggle button { min-height: 30px; padding: 0 16px; border-radius: 99px; color: var(--muted-foreground); font: 500 13px var(--font-sans); cursor: pointer; transition: background 200ms ease, color 200ms ease; }
 .qb-view-toggle button[aria-pressed=true] { background: var(--background); color: var(--foreground); box-shadow: 0 1px 2px #0000001a; }
 .qb-query-toggle { margin-inline: auto; }
-.qb-query-toggle > .qb-play { bottom: 10px; right: 10px; }
+.qb-query-toggle > .cs-play { bottom: 10px; right: 10px; }
 /* Both views share one column, centered as a block, so FIND sits at the same point in each. */
 .q-toggle-canvas { display: grid; grid-template-columns: max-content; place-content: center; width: 960px; height: 600px; background: var(--q-bg); transition: background-color 400ms ease; }
 .qb-query-toggle[data-view=Code] .q-toggle-canvas { background: var(--q-code-bg); }
@@ -304,7 +304,7 @@
 /* The project card (QueryCard), in the shared card frame: the builder behind, the same query as J1QL in front, over its top edge, its left
    edge on the controls' line (28 + 18 + 3 + 2 + 14 = 65). */
 /* The Query Builder tokens live on the canvas, so the card's own variables are set there too. */
-.qc .qb-native { --pc-surface: var(--q-bg); --pc-line: var(--q-line); --qc-cue: var(--q-blue); font-family: 'Inter Variable', 'Inter', sans-serif; color: var(--q-text); letter-spacing: 0; }
+.qc .cs-native { --pc-surface: var(--q-bg); --pc-line: var(--q-line); --qc-cue: var(--q-blue); font-family: 'Inter Variable', 'Inter', sans-serif; color: var(--q-text); letter-spacing: 0; }
 .qc-builder { top: 78px; padding: 14px 18px; -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 92px), transparent calc(100% - 28px)), linear-gradient(to bottom, #000 calc(100% - 46px), transparent calc(100% - 28px)); mask-image: linear-gradient(to right, #000 calc(100% - 92px), transparent calc(100% - 28px)), linear-gradient(to bottom, #000 calc(100% - 46px), transparent calc(100% - 28px)); }
 .qc-builder .q-keyword { font-size: 12px; line-height: 16px; color: var(--q-teal); }
 .qc-tree { display: grid; justify-items: start; gap: 8px; margin: 8px 0 0 3px; padding-left: 14px; border-left: 2px solid var(--q-teal); }

@@ -1,62 +1,58 @@
 /* One point per section: a headline, at most one line of copy, then the visual. Source UI keeps its original palette. */
-.qb-case {
+.cs-page {
   --qb-window-shadow: 0 1px 2px #0000000d, 0 12px 32px -12px #2a201426;
   max-width: 1280px;
   padding: 0 48px 160px;
 }
-.dark .qb-case { --qb-window-shadow: 0 1px 2px #0006, 0 18px 40px -16px #000c; }
-.qb-case a { text-underline-offset: 4px; }
-.qb-case-nav { padding: 34px 0; color: var(--muted-foreground); font: 12px var(--font-mono); }
-.qb-case-nav a { display: inline-flex; align-items: center; gap: 8px; }
+.dark .cs-page { --qb-window-shadow: 0 1px 2px #0006, 0 18px 40px -16px #000c; }
+.cs-page a { text-underline-offset: 4px; }
+.cs-nav { padding: 34px 0; color: var(--muted-foreground); font: 12px var(--font-mono); }
+.cs-nav a { display: inline-flex; align-items: center; gap: 8px; }
 
 /* Slides: a short headline, one line of context, then the visual, all within one viewport.
    Spacing roughly doubles at each level: 24 within a group, 48 to its visual, 72 from the hero brief, 144 between sections. */
-.qb-slide { padding-top: 144px; text-align: center; scroll-margin-top: 24px; }
+.cs-slide { padding-top: 144px; text-align: center; scroll-margin-top: 24px; }
 /* One content measure: titles, copy and stages all sit within 960px, so nothing outruns the visual below it. */
-.qb-slide h1, .qb-slide h2 { max-width: 960px; margin-inline: auto; font-weight: 500; text-wrap: balance; }
-.qb-slide h1 { max-width: 15em; font-size: clamp(42px, 5.2vw, 76px); line-height: 1.02; letter-spacing: -.05em; }
-.qb-slide h2 { font-size: clamp(28px, 2.9vw, 40px); line-height: 1.05; letter-spacing: -.045em; }
-.qb-slide > p { max-width: 840px; margin: 24px auto 0; font-size: clamp(17px, 1.4vw, 19px); line-height: 1.5; letter-spacing: -.012em; color: var(--muted-foreground); text-wrap: pretty; }
-.qb-slide > .qb-stage, .qb-slide > .qb-days { margin-top: 48px; }
+.cs-slide h1, .cs-slide h2 { max-width: 960px; margin-inline: auto; font-weight: 500; text-wrap: balance; }
+.cs-slide h1 { max-width: 15em; font-size: clamp(42px, 5.2vw, 76px); line-height: 1.02; letter-spacing: -.05em; }
+.cs-slide h2 { font-size: clamp(28px, 2.9vw, 40px); line-height: 1.05; letter-spacing: -.045em; }
+.cs-slide > p { max-width: 840px; margin: 24px auto 0; font-size: clamp(17px, 1.4vw, 19px); line-height: 1.5; letter-spacing: -.012em; color: var(--muted-foreground); text-wrap: pretty; }
+.cs-slide > .cs-stage, .cs-slide > .qb-days { margin-top: 48px; }
 /* Hero rhythm: a tight title group (company, title, subline), a clear step to the brief, a larger step to the visual. */
-.qb-hero { padding-top: 22px; container-type: inline-size; }
-.qb-hero h1 { font-size: clamp(38px, 3.9vw, 52px); line-height: 1.08; }
-.qb-hero > p { margin-top: 28px; }
-.qb-hero > .qb-company { display: inline-flex; align-items: center; gap: 7px; margin: 0 0 32px; color: var(--foreground); font-size: 17px; font-weight: 500; letter-spacing: -.01em; }
-.qb-company img { width: 30px; height: 30px; filter: invert(1); }.dark .qb-company img { filter: none; }
-.qb-hero > .qb-stage { margin-top: 72px; }
+.cs-hero { padding-top: 22px; container-type: inline-size; }
+.cs-hero h1 { font-size: clamp(38px, 3.9vw, 52px); line-height: 1.08; }
+.cs-hero > p { margin-top: 28px; }
+.cs-hero > .cs-company { display: inline-flex; align-items: center; gap: 7px; margin: 0 0 32px; color: var(--foreground); font-size: 17px; font-weight: 500; letter-spacing: -.01em; }
+.cs-company img { width: 30px; height: 30px; filter: invert(1); }.dark .cs-company img { filter: none; }
+.cs-hero > .cs-stage { margin-top: 72px; }
 /* Project brief: four facts, read at a glance before the visuals take over. */
-.qb-brief { display: grid; grid-template-columns: repeat(4, auto); justify-content: center; margin: 56px auto 0; }
+.cs-brief { display: grid; grid-template-columns: repeat(4, auto); justify-content: center; margin: 56px auto 0; }
 /* Facts are about 735px wide; padding takes whatever room is left, then the row wraps. */
-.qb-brief > div { padding: 2px clamp(12px, calc((100cqi - 740px) / 8), 24px); }
-.qb-brief > div + div { border-left: 1px solid var(--border); }
-.qb-brief dt { font-size: 13px; line-height: 1.4; color: var(--muted-foreground); }
-.qb-brief dd { margin-top: 8px; font-size: 15px; line-height: 1.4; font-weight: 500; letter-spacing: -.005em; white-space: nowrap; }
+.cs-brief > div { padding: 2px clamp(12px, calc((100cqi - 740px) / 8), 24px); }
+.cs-brief > div + div { border-left: 1px solid var(--border); }
+.cs-brief dt { font-size: 13px; line-height: 1.4; color: var(--muted-foreground); }
+.cs-brief dd { margin-top: 8px; font-size: 15px; line-height: 1.4; font-weight: 500; letter-spacing: -.005em; white-space: nowrap; }
 /* One row while the four facts fit; a 2x2 grid only once the hero is narrower than the row. */
 @container (max-width: 840px) {
-  .qb-brief { grid-template-columns: repeat(2, minmax(0, 260px)); gap: 20px 0; }
-  .qb-brief > div:nth-child(3) { border-left: 0; }
-  .qb-brief dd { white-space: normal; text-wrap: balance; }
+  .cs-brief { grid-template-columns: repeat(2, minmax(0, 260px)); gap: 20px 0; }
+  .cs-brief > div:nth-child(3) { border-left: 0; }
+  .cs-brief dd { white-space: normal; text-wrap: balance; }
 }
 
 /* Stage: the site texture surface; the source UI floats on it as a product shot. Capped so the panel hugs its window on wide screens. */
-.qb-stage { position: relative; max-width: 960px; margin: 0 auto; text-align: left; padding: clamp(16px, 4.5vw, 64px); border-radius: 16px; }
-.qb-case .qb-query-stage, .qb-case .qb-film-stage, .qb-case-search video { border: 0; border-radius: 10px; box-shadow: var(--qb-window-shadow); }
-.qb-case .qb-film-stage { background: var(--q-bg); padding: 24px; }
-.dark .qb-case :is(.qb-query-stage, .qb-film-stage) { box-shadow: 0 0 0 1px #ffffff14, var(--qb-window-shadow); }
-.qb-case .qb-demo-caption { display: none; }
-.qb-case .qb-play { background: var(--background); border: 1px solid var(--border); color: var(--foreground); opacity: .85; }
-.qb-case .qb-play:hover { opacity: 1; background: var(--background); }
-.qb-case-search { margin: 0; }
-.qb-case-search video { display: block; width: 100%; height: auto; background: #fff; }
-.qb-case-search figcaption { margin-top: 16px; color: var(--muted-foreground); font-size: 14px; text-align: center; }
+.cs-stage { position: relative; max-width: 960px; margin: 0 auto; text-align: left; padding: clamp(16px, 4.5vw, 64px); border-radius: 16px; }
+.cs-page .qb-query-stage, .cs-page .qb-film-stage { border: 0; border-radius: 10px; box-shadow: var(--qb-window-shadow); }
+.cs-page .qb-film-stage { background: var(--q-bg); padding: 24px; }
+.dark .cs-page :is(.qb-query-stage, .qb-film-stage) { box-shadow: 0 0 0 1px #ffffff14, var(--qb-window-shadow); }
+.cs-page .cs-play { background: var(--background); border: 1px solid var(--border); color: var(--foreground); opacity: .85; }
+.cs-page .cs-play:hover { opacity: 1; background: var(--background); }
 /* One window size across slides, so the sequence reads like a deck. */
-.qb-stage .qb-demo { max-width: 880px; margin-inline: auto; }
+.cs-stage .cs-demo { max-width: 880px; margin-inline: auto; }
 
 /* Scenes (scene.tsx): the screen carries its own margins, so the stage drops its padding and the card bleeds off the bottom.
    Wide stages run past the 960px text measure to the page's full width, so a product screen renders at about its true size. */
-.qb-case .cs-frame { padding: 0; overflow: hidden; }
-.qb-case .cs-frame.is-wide { max-width: 1184px; }
+.cs-page .cs-frame { padding: 0; overflow: hidden; }
+.cs-page .cs-frame.is-wide { max-width: 1184px; }
 .cs-scene { margin: 48px 0 0; }
 /* The shell holds the card and its ring, and fades both out toward the stage's bottom edge, so a crop reads as a bleed. */
 .cs-shell { position: absolute; bottom: 0; -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 120px), transparent 100%); mask-image: linear-gradient(to bottom, #000 calc(100% - 120px), transparent 100%); }
@@ -68,7 +64,7 @@
 
 /* Under each stage: the chapter's caption on the left, a segment per chapter and the play button on the right. */
 .cs-tour { display: flex; align-items: flex-start; justify-content: space-between; gap: 32px; max-width: 1184px; margin: 18px auto 0; padding: 0 4px; text-align: left; }
-.qb-case .cs-frame:not(.is-wide) + .cs-tour { max-width: 960px; }
+.cs-page .cs-frame:not(.is-wide) + .cs-tour { max-width: 960px; }
 .cs-tour-caption { position: relative; flex: 1; min-width: 0; min-height: 24px; font-size: 15px; line-height: 24px; letter-spacing: -.01em; color: var(--foreground); }
 .cs-tour-caption > span { display: block; text-wrap: pretty; }
 .cs-tour-controls { display: flex; align-items: center; gap: 14px; flex-shrink: 0; height: 24px; }
@@ -106,21 +102,20 @@
 .qb-quote p { font-size: clamp(20px, 2vw, 26px); line-height: 1.3; letter-spacing: -.03em; text-wrap: balance; }
 .qb-quote footer { margin-top: 20px; font-size: 15px; color: var(--muted-foreground); }
 
-
-@media (max-width: 1050px) { .qb-case { padding-inline: 30px; } }
+@media (max-width: 1050px) { .cs-page { padding-inline: 30px; } }
 
 @media (max-width: 760px) {
-  .qb-case { padding-inline: 20px; }
-  .qb-case-nav { padding-block: 24px; }
-  .qb-slide { padding-top: 88px; }
-  .qb-hero { padding-top: 28px; }
-  .qb-slide h1 { font-size: 36px; }
-  .qb-brief { margin-top: 40px; }
-  .qb-brief > div { padding: 0 12px; }
-  .qb-slide h2 { font-size: 28px; }
-  .qb-slide > .qb-stage, .qb-slide > .qb-days { margin-top: 28px; }
-  .qb-stage { border-radius: 12px; }
-  .qb-case .qb-film-stage { padding: 12px; }
+  .cs-page { padding-inline: 20px; }
+  .cs-nav { padding-block: 24px; }
+  .cs-slide { padding-top: 88px; }
+  .cs-hero { padding-top: 28px; }
+  .cs-slide h1 { font-size: 36px; }
+  .cs-brief { margin-top: 40px; }
+  .cs-brief > div { padding: 0 12px; }
+  .cs-slide h2 { font-size: 28px; }
+  .cs-slide > .cs-stage, .cs-slide > .qb-days { margin-top: 28px; }
+  .cs-stage { border-radius: 12px; }
+  .cs-page .qb-film-stage { padding: 12px; }
   .qb-days-row { grid-template-columns: 44px minmax(0, 1fr) 52px; gap: 10px; }
   .qb-days-label { font-size: 13px; }
   .qb-days-track { gap: 2px; }.qb-days-track i { height: 24px; border-radius: 2px; }
@@ -129,13 +124,13 @@
   }
 
 /* The syntax editor renders at 1:1, so set its type to match the scaled demos on the other slides. */
-.qb-case .q-syntax-editor .q-syntax-code { padding: 32px 28px 34px 16px; }
-.qb-case .q-syntax-editor .q-syntax-code code { font-size: 19px; line-height: 38px; }
-.qb-case .q-syntax-editor .q-editor-line { grid-template-columns: 28px minmax(0, 1fr); column-gap: 22px; }
-.qb-case .q-syntax-editor .q-syntax-indent { padding-left: 22px; }
-.qb-case .q-editor-bar { min-height: 50px; }
-.qb-case .q-editor-tab { font-size: 13px; }
-.qb-case .q-editor-status { height: 52px; padding-left: 12px; }
-.qb-case .q-concept-step { min-height: 30px; padding: 0 12px; font-size: 12px; }
-@media (max-width: 760px) { .qb-case .q-syntax-editor .q-syntax-code code { font-size: 13px; line-height: 26px; } .qb-case .q-syntax-editor .q-editor-line { grid-template-columns: 19px minmax(0, 1fr); column-gap: 12px; } }
-.qb-case .qb-sentence .qb-film-stage { padding-inline: 8px; }
+.cs-page .q-syntax-editor .q-syntax-code { padding: 32px 28px 34px 16px; }
+.cs-page .q-syntax-editor .q-syntax-code code { font-size: 19px; line-height: 38px; }
+.cs-page .q-syntax-editor .q-editor-line { grid-template-columns: 28px minmax(0, 1fr); column-gap: 22px; }
+.cs-page .q-syntax-editor .q-syntax-indent { padding-left: 22px; }
+.cs-page .q-editor-bar { min-height: 50px; }
+.cs-page .q-editor-tab { font-size: 13px; }
+.cs-page .q-editor-status { height: 52px; padding-left: 12px; }
+.cs-page .q-concept-step { min-height: 30px; padding: 0 12px; font-size: 12px; }
+@media (max-width: 760px) { .cs-page .q-syntax-editor .q-syntax-code code { font-size: 13px; line-height: 26px; } .cs-page .q-syntax-editor .q-editor-line { grid-template-columns: 19px minmax(0, 1fr); column-gap: 12px; } }
+.cs-page .qb-sentence .qb-film-stage { padding-inline: 8px; }

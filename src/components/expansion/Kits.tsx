@@ -10,7 +10,7 @@ const timings = [700, 1300, 1300, 1300, 3600];
 export default function Kits() {
   const loop = useDemoLoop(timings, 0, true, true);
   const built = loop.step;
-  return <figure className={`qb-demo xp-kits ${loop.resetting ? 'qb-loop-reset' : ''}`} ref={loop.ref} aria-label="Bot, API Security, and OWASP Attack kits, each made of Signals, Rules and Alerts, and Dashboards">
+  return <figure className={`cs-demo xp-kits ${loop.resetting ? 'cs-loop-reset' : ''}`} ref={loop.ref} aria-label="Bot, API Security, and OWASP Attack kits, each made of Signals, Rules and Alerts, and Dashboards">
     <NativeStage width={960} height={697}>
       <div className="xp-kits">{kits.map((kit, k) => <div key={kit} className={`xp-fade ${k < built ? '' : 'xp-dim'}`}>
         <span className="xp-kitname">{kit}</span>
