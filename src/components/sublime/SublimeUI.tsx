@@ -126,12 +126,13 @@ export function Recommendation({ actions = false, pressed = false, style, codeLi
   </div>;
 }
 
-/** ASA's verdict, quieter than the product's full-bleed red banner: a tinted head with the verdict in its color. */
+/** ASA's verdict, quieter than the product's full-bleed red banner: a tinted head with the verdict in its color. Liberty taken: the label
+ *  reads "ASA Verdict" without the source's info icon, and the summary below it is labeled "Executive Summary". */
 export function VerdictPanel({ children }: { children?: ReactNode }) {
   return <div className="sb-box" style={{ overflow: 'hidden' }}>
     <div className="sb-verdict-head">
       <svg width="30" height="33" viewBox="0 0 16 17.6" aria-hidden="true"><path d="M8 .8l6.6 3.8v8.4L8 16.8 1.4 13V4.6z" fill="var(--sb-malicious)" /><path d="M8 5.4v4.6M8 12.4v.2" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" /></svg>
-      <div><span className="sb-label" style={{ display: 'flex', alignItems: 'center', gap: 4 }}>Verdict (ASA){Icon.info}</span><p className="sb-verdict-name">Malicious</p></div>
+      <div><span className="sb-label">ASA Verdict</span><p className="sb-verdict-name">Malicious</p></div>
     </div>
     {children}
   </div>;

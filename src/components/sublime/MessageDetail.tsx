@@ -84,7 +84,7 @@ function MessagePage({ gap, step }: { gap: boolean; step: number }) {
   const verdict = <VerdictPanel>
     <div style={{ display: 'grid', gap: 18, padding: narrow ? '16px 18px 18px' : '18px 24px 22px' }}>
       <div style={{ display: 'grid', gap: 6 }}>
-        <span className="sb-label">ASA Executive Summary</span>
+        <span className="sb-label">Executive Summary</span>
         <p className="sb-body" style={{ lineHeight: '22px' }}>This message impersonates Payroll Operations and urges the recipient to verify their payroll profile through an unfamiliar domain. The sender fails DMARC, does not align with the organization’s trusted HR infrastructure, and uses credential-harvesting language under the pretext of an upcoming pay cycle.</p>
       </div>
       <div className="sb-body" style={{ display: 'grid', gridTemplateColumns: narrow ? '72px minmax(0, 1fr)' : '84px 1fr', rowGap: 6 }}>
