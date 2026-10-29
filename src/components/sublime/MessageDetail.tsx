@@ -1,23 +1,26 @@
 import { Icon, JobHeading, Page, TimelineItem, TimelineTitle, Triggered, VerdictIcon, VerdictPanel, job } from './SublimeUI';
-import { Camera, Expand, Pointer, SceneFrame, Screens, Typing, frame, useNarrowLayout, useScene, useShot, useStage, useTargets } from './scene';
+import { Camera, Expand, Pointer, SceneFrame, Screens, frame, useNarrowLayout, useScene, useShot, useStage, useTargets } from './scene';
 
 // The message detail page (patrick/ade-workflow user-reports, MessageDetailView and AdeStatusCard): ASA's verdict on a message no rule caught.
 // `gap` is the page before ADÉ: a malicious verdict over an empty Matched Detection Rules section, and the way to coverage running through
-// the Rule Editor. `handoff` adds ADÉ: Trigger ADÉ, then the job page while ADÉ works (InProgressTimelineItem over TriggeredTimelineItem).
+// Send EML to Rule Editor. The scene stops there: the archive has no Rule Editor screen, so none is drawn. `handoff` adds ADÉ: Trigger
+// ADÉ, then the job page while ADÉ works (InProgressTimelineItem over TriggeredTimelineItem).
 // The sidebar keeps the source's order (MessageDetailSidebar): Review Status, Other, then the ADÉ card (AdeStatusCard), whose copy and
 // states are the source's. Liberties taken for the case study: ASA's red banner is a tinted head; section headings sit flat on the page
-// instead of in gray bars; Matched Detection Rules shows its empty state (the product hides the section when nothing matched); the
-// Rule Editor is redrawn; and on phones the page stacks into one column. Message and job copy are the prototype's sample data.
+// instead of in gray bars; Matched Detection Rules shows its empty state (the product hides the section when nothing matched); and
+// on phones the page stacks into one column. Message and job copy are the prototype's sample data.
 type Variant = 'gap' | 'handoff';
 const timings: Record<Variant, number[]> = {
-  gap: [2200, 700, 800, 350, 4400],
+  gap: [2400, 700, 800, 350, 3200],
   handoff: [1200, 1000, 700, 300, 700, 700, 700, 300, 3600],
 };
 const captions: Record<Variant, string[]> = {
   gap: [
     'ASA calls the message malicious, and no Detection Rule matched it',
-    'The way to a rule: send the message to the Rule Editor', 'The way to a rule: send the message to the Rule Editor', 'The way to a rule: send the message to the Rule Editor',
-    'Then write the rule by hand, and test it',
+    'The way to a rule: send the message to the Rule Editor, then write and test it by hand',
+    'The way to a rule: send the message to the Rule Editor, then write and test it by hand',
+    'The way to a rule: send the message to the Rule Editor, then write and test it by hand',
+    'The way to a rule: send the message to the Rule Editor, then write and test it by hand',
   ],
   handoff: [
     'ADÉ sits on the message page, under Review Status', 'ADÉ sits on the message page, under Review Status',
@@ -73,35 +76,6 @@ function JobInProgress() {
       <TimelineItem icon="play"><Triggered when="Jul 3, 2026, 2:12 PM" /></TimelineItem>
     </div>
   </Page>;
-}
-
-/** The Rule Editor, redrawn: the message attached and a rule started by hand. */
-function RuleEditor({ run, reduced }: { run: boolean; reduced: boolean }) {
-  const narrow = useNarrowLayout();
-  return <Page crumbs={['Detection Rules', 'Rule Editor']}>
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, padding: narrow ? '14px 16px' : '16px 24px' }}>
-      <span style={{ whiteSpace: 'nowrap' }}><b style={{ fontSize: 18, fontWeight: 600 }}>Untitled rule</b><span className="sb-label" style={{ marginLeft: 10 }}>Draft</span></span>
-      <span style={{ display: 'flex', gap: 8 }}><span className="sb-btn is-secondary">Test Rule</span>{!narrow && <span className="sb-btn" style={{ opacity: .45 }}>Save Rule</span>}</span>
-    </div>
-    <div className="sb-editor" style={narrow ? { gridTemplateColumns: 'minmax(0, 1fr)', minHeight: 0 } : undefined}>
-      {narrow && <EditorSide />}
-      <div className="sb-editor-code">
-        <span className="n">1</span><span><Typing text="type.inbound" run={run} reduced={reduced} /></span>
-        <span className="n">2</span><span><span className="k"><Typing text="and " run={run} every={90} reduced={reduced} /></span><span className="sb-caret" /></span>
-        {Array.from({ length: narrow ? 18 : 26 }, (_, i) => <span key={i} style={{ display: 'contents' }}><span className="n">{i + 3}</span><span /></span>)}
-      </div>
-      {!narrow && <EditorSide />}
-    </div>
-  </Page>;
-}
-
-function EditorSide() {
-  const narrow = useNarrowLayout();
-  return <div className="sb-editor-side" style={narrow ? { borderLeft: 0, borderBottom: '1px solid var(--sb-border)', padding: 16, gap: 12 } : undefined}>
-    <b className="sb-section-h">Test Messages</b>
-    <span className="sb-eml" style={{ minWidth: 0 }}>{Icon.external}<span style={{ flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{job.subject}.eml</span><VerdictIcon verdict="malicious" size={14} /></span>
-    {!narrow && <div className="sb-empty" style={{ height: 180, fontSize: 13 }}>Test the rule to see if it matches.</div>}
-  </div>;
 }
 
 /** The message page: ASA's verdict and the empty Matched Detection Rules on the left, the review sidebar on the right (one column on a phone). */
@@ -178,7 +152,6 @@ export default function MessageDetail({ variant }: { variant: Variant }) {
   const step = scene.step;
   const t = useTargets(step, stage.narrow);
   const gap = variant === 'gap';
-  const editor = gap && step === 4;
   const jobPage = !gap && step >= 8;
   const box = { ...stage.box, bottom: t.height };
 
@@ -192,10 +165,10 @@ export default function MessageDetail({ variant }: { variant: Variant }) {
   if (!gap && (step === 6 || step === 7)) pointer = { key: 'view-job', pressing: step === 7 };
 
   return <SceneFrame scene={scene} stage={stage} title={gap ? 'the missed threat' : 'the handoff to ADÉ'} label={gap
-    ? 'The message detail page: ASA rates a payroll phishing message malicious and Matched Detection Rules is empty; Send EML to Rule Editor opens the Rule Editor, where the rule is written by hand'
+    ? 'The message detail page: ASA rates a payroll phishing message malicious and Matched Detection Rules is empty; the way to a rule is Send EML to Rule Editor, where it is written and tested by hand'
     : 'The same page with ADÉ in the sidebar under Review Status and Other: Trigger ADÉ starts a job, and View Report opens the job page, where ADÉ is working'}>
-    <Screens id={editor ? 'editor' : jobPage ? 'job' : 'message'}>
-      {editor ? <RuleEditor run={editor} reduced={scene.reduced} /> : jobPage ? <JobInProgress /> : <Camera view={view} width={stage.W} height={stage.box.height} cameraRef={t.ref} reduced={scene.reduced}>
+    <Screens id={jobPage ? 'job' : 'message'}>
+      {jobPage ? <JobInProgress /> : <Camera view={view} width={stage.W} height={stage.box.height} cameraRef={t.ref} reduced={scene.reduced}>
         <MessagePage gap={gap} step={step} />
         <Pointer at={pointer ? t.at(pointer.key) : null} visible={!!pointer} pressing={pointer?.pressing} reduced={scene.reduced} />
       </Camera>}
