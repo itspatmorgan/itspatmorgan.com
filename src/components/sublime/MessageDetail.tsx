@@ -109,7 +109,7 @@ function MessagePage({ gap, step }: { gap: boolean; step: number }) {
 
   // Liberty taken: a short header names the email (subject, sender, recipient) above the verdict; the source page
   // opens on the verdict, with these fields in its details further down.
-  const header = <header style={{ display: 'grid', gap: 8, gridColumn: '1 / -1', paddingBottom: narrow ? 20 : 24, borderBottom: '1px solid var(--sb-border)' }}>
+  const header = <header style={{ display: 'grid', gap: 8, gridColumn: '1 / -1' }}>
     <p style={{ fontSize: narrow ? 19 : 22, fontWeight: 600, lineHeight: narrow ? '26px' : '30px', letterSpacing: '-.2px' }}>{job.subject}</p>
     <div className="sb-body" style={{ display: 'flex', flexWrap: 'wrap', columnGap: 28, rowGap: 4 }}>
       <span style={{ overflowWrap: 'anywhere' }}><span className="sb-label" style={{ marginRight: 8 }}>From</span>Payroll Operations &lt;payroll-verify@employee-benefits.co&gt;</span>
