@@ -5,6 +5,8 @@ import { Camera, Pointer, SceneFrame, frame, useScene, useShot, useStage, useTar
 // auto-acceptance threshold. The scene walks one customer up the on-ramp for malicious mail. The threshold explainer is the column
 // header's info popover; its copy and the recommended thresholds are the source's. It opens upward, as the product's popovers flip when the
 // window has no room below. On a phone the table drops its Alerts column, and the popover opens downward over the rows.
+// Spam and graymail sit as the source's sample data configures them (spam on at its recommended 85%, graymail off and on review). Liberty
+// taken: the source's Slack alert is moved from malicious to spam, so one row shows an alert while malicious is the row the scene sets up.
 const timings = [1300, 700, 400, 700, 3600, 700, 400, 600, 700, 700, 3400];
 const captions = [
   'Manual: ADÉ runs only when someone triggers it',
@@ -20,11 +22,11 @@ const captions = [
   'Turn it on: ADÉ now starts and accepts on its own, within the bar you set',
 ];
 const rows = [
-  { verdict: 'malicious', label: 'Malicious', recommended: 90 },
-  { verdict: 'spam', label: 'Spam', recommended: 85 },
-  { verdict: 'graymail', label: 'Graymail', recommended: 95 },
+  { verdict: 'malicious', label: 'Malicious', recommended: 90, on: false, alert: null },
+  { verdict: 'spam', label: 'Spam', recommended: 85, on: true, alert: 'Send Slack alert' },
+  { verdict: 'graymail', label: 'Graymail', recommended: 95, on: false, alert: null },
 ] as const;
-const wideCols = '120px 140px minmax(0, 1fr) 206px';
+const wideCols = 'minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.45fr) minmax(0, 1.45fr)';
 const narrowCols = '92px 52px minmax(0, 1fr)';
 // Where the pointer is, and whether it is pressing, at each step.
 const path: ({ key: string; pressing?: boolean } | null)[] = [
@@ -32,6 +34,16 @@ const path: ({ key: string; pressing?: boolean } | null)[] = [
   { key: 'threshold' }, { key: 'threshold', pressing: true }, { key: 'option' }, { key: 'option', pressing: true },
   { key: 'status' }, { key: 'status', pressing: true },
 ];
+
+const slack = <svg width="12" height="12" viewBox="0 0 448 512" aria-hidden="true"><path fill="currentColor" d="M94.12 315.1c0 25.9-21.16 47.06-47.06 47.06S0 341 0 315.1c0-25.9 21.16-47.06 47.06-47.06h47.06v47.06zm23.72 0c0-25.9 21.16-47.06 47.06-47.06s47.06 21.16 47.06 47.06v117.84c0 25.9-21.16 47.06-47.06 47.06s-47.06-21.16-47.06-47.06V315.1zm47.06-188.98c-25.9 0-47.06-21.16-47.06-47.06S139 32 164.9 32s47.06 21.16 47.06 47.06v47.06H164.9zm0 23.72c25.9 0 47.06 21.16 47.06 47.06s-21.16 47.06-47.06 47.06H47.06C21.16 243.96 0 222.8 0 196.9s21.16-47.06 47.06-47.06H164.9zm188.98 47.06c0-25.9 21.16-47.06 47.06-47.06 25.9 0 47.06 21.16 47.06 47.06s-21.16 47.06-47.06 47.06h-47.06V196.9zm-23.72 0c0 25.9-21.16 47.06-47.06 47.06-25.9 0-47.06-21.16-47.06-47.06V79.06c0-25.9 21.16-47.06 47.06-47.06 25.9 0 47.06 21.16 47.06 47.06V196.9zM283.1 385.88c25.9 0 47.06 21.16 47.06 47.06 0 25.9-21.16 47.06-47.06 47.06-25.9 0-47.06-21.16-47.06-47.06v-47.06h47.06zm0-23.72c-25.9 0-47.06-21.16-47.06-47.06 0-25.9 21.16-47.06 47.06-47.06h117.84c25.9 0 47.06 21.16 47.06 47.06 0 25.9-21.16 47.06-47.06 47.06H283.1z" /></svg>;
+
+/** The source's alerts cell (AdeAutomationAlertsSelector): the chosen alert, or No Alert, beside the menu button. */
+function Alerts({ alert }: { alert: string | null }) {
+  return <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+    <span className="sb-chip" style={{ flex: '1 1 auto', maxWidth: 224, height: 28, gap: 6 }}>{alert && slack}{alert ?? 'No Alert'}</span>
+    <span className="sb-select" style={{ width: 32, padding: 0, justifyContent: 'center', flexShrink: 0, background: 'var(--sb-subtle)' }}>{Icon.chevron('down')}</span>
+  </span>;
+}
 
 function Switch({ on }: { on: boolean }) {
   return <span className={`sb-switch ${on ? 'is-on' : ''}`}><i>{on ? Icon.check : Icon.x}</i></span>;
@@ -44,7 +56,7 @@ export default function AutomationConfig() {
   const stage = useStage({ wide: 1060, height: 750, contained: true });
   const narrow = stage.narrow;
   const cols = narrow ? narrowCols : wideCols;
-  const rowPad = narrow ? { padding: '0 12px', columnGap: 12 } : {};
+  const rowPad = narrow ? { padding: '0 12px', columnGap: 12 } : { columnGap: 32 };
   const step = scene.step;
   const t = useTargets(step, narrow);
   const autoStart = step >= 2;
@@ -56,7 +68,7 @@ export default function AutomationConfig() {
   // On a phone the table sits below the fold: scroll down to it while the rows change, then back up for the status.
   const shot = narrow && step >= 1 && step <= 8 ? 'table' : null;
   const view = useShot(shot, shot ? frame(t.rect('table'), { ...stage.box, bottom: t.height }, { scale: 1, pad: 16, y: 'start' }) : null);
-  return <SceneFrame scene={scene} stage={stage} title="the automation settings" label="ADÉ Automation settings: for malicious messages, Automatically start ADÉ job is switched on; the threshold's info explains that a rule is auto-accepted once its hunt's match rate meets the threshold, with Sublime's recommendations of 90% for malicious, 85% for spam and 95% for graymail; the threshold changes from Require review to Recommended (90%), and the automation is set to Active">
+  return <SceneFrame scene={scene} stage={stage} title="the automation settings" label="ADÉ Automation settings: spam already starts ADÉ jobs on its own, accepts at the recommended 85% and sends a Slack alert, and graymail stays on review; for malicious messages, Automatically start ADÉ job is switched on; the threshold's info explains that a rule is auto-accepted once its hunt's match rate meets the threshold, with Sublime's recommendations of 90% for malicious, 85% for spam and 95% for graymail; the threshold changes from Require review to Recommended (90%), and the automation is set to Active">
     <Camera view={view} width={stage.W} height={stage.box.height} cameraRef={t.ref} reduced={scene.reduced}>
             <Page crumbs={['Agents', 'ADÉ', 'ADÉ Automation']} style={{ minHeight: stage.box.height - 48 }}>
               {/* Liberty taken: the source's three bordered boxes become one header, a quiet details row, and the table. */}
@@ -93,10 +105,10 @@ export default function AutomationConfig() {
                     const first = i === 0;
                     return <div key={row.verdict} className="sb-row" style={{ gridTemplateColumns: cols, ...rowPad, minHeight: 60, borderTop: '1px solid var(--sb-border-strong)', overflow: 'visible' }}>
                       <span className="sb-chip" style={{ width: 'fit-content', gap: 6 }}><VerdictIcon verdict={row.verdict} size={14} />{row.label}</span>
-                      <span data-target={first ? 'switch' : undefined} style={{ width: 'fit-content' }}><Switch on={first && autoStart} /></span>
-                      {!narrow && <span className="sb-select" style={{ maxWidth: 200 }}>No Alert{Icon.chevron('down')}</span>}
+                      <span data-target={first ? 'switch' : undefined} style={{ width: 'fit-content' }}><Switch on={first ? autoStart : row.on} /></span>
+                      {!narrow && <Alerts alert={row.alert} />}
                       <span style={{ position: 'relative' }}>
-                        <span className={`sb-select ${first && menuOpen ? 'is-open' : ''} ${first && step === 6 ? 'is-pressed' : ''}`} data-target={first ? 'threshold' : undefined}><span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{first && threshold ? `Recommended (${row.recommended}%)` : 'Require review'}</span>{Icon.chevron('down')}</span>
+                        <span className={`sb-select ${first && menuOpen ? 'is-open' : ''} ${first && step === 6 ? 'is-pressed' : ''}`} data-target={first ? 'threshold' : undefined}><span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{(first ? threshold : row.on) ? `Recommended (${row.recommended}%)` : 'Require review'}</span>{Icon.chevron('down')}</span>
                         {first && <span className={`sb-menu ${menuOpen || step === 8 ? '' : 'is-out'}`} style={{ display: 'block' }}>
                           <div className={step >= 7 ? 'is-hover' : ''} data-target="option">Recommended ({row.recommended}%)</div>
                           <div>Custom</div>

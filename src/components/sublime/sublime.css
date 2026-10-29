@@ -177,7 +177,7 @@
 .sb-hunt-table .sb-row { min-height: 44px; padding: 0 16px; font-size: 13px; }
 .sb-accepted { border: 1px solid color-mix(in srgb, var(--sb-success) 45%, var(--sb-border)); border-radius: 4px; overflow: hidden; }
 /* Inverted like the verdict head: a tint with the outcome in its ink, instead of the product's solid green bar. */
-.sb-accepted-head { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background: color-mix(in srgb, var(--sb-success) 9%, var(--sb-card)); border-bottom: 1px solid color-mix(in srgb, var(--sb-success) 22%, var(--sb-card)); color: var(--sb-success-ink); font-size: 14px; line-height: 20px; }
+.sb-accepted-head { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background: color-mix(in srgb, var(--sb-success) 9%, var(--sb-card)); border-bottom: 1px solid color-mix(in srgb, var(--sb-success) 22%, var(--sb-card)); color: var(--sb-strong); font-size: 14px; line-height: 20px; }
 .sb-accepted-head > span:last-child { color: var(--sb-weak); }
 .sb-collapse { display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows 500ms cubic-bezier(.22, 1, .36, 1), opacity 300ms ease, margin 500ms cubic-bezier(.22, 1, .36, 1); }
 .sb-collapse > div { min-height: 0; overflow: hidden; }
