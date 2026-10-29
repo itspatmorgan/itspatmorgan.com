@@ -3,7 +3,7 @@
 import PageLayout from '@/layouts/PageLayout.astro';
 import Icon from '@/components/icons/Icon.astro';
 import { ArrowLeft01Icon } from '@hugeicons/core-free-icons';
-import HeroAgents from '@/components/sublime/HeroAgents';
+import HeroRule from '@/components/sublime/HeroRule';
 import MessageDetail from '@/components/sublime/MessageDetail';
 import JobReview from '@/components/sublime/JobReview';
 import AutoAccepted from '@/components/sublime/AutoAccepted';
@@ -34,49 +34,67 @@ const description = 'I designed how Sublime’s agents turn a missed threat into
         <div><dt>Team</dt><dd>Sublime design team</dd></div>
         <div><dt>Outcome</dt><dd>&lt; 2 hr average time to coverage</dd></div>
       </dl>
-      <div class="qb-stage texture-bg sb-frame"><HeroAgents client:load /></div>
+      <HeroRule client:load />
     </header>
 
     <section class="qb-slide" aria-labelledby="problem">
       <h2 id="problem">Every missed threat became detection engineering work</h2>
       <p>A malicious verdict with no matching rule meant a trip to the Rule Editor, and hours of writing and testing by hand.</p>
-      <div class="qb-stage texture-bg sb-frame"><MessageDetail variant="gap" client:visible /></div>
+      <MessageDetail variant="gap" client:visible />
     </section>
 
     <section class="qb-slide" aria-labelledby="setup">
       <h2 id="setup">Introduce the agent before asking for trust</h2>
       <p>From the hub, ADÉ’s page explains the loop it runs, and how fast, before anything is turned on.</p>
-      <div class="qb-stage texture-bg sb-frame"><AdeSetup client:visible /></div>
+      <AdeSetup client:visible />
     </section>
 
     <section class="qb-slide" aria-labelledby="handoff">
       <h2 id="handoff">Hand the miss to ADÉ where you find it</h2>
       <p>One click beside ASA’s verdict starts a job, and the job page shows ADÉ at work.</p>
-      <div class="qb-stage texture-bg sb-frame"><MessageDetail variant="handoff" client:visible /></div>
+      <MessageDetail variant="handoff" client:visible />
     </section>
 
     <section class="qb-slide" aria-labelledby="bet">
       <h2 id="bet">Agents should write rules, not hide them</h2>
       <p>Black‑box agents return verdicts. ADÉ returns MQL your team can read, accept and edit later.</p>
-      <div class="qb-stage texture-bg sb-frame"><JobReview client:visible /></div>
+      <JobReview client:visible />
     </section>
 
     <section class="qb-slide" aria-labelledby="efficacy">
       <h2 id="efficacy">Let the backtest decide how much review a rule needs</h2>
       <p>Every recommendation carries its hunt result. When the match clears your threshold, the rule goes live on its own.</p>
-      <div class="qb-stage texture-bg sb-frame"><AutoAccepted client:visible /></div>
+      <AutoAccepted client:visible />
     </section>
 
     <section class="qb-slide" aria-labelledby="trust">
       <h2 id="trust">Trust in autonomy has to be earned</h2>
       <p>Teams choose, per verdict, when ADÉ starts on its own and when it can accept its own rules.</p>
-      <div class="qb-stage texture-bg sb-frame"><AutomationConfig client:visible /></div>
+      <AutomationConfig client:visible />
     </section>
 
     <section class="qb-slide" aria-labelledby="outcome">
       <h2 id="outcome">Design the on‑ramp, not the chat</h2>
       <p>Agents work out of sight, so ADÉ’s page shows its impact and every job it starts, for teams to watch and steer. All of it has shipped or is shipping.</p>
-      <div class="qb-stage texture-bg sb-frame"><AdeJobs client:visible /></div>
+      <AdeJobs client:visible />
+    </section>
+
+    <section class="qb-slide" aria-labelledby="result">
+      <h2 id="result">A missed threat becomes coverage in under two hours</h2>
+      <figure class="sb-outcome" aria-label="Average time to coverage: under 2 hours">
+        <p class="sb-outcome-value">&lt;&thinsp;2<span>hrs</span></p>
+        <figcaption>Average time to coverage, from a threat no rule caught to a live rule that catches the next one</figcaption>
+      </figure>
+    </section>
+
+    <section class="qb-slide" aria-labelledby="lessons">
+      <h2 id="lessons">What the agents taught me</h2>
+      <ol class="sb-lessons">
+        <li><h3>Autonomy is an on‑ramp</h3><p>Teams start ADÉ by hand, then let it start on its own, then let it accept rules that clear their bar. Each step is earned by the one before.</p></li>
+        <li><h3>Agents hand off in the background</h3><p>ASA’s verdict leads to ADÉ’s job while no one watches, so the product has to show where the work is and what it did.</p></li>
+        <li><h3>Review is a deliberate moment</h3><p>A person sees the rule, the hunt that tested it and its result in one place, and then decides.</p></li>
+      </ol>
+      <p class="sb-footnote">Product screens are recreated in code from Sublime’s design prototypes. Figures in them are sample data, except the under‑two‑hour time to coverage.</p>
     </section>
 
   </article>

@@ -1,5 +1,5 @@
 import type { CSSProperties, ReactNode, RefObject } from 'react';
-import { CountUp, Expand } from './scene';
+import { CountUp, Expand, useNarrowLayout } from './scene';
 
 // Primitives for the Sublime screens. Sizes are the source's Tailwind values in CSS pixels; `Zoom` scales a source-sized layout to fill the frame card.
 
@@ -54,7 +54,7 @@ export const ruleDescription = 'Detects inbound payroll-themed messages that con
 
 /** The rule's MQL; `lines` limits how many lines show (for a rule being written). */
 export function RuleCode({ lines = rule.length, style }: { lines?: number; style?: CSSProperties }) {
-  return <div className="sb-code" style={style}>{rule.map((line, i) => <span key={i} style={{ display: 'contents', visibility: i < lines ? 'visible' : 'hidden' }}>
+  return <div className="sb-code" style={style}>{rule.map((line, i) => <span key={i} className={`sb-code-line ${i < lines ? '' : 'is-out'}`}>
     <span className="n">{i + 1}</span>
     <span>{line.map(([text, kind], j) => kind ? <span key={j} className={kind}>{text}</span> : text)}</span>
   </span>)}</div>;
@@ -98,26 +98,29 @@ export const job = { subject: 'Action required: payroll profile verification', i
 /** ADÉ's recommendation (JobCompletedCard): rule fields beside the MQL, with Accept and Reject while it waits for review.
  *  Liberty taken: the header reads "ADÉ Recommended Rule" and carries the hunt's result in place of the source's "Create a new rule…"
  *  line, so the reason to accept or reject sits beside the buttons. */
-export function Recommendation({ actions = false, pressed = false, style }: { actions?: boolean; pressed?: boolean; style?: CSSProperties }) {
+export function Recommendation({ actions = false, pressed = false, style, codeLines }: { actions?: boolean; pressed?: boolean; style?: CSSProperties; codeLines?: number }) {
+  const narrow = useNarrowLayout();
   return <div className="sb-cells" style={style}>
-    <div data-frame="rec-head" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: 24, padding: 24, background: 'var(--sb-cell-head)' }}>
+    <div data-frame="rec-head" style={{ display: 'flex', flexDirection: narrow ? 'column' : 'row', justifyContent: 'space-between', alignItems: narrow ? 'flex-start' : 'flex-end', gap: narrow ? 14 : 24, padding: narrow ? 16 : 24, background: 'var(--sb-cell-head)' }}>
       <div>
         <p className="sb-body" style={{ fontWeight: 600 }}>ADÉ Recommended Rule</p>
         <p className="sb-body" style={{ marginTop: 4 }} data-target="proof"><b style={{ fontWeight: 600 }}>93% match</b> in a 14-day hunt, with 40 malicious matches and 2 possible false positives.</p>
       </div>
-      <div className={`sb-fade ${actions ? '' : 'is-out'}`} style={{ display: 'flex', gap: 8 }}><span className={`sb-btn ${pressed ? 'is-pressed' : ''}`} data-target="accept">Accept</span><span className="sb-btn is-secondary">Reject</span></div>
+      {(actions || !narrow) && <div className={`sb-fade ${actions ? '' : 'is-out'}`} style={{ display: 'flex', gap: 8 }}><span className={`sb-btn ${pressed ? 'is-pressed' : ''}`} data-target="accept">Accept</span><span className="sb-btn is-secondary">Reject</span></div>}
     </div>
-    <div style={{ display: 'grid', gridTemplateColumns: '280px minmax(0, 1fr)', gap: 40, padding: 24 }}>
+    <div style={{ display: 'grid', gridTemplateColumns: narrow ? 'minmax(0, 1fr)' : '280px minmax(0, 1fr)', gap: narrow ? 20 : 40, padding: narrow ? 16 : 24 }}>
       <div style={{ display: 'grid', gap: 20, alignContent: 'start' }}>
         <div className="sb-field"><span>Rule Name</span><span className="sb-body">{ruleName}</span></div>
         <div className="sb-field"><span>Severity</span><span className="sb-severity" style={{ width: 'fit-content' }}>High Severity</span></div>
-        <div className="sb-field"><span>Description</span><span className="sb-body">{ruleDescription}</span></div>
-        <div className="sb-field"><span>Labels</span><span style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>{['Credential Phishing', 'QR code', 'Social engineering'].map(l => <span key={l} className="sb-chip">{l}</span>)}</span></div>
-        <div className="sb-field"><span>Action</span><span className="sb-verdict">{Icon.ban}Quarantine</span></div>
+        {!narrow && <>
+          <div className="sb-field"><span>Description</span><span className="sb-body">{ruleDescription}</span></div>
+          <div className="sb-field"><span>Labels</span><span style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>{['Credential Phishing', 'QR code', 'Social engineering'].map(l => <span key={l} className="sb-chip">{l}</span>)}</span></div>
+          <div className="sb-field"><span>Action</span><span className="sb-verdict">{Icon.ban}Quarantine</span></div>
+        </>}
       </div>
-      <div style={{ display: 'grid', gap: 10, alignContent: 'start', minWidth: 0 }}>
+      <div style={{ display: 'grid', gap: 10, alignContent: 'start', minWidth: 0 }} data-frame="mql">
         <span className="sb-label">Rule MQL</span>
-        <RuleCode style={{ minHeight: 300 }} />
+        <RuleCode lines={codeLines} style={{ minHeight: narrow ? 0 : 300 }} />
       </div>
     </div>
   </div>;
@@ -163,23 +166,25 @@ export function TimelineTitle({ children }: { children: ReactNode }) {
 
 /** Page heading for an ADÉ job (AdeJobDetailView), with room around it. */
 export function JobHeading({ status = 'done' }: { status?: 'done' | 'running' }) {
-  return <div style={{ display: 'grid', gap: 10, paddingLeft: 48 }}>
-    <p style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 24, fontWeight: 600, lineHeight: '32px', letterSpacing: '-.2px' }}>{job.subject}<span style={{ color: 'var(--sb-link)', display: 'inline-flex' }}>{Icon.external}</span></p>
+  const narrow = useNarrowLayout();
+  return <div style={{ display: 'grid', gap: 10, paddingLeft: narrow ? 0 : 48 }}>
+    <p style={{ display: 'flex', alignItems: narrow ? 'flex-start' : 'center', gap: 10, fontSize: narrow ? 20 : 24, fontWeight: 600, lineHeight: narrow ? '27px' : '32px', letterSpacing: '-.2px' }}>{job.subject}<span style={{ color: 'var(--sb-link)', display: 'inline-flex', marginTop: narrow ? 6 : 0 }}>{Icon.external}</span></p>
     <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
       {status === 'done'
         ? <span className="sb-verdict sb-body"><CheckCircle size={14} color="var(--sb-button)" />Completed in 17m</span>
         : <span className="sb-verdict sb-body">{Icon.progress}In Progress</span>}
-      <span className="sb-label">Job ID: {job.id}</span>
+      {!narrow && <span className="sb-label">Job ID: {job.id}</span>}
     </div>
   </div>;
 }
 
 /** The accepted outcome at the top of the timeline (AcceptedTimelineItem). */
 export function Accepted({ by, auto = false }: { by: string; auto?: boolean }) {
+  const narrow = useNarrowLayout();
   return <div className="sb-accepted">
-    <div className="sb-accepted-head"><span><b style={{ fontWeight: 700 }}>{by}</b> {auto ? 'auto-' : ''}accepted and activated the recommended rule</span><span style={{ fontSize: 12 }}>Jul 3, 2026, 2:29 PM</span></div>
-    <div style={{ display: 'flex', gap: 40, padding: '16px 20px 18px' }}>
-      <div className="sb-field" style={{ minWidth: 0 }}><span>Rule Detail</span><span className="sb-ext" style={{ maxWidth: 380 }}><span>{ruleName}</span>{Icon.external}</span></div>
+    <div className="sb-accepted-head" style={narrow ? { padding: '10px 16px' } : undefined}><span><b style={{ fontWeight: 700 }}>{by}</b> {auto ? 'auto-' : ''}accepted and activated the recommended rule</span>{!narrow && <span style={{ fontSize: 12 }}>Jul 3, 2026, 2:29 PM</span>}</div>
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: narrow ? 14 : 40, padding: narrow ? '14px 16px 16px' : '16px 20px 18px' }}>
+      <div className="sb-field" style={{ minWidth: 0, maxWidth: '100%' }}><span>Rule Detail</span><span className="sb-ext" style={{ maxWidth: narrow ? '100%' : 380 }}><span>{ruleName}</span>{Icon.external}</span></div>
       <div className="sb-field"><span>Flagged Message</span><span className="sb-ext" style={{ width: 'fit-content' }}>View Flagged Messages{Icon.external}</span></div>
     </div>
   </div>;
@@ -200,9 +205,9 @@ export function Worked() {
 export function Triggered({ when = 'Jul 3, 2026, 2:12 PM' }: { when?: string }) {
   return <div style={{ display: 'grid', gap: 16 }}>
     <TimelineTitle>Patrick Morgan triggered ADÉ at {when}</TimelineTitle>
-    <div className="sb-box sb-body" style={{ display: 'grid', gridTemplateColumns: '96px 1fr', rowGap: 12, columnGap: 16, padding: 16 }}>
+    <div className="sb-box sb-body" style={{ display: 'grid', gridTemplateColumns: '96px minmax(0, 1fr)', rowGap: 12, columnGap: 16, padding: 16 }}>
       <span className="sb-label">Subject</span><span>{job.subject}</span>
-      <span className="sb-label">Sender</span><span>payroll-verify@employee-benefits.co</span>
+      <span className="sb-label">Sender</span><span style={{ overflowWrap: 'anywhere' }}>payroll-verify@employee-benefits.co</span>
       <span className="sb-label">Recipient</span><span>alex.morgan@acme.com</span>
       <span className="sb-label">ASA Verdict</span><VerdictLabel verdict="malicious" />
     </div>
@@ -219,6 +224,8 @@ const huntRows = [
  *  data; with `run` false they wait at zero, and `run` counts them up. `meets` adds the auto-accept line. */
 export function HuntEntry({ run = true, reduced = false, meets = false, open = false }: { run?: boolean; reduced?: boolean; meets?: boolean; open?: boolean }) {
   const n = (to: number) => <CountUp to={to} run={run} reduced={reduced} />;
+  const narrow = useNarrowLayout();
+  const cols = narrow ? 'minmax(0, 1fr) 104px' : 'minmax(0, 1fr) 210px 64px 110px';
   return <div style={{ display: 'grid', gap: 16 }} data-frame="hunt">
     <TimelineTitle>ADÉ hunted across 14 days and found {n(43)}&nbsp;message groups ({n(58)}&nbsp;total messages)</TimelineTitle>
     <div className="sb-hunt-box">
@@ -226,14 +233,14 @@ export function HuntEntry({ run = true, reduced = false, meets = false, open = f
         <div className="sb-body" style={{ display: 'grid', gap: 12 }}>
           <span className="sb-verdict">{Icon.bullseye}<span>Recommended Rule is a <b style={{ fontWeight: 600 }}><CountUp to={93} run={run} reduced={reduced} format={v => `${Math.round(v)}%`} /></b> match with {n(40)} malicious matches and may introduce {n(2)} false positives (Benign).</span></span>
           <Expand open={meets}><span className="sb-meets">{Icon.sparkles}It meets the threshold to auto-accept the Rule.</span></Expand>
-          <div style={{ display: 'flex', gap: 20 }}><span className="sb-verdict"><VerdictIcon verdict="malicious" />{n(40)} Malicious</span><span className="sb-verdict"><VerdictIcon verdict="spam" />{n(1)} Spam</span><span className="sb-verdict"><VerdictIcon verdict="benign" />{n(2)} Benign</span></div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px 20px' }}><span className="sb-verdict"><VerdictIcon verdict="malicious" />{n(40)} Malicious</span><span className="sb-verdict"><VerdictIcon verdict="spam" />{n(1)} Spam</span><span className="sb-verdict"><VerdictIcon verdict="benign" />{n(2)} Benign</span></div>
         </div>
         <span className={`sb-disclose ${open ? 'is-open' : ''}`} data-target="hunt-toggle">{Icon.chevron('down')}</span>
       </div>
       <Expand open={open}>
         <div className="sb-hunt-table">
-          <div className="sb-row is-head" style={{ gridTemplateColumns: 'minmax(0, 1fr) 210px 64px 110px' }}><span>Subject</span><span>Sender</span><span>Received</span><span>ASA Verdict</span></div>
-          {huntRows.map(r => <div key={r.subject} className="sb-row" style={{ gridTemplateColumns: 'minmax(0, 1fr) 210px 64px 110px' }}><span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{r.subject}</span><span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{r.sender}</span><span>{r.received}</span><VerdictLabel verdict={r.verdict} /></div>)}
+          <div className="sb-row is-head" style={{ gridTemplateColumns: cols }}><span>Subject</span>{!narrow && <><span>Sender</span><span>Received</span></>}<span>ASA Verdict</span></div>
+          {huntRows.map(r => <div key={r.subject} className="sb-row" style={{ gridTemplateColumns: cols }}><span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{r.subject}</span>{!narrow && <><span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{r.sender}</span><span>{r.received}</span></>}<VerdictLabel verdict={r.verdict} /></div>)}
           <div className="sb-label" style={{ padding: '10px 16px', borderTop: '1px solid var(--sb-border)' }}>Showing 3 of 43 message groups</div>
         </div>
       </Expand>

@@ -1,24 +1,30 @@
-import { NativeStage } from '../case-study/NativeStage';
-import { Icon, JobHeading, Page, TimelineItem, TimelineTitle, Triggered, VerdictIcon, VerdictPanel, Zoom, job } from './SublimeUI';
-import { Camera, Expand, Pointer, SceneControls, Screens, Typing, frame, useScene, useShot, useTargets } from './scene';
+import { Icon, JobHeading, Page, TimelineItem, TimelineTitle, Triggered, VerdictIcon, VerdictPanel, job } from './SublimeUI';
+import { Camera, Expand, Pointer, SceneFrame, Screens, Typing, frame, useNarrowLayout, useScene, useShot, useStage, useTargets } from './scene';
 
 // The message detail page (patrick/ade-workflow user-reports, MessageDetailView and AdeStatusCard): ASA's verdict on a message no rule caught.
 // `gap` is the page before ADÉ: a malicious verdict over an empty Matched Detection Rules section, and the way to coverage running through
 // the Rule Editor. `handoff` adds ADÉ: Trigger ADÉ, then the job page while ADÉ works (InProgressTimelineItem over TriggeredTimelineItem).
 // The sidebar keeps the source's order (MessageDetailSidebar): Review Status, Other, then the ADÉ card (AdeStatusCard), whose copy and
 // states are the source's. Liberties taken for the case study: ASA's red banner is a tinted head; section headings sit flat on the page
-// instead of in gray bars; Matched Detection Rules shows its empty state (the product hides the section when nothing matched); and the
-// Rule Editor is redrawn. Message and job copy are the prototype's sample data.
+// instead of in gray bars; Matched Detection Rules shows its empty state (the product hides the section when nothing matched); the
+// Rule Editor is redrawn; and on phones the page stacks into one column. Message and job copy are the prototype's sample data.
 type Variant = 'gap' | 'handoff';
-const W = 1000;
-const H = 820 * W / 1020;
 const timings: Record<Variant, number[]> = {
-  gap: [1400, 2800, 1100, 900, 350, 5200],
-  handoff: [1200, 1300, 900, 350, 900, 900, 900, 350, 4400],
+  gap: [2200, 700, 800, 350, 4400],
+  handoff: [1200, 1000, 700, 300, 700, 700, 700, 300, 3600],
 };
 const captions: Record<Variant, string[]> = {
-  gap: ['ASA calls the message malicious', 'Malicious, and no Detection Rule matched it', 'The way to a rule: send the message to the Rule Editor', 'The way to a rule: send the message to the Rule Editor', 'The way to a rule: send the message to the Rule Editor', 'And write the rule by hand, then test it'],
-  handoff: ['ADÉ sits under Review Status, on the page where the miss is found', 'ADÉ sits under Review Status, on the page where the miss is found', 'Trigger ADÉ', 'Trigger ADÉ', 'Starting ADÉ', 'The job is in progress', 'The job is in progress: open its report', 'The job is in progress: open its report', 'The job page, with ADÉ at work'],
+  gap: [
+    'ASA calls the message malicious, and no Detection Rule matched it',
+    'The way to a rule: send the message to the Rule Editor', 'The way to a rule: send the message to the Rule Editor', 'The way to a rule: send the message to the Rule Editor',
+    'Then write the rule by hand, and test it',
+  ],
+  handoff: [
+    'ADÉ sits on the message page, under Review Status', 'ADÉ sits on the message page, under Review Status',
+    'Trigger ADÉ', 'Trigger ADÉ', 'Trigger ADÉ',
+    'The job starts: open its report', 'The job starts: open its report', 'The job starts: open its report',
+    'The job page, with ADÉ at work',
+  ],
 };
 const classifications = ['malicious', 'spam', 'graymail', 'benign'] as const;
 const other = ['Send EML to Rule Editor', 'Send EML to Sublime', 'Send to ThreadSafe', 'Share feedback'];
@@ -27,7 +33,7 @@ const other = ['Send EML to Rule Editor', 'Send EML to Sublime', 'Send to Thread
 function AdeCard({ phase, pressed, viewPressed }: { phase: 'ready' | 'starting' | 'running'; pressed: boolean; viewPressed: boolean }) {
   return <section className="sb-sec" data-frame="ade-side">
     <p className="sb-sec-h"><span>ADÉ (Autonomous Detection Engineer)</span>{Icon.info}</p>
-    <div className={`sb-ade-card ${phase !== 'ready' ? 'is-running' : ''}`} data-frame="ade"><div style={{ padding: 20 }}>
+    <div className={`sb-ade-card ${phase !== 'ready' ? 'is-running' : ''}`}><div style={{ padding: 20 }}>
       <Expand open={phase !== 'running'}>
         <div style={{ display: 'grid', gap: 16, paddingBottom: 2 }}>
           <span className="sb-body">ADÉ recommends new Detection Rules for malicious, spam, or graymail messages that do not match any Detection Rules.</span>
@@ -50,13 +56,14 @@ function AdeCard({ phase, pressed, viewPressed }: { phase: 'ready' | 'starting' 
 
 /** The job page while ADÉ works. */
 function JobInProgress() {
-  return <Page crumbs={['Agents', 'ADÉ', job.subject]} style={{ display: 'grid', gap: 40, padding: '40px 40px 48px' }}>
+  const narrow = useNarrowLayout();
+  return <Page crumbs={['Agents', 'ADÉ', job.subject]} style={{ display: 'grid', gap: narrow ? 28 : 40, padding: narrow ? '28px 20px 40px' : '40px 40px 48px' }}>
     <JobHeading status="running" />
     <div className="sb-timeline">
       <TimelineItem icon="spinner" tone="running">
         <div style={{ display: 'grid', gap: 16 }}>
           <TimelineTitle>ADÉ job in progress</TimelineTitle>
-          <div className="sb-working"><div>
+          <div className="sb-working"><div style={{ height: narrow ? 300 : undefined }}>
             <img src="/images/work/sublime/ade_octahedron.png" alt="" draggable={false} className="sb-octa sb-art" />
             <span className="sb-working-text">ADÉ is working...</span>
             <span className="sb-btn is-secondary">Cancel</span>
@@ -70,55 +77,45 @@ function JobInProgress() {
 
 /** The Rule Editor, redrawn: the message attached and a rule started by hand. */
 function RuleEditor({ run, reduced }: { run: boolean; reduced: boolean }) {
+  const narrow = useNarrowLayout();
   return <Page crumbs={['Detection Rules', 'Rule Editor']}>
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 24px' }}>
-      <span><b style={{ fontSize: 18, fontWeight: 600 }}>Untitled rule</b><span className="sb-label" style={{ marginLeft: 10 }}>Draft</span></span>
-      <span style={{ display: 'flex', gap: 8 }}><span className="sb-btn is-secondary">Test Rule</span><span className="sb-btn" style={{ opacity: .45 }}>Save Rule</span></span>
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, padding: narrow ? '14px 16px' : '16px 24px' }}>
+      <span style={{ whiteSpace: 'nowrap' }}><b style={{ fontSize: 18, fontWeight: 600 }}>Untitled rule</b><span className="sb-label" style={{ marginLeft: 10 }}>Draft</span></span>
+      <span style={{ display: 'flex', gap: 8 }}><span className="sb-btn is-secondary">Test Rule</span>{!narrow && <span className="sb-btn" style={{ opacity: .45 }}>Save Rule</span>}</span>
     </div>
-    <div className="sb-editor">
+    <div className="sb-editor" style={narrow ? { gridTemplateColumns: 'minmax(0, 1fr)', minHeight: 0 } : undefined}>
+      {narrow && <EditorSide />}
       <div className="sb-editor-code">
         <span className="n">1</span><span><Typing text="type.inbound" run={run} reduced={reduced} /></span>
         <span className="n">2</span><span><span className="k"><Typing text="and " run={run} every={90} reduced={reduced} /></span><span className="sb-caret" /></span>
-        {Array.from({ length: 26 }, (_, i) => <span key={i} style={{ display: 'contents' }}><span className="n">{i + 3}</span><span /></span>)}
+        {Array.from({ length: narrow ? 18 : 26 }, (_, i) => <span key={i} style={{ display: 'contents' }}><span className="n">{i + 3}</span><span /></span>)}
       </div>
-      <div className="sb-editor-side">
-        <b className="sb-section-h">Test Messages</b>
-        <span className="sb-eml" style={{ minWidth: 0 }}>{Icon.external}<span style={{ flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{job.subject}.eml</span><VerdictIcon verdict="malicious" size={14} /></span>
-        <div className="sb-empty" style={{ height: 180, fontSize: 13 }}>Test the rule to see if it matches.</div>
-      </div>
+      {!narrow && <EditorSide />}
     </div>
   </Page>;
 }
 
-/** A message ASA called malicious that no rule caught, before ADÉ and with it. */
-export default function MessageDetail({ variant }: { variant: Variant }) {
-  const scene = useScene(timings[variant]);
-  const step = scene.step;
-  const t = useTargets(step);
-  const gap = variant === 'gap';
-  const editor = gap && step === 5;
-  const jobPage = !gap && step >= 8;
-  const box = { width: W, height: H, bottom: t.height };
+function EditorSide() {
+  const narrow = useNarrowLayout();
+  return <div className="sb-editor-side" style={narrow ? { borderLeft: 0, borderBottom: '1px solid var(--sb-border)', padding: 16, gap: 12 } : undefined}>
+    <b className="sb-section-h">Test Messages</b>
+    <span className="sb-eml" style={{ minWidth: 0 }}>{Icon.external}<span style={{ flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{job.subject}.eml</span><VerdictIcon verdict="malicious" size={14} /></span>
+    {!narrow && <div className="sb-empty" style={{ height: 180, fontSize: 13 }}>Test the rule to see if it matches.</div>}
+  </div>;
+}
 
-  // The camera moves on steps of its own, and the pointer only moves once it has landed. Gap: close in on the verdict over the empty
-  // Matched Detection Rules, then step back to the page for the way to a rule. Handoff: close in on the ADÉ card for the whole exchange;
-  // View Report is a page load, so the job page arrives at full frame.
-  const shot = gap ? (step === 1 ? 'analysis' : null) : !jobPage && step >= 1 ? 'ade' : null;
-  const view = useShot(shot, shot === 'analysis' ? frame(t.rect('analysis'), box, { pad: 32, x: 'start' }) : shot === 'ade' ? frame(t.rect('ade-side'), box, { pad: 40, max: 1.45, y: 'start' }) : null);
-  let pointer: { key: string; pressing?: boolean } | null = null;
-  if (gap && (step === 3 || step === 4)) pointer = { key: 'editor', pressing: step === 4 };
-  if (!gap && (step === 2 || step === 3)) pointer = { key: 'trigger', pressing: step === 3 };
-  if (!gap && (step === 6 || step === 7)) pointer = { key: 'view-job', pressing: step === 7 };
-
+/** The message page: ASA's verdict and the empty Matched Detection Rules on the left, the review sidebar on the right (one column on a phone). */
+function MessagePage({ gap, step }: { gap: boolean; step: number }) {
+  const narrow = useNarrowLayout();
   const verdict = <VerdictPanel>
-    <div style={{ display: 'grid', gap: 18, padding: '18px 24px 22px' }}>
+    <div style={{ display: 'grid', gap: 18, padding: narrow ? '16px 18px 18px' : '18px 24px 22px' }}>
       <div style={{ display: 'grid', gap: 6 }}>
         <span className="sb-label">ASA Executive Summary</span>
         <p className="sb-body" style={{ lineHeight: '22px' }}>This message impersonates Payroll Operations and urges the recipient to verify their payroll profile through an unfamiliar domain. The sender fails DMARC, does not align with the organization’s trusted HR infrastructure, and uses credential-harvesting language under the pretext of an upcoming pay cycle.</p>
       </div>
-      <div className="sb-body" style={{ display: 'grid', gridTemplateColumns: '84px 1fr', rowGap: 6 }}>
+      <div className="sb-body" style={{ display: 'grid', gridTemplateColumns: narrow ? '72px minmax(0, 1fr)' : '84px 1fr', rowGap: 6 }}>
         <span className="sb-label" style={{ lineHeight: '20px' }}>Subject</span><span>{job.subject}</span>
-        <span className="sb-label" style={{ lineHeight: '20px' }}>Sender</span><span>Payroll Operations &lt;payroll-verify@employee-benefits.co&gt;</span>
+        <span className="sb-label" style={{ lineHeight: '20px' }}>Sender</span><span style={{ overflowWrap: 'anywhere' }}>Payroll Operations &lt;payroll-verify@employee-benefits.co&gt;</span>
         <span className="sb-label" style={{ lineHeight: '20px' }}>Recipient</span><span>alex.morgan@acme.com</span>
       </div>
     </div>
@@ -132,7 +129,7 @@ export default function MessageDetail({ variant }: { variant: Variant }) {
   const content = <section className="sb-sec">
     <p className="sb-sec-h">Message Content</p>
     <div className="sb-cells" style={{ padding: '16px 20px', display: 'grid', gap: 14 }}>
-      <div className="sb-tabs-row"><b>User View</b><span>Text View</span><span>HTML View</span><span>EML View</span></div>
+      <div className="sb-tabs-row"><b>User View</b><span>Text View</span><span>HTML View</span>{!narrow && <span>EML View</span>}</div>
       <div className="sb-mail">
         <p className="sb-mail-caution"><b>CAUTION:</b> This message originated outside of your organization.</p>
         <p className="sb-label">From: Payroll Operations &lt;payroll-verify@employee-benefits.co&gt;</p>
@@ -156,35 +153,52 @@ export default function MessageDetail({ variant }: { variant: Variant }) {
         </div>
       </div>
     </section>
-    <section className="sb-sec">
+    <section className="sb-sec" data-frame="other">
       <p className="sb-sec-h">Other</p>
       <div className="sb-cells">
-        {other.map((o, i) => <div key={o} className={`sb-list-row ${gap && i === 0 && step >= 2 ? 'is-hover' : ''} ${gap && i === 0 && step === 4 ? 'is-pressed' : ''}`} data-target={i === 0 ? 'editor' : undefined} style={{ height: 40, padding: '0 16px', borderTop: i ? '1px solid var(--sb-border)' : undefined }}>{o}{Icon.chevron()}</div>)}
+        {other.map((o, i) => <div key={o} className={`sb-list-row ${gap && i === 0 && step >= 2 ? 'is-hover' : ''} ${gap && i === 0 && step === 3 ? 'is-pressed' : ''}`} data-target={i === 0 ? 'editor' : undefined} style={{ height: 40, padding: '0 16px', borderTop: i ? '1px solid var(--sb-border)' : undefined }}>{o}{Icon.chevron()}</div>)}
       </div>
     </section>
     {!gap && <AdeCard phase={step >= 5 ? 'running' : step === 4 ? 'starting' : 'ready'} pressed={step === 3} viewPressed={step === 7} />}
   </div>;
 
-  const message = <Page crumbs={['User Reports', job.subject]} style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 300px', gap: 32, padding: '28px 32px 40px' }}>
-    <div style={{ display: 'grid', gap: 28, alignContent: 'start' }}><div data-frame="analysis" style={{ display: 'grid', gap: 28 }}>{verdict}{matched}</div>{content}</div>
+  return <Page crumbs={['User Reports', job.subject]} style={narrow
+    ? { display: 'grid', gap: 28, padding: '20px 16px 40px' }
+    : { display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 300px', gap: 32, padding: '28px 32px 40px' }}>
+    <div style={{ display: 'grid', gap: 28, alignContent: 'start' }}>{verdict}{matched}{!narrow && content}</div>
     {side}
+    {narrow && content}
   </Page>;
+}
 
-  return <figure className={`qb-demo ${scene.fade ? 'qb-loop-reset' : ''}`} ref={scene.ref} aria-label={gap
+/** A message ASA called malicious that no rule caught, before ADÉ and with it. */
+export default function MessageDetail({ variant }: { variant: Variant }) {
+  const scene = useScene(timings[variant], captions[variant]);
+  const stage = useStage({ wide: 1000 });
+  const step = scene.step;
+  const t = useTargets(step, stage.narrow);
+  const gap = variant === 'gap';
+  const editor = gap && step === 4;
+  const jobPage = !gap && step >= 8;
+  const box = { ...stage.box, bottom: t.height };
+
+  // The camera only scrolls, at the page's own scale. It moves on steps of its own, and the pointer moves only once it has landed.
+  // Gap: on a phone, scroll down to the sidebar's Other section before the pointer comes in. Handoff: scroll to the ADÉ card.
+  const shot = gap ? (stage.narrow && step >= 1 && step <= 3 ? 'other' : null) : !jobPage && step >= 1 ? 'ade-side' : null;
+  const view = useShot(shot ? `${shot}-${stage.narrow}` : null, shot ? frame(t.rect(shot), box, { scale: 1, pad: 24, y: stage.narrow ? 'start' : 'center' }) : null);
+  let pointer: { key: string; pressing?: boolean } | null = null;
+  if (gap && (step === 2 || step === 3)) pointer = { key: 'editor', pressing: step === 3 };
+  if (!gap && (step === 2 || step === 3)) pointer = { key: 'trigger', pressing: step === 3 };
+  if (!gap && (step === 6 || step === 7)) pointer = { key: 'view-job', pressing: step === 7 };
+
+  return <SceneFrame scene={scene} stage={stage} title={gap ? 'the missed threat' : 'the handoff to ADÉ'} label={gap
     ? 'The message detail page: ASA rates a payroll phishing message malicious and Matched Detection Rules is empty; Send EML to Rule Editor opens the Rule Editor, where the rule is written by hand'
     : 'The same page with ADÉ in the sidebar under Review Status and Other: Trigger ADÉ starts a job, and View Report opens the job page, where ADÉ is working'}>
-    <NativeStage width={1240} height={900}>
-      <div className="sb-card">
-        <Zoom key={scene.take} width={W}>
-          <Screens id={editor ? 'editor' : jobPage ? 'job' : 'message'}>
-            {editor ? <RuleEditor run={editor} reduced={scene.reduced} /> : jobPage ? <JobInProgress /> : <Camera view={view} width={W} height={H} cameraRef={t.ref} reduced={scene.reduced}>
-              {message}
-              <Pointer at={pointer ? t.at(pointer.key) : null} visible={!!pointer} pressing={pointer?.pressing} reduced={scene.reduced} />
-            </Camera>}
-          </Screens>
-        </Zoom>
-      </div>
-    </NativeStage>
-    <SceneControls scene={scene} title={gap ? 'the missed threat' : 'the handoff to ADÉ'} caption={captions[variant][step]} />
-  </figure>;
+    <Screens id={editor ? 'editor' : jobPage ? 'job' : 'message'}>
+      {editor ? <RuleEditor run={editor} reduced={scene.reduced} /> : jobPage ? <JobInProgress /> : <Camera view={view} width={stage.W} height={stage.box.height} cameraRef={t.ref} reduced={scene.reduced}>
+        <MessagePage gap={gap} step={step} />
+        <Pointer at={pointer ? t.at(pointer.key) : null} visible={!!pointer} pressing={pointer?.pressing} reduced={scene.reduced} />
+      </Camera>}
+    </Screens>
+  </SceneFrame>;
 }

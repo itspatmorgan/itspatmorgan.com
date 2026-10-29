@@ -23,14 +23,43 @@
   --sb-drop: 0 4px 4px rgba(0, 0, 0, .4);
 }
 
-/* Frame stages: the screen carries its own margins, so the stage drops its padding and the card bleeds off the bottom (as in Expansion). */
+/* Frame stages: the screen carries its own margins, so the stage drops its padding and the card bleeds off the bottom (as in Expansion).
+   Wide stages run past the 960px text measure to the page's full width, so a product screen renders at about its true size. */
 .sb .sb-frame { padding: 0; overflow: hidden; }
+.sb .sb-frame.is-wide { max-width: 1184px; }
 .sb .sb-frame .qb-native-stage, .sb .sb-frame .qb-native { background: transparent; }
-.sb .qb-stage .qb-demo { position: static; }
-.sb .qb-stage .qb-play { right: 16px; bottom: 16px; }
 .sb .qb-native { font-family: 'Inter Variable', 'Inter', sans-serif; font-weight: 400; color: var(--sb-strong); letter-spacing: 0; font-feature-settings: 'cv11'; }
 .sb .qb-native-stage { transition: opacity 240ms ease; }
-.sb-card { position: absolute; left: 110px; top: 80px; width: 1020px; bottom: 0; overflow: hidden; background: var(--sb-card); border-radius: 24px 24px 0 0; box-shadow: 0 0 0 16px var(--sb-ring), var(--sb-drop); }
+.sb-scene { margin: 48px 0 0; }
+/* The shell holds the card and its ring, and fades both out toward the stage's bottom edge, so a crop reads as a bleed. */
+.sb-shell { position: absolute; bottom: 0; -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 120px), transparent 100%); mask-image: linear-gradient(to bottom, #000 calc(100% - 120px), transparent 100%); }
+@media (max-width: 640px) { .sb-frame:not(.is-ready) .sb-shell { visibility: hidden; } }
+.sb-shell.is-contained { -webkit-mask-image: none; mask-image: none; }
+.sb-shell.is-contained .sb-card { border-radius: 24px; }
+.sb-card { position: relative; height: 100%; overflow: hidden; background: var(--sb-card); border-radius: 24px 24px 0 0; box-shadow: 0 0 0 16px var(--sb-ring), var(--sb-drop); }
+@media (max-width: 640px) { .sb-card { border-radius: 18px 18px 0 0; box-shadow: 0 0 0 10px var(--sb-ring), var(--sb-drop); } .sb-shell { -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 90px), transparent 100%); mask-image: linear-gradient(to bottom, #000 calc(100% - 90px), transparent 100%); } }
+
+/* Under each stage: the chapter's caption on the left, a segment per chapter and the play button on the right. */
+.sb-tour { display: flex; align-items: flex-start; justify-content: space-between; gap: 32px; max-width: 1184px; margin: 18px auto 0; padding: 0 4px; text-align: left; }
+.sb .sb-frame:not(.is-wide) + .sb-tour { max-width: 960px; }
+.sb-tour-caption { position: relative; flex: 1; min-width: 0; min-height: 24px; font-size: 15px; line-height: 24px; letter-spacing: -.01em; color: var(--foreground); }
+.sb-tour-caption > span { display: block; text-wrap: pretty; }
+.sb-tour-controls { display: flex; align-items: center; gap: 14px; flex-shrink: 0; height: 24px; }
+.sb-beats { display: flex; gap: 4px; margin: 0; padding: 0; list-style: none; }
+.sb-beats button { display: block; padding: 11px 0; background: none; border: 0; cursor: pointer; }
+.sb-beats button > i { position: relative; display: block; width: 28px; height: 2px; border-radius: 1px; background: var(--border); overflow: hidden; transition: background 150ms ease; }
+.sb-beats button > i::after { content: ''; position: absolute; inset: 0; background: var(--foreground); transform: scaleX(0); transform-origin: left; }
+.sb-beats button:hover > i { background: color-mix(in srgb, var(--foreground) 28%, transparent); }
+.sb-beats button.is-done > i::after { transform: scaleX(1); }
+.sb-beats button.is-current > i::after { animation: sb-fill linear forwards; animation-duration: inherit; animation-play-state: inherit; }
+.sb-beats button:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; border-radius: 2px; }
+@keyframes sb-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.sb-tour-play { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--border); background: var(--background); color: var(--foreground); cursor: pointer; transition: transform 150ms var(--sb-ease-out, ease), background 150ms ease; }
+.sb-tour-play:hover { background: var(--muted, #f2f2f1); }
+.sb-tour-play:active { transform: scale(.94); }
+.sb-tour-play:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+@media (max-width: 640px) { .sb-tour { flex-direction: column-reverse; gap: 6px; margin-top: 12px; } .sb-tour-caption { font-size: 14px; line-height: 21px; } .sb-tour-controls { width: 100%; justify-content: space-between; } }
+@media (prefers-reduced-motion: reduce) { .sb-beats button.is-current > i::after { animation: none; transform: scaleX(1); } }
 /* Content is laid out in source pixels and zoomed to fill the card, so type keeps the product's proportions at a readable size. */
 .sb-zoom { position: absolute; top: 0; left: 0; transform-origin: top left; }
 .sb-fade { transition: opacity 400ms ease, transform 500ms cubic-bezier(.22, 1, .36, 1); }
@@ -57,6 +86,10 @@
 /* MQL, read-only, in the product editor's colors. */
 .sb-code { display: grid; grid-template-columns: 32px 1fr; column-gap: 16px; padding: 12px 0; background: var(--sb-code); border-radius: 4px; font: 13px/20px 'SB JetBrains Mono', 'JetBrains Mono', ui-monospace, monospace; color: var(--sb-code-text); white-space: pre-wrap; overflow-wrap: anywhere; overflow: hidden; }
 .sb-code .n { text-align: right; color: var(--sb-code-line); }
+/* A line of a rule being written fades and slides in from the left, like text arriving from the agent. */
+.sb-code-line { display: contents; }
+.sb-code-line > span { transition: opacity 320ms var(--sb-ease-out), transform 420ms var(--sb-ease-out); }
+.sb-code-line.is-out > span { opacity: 0; transform: translateX(-6px); }
 .sb-code .k { color: var(--sb-code-keyword); }
 .sb-code .f { color: var(--sb-code-fn); }
 .sb-code .p { color: var(--sb-code-path); }
@@ -73,7 +106,7 @@
 .sb-agent.is-hover::before { opacity: 1; }
 .sb-agent.is-hover .sb-agent-art { transform: scale(1.1) translateY(-6px); }
 .sb-agent.is-pressed { transform: scale(.99); }
-.sb-agent-stat { font-size: 22px; font-weight: 600; line-height: 33px; letter-spacing: -.22px; }
+.sb-agent-stat { white-space: nowrap; font-size: 22px; font-weight: 600; line-height: 33px; letter-spacing: -.22px; }
 .sb { --sb-agent-hover: #f0fffb; }
 .dark .sb { --sb-agent-hover: #263431; }
 @media (prefers-reduced-motion: reduce) { .sb-agent, .sb-agent::before, .sb-agent-art { transition: none !important; } }
@@ -103,7 +136,7 @@
 .sb-pill.is-fill.is-rejected { background: var(--sb-reject); box-shadow: none; }
 .sb-pill.is-outline { height: 28px; padding: 0 10px; font-size: 13px; box-shadow: inset 0 0 0 1px var(--sb-border-strong); }
 .sb-ext { display: inline-flex; align-items: center; gap: 8px; max-width: 100%; height: 30px; padding: 0 10px; border-radius: 999px; box-shadow: inset 0 0 0 1px var(--sb-border-strong); font-size: 14px; white-space: nowrap; }
-.sb-ext span { overflow: hidden; text-overflow: ellipsis; }
+.sb-ext span { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 
 /* The ASA verdict banner. */
 .sb-banner { display: flex; justify-content: space-between; align-items: center; height: 96px; padding: 0 32px; background: var(--sb-banner); color: #fff; }
@@ -285,3 +318,20 @@
 .sb-sec { display: grid; gap: 10px; }
 .sb-sec-h { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 14px; font-weight: 600; line-height: 20px; }
 .sb-sec-h svg { color: var(--sb-weak); }
+
+/* The close: the outcome, set large on the page itself, then the lessons and a note on the screens. */
+.sb-outcome { margin: 56px auto 0; display: grid; justify-items: center; gap: 20px; }
+.sb-outcome-value { display: flex; align-items: baseline; gap: .12em; font-size: clamp(96px, 14vw, 176px); line-height: .9; letter-spacing: -.07em; font-weight: 450; font-variant-numeric: tabular-nums; }
+.sb-outcome-value span { font-size: .32em; letter-spacing: -.03em; color: var(--muted-foreground); }
+.sb-outcome figcaption { max-width: 30em; font-size: 15px; line-height: 1.5; color: var(--muted-foreground); text-wrap: balance; }
+.sb-lessons { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; max-width: 960px; margin: 56px auto 0; padding: 0; list-style: none; text-align: left; counter-reset: lesson; }
+.sb-lessons li { counter-increment: lesson; padding-top: 20px; border-top: 1px solid var(--border); }
+.sb-lessons li::before { content: counter(lesson, decimal-leading-zero); display: block; margin-bottom: 14px; font-size: 13px; font-variant-numeric: tabular-nums; color: var(--muted-foreground); }
+.sb-lessons h3 { font-size: 19px; font-weight: 500; line-height: 1.25; letter-spacing: -.02em; }
+.sb-lessons p { margin-top: 10px; font-size: 15px; line-height: 1.55; color: var(--muted-foreground); text-wrap: pretty; }
+.qb-slide > .sb-footnote { max-width: 960px; margin-top: 72px; padding-top: 20px; border-top: 1px solid var(--border); font-size: 13px; line-height: 1.5; text-align: left; }
+@media (max-width: 640px) {
+  .sb-outcome { margin-top: 36px; }
+  .sb-lessons { grid-template-columns: minmax(0, 1fr); gap: 28px; margin-top: 36px; }
+  .qb-slide > .sb-footnote { margin-top: 48px; }
+}

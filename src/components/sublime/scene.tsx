@@ -3,34 +3,116 @@ import { AnimatePresence, animate, motion, useMotionValue, useTransform, type Mo
 import { HugeiconsIcon } from '@hugeicons/react';
 import { ArrowReloadHorizontalIcon, Cursor01Icon, PauseIcon, PlayIcon } from '@hugeicons/core-free-icons';
 import { useDemoLoop } from '../case-study/useDemoLoop';
+import { NativeStage } from '../case-study/NativeStage';
+import { Zoom } from './SublimeUI';
 
 // Scene plumbing for the Sublime screens. A scene plays once when it scrolls into view and holds its last frame, so nothing
 // snaps back mid-read; Replay fades the frame out before it starts again. Reduced motion lands on the last frame.
 
-export function useScene(timings: readonly number[]) {
+export function useScene(timings: readonly number[], captions: readonly string[]) {
   const loop = useDemoLoop(timings, 0, false, true);
   const [fade, setFade] = useState(false);
   // Each replay is a new take: keying the screen on it remounts it, so entrances and count-ups run again from the start.
   const [take, setTake] = useState(0);
+  // Each jump restarts the current chapter's progress bar.
+  const [cut, setCut] = useState(0);
   const done = loop.step === timings.length - 1;
+  // Chapters: a run of steps that share a caption. Each gets a segment in the progress bar, and its caption shows under the stage.
+  const beats = captions.reduce<{ start: number; caption: string; duration: number }[]>((list, caption, i) => {
+    const last = list[list.length - 1];
+    if (last && last.caption === caption) last.duration += timings[i];
+    else list.push({ start: i, caption, duration: timings[i] });
+    return list;
+  }, []);
+  const beat = beats.reduce((current, b, i) => (b.start <= loop.step ? i : current), 0);
   const replay = () => {
     setFade(true);
-    window.setTimeout(() => { loop.replay(); setTake(n => n + 1); setFade(false); }, 240);
+    window.setTimeout(() => { loop.replay(); setTake(n => n + 1); setCut(n => n + 1); setFade(false); }, 240);
   };
-  return { ...loop, done, fade, take, replay };
+  const jumpTo = (i: number) => {
+    if (i === 0) { replay(); return; }
+    setCut(n => n + 1);
+    if (loop.reduced) loop.choose(beats[i].start); else loop.jump(beats[i].start);
+  };
+  return { ...loop, done, fade, take, cut, replay, beats, beat, caption: captions[loop.step], jumpTo };
 }
 export type Scene = ReturnType<typeof useScene>;
 
-/** Pause and play while a scene runs; Replay once it has finished. */
-export function SceneControls({ scene, title, caption }: { scene: Scene; title: string; caption: string }) {
+/** Whether the page is phone-sized. Scenes then lay the product out in one narrow column, so its text stays readable. */
+export function useNarrow() {
+  const [narrow, setNarrow] = useState(false);
+  useEffect(() => {
+    const media = window.matchMedia('(max-width: 640px)');
+    const update = () => setNarrow(media.matches);
+    update();
+    media.addEventListener('change', update);
+    return () => media.removeEventListener('change', update);
+  }, []);
+  return narrow;
+}
+const NarrowLayout = createContext(false);
+/** Inside a stage: true when the product is laid out for a phone. */
+export const useNarrowLayout = () => useContext(NarrowLayout);
+
+/** Stage geometry, in stage pixels. Wide: a 1240 px stage with the card inset 64 px, so a 1000 px screen renders at about its true size
+ *  on a laptop. Narrow: a 600 px stage with the card inset 20 px, holding a 400 px product layout. The card bleeds off the stage's
+ *  bottom edge, as a page that goes on; a `contained` screen that ends sits whole inside the stage instead (wide only). */
+export function useStage({ wide, narrow: narrowWidth = 400, height = 760, contained = false }: { wide: number; narrow?: number; height?: number; contained?: boolean }) {
+  const narrow = useNarrow();
+  const g = narrow ? { width: 600, height: 780, inset: 20, top: 24, ring: 10, bottom: 0 } : { width: 1240, height, inset: 64, top: 64, ring: 16, bottom: contained ? 64 : 0 };
+  const card = g.width - g.inset * 2;
+  const W = narrow ? narrowWidth : wide;
+  return { narrow, W, g, card, box: { width: W, height: (g.height - g.top - g.bottom) * W / card } };
+}
+export type Stage = ReturnType<typeof useStage>;
+
+/** A scene: the stage, with the product card bleeding off its bottom edge and fading out, then the chapter captions and progress. */
+export function SceneFrame({ scene, stage, label, title, size = 'wide', controls = true, children }: { scene: Scene; stage: Stage; label: string; title: string; size?: 'wide' | 'normal'; controls?: boolean; children: ReactNode }) {
+  const { g, card } = stage;
+  // The server renders the wide layout; on a phone the stage stays hidden until it has laid itself out for the phone.
+  const [ready, setReady] = useState(false);
+  useEffect(() => setReady(true), []);
+  return <figure className={`sb-scene ${scene.fade ? 'qb-loop-reset' : ''}`} ref={scene.ref as RefObject<HTMLElement>} aria-label={label}>
+    <div className={`qb-stage texture-bg sb-frame is-${size} ${ready ? 'is-ready' : ''}`}>
+      <NarrowLayout.Provider value={stage.narrow}>
+        <NativeStage width={g.width} height={g.height}>
+          <div className={`sb-shell ${g.bottom ? 'is-contained' : ''}`} style={{ left: g.inset - g.ring, top: g.top - g.ring, bottom: g.bottom ? g.bottom - g.ring : 0, width: card + g.ring * 2, padding: g.bottom ? g.ring : `${g.ring}px ${g.ring}px 0` }}>
+            <div className="sb-card">
+              <Zoom key={`${scene.take}-${stage.narrow}`} width={stage.W} to={card}>{children}</Zoom>
+            </div>
+          </div>
+        </NativeStage>
+      </NarrowLayout.Provider>
+    </div>
+    {controls ? <SceneTour scene={scene} title={title} /> : <figcaption className="sr-only">{scene.caption}</figcaption>}
+  </figure>;
+}
+
+/** Under the stage: what the current chapter shows, and a segment per chapter that fills as it plays. Segments jump to their chapter;
+ *  the button pauses, plays, or replays a finished scene. */
+function SceneTour({ scene, title }: { scene: Scene; title: string }) {
   const finished = scene.done && !scene.reduced;
   const label = finished ? `Replay ${title}` : `${scene.playing ? 'Pause' : 'Play'} ${title}`;
-  return <>
-    <figcaption className="sr-only" aria-live={scene.playing && !scene.done ? 'off' : 'polite'}>{caption}</figcaption>
-    {!scene.reduced && <button type="button" className="qb-play" aria-label={label} title={label} onClick={finished ? scene.replay : scene.toggle}>
-      <HugeiconsIcon icon={finished ? ArrowReloadHorizontalIcon : scene.playing ? PauseIcon : PlayIcon} size={14} strokeWidth={1.7} />
-    </button>}
-  </>;
+  const running = scene.playing && scene.visible && !scene.reduced;
+  return <div className="sb-tour">
+    <figcaption className="sb-tour-caption" aria-live={scene.playing && !scene.done ? 'off' : 'polite'}>
+      <AnimatePresence mode="popLayout" initial={false}>
+        <motion.span key={scene.beat} initial={{ opacity: 0, y: 4, filter: 'blur(2px)' }} animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }} exit={{ opacity: 0, y: -4, filter: 'blur(2px)' }} transition={{ duration: .26, ease: [.23, 1, .32, 1] }}>{scene.beats[scene.beat]?.caption}</motion.span>
+      </AnimatePresence>
+    </figcaption>
+    <div className="sb-tour-controls">
+      {scene.beats.length > 1 && <ol className="sb-beats">
+        {scene.beats.map((b, i) => <li key={i}>
+          <button type="button" className={i < scene.beat ? 'is-done' : i === scene.beat ? 'is-current' : ''} aria-current={i === scene.beat ? 'step' : undefined} aria-label={`Step ${i + 1} of ${scene.beats.length}: ${b.caption}`} onClick={() => scene.jumpTo(i)}>
+            <i key={i === scene.beat ? `${scene.cut}-${scene.take}` : 'idle'} style={i === scene.beat ? { animationDuration: `${b.duration}ms`, animationPlayState: running ? 'running' : 'paused' } : undefined} />
+          </button>
+        </li>)}
+      </ol>}
+      {!scene.reduced && <button type="button" className="sb-tour-play" aria-label={label} title={label} onClick={finished ? scene.replay : scene.toggle}>
+        <HugeiconsIcon icon={finished ? ArrowReloadHorizontalIcon : scene.playing ? PauseIcon : PlayIcon} size={14} strokeWidth={1.8} />
+      </button>}
+    </div>
+  </div>;
 }
 
 export type View = { x: number; y: number; s: number };
@@ -186,9 +268,10 @@ export function CountUp({ to, run, duration = 1.1, format = (n: number) => Strin
 /** One screen at a time, keyed by `id`: going to the next screen fades the old one out and brings the new one up, like a page load
  *  that has already happened. */
 export function Screens({ id, children }: { id: string; children: ReactNode }) {
-  return <AnimatePresence mode="wait" initial={false}>
-    <motion.div key={id} initial={{ opacity: 0, y: 10, filter: 'blur(3px)' }} animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }} exit={{ opacity: 0, y: -6, filter: 'blur(2px)', transition: { duration: .18, ease: [.65, 0, .35, 1] } }}
-      transition={{ duration: .42, ease: [.23, 1, .32, 1] }}>{children}</motion.div>
+  // popLayout lifts the outgoing screen out of the flow, so the two crossfade over each other and the card is never empty.
+  return <AnimatePresence mode="popLayout" initial={false}>
+    <motion.div key={id} initial={{ opacity: 0, y: 8, filter: 'blur(3px)' }} animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }} exit={{ opacity: 0, filter: 'blur(2px)', transition: { duration: .3, ease: [.65, 0, .35, 1] } }}
+      transition={{ duration: .45, ease: [.23, 1, .32, 1] }} style={{ background: 'var(--sb-card)' }}>{children}</motion.div>
   </AnimatePresence>;
 }
 

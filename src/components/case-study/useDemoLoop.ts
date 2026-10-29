@@ -52,7 +52,9 @@ export function useDemoLoop(durations: readonly number[], initial = 0, resetFade
   }, [step, playing, visible, foreground, generation, durations, reduced, resetFade, once]);
 
   const choose = (next: number) => { version.current++; elapsed.current = 0; setPlaying(false); setResetting(false); setStep(Math.max(0, Math.min(durations.length - 1, next))); setGeneration(g => g + 1); };
+  // Jump to a step and keep playing from there (a chapter picked from a scene's progress).
+  const jump = (next: number) => { version.current++; elapsed.current = 0; setResetting(false); setStep(Math.max(0, Math.min(durations.length - 1, next))); setPlaying(true); setGeneration(g => g + 1); };
   const replay = () => { version.current++; elapsed.current = 0; setStep(0); setResetting(false); setPlaying(true); setGeneration(g => g + 1); };
-  return { ref, step, playing, reduced, seen, resetting, count: durations.length, choose, replay, toggle: () => setPlaying(p => !p), pause: () => setPlaying(false) };
+  return { ref, step, playing, reduced, seen, visible: visible && foreground, resetting, count: durations.length, choose, jump, replay, toggle: () => setPlaying(p => !p), pause: () => setPlaying(false) };
 }
 export type DemoLoop = ReturnType<typeof useDemoLoop>;
