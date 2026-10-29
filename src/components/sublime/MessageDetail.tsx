@@ -143,10 +143,10 @@ function MessagePage({ gap, step }: { gap: boolean; step: number }) {
   const side = <div style={{ display: 'grid', gap: 24, alignContent: 'start' }}>
     <section className="sb-sec">
       <p className="sb-sec-h">Review Status</p>
-      <div className="sb-cells">
-        <div style={{ display: 'grid', gap: 8, padding: 16 }}><span className="sb-label">Review Status</span><span className="sb-pill is-outline" style={{ height: 24, fontSize: 12, width: 'fit-content' }}>⚠ Unreviewed</span></div>
-        <div style={{ padding: '0 16px 16px' }}>
-          <div style={{ borderRadius: 4, overflow: 'hidden', boxShadow: 'inset 0 0 0 1px var(--sb-border-strong)' }}>
+      <div className="sb-box" style={{ display: 'grid', gap: 16, padding: 16 }}>
+        <div style={{ display: 'grid', gap: 8 }}><span className="sb-label">Review Status</span><span className="sb-pill is-outline" style={{ height: 24, fontSize: 12, width: 'fit-content' }}>⚠ Unreviewed</span></div>
+        <div>
+          <div style={{ borderRadius: 4, overflow: 'hidden', border: '1px solid var(--sb-border-strong)' }}>
             <div className="sb-list-row sb-label" style={{ height: 32 }}>Select Classification{Icon.info}</div>
             {classifications.map(v => <div key={v} className="sb-list-row" style={{ borderTop: '1px solid var(--sb-border)' }}><span className="sb-verdict"><VerdictIcon verdict={v} />{v[0].toUpperCase() + v.slice(1)}</span>{Icon.chevron()}</div>)}
           </div>
