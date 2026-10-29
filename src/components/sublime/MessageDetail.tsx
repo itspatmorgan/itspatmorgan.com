@@ -30,7 +30,9 @@ const captions: Record<Variant, string[]> = {
   ],
 };
 const classifications = ['malicious', 'spam', 'graymail', 'benign'] as const;
-const other = ['Send EML to Rule Editor', 'Send EML to Sublime', 'Send to ThreadSafe', 'Share feedback'];
+// Liberty taken: the source's Other list (Send EML to Rule Editor, Send EML to Sublime, Send to ThreadSafe, Share feedback) is cut to the
+// action the story needs and the last one.
+const other = ['Send EML to Rule Editor', 'Share feedback'];
 
 /** AdeStatusCard: ready to trigger, starting, then the running job with the way into its report. */
 function AdeCard({ phase, pressed, viewPressed }: { phase: 'ready' | 'starting' | 'running'; pressed: boolean; viewPressed: boolean }) {
@@ -87,13 +89,18 @@ function MessagePage({ gap, step }: { gap: boolean; step: number }) {
         <span className="sb-label">Executive Summary</span>
         <p className="sb-body" style={{ lineHeight: '22px' }}>This message impersonates Payroll Operations and urges the recipient to verify their payroll profile through an unfamiliar domain. The sender fails DMARC, does not align with the organization’s trusted HR infrastructure, and uses credential-harvesting language under the pretext of an upcoming pay cycle.</p>
       </div>
-      <div className="sb-body" style={{ display: 'grid', gridTemplateColumns: narrow ? '72px minmax(0, 1fr)' : '84px 1fr', rowGap: 6 }}>
-        <span className="sb-label" style={{ lineHeight: '20px' }}>Subject</span><span>{job.subject}</span>
-        <span className="sb-label" style={{ lineHeight: '20px' }}>Sender</span><span style={{ overflowWrap: 'anywhere' }}>Payroll Operations &lt;payroll-verify@employee-benefits.co&gt;</span>
-        <span className="sb-label" style={{ lineHeight: '20px' }}>Recipient</span><span>alex.morgan@acme.com</span>
-      </div>
     </div>
   </VerdictPanel>;
+
+  // Liberty taken: a short header names the email (subject, sender, recipient) above the verdict; the source page
+  // opens on the verdict, with these fields in its details further down.
+  const header = <header style={{ display: 'grid', gap: 8, gridColumn: '1 / -1', paddingBottom: narrow ? 20 : 24, borderBottom: '1px solid var(--sb-border)' }}>
+    <p style={{ fontSize: narrow ? 19 : 22, fontWeight: 600, lineHeight: narrow ? '26px' : '30px', letterSpacing: '-.2px' }}>{job.subject}</p>
+    <div className="sb-body" style={{ display: 'flex', flexWrap: 'wrap', columnGap: 28, rowGap: 4 }}>
+      <span style={{ overflowWrap: 'anywhere' }}><span className="sb-label" style={{ marginRight: 8 }}>From</span>Payroll Operations &lt;payroll-verify@employee-benefits.co&gt;</span>
+      <span><span className="sb-label" style={{ marginRight: 8 }}>To</span>alex.morgan@acme.com</span>
+    </div>
+  </header>;
 
   const matched = <section className="sb-sec">
     <p className="sb-sec-h">Matched Detection Rules (0)</p>
@@ -139,6 +146,7 @@ function MessagePage({ gap, step }: { gap: boolean; step: number }) {
   return <Page crumbs={['User Reports', job.subject]} style={narrow
     ? { display: 'grid', gap: 28, padding: '20px 16px 40px' }
     : { display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 300px', gap: 32, padding: '28px 32px 40px' }}>
+    {header}
     <div style={{ display: 'grid', gap: 28, alignContent: 'start' }}>{verdict}{matched}{!narrow && content}</div>
     {side}
     {narrow && content}
@@ -156,8 +164,8 @@ export default function MessageDetail({ variant }: { variant: Variant }) {
   const box = { ...stage.box, bottom: t.height };
 
   // The camera only scrolls, at the page's own scale. It moves on steps of its own, and the pointer moves only once it has landed.
-  // Gap: on a phone, scroll down to the sidebar's Other section before the pointer comes in. Handoff: scroll to the ADÉ card.
-  const shot = gap ? (stage.narrow && step >= 1 && step <= 3 ? 'other' : null) : !jobPage && step >= 1 ? 'ade-side' : null;
+  // Gap: scroll down to the sidebar's Other section before the pointer comes in. Handoff: scroll to the ADÉ card.
+  const shot = gap ? (step >= 1 && step <= 3 ? 'other' : null) : !jobPage && step >= 1 ? 'ade-side' : null;
   const view = useShot(shot ? `${shot}-${stage.narrow}` : null, shot ? frame(t.rect(shot), box, { scale: 1, pad: 24, y: stage.narrow ? 'start' : 'center' }) : null);
   let pointer: { key: string; pressing?: boolean } | null = null;
   if (gap && (step === 2 || step === 3)) pointer = { key: 'editor', pressing: step === 3 };
