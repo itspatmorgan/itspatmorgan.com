@@ -6,10 +6,11 @@ import { useDemoLoop } from '../case-study/useDemoLoop';
 import { NativeStage } from '../case-study/NativeStage';
 import { Zoom } from './SublimeUI';
 
-// Scene plumbing for the Sublime screens. A scene plays once when it scrolls into view and holds its last frame, so nothing
-// snaps back mid-read; Replay fades the frame out before it starts again. Reduced motion lands on the last frame.
+// Scene plumbing for the Sublime screens. A scene starts when it scrolls into view. By default it cycles: the last step holds for its
+// time, then the frame fades out and the scene starts again from its first frame, since a flow's last screen rarely tells the whole
+// story. A scene whose end state is the point (`loop: false`) plays once and holds it, with Replay. Reduced motion lands on the last frame.
 
-export function useScene(timings: readonly number[], captions: readonly string[]) {
+export function useScene(timings: readonly number[], captions: readonly string[], { loop: cycle = true }: { loop?: boolean } = {}) {
   const loop = useDemoLoop(timings, 0, false, true);
   const [fade, setFade] = useState(false);
   // Each replay is a new take: keying the screen on it remounts it, so entrances and count-ups run again from the start.
@@ -29,12 +30,19 @@ export function useScene(timings: readonly number[], captions: readonly string[]
     setFade(true);
     window.setTimeout(() => { loop.replay(); setTake(n => n + 1); setCut(n => n + 1); setFade(false); }, 240);
   };
+  // The loop hook stops on the last step; a cycling scene holds it for its time, then restarts with a fade rather than stepping backward.
+  const last = timings[timings.length - 1];
+  useEffect(() => {
+    if (!cycle || !done || !loop.playing || !loop.visible || loop.reduced) return;
+    const timer = window.setTimeout(replay, last);
+    return () => window.clearTimeout(timer);
+  }, [cycle, done, loop.playing, loop.visible, loop.reduced, last, take, cut]);
   const jumpTo = (i: number) => {
     if (i === 0) { replay(); return; }
     setCut(n => n + 1);
     if (loop.reduced) loop.choose(beats[i].start); else loop.jump(beats[i].start);
   };
-  return { ...loop, done, fade, take, cut, replay, beats, beat, caption: captions[loop.step], jumpTo };
+  return { ...loop, done, cycle, fade, take, cut, replay, beats, beat, caption: captions[loop.step], jumpTo };
 }
 export type Scene = ReturnType<typeof useScene>;
 
@@ -89,9 +97,9 @@ export function SceneFrame({ scene, stage, label, title, size = 'wide', controls
 }
 
 /** Under the stage: what the current chapter shows, and a segment per chapter that fills as it plays. Segments jump to their chapter;
- *  the button pauses, plays, or replays a finished scene. */
+ *  the button pauses or plays, and replays a finished scene that doesn't cycle. */
 function SceneTour({ scene, title }: { scene: Scene; title: string }) {
-  const finished = scene.done && !scene.reduced;
+  const finished = scene.done && !scene.reduced && !scene.cycle;
   const label = finished ? `Replay ${title}` : `${scene.playing ? 'Pause' : 'Play'} ${title}`;
   const running = scene.playing && scene.visible && !scene.reduced;
   return <div className="sb-tour">
@@ -247,10 +255,27 @@ export function Pointer({ at, visible, pressing = false, reduced = false }: { at
 
 /** Content that opens to its natural height (and closes) on a spring, instead of popping in. */
 export function Expand({ open, children, className, style }: { open: boolean; children: ReactNode; className?: string; style?: CSSProperties }) {
-  return <AnimatePresence initial={false}>{open && <motion.div key="expand" className={className}
-    initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }}
-    transition={{ height: { type: 'spring', bounce: 0, duration: .6 }, opacity: { duration: .28, delay: .06 } }}
-    style={{ overflow: 'hidden', ...style }}>{children}</motion.div>}</AnimatePresence>;
+  // The content stays mounted and is measured continuously, so the height animates to what the content really is, even if it settles
+  // taller mid-slide (a height of 'auto' is measured once at the start, so the slide fell short and the last stretch snapped into place).
+  // Until the first measurement, it simply sits open or closed, so nothing slides in on load.
+  const inner = useRef<HTMLDivElement>(null);
+  const [h, setH] = useState<number | null>(null);
+  useLayoutEffect(() => {
+    const el = inner.current;
+    if (!el) return;
+    const measure = () => setH(el.offsetHeight);
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+  return <motion.div initial={false} aria-hidden={!open || undefined} inert={!open || undefined}
+    animate={{ height: h === null ? (open ? 'auto' : 0) : open ? h : 0, opacity: open ? 1 : 0 }}
+    transition={h === null ? { duration: 0 } : { height: { type: 'spring', bounce: 0, duration: .6 }, opacity: { duration: .28, delay: open ? .06 : 0 } }}
+    style={{ overflow: 'hidden', ...style }}>
+    {/* flow-root keeps the children's margins inside the measured box. */}
+    <div ref={inner} className={className} style={className ? undefined : { display: 'flow-root' }}>{children}</div>
+  </motion.div>;
 }
 
 /** A number that counts up to `to` once `run` turns true, easing out like the rest of the motion; reduced motion shows the value. */

@@ -23,20 +23,21 @@ control, which the adapter hides from the embedded UI and keyboard navigation
 with `display: none`. It remains callable for synchronization; the standalone
 Studio is unaffected. Collapse section navigation when its Hide navigation control first
 appears. On first entry to each prototype or system in the embedded session, reveal its
-section navigation using Show navigation so visitors discover the artifacts and resources. After that,
-respect their choice to collapse or reopen it. These controls also update Studio's
+section navigation using Show navigation so visitors discover the artifacts and resources.
+After that, respect their choice to collapse or reopen it. Match project routes
+against the demo's base path (`/design-studio-demo/`); a hard-coded older path
+silently stopped this reveal when the base moved. These controls also update Studio's
 saved theme and navigation preferences. Control labels are integration contracts.
 
 Use a fixed-size skeleton/error overlay rather than an appended status bar.
-Loading text is screen-reader-only. Wait for hydration, theme synchronization,
-and nested preview/diagram/canvas readiness within the visible viewport. Reveal
-immediately when ready, with a 100ms fade; do not add a settling delay or wait for
-offscreen embeds. After the initial load, delay the skeleton by 120ms so fast
-navigation completes without flashing an overlay. Respect reduced motion.
-Lifecycle `unknown` on generic reader wrappers
-is not necessarily pending: React previews use `data-preview-state`, diagrams
-use figure lifecycle attributes, canvases use `data-canvas-opening`. Embedded
-content may also load within documents. Watch for visible loading statuses.
+Loading text is screen-reader-only. The overlay covers the route only: wait for
+hydration, theme synchronization and, on an artifact page, its content in place.
+Do not wait for previews, diagrams or canvases embedded in that content; they show
+their own loading states, and waiting for them (a canvas embedded in a document
+takes about a second) kept the overlay over a page that was already there, which
+read as slow and buggy. Reveal immediately when ready, with a 100ms fade. After
+the initial load, delay the skeleton by 120ms so fast navigation completes
+without flashing an overlay. Respect reduced motion.
 
 This adapter requires a shared origin. Vite development and preview proxies
 serve the published demo under localhost. The website's production deployment

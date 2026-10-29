@@ -1,9 +1,13 @@
 ---
 import PageLayout from "@/layouts/PageLayout.astro";
 import ProjectCard from "@/components/ProjectCard.astro";
+import ProjectDemo from "@/components/ProjectDemo.astro";
+import { liveDemoSlugs } from "@/data/project-demos";
 import PixelWaveText from "@/components/PixelWaveText.astro";
 import LabCard from "@/components/lab/LabCard.astro";
 import StudioPreviewCarousel from "@/components/design-studio/StudioPreviewCarousel.astro";
+import Icon from "@/components/icons/Icon.astro";
+import { PlayCircleIcon } from "@hugeicons/core-free-icons";
 import { GenerativePatternSurface } from "@/lab/editorial-art/GenerativePatternSurface";
 import { UAMark } from "@/lab/editorial-art/UAMark";
 import { siteConfig } from "@/data/site-config";
@@ -28,6 +32,7 @@ const professionalProjects = allProjects
   .filter((p) => p.data.type === "professional")
   .sort((a, b) => a.data.sortOrder - b.data.sortOrder);
 const featuredProjectDescriptions: Record<string, string> = {
+  "sublime-agents": "Designed an AI agent that writes detection rules, and gives security teams control over its autonomy.",
   "query-language": "Designed a visual query builder that taught a complex query language as customers used it.",
   expansion: "Shaped how a new SKU came to market by extending the platform, not rebuilding it.",
 };
@@ -77,7 +82,15 @@ const homeCommunityPhotos = [
   },
 ] as const;
 
-const homeShell = "mx-auto w-full max-w-[1400px] px-6 sm:px-8 lg:px-14";
+// Design Studio's public repo, linked from the section header, and the two talks where Patrick walks through it, at the card's foot.
+const designStudioRepo = "https://github.com/itspatmorgan/design-studio";
+const designStudioLinks = [
+  { label: "Dive Club interview", href: "https://www.youtube.com/watch?v=628c4YuxAEM", icon: PlayCircleIcon },
+  { label: "Maven talk", href: "https://maven.com/p/0e87f2/build-your-own-ai-design-sandbox", icon: PlayCircleIcon },
+];
+
+// 1296 less 56 a side leaves 1184 of content, the case studies' widest stage, so the homepage and the work it links to share one measure.
+const homeShell = "mx-auto w-full max-w-[1296px] px-6 sm:px-8 lg:px-14";
 const homeSection = `${homeShell} py-12 sm:py-14 lg:py-16`;
 const homeFirstSection = `${homeShell} pt-5 pb-12 sm:pt-10 sm:pb-14 lg:pt-10 lg:pb-16`;
 const homeSectionHeader = "mb-7 flex items-center justify-between";
@@ -189,30 +202,8 @@ const homeWorkGrid = "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:gap-6";
 
   </section>
 
-  {/* ── Design Studio ────────────────────────────────────── */}
-  <section class={homeFirstSection} aria-labelledby="home-design-studio-title">
-    <div class={homeSectionHeader} data-home-section-header>
-      <p class="font-mono text-xs uppercase tracking-widest text-muted-foreground">Featured</p>
-    </div>
-    <div data-project-card-item>
-      <article class="group grid overflow-hidden rounded-xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-black/20 motion-reduce:translate-y-0 motion-reduce:transition-none lg:grid-cols-[1fr_2fr]">
-        <a href="/design-studio" class="order-2 flex flex-col justify-center p-5 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring sm:p-6 lg:order-1 lg:p-8" aria-labelledby="home-design-studio-title">
-            <h2 id="home-design-studio-title" class="flex items-center gap-3 text-xl font-semibold tracking-tight sm:text-2xl xl:text-3xl">
-              <svg viewBox="0 0 40 32" fill="currentColor" class="h-5 w-[25px] shrink-0 sm:h-6 sm:w-[30px] xl:h-[30px] xl:w-[37.5px]" aria-hidden="true"><path d="M0 0h11v32H0zM15 0h3a16 16 0 0 1 0 32h-3z" /></svg>
-              <span>Design Studio</span>
-            </h2>
-            <p class="mt-3 max-w-lg text-sm leading-relaxed text-muted-foreground sm:text-base lg:text-sm xl:text-base">A prototype sandbox for designers and product managers. Build with your agent, using your components, context, and design principles.</p>
-            <span class="mt-5 inline-flex items-center gap-2 text-sm font-medium transition-colors group-hover:text-accent xl:text-base">Explore Design Studio <span aria-hidden="true">→</span></span>
-        </a>
-        <div class="texture-bg order-1 flex items-center justify-center overflow-hidden border-b border-border p-3 sm:p-6 lg:order-2 lg:border-b-0 lg:border-l">
-          <StudioPreviewCarousel />
-        </div>
-      </article>
-    </div>
-  </section>
-
   {/* ── Work ─────────────────────────────────────────────── */}
-  <section class={`${homeShell} pb-12 sm:pb-14 lg:pb-16`}>
+  <section class={homeFirstSection}>
     <div class={homeSectionHeader} data-home-section-header>
       <p class="font-mono text-xs uppercase tracking-widest text-muted-foreground">Work</p>
       <a href="/work" class="text-xs text-muted-foreground transition-colors hover:text-foreground">View all →</a>
@@ -232,9 +223,45 @@ const homeWorkGrid = "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:gap-6";
             index={i}
             variant="compact"
             showDescription
-          />
+          >
+            {liveDemoSlugs.has(project.id) && <ProjectDemo slot="visual" slug={project.id} />}
+          </ProjectCard>
         </div>
       ))}
+    </div>
+  </section>
+
+  {/* ── Design Studio ────────────────────────────────────── */}
+  <section class={homeSection} aria-labelledby="home-design-studio-title">
+    <div class={homeSectionHeader} data-home-section-header>
+      <p class="font-mono text-xs uppercase tracking-widest text-muted-foreground">Open source</p>
+      <a href={designStudioRepo} target="_blank" rel="noopener noreferrer" class="text-xs text-muted-foreground transition-colors hover:text-foreground">View on GitHub →</a>
+    </div>
+    <div data-project-card-item>
+      <article class="group grid overflow-hidden rounded-xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-black/20 motion-reduce:translate-y-0 motion-reduce:transition-none lg:grid-cols-[1fr_2fr]">
+        {/* Two parts: the main content (title, description and the landing page link) centered in the column, and the two talks pinned
+            to the bottom beneath a divider inset to the content's width, stacked. The repo link sits in the section header. */}
+        <div class="order-2 flex flex-col lg:order-1">
+          <div class="flex flex-1 flex-col justify-center p-5 sm:p-6 lg:p-8">
+            <h2 id="home-design-studio-title" class="flex items-center gap-3 text-xl font-semibold tracking-tight sm:text-2xl xl:text-3xl">
+              <svg viewBox="0 0 40 32" fill="currentColor" class="h-5 w-[25px] shrink-0 sm:h-6 sm:w-[30px] xl:h-[30px] xl:w-[37.5px]" aria-hidden="true"><path d="M0 0h11v32H0zM15 0h3a16 16 0 0 1 0 32h-3z" /></svg>
+              <span>Design Studio</span>
+            </h2>
+            <p class="mt-3 max-w-lg text-sm leading-relaxed text-muted-foreground sm:text-base lg:text-sm xl:text-base">An AI prototype sandbox for designers and product managers who build.</p>
+            <a href="/design-studio" aria-label="Explore Design Studio" class="mt-5 inline-flex w-fit items-center gap-2 text-sm font-medium transition-colors hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring xl:text-base">Explore <span aria-hidden="true">→</span></a>
+          </div>
+          <div class="px-5 pb-5 sm:px-6 sm:pb-6 lg:px-8 lg:pb-8">
+          <ul class="grid gap-2 border-t border-border/70 pt-4 text-[13px] text-muted-foreground lg:pt-5" aria-label="More about Design Studio">
+            {designStudioLinks.map((link) => (
+              <li><a href={link.href} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 transition-colors hover:text-foreground"><Icon icon={link.icon} size={15} aria-hidden="true" />{link.label}</a></li>
+            ))}
+          </ul>
+          </div>
+        </div>
+        <div class="texture-bg order-1 flex items-center justify-center overflow-hidden border-b border-border p-3 sm:p-6 lg:order-2 lg:border-b-0 lg:border-l">
+          <StudioPreviewCarousel />
+        </div>
+      </article>
     </div>
   </section>
 

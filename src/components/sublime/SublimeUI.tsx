@@ -64,7 +64,6 @@ export function RuleCode({ lines = rule.length, style }: { lines?: number; style
 export const Icon = {
   chevron: (dir: 'right' | 'down' = 'right') => <svg className="sb-chev" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" style={{ transform: dir === 'down' ? 'rotate(90deg)' : undefined }}><path d="M4.5 2.5L8 6l-3.5 3.5" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" /></svg>,
   external: <svg width="13" height="13" viewBox="0 0 14 14" aria-hidden="true"><path d="M8.5 1.5h4v4M12.5 1.5L6.5 7.5M11 8.5v3a1 1 0 0 1-1 1H2.5a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h3" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" /></svg>,
-  info: <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.8" fill="none" stroke="currentColor" strokeWidth="1.1" /><path d="M8 7.2v4M8 4.8v.1" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" /></svg>,
   user: <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="5" r="3" fill="none" stroke="currentColor" strokeWidth="1.3" /><path d="M2.5 14.5c.6-3 2.8-4.5 5.5-4.5s4.9 1.5 5.5 4.5" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" /></svg>,
   stopwatch: <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="9.2" r="5.6" fill="none" stroke="currentColor" strokeWidth="1.3" /><path d="M6 1.5h4M8 1.5v2M8 9.2V6.6" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" /></svg>,
   progress: <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.4" fill="none" stroke="currentColor" strokeWidth="1.4" /><path d="M8 1.6A6.4 6.4 0 0 1 14.4 8H8z" fill="currentColor" /></svg>,
@@ -104,18 +103,19 @@ export const job = { subject: 'Action required: payroll profile verification', i
 /** ADÉ's recommendation (JobCompletedCard): rule fields beside the MQL, with Accept and Reject while it waits for review.
  *  Liberty taken: the header reads "ADÉ Recommended Rule" and carries the hunt's result in place of the source's "Create a new rule…"
  *  line, so the reason to accept or reject sits beside the buttons. */
-export function Recommendation({ actions = false, pressed = false, style, codeLines }: { actions?: boolean; pressed?: boolean; style?: CSSProperties; codeLines?: number }) {
+export function Recommendation({ actions = false, pressed = false, style, codeLines, fields = true }: { actions?: boolean; pressed?: boolean; style?: CSSProperties; codeLines?: number; fields?: boolean }) {
   const narrow = useNarrowLayout();
   return <div className="sb-cells" style={style}>
     <div data-frame="rec-head" style={{ display: 'flex', flexDirection: narrow ? 'column' : 'row', justifyContent: 'space-between', alignItems: narrow ? 'flex-start' : 'flex-end', gap: narrow ? 14 : 24, padding: narrow ? 16 : 24, background: 'var(--sb-cell-head)' }}>
       <div>
         <p className="sb-body" style={{ fontWeight: 600 }}>ADÉ Recommended Rule</p>
-        <p className="sb-body" style={{ marginTop: 4 }} data-target="proof"><b style={{ fontWeight: 600 }}>93% match</b> in a 14-day hunt, with 40 malicious matches and 2 possible false positives.</p>
+        <p className="sb-body" style={{ marginTop: 4 }} data-target="proof"><b style={{ fontWeight: 600 }}>99% match</b> in a 14-day hunt, with 40 malicious matches and 2 possible false positives.</p>
       </div>
       {(actions || !narrow) && <div className={`sb-fade ${actions ? '' : 'is-out'}`} style={{ display: 'flex', gap: 8 }}><span className={`sb-btn ${pressed ? 'is-pressed' : ''}`} data-target="accept">Accept</span><span className="sb-btn is-secondary">Reject</span></div>}
     </div>
-    <div style={{ display: 'grid', gridTemplateColumns: narrow ? 'minmax(0, 1fr)' : '280px minmax(0, 1fr)', gap: narrow ? 20 : 40, padding: narrow ? 16 : 24 }}>
-      <div style={{ display: 'grid', gap: 20, alignContent: 'start' }}>
+    {/* Without fields (the project card), the rule's MQL stands alone under the recommendation. */}
+    <div style={{ display: 'grid', gridTemplateColumns: narrow || !fields ? 'minmax(0, 1fr)' : '280px minmax(0, 1fr)', gap: narrow ? 20 : 40, padding: narrow ? 16 : 24 }}>
+      {fields && <div style={{ display: 'grid', gap: 20, alignContent: 'start' }}>
         <div className="sb-field"><span>Rule Name</span><span className="sb-body">{ruleName}</span></div>
         <div className="sb-field"><span>Severity</span><span className="sb-severity" style={{ width: 'fit-content' }}>High Severity</span></div>
         {!narrow && <>
@@ -123,10 +123,10 @@ export function Recommendation({ actions = false, pressed = false, style, codeLi
           <div className="sb-field"><span>Labels</span><span style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>{['Credential Phishing', 'QR code', 'Social engineering'].map(l => <span key={l} className="sb-chip">{l}</span>)}</span></div>
           <div className="sb-field"><span>Action</span><span className="sb-verdict">{Icon.ban}Quarantine</span></div>
         </>}
-      </div>
+      </div>}
       <div style={{ display: 'grid', gap: 10, alignContent: 'start', minWidth: 0 }} data-frame="mql">
         <span className="sb-label">Rule MQL</span>
-        <RuleCode lines={codeLines} style={{ minHeight: narrow ? 0 : 300 }} />
+        <RuleCode lines={codeLines} style={{ minHeight: narrow || !fields ? 0 : 300 }} />
       </div>
     </div>
   </div>;
@@ -239,8 +239,11 @@ export function HuntEntry({ run = true, reduced = false, meets = false, open = f
     <div className="sb-hunt-box">
       <div style={{ display: 'flex', justifyContent: 'space-between', gap: 16, padding: 16 }}>
         <div className="sb-body" style={{ display: 'grid', gap: 12 }}>
-          <span className="sb-verdict">{Icon.bullseye}<span>Recommended Rule is a <b style={{ fontWeight: 600 }}><CountUp to={93} run={run} reduced={reduced} format={v => `${Math.round(v)}%`} /></b> match with {n(40)} malicious matches and may introduce {n(2)} false positives (Benign).</span></span>
-          <Expand open={meets}><span className="sb-meets">{Icon.sparkles}It meets the threshold to auto-accept the Rule.</span></Expand>
+          {/* The match line and its threshold note share one grid item, so the note's spacing slides with it rather than appearing at once. */}
+          <div>
+            <span className="sb-verdict">{Icon.bullseye}<span>Recommended Rule is a <b style={{ fontWeight: 600 }}><CountUp to={99} run={run} reduced={reduced} format={v => `${Math.round(v)}%`} /></b> match with {n(40)} malicious matches and may introduce {n(2)} false positives (Benign).</span></span>
+            <Expand open={meets}><div style={{ paddingTop: 12 }}><span className="sb-meets">{Icon.sparkles}It meets the threshold to auto-accept the Rule.</span></div></Expand>
+          </div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px 20px' }}><span className="sb-verdict"><VerdictIcon verdict="malicious" />{n(40)} Malicious</span><span className="sb-verdict"><VerdictIcon verdict="spam" />{n(1)} Spam</span><span className="sb-verdict"><VerdictIcon verdict="benign" />{n(2)} Benign</span></div>
         </div>
         <span className={`sb-disclose ${open ? 'is-open' : ''}`} data-target="hunt-toggle">{Icon.chevron('down')}</span>

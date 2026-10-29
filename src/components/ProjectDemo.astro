@@ -1,0 +1,28 @@
+---
+// A case study's project card visual, in place of a thumbnail. Each is a card-sized composition of its case study's real product
+// components (see ProjectCardStage): Sublime's recommended rule, Query Builder's query as code and as controls, and Signal Sciences' Bot
+// Signals card. It sits in an inert frame, so the card stays one link and nothing in the visual takes focus.
+import SublimeCard from "@/components/sublime/SublimeCard";
+import QueryCard from "@/components/query-builder/QueryCard";
+import ExpansionCard from "@/components/expansion/ExpansionCard";
+import "@/components/query-builder/query-builder.css";
+import "@/components/expansion/expansion.css";
+import "@/components/sublime/sublime.css";
+
+interface Props {
+  slug: string;
+}
+
+const { slug } = Astro.props;
+---
+
+<div class="project-demo" inert aria-hidden="true">
+  {slug === "sublime-agents" && <SublimeCard client:visible />}
+  {slug === "query-language" && <QueryCard client:visible />}
+  {slug === "expansion" && <ExpansionCard client:visible />}
+</div>
+
+<style>
+  /* The card sets the 16:9 frame and its texture; the visual, drawn at the same proportions, fills it. */
+  .project-demo { position: absolute; inset: 0; overflow: hidden; }
+</style>

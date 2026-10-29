@@ -7,11 +7,11 @@ import { Camera, SceneFrame, frame, useScene, useShot, useStage, useTargets } fr
 // hunt's match is stated in the recommendation's header, and the outcome's green bar is a tint. Counts and results are the source's sample data.
 const timings = [1600, 1700, 1900, 1500, 4000];
 const captions = [
-  'With automation on, the recommendation carries its hunt result',
-  'The 93% match comes from ADÉ’s 14-day hunt',
-  'Its results: the messages the rule matched',
-  'The match meets the auto-accept threshold',
-  'So ADÉ accepted and activated the rule itself',
+  'With automation on, the rule arrives with its hunt result',
+  'The 99% match comes from ADÉ’s 14-day hunt',
+  'The hunt lists the messages the rule matched',
+  'The match meets the team’s threshold',
+  'ADÉ accepts the rule and turns it on',
 ];
 
 /** The evidence, then the outcome it earned. */
@@ -27,7 +27,7 @@ export default function AutoAccepted() {
   const view = useShot(shot ? `${shot}-${stage.narrow}` : null, shot ? frame(t.rect('hunt'), shot === 'results' ? { ...box, bottom: 0 } : box, { scale: 1, pad: 24, y: 'start' }) : null);
   const narrow = stage.narrow;
   const accepted = step === 4;
-  return <SceneFrame scene={scene} stage={stage} title="the auto-accepted job" label="An ADÉ job page with automation on: the recommendation shows a 93% match from a 14-day hunt; the hunt below it says the rule is a 93% match with 40 malicious matches, opens onto the matched messages, and meets the threshold to auto-accept; ADÉ then auto-accepted and activated the rule">
+  return <SceneFrame scene={scene} stage={stage} title="the auto-accepted job" label="An ADÉ job page with automation on: the recommendation shows a 99% match from a 14-day hunt; the hunt below it says the rule is a 99% match with 40 malicious matches, opens onto the matched messages, and meets the threshold to auto-accept; ADÉ then auto-accepted and activated the rule">
     <Camera view={view} width={stage.W} height={stage.box.height} cameraRef={t.ref} reduced={scene.reduced}>
       <Page crumbs={['Agents', 'ADÉ', job.subject]} style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr)', gap: narrow ? 24 : 36, padding: narrow ? '24px 16px 40px' : '36px 40px 48px' }}>
         <JobHeading />

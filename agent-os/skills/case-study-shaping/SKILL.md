@@ -1,6 +1,6 @@
 ---
 name: case-study-shaping
-description: Use when shaping, restructuring, or redesigning a Work case study on this site into the slide-like format proven by the Query Builder and Expansion case studies. Covers fact-finding (including pulling exact values from Figma or prototype code), the story outline, copy rules, native demos, motion, layout rhythm, review, launch, and cleanup.
+description: Use when shaping, restructuring, or redesigning a Work case study on this site into the slide-like format proven by the Query Builder, Expansion and Sublime agents case studies. Covers fact-finding (including pulling exact values from Figma or prototype code), the story outline, copy rules, native demos, motion, layout rhythm, review, launch, and cleanup. Its project card visual has its own skill, project-card-visuals.
 ---
 
 # Case Study Shaping
@@ -11,12 +11,16 @@ Turn an existing Work entry into a case study a hiring manager can read in two
 minutes: one point per slide, visuals carrying the argument, and every claim
 true to what Patrick actually did.
 
-Two reference implementations exist:
+Three reference implementations exist:
 
 - Query Builder: `src/pages/work/query-language.astro` with demos in
   `src/components/query-builder/`
 - Expansion: `src/pages/work/expansion.astro` with screens rebuilt from Figma in
   `src/components/expansion/`
+- Sublime agents: `src/pages/work/sublime-agents.astro` with screens rebuilt
+  from prototype code in `src/components/sublime/`. Its scene plumbing
+  (`scene.tsx`: `useScene`, `SceneFrame`, `SceneTour`, `Camera`, `Pointer`,
+  `Expand`) is the most current pattern for animated demos.
 - Shared layout and rhythm: `src/components/case-study/case-study.css`
 - Shared demo plumbing in `src/components/case-study/`: `NativeStage`,
   `DemoControls` and `DemoCursor` (`NativeStage.tsx`), `useDemoLoop.ts` and
@@ -61,7 +65,10 @@ ask, in one batch, only what those sources don't answer:
 - What was the problem in the user's own terms?
 - What was the expected answer, and what did Patrick bet on instead?
 - Which parts did Patrick design for this project, and which existed already?
-- What changed, and how was it measured? Did it ship?
+- What changed, and how was it measured? Did it ship? Is there any adoption data?
+- What went wrong, and what changed because of it? (Ask whether it can be
+  public before using it.)
+- Is Patrick's role ongoing? Then the copy says "I lead", not "I led".
 - Is there a quote, and who said it, in what capacity?
 - What did Patrick learn, in his own words?
 
@@ -106,10 +113,11 @@ worked twice:
 2. **Problem**: what users faced, shown as it was.
 3. **Bet**: the expected answer, and what Patrick bet on instead.
 4. **Two or three moves**, each with its own visual.
-5. **Ending**: what Patrick learned, plus what actually happened. If there is no
-   measured outcome, pair the transferable lesson with the honest ending.
-   Lessons are ideas, not screens: no product UI there, only quiet drawings on
-   the same backdrop.
+5. **Ending**: what actually happened. A case study can end on its outcome; add
+   a lesson slide only when it says something no slide before it does. If
+   there is no measured outcome, pair the transferable lesson with the honest
+   ending. Lessons are ideas, not screens: no product UI there, only quiet
+   drawings on the same backdrop.
 
 Put the bet directly after the problem, so the reader meets the why before the
 how. Make each idea once: a point a demo makes doesn't need a principle that
@@ -117,24 +125,46 @@ repeats it. To show a metric, start from the surface the product built for it
 (a dashboard tile, a report) rather than staging a run that produces it.
 
 Cut any slide that only repeats the one before it. Merge an outcome slide and a
-lessons slide when they make the same point.
+lessons slide when they make the same point. When a slide's copy and visual
+still don't land after a round or two, cut it; the story can take it back later.
 
 ### 4. Write the copy
 
-- First person, past tense.
+- Plain technical English, in the spirit of ASD Simplified Technical English:
+  one idea per sentence, mostly under 15 words, active voice, common words, no
+  idioms or metaphors, and one word for each thing used every time. Define a
+  product name or term the first time it appears, or replace it with plain
+  words ("tests each rule on the last 14 days of email", not "a hunt").
+- Headlines state the decision and why it matters, with the product, the agent
+  or the team as subject. "I" goes where the work was Patrick's (the hero
+  subline, a lesson); "we" credits team decisions. A headline per slide that
+  starts with "I" reads as self-promotion.
+- Past tense for what was done; present tense for an ongoing role and for
+  what the product does.
 - Frame the strategy, not the feature. Expansion's hero is the go-to-market
   move ("for a new use case"), not the first use case ("bot defense").
+- Titles follow one pattern across case studies: a verb and a result, naming
+  the domain ("Giving a Security Agent the Right Amount of Control",
+  "Making a Complex Query Language Approachable").
 - Each headline says why its step mattered. No sequence words ("First,",
   "Then,", "And"), no eyebrows, no step numbers.
 - One supporting line per slide, one line at desktop width. Treat it as a hard
   limit: a slide that needs more is two slides, or belongs in an interview.
   Never text beside a headline.
-- Keep brief values tight. Outcome can be qualitative ("A repeatable kit
-  pattern") when there is no metric.
+- Keep brief values tight, and name what is measured: "New rule in under 2
+  hours, not days", "First query in 1 day, not 21". Outcome can be qualitative
+  ("A repeatable kit pattern") when there is no metric.
+- Step captions follow the same rules as slide copy: plain statements, one
+  line, no "Then…" or "So…", no undefined product names. A product's own
+  on-screen labels stay as they are.
 - Check every visual and value against the claim. Flag illustrative values
   (example inputs, sample counts) to Patrick.
 - Use non-breaking hyphens (`‑`) in compound words that break badly on phones.
-- Update the entry's `title` and `description` to match the new framing.
+- Update the entry's `title` and `description` to match the new framing. The
+  homepage card line (`featuredProjectDescriptions`) and the entry description
+  say the same thing in two clauses: what Patrick designed, then the design
+  move ("…writes detection rules, and gives security teams control over its
+  autonomy"). Offer several options for these; they are Patrick's to pick.
 
 ### 5. Build the visuals
 
@@ -153,12 +183,20 @@ lessons slide when they make the same point.
   series in legend order (see `Bars` in `ExpansionUI.tsx`).
 - When two representations of one thing need comparing, use a toggle that
   takes the full stage, not a side-by-side split.
+- Strip UI that doesn't serve the story: info icons, unused controls,
+  decorative chrome.
+- Shape sample data to support the story where the source allows it (a jobs
+  list where a person starts one job, not only the agent), and fit table
+  columns to their widest content so the main column gets the room.
 
 ### 6. Set the motion
 
 - Loop only the visuals that explain a process (Expansion's agent flow and
   Signals sequence). Everything else plays once on scroll and holds
   (`useDemoLoop(..., once = true)` or `useRevealOnce`).
+- A flow's last screen rarely tells the whole story, so a process scene cycles
+  rather than stopping on its end state (the Sublime scenes: `useScene`). Hold
+  only a scene whose end state is the slide's point, such as a metric.
 - Looping demos start on a complete frame. Under reduced motion, every demo
   shows its final frame without animating.
 - On a loop restart, fade out, jump to the first frame with transitions off,
@@ -167,7 +205,14 @@ lessons slide when they make the same point.
   (the card) still and fade only its content.
 - Prefer one live diagram whose elements move between states over crossfading
   whole frames.
-- Show playback controls only on looping demos, pinned to the stage corner.
+- Give each animated demo a tour under its stage (the Sublime `SceneTour` in
+  `src/components/sublime/scene.tsx`): a visible caption naming what the
+  current step shows, one segment per step that fills as it plays and jumps to
+  that step when clicked, and a Pause/Play button (Replay on a demo that holds
+  its end). Steps that share a caption form one segment. Write captions as
+  plain statements, one line at desktop width. This is the standard for every
+  case study; Query Builder and Expansion still use the older corner button
+  (`DemoControls`) until they move over.
 - Tune timing until there are no dead pauses.
 - Each step changes one thing. When several things change at once, the
   in-between frames look broken even if the end state is right.
@@ -204,7 +249,9 @@ Do this before Patrick's first round of comments, and again before launch.
 Slide-by-slide comment rounds fix screens but let the arc drift.
 
 Review in the browser in light and dark across narrative, layout, spacing, and
-typography. Measure, don't eyeball: line counts per headline and description,
+typography, and through the eyes of the readers Patrick is targeting (a
+recruiter deciding in seconds whether to interview him; design leads at the
+companies he names). Measure, don't eyeball: line counts per headline and description,
 stage widths and heights, ring and radius on screen. Present ranked findings
 (must fix, should fix, worth considering) before changing anything.
 
@@ -231,7 +278,9 @@ On Patrick's go-ahead:
 2. Exclude that slug from `src/pages/work/[...slug].astro`.
 3. Update the homepage card summary in `featuredProjectDescriptions`
    (`src/pages/index.astro`), which is separate from the entry description.
-4. Build, open a PR, merge on his say-so, and confirm the deploy and live page.
+4. Give the project card a live visual instead of a thumbnail, with the
+   `project-card-visuals` skill. It doesn't need to match the case study's hero.
+5. Build, open a PR, merge on his say-so, and confirm the deploy and live page.
 
 ### 10. Clean up
 
@@ -258,6 +307,11 @@ On Patrick's go-ahead:
 - Don't mix the `transition` shorthand with `transitionDelay` in React inline
   styles; use separate properties.
 - Flex containers drop spaces around inline elements; wrap mixed text in a span.
+- Never animate to `height: 'auto'`: it is measured once, so if the content
+  settles taller mid-slide the last stretch snaps into place. Animate to a
+  measured height that a ResizeObserver keeps current (the Sublime `Expand`).
+  An expanding item in a flex or grid `gap` also jumps by the gap; keep its
+  spacing inside the expanding part.
 
 ## Verification
 

@@ -5,9 +5,9 @@ import { Camera, Pointer, SceneFrame, frame, useNarrowLayout, useScene, useShot,
 // waits for review, and accepting it runs through the product's Accept Recommendation modal. Copy is the source's; dates are its sample data.
 const timings = [1700, 800, 300, 1700, 300, 3200];
 const captions = [
-  'The recommendation: the rule, and the hunt that tested it',
-  'Accept it, with a comment for the team', 'Accept it, with a comment for the team', 'Accept it, with a comment for the team', 'Accept it, with a comment for the team',
-  'The rule is live, and stays editable',
+  'ADÉ recommends a rule, with the hunt that tested it',
+  'A person accepts it and leaves a note for the team', 'A person accepts it and leaves a note for the team', 'A person accepts it and leaves a note for the team', 'A person accepts it and leaves a note for the team',
+  'The rule is live, and the team can still edit it',
 ];
 
 function AcceptModal({ open, pressed }: { open: boolean; pressed: boolean }) {

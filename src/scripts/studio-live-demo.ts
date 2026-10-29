@@ -81,7 +81,7 @@ export function initStudioLiveDemo(root: HTMLElement) {
     }
     // Introduce each prototype or system's navigation once, then respect the
     // visitor's choice to collapse it while exploring that project.
-    const project = /^\/design-studio-starter\/(prototypes|systems)\/([0-9a-z]{16})(?:\/|$)/.exec(url.pathname);
+    const project = new RegExp(`^${base}(prototypes|systems)/([0-9a-z]{16})(?:/|$)`).exec(url.pathname);
     const projectKey = project && `${project[1]}/${project[2]}`;
     if (projectKey && !introducedProjects.has(projectKey)) {
       const show = doc.querySelector<HTMLButtonElement>('button[aria-label^="Show navigation"]');
@@ -90,16 +90,11 @@ export function initStudioLiveDemo(root: HTMLElement) {
       if (hide) introducedProjects.add(projectKey);
     }
     if (ready) return;
-    const visible = (el: HTMLElement) => {
-      const rect = el.getBoundingClientRect();
-      return rect.width > 0 && rect.height > 0 && rect.bottom > 0 && rect.top < frame.clientHeight && rect.right > 0 && rect.left < frame.clientWidth && win.getComputedStyle(el).visibility !== 'hidden';
-    };
-    if (Array.from(doc.querySelectorAll<HTMLElement>('[data-preview-state="loading"], [data-canvas-opening="loading"]')).some(visible)) return;
-    if (Array.from(doc.querySelectorAll<HTMLElement>('figure[data-artifact-phase]')).some(el => visible(el) && !['ready', 'error'].includes(el.dataset.artifactPhase ?? ''))) return;
+    // The overlay covers the route only: Studio has hydrated (its theme control exists, checked above) and an artifact page has its
+    // content in place. Previews, diagrams and canvases embedded in that content show their own loading states, so the overlay doesn't
+    // wait for them; waiting kept it over a page that was already there.
     if (url.pathname.includes('/artifacts/') && !doc.querySelector('[data-artifact-identity], article .prose, [data-canvas-opening]')) return;
-    const pending = Array.from(doc.querySelectorAll<HTMLElement>('[role="status"]')).some(el => visible(el) && /loading|opening|rendering/i.test(el.textContent ?? ''));
-    if (pending) return;
-    // Reveal as soon as the visible application content is ready.
+    // Reveal as soon as the route's content is ready.
     ready = true;
     everReady = true;
     loading = false;

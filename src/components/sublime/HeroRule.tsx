@@ -11,7 +11,7 @@ const RULE_LINES = 13;
 
 /** The recommended rule, written and waiting for review. */
 export default function HeroRule() {
-  const scene = useScene(timings, captions);
+  const scene = useScene(timings, captions, { loop: false });
   const stage = useStage({ wide: 1000, height: 720 });
   const t = useTargets(scene.step, stage.narrow);
   const [lines, setLines] = useState(0);
@@ -27,7 +27,7 @@ export default function HeroRule() {
   // On a phone, open on the recommendation itself rather than the page heading above it.
   const view = useShot(stage.narrow ? 'rec' : null, stage.narrow ? frame(t.rect('rec'), { ...stage.box, bottom: t.height }, { scale: 1, pad: 16, y: 'start' }) : null);
   const narrow = stage.narrow;
-  return <SceneFrame scene={scene} stage={stage} controls={false} title="the recommended rule" label="An ADÉ job page: ADÉ's recommended rule, a 93% match in a 14-day hunt with 40 malicious matches and 2 possible false positives, shows its name, severity, description, labels, action and the MQL it wrote, with Accept and Reject">
+  return <SceneFrame scene={scene} stage={stage} controls={false} title="the recommended rule" label="An ADÉ job page: ADÉ's recommended rule, a 99% match in a 14-day hunt with 40 malicious matches and 2 possible false positives, shows its name, severity, description, labels, action and the MQL it wrote, with Accept and Reject">
     <Camera view={view} width={stage.W} height={stage.box.height} cameraRef={t.ref} reduced={scene.reduced}>
       <Page crumbs={['Agents', 'ADÉ', job.subject]} style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr)', gap: narrow ? 24 : 36, padding: narrow ? '24px 16px 40px' : '36px 40px 48px' }}>
         <JobHeading />

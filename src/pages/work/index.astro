@@ -1,6 +1,8 @@
 ---
 import PageLayout from "@/layouts/PageLayout.astro";
 import ProjectCard from "@/components/ProjectCard.astro";
+import ProjectDemo from "@/components/ProjectDemo.astro";
+import { liveDemoSlugs } from "@/data/project-demos";
 import { roles } from "@/data/experience";
 import { getCollection } from "astro:content";
 
@@ -48,27 +50,9 @@ function getRoleProjects(slugs: string[] = []) {
               <p class="mt-4 text-base leading-relaxed text-muted-foreground">{role.summary}</p>
             )}
 
-            {role.links && role.links.length > 0 && (
-              <div class="mt-6 flex flex-wrap gap-x-4 gap-y-2">
-                {role.links.map((link) => (
-                  <a href={link.href} target="_blank" rel="noopener noreferrer" class="group/link block max-w-sm overflow-hidden rounded-xl border border-border bg-card transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md hover:shadow-black/5 dark:hover:shadow-black/20">
-                    {link.image && (
-                      <div class="overflow-hidden bg-card">
-                        <img src={link.image} alt={link.alt ?? ""} class="aspect-video w-full object-cover transition-transform duration-300 group-hover/link:scale-[1.02]" loading="lazy" />
-                      </div>
-                    )}
-                    <div class="p-4">
-                      <span class="text-base font-semibold tracking-tight">
-                        {link.label}
-                      </span>
-                    </div>
-                  </a>
-                ))}
-              </div>
-            )}
-
-            {projects.length > 0 && (
-              <div class:list={["mt-6 grid gap-4", projects.length === 1 ? "sm:grid-cols-1 max-w-sm" : "grid-cols-1 sm:grid-cols-2"]}>
+            {/* The role's case studies and its other links share one two-column grid, case studies first, so every card is the same size. */}
+            {(projects.length > 0 || (role.links?.length ?? 0) > 0) && (
+              <div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
                 {projects.map((project, i) => (
                   <ProjectCard
                     title={project.data.title}
@@ -81,7 +65,23 @@ function getRoleProjects(slugs: string[] = []) {
                     slug={project.id}
                     index={i}
                     variant="compact"
-                  />
+                  >
+                    {liveDemoSlugs.has(project.id) && <ProjectDemo slot="visual" slug={project.id} />}
+                  </ProjectCard>
+                ))}
+                {role.links?.map((link) => (
+                  <a href={link.href} target="_blank" rel="noopener noreferrer" class="group/link flex h-full flex-col overflow-hidden rounded-xl border border-border bg-card transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md hover:shadow-black/5 dark:hover:shadow-black/20">
+                    {link.image && (
+                      <div class="overflow-hidden bg-card">
+                        <img src={link.image} alt={link.alt ?? ""} class="aspect-video w-full object-cover transition-transform duration-300 group-hover/link:scale-[1.02]" loading="lazy" />
+                      </div>
+                    )}
+                    <div class="p-4">
+                      <span class="text-base font-semibold tracking-tight">
+                        {link.label}
+                      </span>
+                    </div>
+                  </a>
                 ))}
               </div>
             )}

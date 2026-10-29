@@ -1,4 +1,5 @@
 import { Icon, JobHeading, Page, TimelineItem, TimelineTitle, Triggered, VerdictIcon, VerdictPanel, job } from './SublimeUI';
+import { useEffect, useState } from 'react';
 import { Camera, Expand, Pointer, SceneFrame, Screens, Typing, frame, useNarrowLayout, useScene, useShot, useStage, useTargets } from './scene';
 
 // The message detail page (patrick/ade-workflow user-reports, MessageDetailView and AdeStatusCard): ASA's verdict on a message no rule caught.
@@ -13,19 +14,20 @@ import { Camera, Expand, Pointer, SceneFrame, Screens, Typing, frame, useNarrowL
 type Variant = 'gap' | 'handoff';
 const timings: Record<Variant, number[]> = {
   gap: [2400, 700, 800, 350, 4400],
-  handoff: [1200, 1000, 700, 300, 700, 700, 700, 300, 3600],
+  // The last step shows the working phrases once (four, 2 s each) and holds the last one before the scene restarts.
+  handoff: [1200, 1000, 700, 300, 700, 700, 700, 300, 8600],
 };
 const captions: Record<Variant, string[]> = {
   gap: [
-    'ASA calls the message malicious, and no Detection Rule matched it',
-    'The way to a rule: send the message to the Rule Editor', 'The way to a rule: send the message to the Rule Editor', 'The way to a rule: send the message to the Rule Editor',
-    'Then write the rule by hand, and test it',
+    'ASA marks the message malicious, and no rule caught it',
+    'To cover it, someone opens the rule editor', 'To cover it, someone opens the rule editor', 'To cover it, someone opens the rule editor',
+    'An engineer writes and tests the rule by hand',
   ],
   handoff: [
-    'ADÉ sits on the message page, under Review Status', 'ADÉ sits on the message page, under Review Status',
-    'Trigger ADÉ', 'Trigger ADÉ', 'Trigger ADÉ',
-    'The job starts: open its report', 'The job starts: open its report', 'The job starts: open its report',
-    'The job page, with ADÉ at work',
+    'ADÉ waits on the same page as the verdict', 'ADÉ waits on the same page as the verdict',
+    'One click starts ADÉ', 'One click starts ADÉ', 'One click starts ADÉ',
+    'The job starts, with a link to its report', 'The job starts, with a link to its report', 'The job starts, with a link to its report',
+    'The job page shows each step ADÉ takes',
   ],
 };
 const classifications = ['malicious', 'spam', 'graymail', 'benign'] as const;
@@ -33,15 +35,34 @@ const classifications = ['malicious', 'spam', 'graymail', 'benign'] as const;
 // action the story needs and the last one.
 const other = ['Send EML to Rule Editor', 'Share feedback'];
 
+// While ADÉ works, the shimmering status cycles through what it is doing, in plain words for the steps the prototype's job shows
+// (Interpret ASA findings, Identify generalizable attack traits, Draft detection hypothesis, Prepare validation hunt). Liberty taken:
+// the product shows one fixed "ADÉ is working..."; the phrases are its own step titles, reworded. They run once, 2 s apart, and stop on
+// the last; the scene's last step is timed to show them all and hold. Reduced motion keeps the first phrase.
+const workingPhrases = ['ADÉ is working…', 'Reading ASA’s findings…', 'Drafting a detection rule…', 'Testing it on past email…'];
+const PHRASE_MS = 2000;
+
+/** The working status, one phrase at a time, each fading into the next, ending on the last. */
+function WorkingText() {
+  const [i, setI] = useState(0);
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (i >= workingPhrases.length - 1) return;
+    const timer = window.setTimeout(() => setI(i + 1), PHRASE_MS);
+    return () => window.clearTimeout(timer);
+  }, [i]);
+  return <span className="sb-working-phrase" key={i}><span className="sb-working-text">{workingPhrases[i]}</span></span>;
+}
+
 /** AdeStatusCard: ready to trigger, starting, then the running job with the way into its report. */
 function AdeCard({ phase, pressed, viewPressed }: { phase: 'ready' | 'starting' | 'running'; pressed: boolean; viewPressed: boolean }) {
   return <section className="sb-sec" data-frame="ade-side">
-    <p className="sb-sec-h"><span>ADÉ (Autonomous Detection Engineer)</span>{Icon.info}</p>
+    <p className="sb-sec-h"><span>ADÉ (Autonomous Detection Engineer)</span></p>
     <div className={`sb-ade-card ${phase !== 'ready' ? 'is-running' : ''}`}><div style={{ padding: 20 }}>
       <Expand open={phase !== 'running'}>
         <div style={{ display: 'grid', gap: 16, paddingBottom: 2 }}>
           <span className="sb-body">ADÉ recommends new Detection Rules for malicious, spam, or graymail messages that do not match any Detection Rules.</span>
-          <span className={`sb-btn ${pressed ? 'is-pressed' : ''}`} data-target="trigger" style={{ width: 'fit-content', opacity: phase === 'starting' ? .7 : 1 }}>{phase === 'starting' ? 'Starting ADÉ…' : 'Trigger ADÉ'}</span>
+          <span className={`sb-btn ${pressed ? 'is-pressed' : ''}`} data-target="trigger" style={{ width: 'fit-content', opacity: phase === 'starting' ? .7 : 1 }}>{phase === 'starting' ? 'Starting ADÉ…' : 'One click starts ADÉ'}</span>
         </div>
       </Expand>
       <Expand open={phase === 'running'}>
@@ -67,9 +88,8 @@ function JobInProgress() {
       <TimelineItem icon="spinner" tone="running">
         <div style={{ display: 'grid', gap: 16 }}>
           <TimelineTitle>ADÉ job in progress</TimelineTitle>
-          <div className="sb-working"><div style={{ height: narrow ? 300 : undefined }}>
-            <img src="/images/work/sublime/ade_octahedron.png" alt="" draggable={false} className="sb-octa sb-art" />
-            <span className="sb-working-text">ADÉ is working...</span>
+          <div className="sb-working"><div>
+            <WorkingText />
             <span className="sb-btn is-secondary">Cancel</span>
           </div></div>
         </div>
@@ -143,7 +163,7 @@ function MessagePage({ gap, step }: { gap: boolean; step: number }) {
         <div style={{ display: 'grid', gap: 8 }}><span className="sb-label">Review Status</span><span className="sb-pill is-outline" style={{ height: 24, fontSize: 12, width: 'fit-content' }}>⚠ Unreviewed</span></div>
         <div>
           <div style={{ borderRadius: 4, overflow: 'hidden', border: '1px solid var(--sb-border-strong)' }}>
-            <div className="sb-list-row sb-label" style={{ height: 32 }}>Select Classification{Icon.info}</div>
+            <div className="sb-list-row sb-label" style={{ height: 32 }}>Select Classification</div>
             {classifications.map(v => <div key={v} className="sb-list-row" style={{ borderTop: '1px solid var(--sb-border)' }}><span className="sb-verdict"><VerdictIcon verdict={v} />{v[0].toUpperCase() + v.slice(1)}</span>{Icon.chevron()}</div>)}
           </div>
         </div>

@@ -157,13 +157,14 @@
 
 /* ADÉ job page: a timeline down the left. Each entry draws the rail from its own dot to the next one, so the line always connects. */
 .sb-timeline { display: flex; flex-direction: column; }
-/* AdeJobTimeline: a 24px mark column with a 24px gutter; the rail is the column's remaining height, so it meets the next mark exactly. */
+/* AdeJobTimeline: a 24px mark column with a 24px gutter; the rail is the column's remaining height, so it meets the next mark exactly.
+   The last item is matched as the timeline's last child, since an item that expands sits inside Expand's wrapper. */
 .sb-tl-item { display: flex; }
 .sb-tl-rail { display: flex; flex-direction: column; align-items: center; width: 24px; flex-shrink: 0; margin-right: 24px; }
 .sb-tl-rail > i { flex: 1; width: 1px; background: var(--sb-border-strong); }
-.sb-tl-item:last-child .sb-tl-rail > i { display: none; }
+.sb-timeline > :last-child .sb-tl-rail > i { display: none; }
 .sb-tl-body { flex: 1; min-width: 0; padding-bottom: 32px; }
-.sb-tl-item:last-child .sb-tl-body { padding-bottom: 0; }
+.sb-timeline > :last-child .sb-tl-body { padding-bottom: 0; }
 .sb-tl-dot { position: relative; z-index: 1; display: grid; place-items: center; width: 24px; height: 24px; flex-shrink: 0; border-radius: 50%; border: 1px solid var(--sb-border-strong); background: var(--sb-card); color: var(--sb-weak); transition: background 300ms ease, border-color 300ms ease, color 300ms ease; }
 .sb-tl-dot.is-active { border-color: var(--sb-button); background: var(--sb-button); color: #fff; }
 .sb-tl-dot.is-success { border-color: var(--sb-success); background: var(--sb-success); color: #fff; }
@@ -272,7 +273,6 @@
 /* The threshold line in the hunt summary (HuntSummaryContent). */
 .sb-meets { display: inline-flex; align-items: center; gap: 8px; }
 /* A job row that just arrived: tinted while it runs, then the tint fades once it lands. */
-.sb-row.is-new { background: color-mix(in srgb, var(--sb-success) 6%, var(--sb-card)); }
 .sb-row { transition: background 1200ms ease; }
 
 /* The Rule Editor, redrawn: the hand-written path a missed threat took before ADÉ. */
@@ -285,69 +285,47 @@
 /* The in-progress job (InProgressTimelineItem): ADÉ's mark over its working line, inside the agentic border. */
 .sb-working { position: relative; padding: 1.5px; border-radius: 6px; }
 .sb-working::before { content: ''; position: absolute; inset: 0; border-radius: 6px; background: var(--sb-agentic); background-size: 300% 100%; animation: sb-agentic 3s linear infinite; }
-.sb-working > div { position: relative; display: grid; place-items: center; align-content: center; gap: 22px; height: 384px; border-radius: 5px; background: var(--sb-card); }
-.sb-working-text { font-size: 16px; font-weight: 500; background: linear-gradient(90deg, var(--sb-strong) 0%, var(--sb-strong) 35%, #2fbf90 50%, var(--sb-strong) 65%, var(--sb-strong) 100%); background-size: 300% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: sb-shimmer 2.4s linear infinite; }
+.sb-working > div { position: relative; display: grid; place-items: center; align-content: center; gap: 18px; height: 168px; border-radius: 5px; background: var(--sb-card); }
+/* A monochrome shimmer: muted text with a brighter sweep, so the border's gradient stays the only color. */
+.sb-working-text { font-size: 16px; font-weight: 500; background: linear-gradient(90deg, var(--sb-weak) 0%, var(--sb-weak) 35%, var(--sb-strong) 50%, var(--sb-weak) 65%, var(--sb-weak) 100%); background-size: 300% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: sb-shimmer 2.4s linear infinite; }
 @keyframes sb-shimmer { from { background-position: 100% 0; } to { background-position: -200% 0; } }
-.sb-octa { width: 168px; animation: sb-float 4s ease-in-out infinite; }
 @keyframes sb-float { 50% { transform: translateY(-6px); } }
-@media (prefers-reduced-motion: reduce) { .sb-caret, .sb-working::before, .sb-working-text, .sb-octa { animation: none !important; } }
+.sb-working-phrase { animation: sb-phrase-in 360ms var(--sb-ease-out) both; }
+@keyframes sb-phrase-in { from { opacity: 0; transform: translateY(3px); filter: blur(2px); } }
+@media (prefers-reduced-motion: reduce) { .sb-caret, .sb-working::before, .sb-working-text, .sb-working-phrase { animation: none !important; } }
 /* The jobs filter (RecommendationStatusSelection): a lavender chip holding its value in an inset pill. */
-.sb-filter { display: inline-flex; align-items: center; gap: 6px; width: fit-content; height: 30px; padding: 0 4px 0 10px; border-radius: 4px; background: var(--sb-filter-bg); box-shadow: inset 0 0 0 1px var(--sb-filter-border); font-size: 13px; font-weight: 500; }
-.sb-filter b { display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 3px; background: var(--sb-filter-value); box-shadow: inset 0 0 0 1px var(--sb-filter-value-border); font-weight: 500; }
-.sb { --sb-filter-bg: var(--sb-subtle); --sb-filter-border: var(--sb-border); --sb-filter-value: var(--sb-card); --sb-filter-value-border: var(--sb-border-strong); }
-/* AdeOffLoop, on a neutral stage: four marks on a ring with Time to Coverage in the middle; the marks settle in, then the arcs draw. */
-.sb-loop { position: relative; width: 400px; height: 400px; flex-shrink: 0; }
-.sb-loop-center { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: grid; justify-items: center; }
-.sb-loop-center b { font-size: 34px; font-weight: 500; line-height: 42px; letter-spacing: -.8px; }
-.sb-loop-tile { position: absolute; display: grid; justify-items: center; align-content: center; gap: 12px; width: 116px; height: 112px; border-radius: 10px; background: var(--sb-card); box-shadow: 0 0 0 1px var(--sb-border), 0 1px 2px rgba(0, 0, 0, .05), 0 10px 24px -10px rgba(0, 0, 0, .22); animation: sb-tile-in 520ms var(--sb-ease-out) both; }
-.sb-loop-mark { display: grid; place-items: center; height: 50px; }
-.sb-loop-label { font-size: 12px; font-weight: 500; white-space: nowrap; }
+/* The jobs list's filter, as a compact dropdown: a filter icon, what it shows, and a chevron. */
+.sb-jobs-filter { justify-content: flex-start; gap: 7px; width: fit-content; height: 30px; padding: 0 8px 0 10px; font-size: 13px; }
+.sb-jobs-filter svg:first-child { color: var(--sb-weak); }
 .sb-disc { position: relative; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--sb-secondary); color: var(--sb-strong); }
 .sb-disc i { position: absolute; right: -3px; top: -3px; display: flex; padding: 1px; border-radius: 50%; background: var(--sb-card); }
-.sb-loop-arc { animation: sb-fade-in 420ms ease both; }
-@keyframes sb-tile-in { from { opacity: 0; transform: translateY(6px) scale(.97); filter: blur(2px); } to { opacity: 1; transform: none; filter: none; } }
-@keyframes sb-fade-in { from { opacity: 0; } }
 .sb-btn.is-ghost { background: transparent; color: var(--sb-link); box-shadow: none; }
-@media (prefers-reduced-motion: reduce) { .sb-loop-tile, .sb-loop-arc { animation: none !important; } }
 
 /* Section headings sit flat on the page, the content in its container below (a liberty on the product's gray header bars). */
 .sb-sec { display: grid; gap: 10px; }
 .sb-sec-h { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 14px; font-weight: 600; line-height: 20px; }
 .sb-sec-h svg { color: var(--sb-weak); }
 
-/* The close: the lessons, each beside the product excerpt it came from, then a note on the screens. */
-.sb-lessons { display: grid; gap: 24px; max-width: 1184px; margin: 48px auto 0; padding: 0; list-style: none; text-align: left; }
-.sb-lessons li { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: center; gap: clamp(32px, 5vw, 72px); }
-.sb-lesson-copy h3 { font-size: clamp(22px, 2vw, 26px); font-weight: 500; line-height: 1.15; letter-spacing: -.035em; text-wrap: balance; }
-.sb-lesson-copy p { margin-top: 12px; max-width: 26em; font-size: 16px; line-height: 1.55; color: var(--muted-foreground); text-wrap: pretty; }
-.sb-lesson-copy { padding-left: clamp(0px, 3vw, 40px); }
-.sb-lesson-stage { display: grid; place-items: center; min-height: 248px; padding: clamp(24px, 4vw, 40px); border-radius: 16px; }
-.sb-lesson-art { display: grid; place-items: center; width: 100%; color: var(--foreground); font-size: 14px; line-height: 20px; }
-.sb-art-tile { display: inline-flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 10px; background: var(--background); box-shadow: 0 0 0 1px var(--border), 0 6px 16px rgba(0, 0, 0, .06); white-space: nowrap; }
-.sb-art-tile.is-strong { font-weight: 500; box-shadow: 0 0 0 1.5px var(--foreground), 0 6px 16px rgba(0, 0, 0, .08); }
-.sb-art-levels { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
-.sb-art-levels .sb-art-tile { flex-direction: column; align-items: flex-start; gap: 12px; min-width: 116px; padding: 14px 16px; }
-.sb-art-bars { display: flex; align-items: flex-end; gap: 4px; height: 22px; }
-.sb-art-bars i { width: 6px; border-radius: 2px; background: var(--border); }
-.sb-art-bars i.is-on { background: var(--foreground); }
-.sb-art-handoff { display: flex; align-items: center; gap: 20px; }
-.sb-art-agent { display: grid; justify-items: center; gap: 2px; width: 120px; padding: 16px 12px 14px; border-radius: 12px; background: var(--background); box-shadow: 0 0 0 1px var(--border), 0 6px 16px rgba(0, 0, 0, .06); }
-.sb-art-agent img { height: 56px; width: auto; margin-bottom: 8px; }
-.sb-art-agent span { font-weight: 500; }
-.sb-art-agent small { font-size: 12px; color: var(--muted-foreground); }
-.sb-art-trail { display: flex; gap: 6px; }
-.sb-art-trail i { width: 6px; height: 6px; border-radius: 50%; background: var(--foreground); opacity: .25; }
-.sb-art-trail i:nth-child(2) { opacity: .4; } .sb-art-trail i:nth-child(3) { opacity: .55; } .sb-art-trail i:nth-child(4) { opacity: .7; } .sb-art-trail i:nth-child(5) { opacity: .85; }
-.sb-art-decision { display: flex; align-items: center; }
-.sb-art-stack { display: grid; gap: 10px; justify-items: end; }
-.sb-art-join { width: 36px; height: 116px; color: var(--muted-foreground); }
-@media (max-width: 640px) {
-  .sb-lessons { gap: 40px; margin-top: 36px; }
-  .sb-lessons li { grid-template-columns: minmax(0, 1fr); gap: 20px; }
-  .sb-lesson-stage { min-height: 0; padding: 20px 14px; }
-  .sb-lesson-art { font-size: 13px; }
-  .sb-art-levels .sb-art-tile { min-width: 0; padding: 12px; }
-  .sb-art-handoff { gap: 12px; }
-  .sb-art-agent { width: 96px; }
-  .sb-art-tile { padding: 8px 10px; }
-}
+
+/* The project card (SublimeCard), in the shared card frame: ADÉ's hub card behind, the rule it auto-accepted in front. */
+.sb-pc { --pc-surface: var(--sb-card); --pc-line: var(--sb-border); }
+.sb-pc .qb-native { font-family: 'Inter Variable', 'Inter', sans-serif; color: var(--sb-strong); letter-spacing: 0; }
+/* The hub card's glow and art, at card size; `is-up` is the hub card's hover: the glow comes up and the art eases up and grows. */
+.sb-pc .sb-pc-agent { top: 16px; right: 28px; bottom: 42px; padding: 20px 22px; -webkit-mask-image: none; mask-image: none; }
+.sb-pc-agent::before { content: ''; position: absolute; inset: 0; opacity: .7; background: radial-gradient(ellipse 60% 70% at 72% 34%, var(--sb-glow) 0%, var(--sb-glow-2) 50%, transparent 80%); transition: opacity 700ms ease; }
+.sb-pc-agent.is-up::before { opacity: 1; }
+.sb-pc-art { position: absolute; left: 176px; top: 16px; width: 196px; pointer-events: none; user-select: none; transform-origin: 50% 40%; transform: scale(.94) translateY(6px); transition: transform 900ms var(--sb-ease-out); }
+.sb-pc-agent.is-up .sb-pc-art { transform: scale(1.04) translateY(-4px); }
+.sb-pc-name { position: relative; font-size: 40px; line-height: 1; font-weight: 500; letter-spacing: -.02em; }
+.sb-pc-agent .sb-agent-caption { position: relative; margin-top: 6px; }
+/* In front: the rule, In Progress until it is auto-accepted. */
+/* Inset 14 from both sides of the agent card and over its bottom edge, 16 from the frame's bottom to match the 16 above the agent card. */
+.sb-pc-status { left: 42px; right: 42px; top: 142px; display: grid; grid-template-columns: 1fr auto; column-gap: 12px; row-gap: 3px; align-items: center; padding: 14px 14px 14px 16px; white-space: nowrap; }
+.sb-pc-status .pc-title, .sb-pc-proof { grid-column: 1; }
+.sb-pc-state { grid-column: 2; grid-row: 1 / span 2; display: flex; justify-content: flex-end; min-width: 112px; }
+.sb-pc-status .sb-pill { height: 26px; padding: 0 10px 0 8px; font-size: 12px; gap: 5px; }
+.sb-pc-running { color: var(--sb-weak); }
+.sb-pc-proof { font-size: 12.5px; line-height: 18px; color: var(--sb-weak); animation: sb-pc-in 360ms var(--sb-ease-out) both; }
+@keyframes sb-pc-in { from { opacity: 0; transform: translateY(2px); } }
+.sb-pc-proof b { font-weight: 600; color: var(--sb-strong); }
+@media (prefers-reduced-motion: reduce) { .sb-pc-agent::before, .sb-pc-art { transition: none; } .sb-pc-proof { animation: none; } }
