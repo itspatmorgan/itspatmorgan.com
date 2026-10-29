@@ -1,5 +1,4 @@
 import type { CSSProperties, ReactNode, RefObject } from 'react';
-import { motion } from 'motion/react';
 import { CountUp, Expand, useNarrowLayout } from './scene';
 
 // Primitives for the Sublime screens. Sizes are the source's Tailwind values in CSS pixels; `Zoom` scales a source-sized layout to fill the frame card.
@@ -173,14 +172,14 @@ export function TimelineTitle({ children }: { children: ReactNode }) {
   return <p className="sb-tl-title"><span>{children}</span></p>;
 }
 
-/** Page heading for an ADÉ job (AdeJobDetailView), with room around it. With `animate`, the completed status fades in when it arrives. */
-export function JobHeading({ status = 'done', animate = false }: { status?: 'done' | 'running'; animate?: boolean }) {
+/** Page heading for an ADÉ job (AdeJobDetailView), with room around it. */
+export function JobHeading({ status = 'done' }: { status?: 'done' | 'running' }) {
   const narrow = useNarrowLayout();
   return <div style={{ display: 'grid', gap: 10, paddingLeft: narrow ? 0 : 48 }}>
     <p style={{ display: 'flex', alignItems: narrow ? 'flex-start' : 'center', gap: 10, fontSize: narrow ? 20 : 24, fontWeight: 600, lineHeight: narrow ? '27px' : '32px', letterSpacing: '-.2px' }}>{job.subject}<span style={{ color: 'var(--sb-link)', display: 'inline-flex', marginTop: narrow ? 6 : 0 }}>{Icon.external}</span></p>
     <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
       {status === 'done'
-        ? <motion.span key="done" className="sb-verdict sb-body" initial={animate ? { opacity: 0, filter: 'blur(3px)' } : false} animate={{ opacity: 1, filter: 'blur(0px)' }} transition={{ duration: .5, ease: [.23, 1, .32, 1] }}><CheckCircle size={14} color="var(--sb-button)" />Completed in {job.took}</motion.span>
+        ? <span className="sb-verdict sb-body"><CheckCircle size={14} color="var(--sb-button)" />Completed in {job.took}</span>
         : <span className="sb-verdict sb-body">{Icon.progress}In Progress</span>}
       {!narrow && <span className="sb-label">Job ID: {job.id}</span>}
     </div>
