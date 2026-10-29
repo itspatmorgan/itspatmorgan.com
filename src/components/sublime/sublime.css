@@ -9,7 +9,7 @@
   --sb-link: #4471D4; --sb-button: #4471D4; --sb-button-text: #fff; --sb-secondary: #F2F2F1; --sb-cell-head: #F2F2F1; --sb-hover: #F2F2F1; --sb-reject: #54534D; --sb-banner: linear-gradient(90deg, #72221F 0%, #CC4837 100%); --sb-agentic: linear-gradient(90deg, #4E81F4, #41FFC0, #B5F6FF, #4E81F4);
   --sb-success: #0BC486; --sb-success-ink: #0EA471; --sb-brand: #04E69B; --sb-malicious: #CC4837; --sb-spam: #ED6E00; --sb-graymail: #31312D; --sb-box: #31312D; --sb-box-ink: #fff; --sb-benign: #A370FF;
   /* Liberty taken: the product's MQL editor is always dark; here it follows the theme, light on the light page. */
-  --sb-code: #F7F7F6; --sb-code-border: var(--sb-border); --sb-code-line: #A3A29E; --sb-code-text: #2B2B28; --sb-code-keyword: #2F5FC4; --sb-code-fn: #1F7A73; --sb-code-path: #3B4A8C; --sb-code-string: #A3471F; --sb-code-number: #2F7D4F;
+  --sb-code: #F7F7F6; --sb-code-border: var(--sb-border); --sb-code-line: #A3A29E; --sb-code-text: #2B2B28; --sb-code-keyword: #2F5FC4; --sb-code-fn: #1F7A73; --sb-code-path: #3B4A8C; --sb-code-string: #A3471F; --sb-code-number: #2F7D4F; --sb-code-caret: #2B2B28;
   --sb-glow: rgba(176, 244, 229, .65); --sb-glow-2: rgba(176, 244, 229, .2);
   --sb-ring: rgba(255, 255, 255, .15);
   --sb-drop: 0 4px 4px rgba(0, 0, 0, .25);
@@ -18,7 +18,7 @@
   --sb-card: #2a2725; --sb-subtle: #302d2a; --sb-strong: #ede9e4; --sb-weak: #a8a29b; --sb-border: #3d3a36; --sb-border-strong: #4b4742;
   --sb-link: #8fb0f5; --sb-button: #5182EB; --sb-secondary: #34312e; --sb-cell-head: #322f2c; --sb-hover: #36332f; --sb-reject: #6b6862;
   --sb-success: #0BC486; --sb-success-ink: #3fd7a4; --sb-malicious: #e0604f; --sb-spam: #fe8644; --sb-graymail: #d1d1cf; --sb-box: #171513; --sb-box-ink: #a8a29b; --sb-benign: #bc92ff;
-  --sb-code: #1d1b1a; --sb-code-border: transparent; --sb-code-line: #858585; --sb-code-text: #d4d4d4; --sb-code-keyword: #569cd6; --sb-code-fn: #4ec9b0; --sb-code-path: #9cdcfe; --sb-code-string: #ce9178; --sb-code-number: #b5cea8;
+  --sb-code: #1d1b1a; --sb-code-border: transparent; --sb-code-line: #858585; --sb-code-text: #d4d4d4; --sb-code-keyword: #569cd6; --sb-code-fn: #4ec9b0; --sb-code-path: #9cdcfe; --sb-code-string: #ce9178; --sb-code-number: #b5cea8; --sb-code-caret: #e8e8e8;
   --sb-glow: rgba(40, 120, 104, .45); --sb-glow-2: rgba(40, 120, 104, .14);
   --sb-ring: rgba(255, 255, 255, .06);
   --sb-drop: 0 4px 4px rgba(0, 0, 0, .4);
@@ -276,6 +276,12 @@
 .sb-row { transition: background 1200ms ease; }
 
 /* The Rule Editor, redrawn: the hand-written path a missed threat took before ADÉ. */
+/* The Rule Editor, drawn for the story: the hand-written path a missed threat took before ADÉ. */
+.sb-editor-code { display: grid; grid-template-columns: 32px 1fr; align-content: start; column-gap: 16px; min-height: 760px; padding: 14px 0; border-top: 1px solid var(--sb-border); background: var(--sb-code); font: 13px/22px 'SB JetBrains Mono', 'JetBrains Mono', ui-monospace, monospace; color: var(--sb-code-text); white-space: pre; }
+.sb-editor-code .n { text-align: right; color: var(--sb-code-line); }
+.sb-editor-code .k { color: var(--sb-code-keyword); }
+.sb-caret { display: inline-block; width: 2px; height: 16px; margin-left: 1px; vertical-align: -3px; background: var(--sb-code-caret); animation: sb-caret 1s steps(1) infinite; }
+@keyframes sb-caret { 50% { opacity: 0; } }
 /* The in-progress job (InProgressTimelineItem): ADÉ's mark over its working line, inside the agentic border. */
 .sb-working { position: relative; padding: 1.5px; border-radius: 6px; }
 .sb-working::before { content: ''; position: absolute; inset: 0; border-radius: 6px; background: var(--sb-agentic); background-size: 300% 100%; animation: sb-agentic 3s linear infinite; }
@@ -284,7 +290,7 @@
 @keyframes sb-shimmer { from { background-position: 100% 0; } to { background-position: -200% 0; } }
 .sb-octa { width: 168px; animation: sb-float 4s ease-in-out infinite; }
 @keyframes sb-float { 50% { transform: translateY(-6px); } }
-@media (prefers-reduced-motion: reduce) { .sb-working::before, .sb-working-text, .sb-octa { animation: none !important; } }
+@media (prefers-reduced-motion: reduce) { .sb-caret, .sb-working::before, .sb-working-text, .sb-octa { animation: none !important; } }
 /* The jobs filter (RecommendationStatusSelection): a lavender chip holding its value in an inset pill. */
 .sb-filter { display: inline-flex; align-items: center; gap: 6px; width: fit-content; height: 30px; padding: 0 4px 0 10px; border-radius: 4px; background: var(--sb-filter-bg); box-shadow: inset 0 0 0 1px var(--sb-filter-border); font-size: 13px; font-weight: 500; }
 .sb-filter b { display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 3px; background: var(--sb-filter-value); box-shadow: inset 0 0 0 1px var(--sb-filter-value-border); font-weight: 500; }
