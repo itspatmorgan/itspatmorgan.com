@@ -25,11 +25,12 @@ Three reference implementations exist:
   (headline, one line, visual). A page is the layout plus one `Slide` per point.
 - Shared layout, rhythm, demo and scene styles:
   `src/components/case-study/case-study.css`, under `cs-` class names.
-- Shared demo plumbing in `src/components/case-study/`: `NativeStage`,
-  `DemoControls` and `DemoCursor` (`NativeStage.tsx`), `useDemoLoop.ts`,
-  `useRevealOnce.ts`, and the scene system in `scene.tsx` (`useScene`,
-  `SceneFrame`, `SceneTour`, `Camera`, `Pointer`, `Zoom`, `Expand`, `Screens`,
-  `CountUp`, `Typing`).
+- Shared demo plumbing in `src/components/case-study/`: `NativeStage` and
+  `DemoCursor` (`NativeStage.tsx`), `useDemoLoop.ts`, and the scene system in
+  `scene.tsx`: `useScene` for playback; `SceneFrame` (a screen in the Sublime
+  card that bleeds off the stage) or `DemoFrame` (a demo on the plain stage,
+  as in Query Builder and Expansion), both with `SceneTour` under the stage;
+  and `Camera`, `Pointer`, `Zoom`, `Expand`, `Screens`, `CountUp`, `Typing`.
 - Each product keeps its own stylesheet and namespace class (`qb-*`, `xp`,
   `sb`), passed to the layout as `product`. It sets its type, color and surface
   on `.cs-native` and `.cs-native-stage`, and a scene's card surface through
@@ -199,12 +200,12 @@ still don't land after a round or two, cut it; the story can take it back later.
 
 ### 6. Set the motion
 
-- Loop only the visuals that explain a process (Expansion's agent flow and
-  Signals sequence). Everything else plays once on scroll and holds
-  (`useDemoLoop(..., once = true)` or `useRevealOnce`).
+- Every demo runs on `useScene(timings, captions, { loop })` inside
+  `SceneFrame` or `DemoFrame`. It starts when it scrolls into view.
 - A flow's last screen rarely tells the whole story, so a process scene cycles
-  rather than stopping on its end state (the Sublime scenes: `useScene`). Hold
-  only a scene whose end state is the slide's point, such as a metric.
+  rather than stopping on its end state (the default). Hold (`loop: false`,
+  which shows Replay) only a scene whose end state is the slide's point: a
+  metric, a chart drawing in, a diagram that builds to its answer.
 - Looping demos start on a complete frame. Under reduced motion, every demo
   shows its final frame without animating.
 - On a loop restart, fade out, jump to the first frame with transitions off,
@@ -218,9 +219,9 @@ still don't land after a round or two, cut it; the story can take it back later.
   current step shows, one segment per step that fills as it plays and jumps to
   that step when clicked, and a Pause/Play button (Replay on a demo that holds
   its end). Steps that share a caption form one segment. Write captions as
-  plain statements, one line at desktop width. This is the standard for every
-  case study; Query Builder and Expansion still use the older corner button
-  (`DemoControls`) until they move over.
+  plain statements, one line at desktop width, no trailing period. This is the
+  only playback pattern, on every case study, hero included. Even a one-step
+  demo gets its caption and Replay.
 - Tune timing until there are no dead pauses.
 - Each step changes one thing. When several things change at once, the
   in-between frames look broken even if the end state is right.

@@ -1,6 +1,6 @@
 import { useLayoutEffect, useState, type CSSProperties, type ReactNode } from 'react';
-import { NativeStage, DemoControls } from '../case-study/NativeStage';
-import { useDemoLoop } from '../case-study/useDemoLoop';
+import { NativeStage } from '../case-study/NativeStage';
+import { DemoFrame, useScene } from '../case-study/scene';
 
 // The Agent Processing section as one live diagram: the source's twelve 1920 × 1500 frames (001–005, 100–102, 200–202, 000)
 // become steps, and each element moves, stretches or fades between its positions in those frames.
@@ -20,6 +20,11 @@ const states: State[] = [
   { title: 'Agent processing flow', caption: 'The full agent processing flow', agent: 3, top: 3, bottom: 3, bold: true },
 ];
 const timings = states.map((_, i) => (i === states.length - 1 ? 4200 : 2000));
+// The tour groups the steps into chapters; each state's own caption stays as its accessible description.
+const chapters = ['A request goes to the server, and the response comes back', 'A request goes to the server, and the response comes back', 'The agent sits between client and server',
+  'The agent works in phases before and after the server', 'The agent works in phases before and after the server', 'A collector sends incoming data to the cloud and back',
+  'A collector sends incoming data to the cloud and back', 'A collector sends incoming data to the cloud and back', 'A second collector does the same for outgoing data',
+  'A second collector does the same for outgoing data', 'A second collector does the same for outgoing data', 'The full agent processing flow'];
 // Titles that repeat across steps share one element, so they hold still instead of crossfading into themselves.
 const titles = [0, 1, 2, 3, 4, 5, 5, 5, 8, 8, 8, 11];
 
@@ -55,25 +60,25 @@ const chip = (text: string, left: number, main: boolean, style: CSSProperties = 
 
 /** How a request moved through the agent, and where data was collected on each side. */
 export default function AgentFlow() {
-  const loop = useDemoLoop(timings, states.length - 1);
+  const scene = useScene(timings, chapters);
   // On restart the stage has faded out; jump to the first frame without transitions, then let later steps animate.
   const [jump, setJump] = useState(false);
   useLayoutEffect(() => {
-    if (loop.step !== 0) return;
+    if (scene.step !== 0) return;
     setJump(true);
     let frame = requestAnimationFrame(() => { frame = requestAnimationFrame(() => setJump(false)); });
     return () => cancelAnimationFrame(frame);
-  }, [loop.step]);
-  const s = states[loop.step];
+  }, [scene.step]);
+  const s = states[scene.step];
   const wide = s.agent === 0;
-  const responded = loop.step > 0;
+  const responded = scene.step > 0;
   const phases = s.agent >= 2, full = s.agent === 3;
   // Connector ends from the source: they meet the message boxes before the agent exists, and the agent after.
   const inEnd = wide ? 833 : 650, outStart = wide ? 1090 : 1263;
-  return <figure className={`cs-demo xp-agent-flow ${loop.resetting ? 'cs-loop-reset' : ''}`} ref={loop.ref} aria-label="The Signal Sciences agent processing flow: requests and responses pass through the agent's pre and post phases, and collectors send data to the cloud">
+  return <DemoFrame scene={scene} stage="xp-frame" title="the agent processing flow" label="The Signal Sciences agent processing flow: requests and responses pass through the agent's pre and post phases, and collectors send data to the cloud"><div className="cs-demo xp-agent-flow">
     <NativeStage width={1240} height={900}><div className="xp-card"><div className="xp-agent-fit">
       <div className={`xp-agent xp-live ${jump ? 'is-jump' : ''}`}>
-        {titles.map((t, i) => titles.indexOf(t) === i && <div key={i} className="xp-script" style={show(titles[loop.step] === t, { fontWeight: states[t].bold ? 700 : 400 })} aria-hidden={titles[loop.step] !== t}>{states[t].title}</div>)}
+        {titles.map((t, i) => titles.indexOf(t) === i && <div key={i} className="xp-script" style={show(titles[scene.step] === t, { fontWeight: states[t].bold ? 700 : 400 })} aria-hidden={titles[scene.step] !== t}>{states[t].title}</div>)}
 
         {/* Request path, then the response path. */}
         {v(200, 591, 673)}{h(197.5, inEnd - 24, 591)}{head(inEnd, 591, 'right')}
@@ -111,6 +116,5 @@ export default function AgentFlow() {
         <Cloud x={342} y={1236} on={s.bottom > 1} />
       </div>
     </div></div></NativeStage>
-    <DemoControls loop={loop} title="agent processing flow" caption={s.caption} />
-  </figure>;
+  </div></DemoFrame>;
 }

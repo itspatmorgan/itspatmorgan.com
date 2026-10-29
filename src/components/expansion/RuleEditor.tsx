@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { NativeStage } from '../case-study/NativeStage';
-import { useDemoLoop } from '../case-study/useDemoLoop';
+import { DemoFrame, useScene } from '../case-study/scene';
 import { T, Box, Select, IconButton } from './ExpansionUI';
 
 // Frame 700's rule editor, filled in as a customer's workaround: a rule that exists only to tag likely bot traffic with a signal of their own.
@@ -19,6 +19,8 @@ typed.forEach((field, f) => {
 });
 frames.push({ chars: typed.map(t => t.text.length), focus: -1, ms: 3600 });
 const durations = frames.map(f => f.ms);
+const fieldCaptions = ['The rule matches a scripted user agent', 'It looks only at product pages', 'It tags those requests with a custom signal', 'It blocks IPs over 100 signals a minute'];
+const captions = frames.map((f, i) => (f.focus >= 0 ? fieldCaptions[f.focus] : i === 0 ? fieldCaptions[0] : 'A rule built only to tag and block likely bots'));
 
 const label = (x: number, y: number, text: string) => <T x={x} y={y} size={11.97} lh={21} ls={-.13}>{text}</T>;
 const strong = (x: number, y: number, text: ReactNode, className = '') => <T x={x} y={y} size={11.97} lh={21} ls={-.13} weight={600} className={className}>{text}</T>;
@@ -29,10 +31,10 @@ const bar = (x: number, y: number, h: number) => <i className="xp-hair" style={{
 
 /** The workaround: a hand-built rule whose job is to tag bot traffic. */
 export default function RuleEditor() {
-  const loop = useDemoLoop(durations, 0, true, true);
-  const { chars, focus } = frames[loop.step];
+  const scene = useScene(durations, captions, { loop: false });
+  const { chars, focus } = frames[scene.step];
   const value = (i: number) => <>{typed[i].text.slice(0, chars[i])}{focus === i && <i className="xp-caret" />}</>;
-  return <figure className={`cs-demo xp-rule-editor ${loop.resetting ? 'cs-loop-reset' : ''}`} ref={loop.ref} aria-label="A custom rule: requests from a python-requests user agent to /products/* are tagged with a suspected-bot signal, and IPs over 100 signals a minute are blocked">
+  return <DemoFrame scene={scene} stage="xp-frame" title="the custom rule" label="A custom rule: requests from a python-requests user agent to /products/* are tagged with a suspected-bot signal, and IPs over 100 signals a minute are blocked"><div className="cs-demo xp-rule-editor">
     <NativeStage width={1240} height={900}>
       <div className="xp-card">
         {heading(27.38, 'Conditions')}
@@ -74,6 +76,5 @@ export default function RuleEditor() {
         {strong(112.95, 800.98, 'Block')}
       </div>
     </NativeStage>
-    <figcaption className="sr-only">{focus >= 0 ? `Typing ${typed[focus].text}` : 'A rule that tags likely bot traffic with a custom signal'}</figcaption>
-  </figure>;
+  </div></DemoFrame>;
 }

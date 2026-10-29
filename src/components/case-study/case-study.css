@@ -15,14 +15,14 @@
 .cs-slide h1 { max-width: 15em; font-size: clamp(42px, 5.2vw, 76px); line-height: 1.02; letter-spacing: -.05em; }
 .cs-slide h2 { font-size: clamp(28px, 2.9vw, 40px); line-height: 1.05; letter-spacing: -.045em; }
 .cs-slide > p { max-width: 840px; margin: 24px auto 0; font-size: clamp(17px, 1.4vw, 19px); line-height: 1.5; letter-spacing: -.012em; color: var(--muted-foreground); text-wrap: pretty; }
-.cs-slide > .cs-stage { margin-top: 48px; }
+.cs-slide > .cs-stage, .cs-slide .cs-scene { margin-top: 48px; }
 /* Hero rhythm: a tight title group (company, title, subline), a clear step to the brief, a larger step to the visual. */
 .cs-hero { padding-top: 22px; container-type: inline-size; }
 .cs-hero h1 { font-size: clamp(38px, 3.9vw, 52px); line-height: 1.08; }
 .cs-hero > p { margin-top: 28px; }
 .cs-hero > .cs-company { display: inline-flex; align-items: center; gap: 7px; margin: 0 0 32px; color: var(--foreground); font-size: 17px; font-weight: 500; letter-spacing: -.01em; }
 .cs-company img { width: 30px; height: 30px; filter: invert(1); }.dark .cs-company img { filter: none; }
-.cs-hero > .cs-stage { margin-top: 72px; }
+.cs-hero > .cs-stage, .cs-hero .cs-scene { margin-top: 72px; }
 /* Project brief: four facts, read at a glance before the visuals take over. */
 .cs-brief { display: grid; grid-template-columns: repeat(4, auto); justify-content: center; margin: 56px auto 0; }
 /* Facts are about 735px wide; padding takes whatever room is left, then the row wraps. */
@@ -39,8 +39,6 @@
 
 /* Stage: the site texture surface; the source UI floats on it as a product shot. Capped so the panel hugs its window on wide screens. */
 .cs-stage { position: relative; max-width: 960px; margin: 0 auto; text-align: left; padding: clamp(16px, 4.5vw, 64px); border-radius: 16px; }
-.cs-page .cs-play { background: var(--background); border: 1px solid var(--border); color: var(--foreground); opacity: .85; }
-.cs-page .cs-play:hover { opacity: 1; background: var(--background); }
 /* One window size across slides, so the sequence reads like a deck. */
 .cs-stage .cs-demo { max-width: 880px; margin-inline: auto; }
 
@@ -54,10 +52,6 @@
 .cs-native button { border: 0; background: transparent; cursor: pointer; }
 .cs-native h4, .cs-native p, .cs-native ul { margin: 0; padding: 0; font-family: inherit; }.cs-native ul { list-style: none; }
 .cs-native svg { overflow: hidden; }
-.cs-play { position: absolute; right: 8px; bottom: 8px; display: inline-flex; justify-content: center; align-items: center; flex-shrink: 0; width: 30px; height: 30px; margin: 0; padding: 0; border-radius: 50%; background: transparent; color: #616161; opacity: .7; cursor: pointer; transition: background 150ms ease, transform 150ms ease; }
-.cs-play:hover { background: #f0f0f0; }.cs-play:active { transform: scale(.95); }
-.cs-demo:hover > .cs-play, .cs-play:hover, .cs-play:focus-visible { opacity: 1; }
-@media (max-width: 760px) { .cs-play { opacity: .6; } }
 .cs-cursor { position: absolute; z-index: 100; color: #111; width: 26px; height: 28px; pointer-events: none; filter: drop-shadow(0 1px 1px #fff9) drop-shadow(0 2px 2px #0003); }
 .cs-cursor svg { fill: white; }
 
@@ -65,7 +59,6 @@
    Wide stages run past the 960px text measure to the page's full width, so a product screen renders at about its true size. */
 .cs-page .cs-frame { padding: 0; overflow: hidden; }
 .cs-page .cs-frame.is-wide { max-width: 1184px; }
-.cs-scene { margin: 48px 0 0; }
 /* The shell holds the card and its ring, and fades both out toward the stage's bottom edge, so a crop reads as a bleed. */
 .cs-shell { position: absolute; bottom: 0; -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 120px), transparent 100%); mask-image: linear-gradient(to bottom, #000 calc(100% - 120px), transparent 100%); }
 @media (max-width: 640px) { .cs-frame:not(.is-ready) .cs-shell { visibility: hidden; } }
@@ -76,7 +69,7 @@
 
 /* Under each stage: the chapter's caption on the left, a segment per chapter and the play button on the right. */
 .cs-tour { display: flex; align-items: flex-start; justify-content: space-between; gap: 32px; max-width: 1184px; margin: 18px auto 0; padding: 0 4px; text-align: left; }
-.cs-page .cs-frame:not(.is-wide) + .cs-tour { max-width: 960px; }
+.cs-stage:not(.is-wide) + .cs-tour { max-width: 960px; }
 .cs-tour-caption { position: relative; flex: 1; min-width: 0; min-height: 24px; font-size: 15px; line-height: 24px; letter-spacing: -.01em; color: var(--foreground); }
 .cs-tour-caption > span { display: block; text-wrap: pretty; }
 .cs-tour-controls { display: flex; align-items: center; gap: 14px; flex-shrink: 0; height: 24px; }
@@ -111,7 +104,7 @@
   .cs-brief { margin-top: 40px; }
   .cs-brief > div { padding: 0 12px; }
   .cs-slide h2 { font-size: 28px; }
-  .cs-slide > .cs-stage { margin-top: 28px; }
+  .cs-slide > .cs-stage, .cs-slide .cs-scene { margin-top: 28px; }
   .cs-stage { border-radius: 12px; }
   }
 

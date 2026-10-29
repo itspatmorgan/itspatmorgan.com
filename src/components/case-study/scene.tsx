@@ -100,9 +100,19 @@ export function SceneFrame({ scene, stage, label, title, size = 'wide', controls
   </figure>;
 }
 
+/** A scene on the plain stage: the product frame sits on the texture with the stage's own padding, and the tour runs under it. For
+ *  demos laid out by their own component (Query Builder, Expansion) rather than in the Sublime card. Each take remounts the content, so a
+ *  replay starts from its first frame instead of animating backward. */
+export function DemoFrame({ scene, label, title, stage = '', children }: { scene: Scene; label: string; title: string; stage?: string; children: ReactNode }) {
+  return <figure className={`cs-scene ${scene.fade ? 'cs-loop-reset' : ''}`} ref={scene.ref as RefObject<HTMLElement>} aria-label={label}>
+    <div className={`cs-stage texture-bg ${stage}`} key={scene.take}>{children}</div>
+    <SceneTour scene={scene} title={title} />
+  </figure>;
+}
+
 /** Under the stage: what the current chapter shows, and a segment per chapter that fills as it plays. Segments jump to their chapter;
  *  the button pauses or plays, and replays a finished scene that doesn't cycle. */
-function SceneTour({ scene, title }: { scene: Scene; title: string }) {
+export function SceneTour({ scene, title }: { scene: Scene; title: string }) {
   const finished = scene.done && !scene.reduced && !scene.cycle;
   const label = finished ? `Replay ${title}` : `${scene.playing ? 'Pause' : 'Play'} ${title}`;
   const running = scene.playing && scene.visible && !scene.reduced;

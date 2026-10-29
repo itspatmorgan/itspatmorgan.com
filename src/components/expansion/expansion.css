@@ -28,7 +28,6 @@
 .xp .xp-frame .cs-native-stage, .xp .xp-frame .cs-native { background: transparent; }
 /* Playback control pinned to the stage's corner, not the demo's. */
 .xp .cs-stage .cs-demo { position: static; }
-.xp .cs-stage .cs-play { right: 16px; bottom: 16px; }
 .xp .cs-native { font-family: 'Inter Variable', 'Inter', sans-serif; color: var(--x-ink); letter-spacing: 0; }
 .xp .cs-native-stage { transition: opacity 240ms ease; }
 .xp-t { position: absolute; white-space: nowrap; }
