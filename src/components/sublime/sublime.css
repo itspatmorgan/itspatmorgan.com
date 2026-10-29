@@ -288,8 +288,7 @@
 /* The jobs filter (RecommendationStatusSelection): a lavender chip holding its value in an inset pill. */
 .sb-filter { display: inline-flex; align-items: center; gap: 6px; width: fit-content; height: 30px; padding: 0 4px 0 10px; border-radius: 4px; background: var(--sb-filter-bg); box-shadow: inset 0 0 0 1px var(--sb-filter-border); font-size: 13px; font-weight: 500; }
 .sb-filter b { display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 3px; background: var(--sb-filter-value); box-shadow: inset 0 0 0 1px var(--sb-filter-value-border); font-weight: 500; }
-.sb { --sb-filter-bg: #EDE9FE; --sb-filter-border: #DDD6FE; --sb-filter-value: #F5F3FF; --sb-filter-value-border: #C4B5FD; }
-.dark .sb { --sb-filter-bg: #2e2a3d; --sb-filter-border: #3d3754; --sb-filter-value: #26233a; --sb-filter-value-border: #5b4f8a; }
+.sb { --sb-filter-bg: var(--sb-subtle); --sb-filter-border: var(--sb-border); --sb-filter-value: var(--sb-card); --sb-filter-value-border: var(--sb-border-strong); }
 /* AdeOffLoop, on a neutral stage: four marks on a ring with Time to Coverage in the middle; the marks settle in, then the arcs draw. */
 .sb-loop { position: relative; width: 400px; height: 400px; flex-shrink: 0; }
 .sb-loop-center { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: grid; justify-items: center; }
@@ -310,19 +309,25 @@
 .sb-sec-h { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 14px; font-weight: 600; line-height: 20px; }
 .sb-sec-h svg { color: var(--sb-weak); }
 
-/* The close: the outcome, set large on the page itself, then the lessons and a note on the screens. */
-.sb-outcome { margin: 56px auto 0; display: grid; justify-items: center; gap: 20px; }
-.sb-outcome-value { display: flex; align-items: baseline; gap: .12em; font-size: clamp(96px, 14vw, 176px); line-height: .9; letter-spacing: -.07em; font-weight: 450; font-variant-numeric: tabular-nums; }
-.sb-outcome-value span { font-size: .32em; letter-spacing: -.03em; color: var(--muted-foreground); }
-.sb-outcome figcaption { max-width: 30em; font-size: 15px; line-height: 1.5; color: var(--muted-foreground); text-wrap: balance; }
-.sb-lessons { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; max-width: 960px; margin: 56px auto 0; padding: 0; list-style: none; text-align: left; counter-reset: lesson; }
-.sb-lessons li { counter-increment: lesson; padding-top: 20px; border-top: 1px solid var(--border); }
-.sb-lessons li::before { content: counter(lesson, decimal-leading-zero); display: block; margin-bottom: 14px; font-size: 13px; font-variant-numeric: tabular-nums; color: var(--muted-foreground); }
-.sb-lessons h3 { font-size: 19px; font-weight: 500; line-height: 1.25; letter-spacing: -.02em; }
-.sb-lessons p { margin-top: 10px; font-size: 15px; line-height: 1.55; color: var(--muted-foreground); text-wrap: pretty; }
-.qb-slide > .sb-footnote { max-width: 960px; margin-top: 72px; padding-top: 20px; border-top: 1px solid var(--border); font-size: 13px; line-height: 1.5; text-align: left; }
+/* The close: the lessons, each beside the product excerpt it came from, then a note on the screens. */
+.sb-lessons { display: grid; gap: 24px; max-width: 1184px; margin: 48px auto 0; padding: 0; list-style: none; text-align: left; }
+.sb-lessons li { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: center; gap: clamp(32px, 5vw, 72px); }
+.sb-lesson-copy h3 { font-size: clamp(22px, 2vw, 26px); font-weight: 500; line-height: 1.15; letter-spacing: -.035em; text-wrap: balance; }
+.sb-lesson-copy p { margin-top: 12px; max-width: 26em; font-size: 16px; line-height: 1.55; color: var(--muted-foreground); text-wrap: pretty; }
+.sb-lesson-copy { padding-left: clamp(0px, 3vw, 40px); }
+.sb-lesson-stage { display: grid; place-items: center; min-height: 248px; padding: clamp(24px, 4vw, 40px); border-radius: 16px; }
+.sb-lesson-card { width: min(100%, 500px); height: auto; padding: 0; border-radius: 10px; box-shadow: 0 0 0 8px var(--sb-ring), var(--sb-drop); font-size: 14px; }
+.sb-lesson-card .sb-cells { border: 0; border-radius: 0; }
+.sb-lesson-auto { grid-template-columns: minmax(0, 1fr) 72px 184px; padding: 0 16px; }
+.sb-lesson-card .sb-narrow-only { display: none; }
+.qb-slide > .sb-footnote { max-width: 1184px; margin-top: 72px; padding-top: 20px; border-top: 1px solid var(--border); font-size: 13px; line-height: 1.5; text-align: left; }
 @media (max-width: 640px) {
-  .sb-outcome { margin-top: 36px; }
-  .sb-lessons { grid-template-columns: minmax(0, 1fr); gap: 28px; margin-top: 36px; }
+  .sb-lessons { gap: 40px; margin-top: 36px; }
+  .sb-lessons li { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .sb-lesson-stage { min-height: 0; padding: 20px 14px; }
+  .sb-lesson-auto { grid-template-columns: minmax(0, 1fr) 64px 96px; column-gap: 12px; padding: 0 12px; }
+  .sb-lesson-auto .sb-select { padding: 0 8px; font-size: 13px; }
+  .sb-lesson-card .sb-wide-only { display: none; }
+  .sb-lesson-card .sb-narrow-only { display: inline; }
   .qb-slide > .sb-footnote { margin-top: 48px; }
 }

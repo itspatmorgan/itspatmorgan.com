@@ -93,6 +93,10 @@ export function StatusPill({ status }: { status: Status }) {
   return <span className="sb-pill is-fill is-success"><CheckCircle size={14} color="#fff" check="var(--sb-success)" />{status === 'auto' ? 'Auto-Accepted' : 'Accepted'}</span>;
 }
 
+export function Switch({ on }: { on: boolean }) {
+  return <span className={`sb-switch ${on ? 'is-on' : ''}`}><i>{on ? Icon.check : Icon.x}</i></span>;
+}
+
 export const job = { subject: 'Action required: payroll profile verification', id: '019f3d5a-ff42-7706-b615-a83297b00479' };
 
 /** ADÉ's recommendation (JobCompletedCard): rule fields beside the MQL, with Accept and Reject while it waits for review.

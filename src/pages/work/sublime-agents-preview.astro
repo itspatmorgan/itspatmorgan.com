@@ -10,6 +10,8 @@ import AutoAccepted from '@/components/sublime/AutoAccepted';
 import AutomationConfig from '@/components/sublime/AutomationConfig';
 import AdeJobs from '@/components/sublime/AdeJobs';
 import AdeSetup from '@/components/sublime/AdeSetup';
+import Coverage from '@/components/sublime/Coverage';
+import Lessons from '@/components/sublime/Lessons';
 import '@/components/query-builder/query-builder.css';
 import '@/components/case-study/case-study.css';
 import '@/components/sublime/sublime.css';
@@ -80,20 +82,14 @@ const description = 'I designed how Sublime’s agents turn a missed threat into
     </section>
 
     <section class="qb-slide" aria-labelledby="result">
-      <h2 id="result">A missed threat becomes coverage in under two hours</h2>
-      <figure class="sb-outcome" aria-label="Average time to coverage: under 2 hours">
-        <p class="sb-outcome-value">&lt;&thinsp;2<span>hrs</span></p>
-        <figcaption>Average time to coverage, from a threat no rule caught to a live rule that catches the next one</figcaption>
-      </figure>
+      <h2 id="result">Missed threats are covered in under two hours</h2>
+      <p>Time to Coverage is ADÉ’s headline number: from a missed threat reaching ADÉ to a rule ready to accept. Across customers, it averages under two hours.</p>
+      <Coverage client:visible />
     </section>
 
     <section class="qb-slide" aria-labelledby="lessons">
       <h2 id="lessons">What the agents taught me</h2>
-      <ol class="sb-lessons">
-        <li><h3>Autonomy is an on‑ramp</h3><p>Teams start ADÉ by hand, then let it start on its own, then let it accept rules that clear their bar. Each step is earned by the one before.</p></li>
-        <li><h3>Agents hand off in the background</h3><p>ASA’s verdict leads to ADÉ’s job while no one watches, so the product has to show where the work is and what it did.</p></li>
-        <li><h3>Review is a deliberate moment</h3><p>A person sees the rule, the hunt that tested it and its result in one place, and then decides.</p></li>
-      </ol>
+      <Lessons />
       <p class="sb-footnote">Product screens are recreated in code from Sublime’s design prototypes. Figures in them are sample data, except the under‑two‑hour time to coverage.</p>
     </section>
 

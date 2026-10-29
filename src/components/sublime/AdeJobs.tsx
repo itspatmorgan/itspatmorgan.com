@@ -68,8 +68,11 @@ export default function AdeJobs() {
             <div style={{ display: 'flex', marginTop: 10 }}>
               {tiles.map((tile, i) => <div key={tile.label} className="sb-tile" style={{ marginLeft: i ? -1 : 0, ...(narrow ? { width: 'auto', flex: 1, padding: '12px 12px' } : {}) }}><p><CountUp to={tile.to} run={shown} duration={1.3} format={tile.format} reduced={scene.reduced} /></p><span className="sb-label sb-verdict" style={{ fontSize: 11, gap: 4, whiteSpace: 'nowrap' }}>{tile.label}{!narrow && Icon.info}</span></div>)}
             </div>
-            <p style={{ marginTop: 28, fontSize: 14, fontWeight: 600 }} data-frame="jobs">Jobs</p>
-            <span className="sb-filter" style={{ marginTop: 12 }}>Recommendation Status<b>All</b></span>
+            {/* Liberty taken: the source's purple filter chip goes gray, and sits on the Jobs heading's line rather than below it. */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginTop: 28 }} data-frame="jobs">
+              <p style={{ fontSize: 14, fontWeight: 600 }}>Jobs</p>
+              <span className="sb-filter">{narrow ? 'Status' : 'Recommendation Status'}<b>All</b></span>
+            </div>
             <div style={{ marginTop: 12, border: '1px solid var(--sb-border)', borderRadius: 4 }}>
               <div className="sb-row is-head" style={{ gridTemplateColumns: cols }}>
                 {(narrow ? ['Message Subject', 'Recommendation'] : ['Message Subject', 'ASA Verdict', 'Started By', 'Started', 'Report Status', 'Recommendation Status']).map(h => <span key={h}>{h}</span>)}
