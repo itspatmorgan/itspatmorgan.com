@@ -7,8 +7,8 @@ import QuerySearchBlank from '@/components/query-builder/QuerySearchBlank';
 import FigmaFlow from '@/components/query-builder/FigmaFlow';
 import QuerySentence from '@/components/query-builder/QuerySentence';
 import QueryNaturalLanguage from '@/components/query-builder/QueryNaturalLanguage';
-import '@/components/query-builder/query-builder.css';
 import '@/components/case-study/case-study.css';
+import '@/components/query-builder/query-builder.css';
 
 const project = await getEntry('projects', 'query-language');
 if (!project) throw new Error('Query language case study is missing');
