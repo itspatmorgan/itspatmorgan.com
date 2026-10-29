@@ -1,0 +1,16 @@
+---
+// One point per slide: a headline, at most one line of copy, then the visual in the slot.
+interface Props {
+  id: string;
+  title: string;
+  line?: string;
+}
+
+const { id, title, line } = Astro.props;
+---
+
+<section class="qb-slide" aria-labelledby={id}>
+  <h2 id={id}>{title}</h2>
+  {line && <p>{line}</p>}
+  <slot />
+</section>

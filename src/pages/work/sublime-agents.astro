@@ -1,8 +1,7 @@
 ---
 import { getEntry } from 'astro:content';
-import PageLayout from '@/layouts/PageLayout.astro';
-import Icon from '@/components/icons/Icon.astro';
-import { ArrowLeft01Icon } from '@hugeicons/core-free-icons';
+import CaseStudyLayout from '@/layouts/CaseStudyLayout.astro';
+import Slide from '@/components/case-study/Slide.astro';
 import HeroRule from '@/components/sublime/HeroRule';
 import MessageDetail from '@/components/sublime/MessageDetail';
 import JobReview from '@/components/sublime/JobReview';
@@ -17,60 +16,43 @@ const project = await getEntry('projects', 'sublime-agents');
 if (!project) throw new Error('Sublime agents case study is missing');
 ---
 
-<PageLayout title={project.data.title} description={project.data.description}>
-  <article class="qb-page qb-case sb">
-    <nav class="qb-case-nav" aria-label="Case study navigation">
-      <a href="/work"><Icon icon={ArrowLeft01Icon} size={16} />Work</a>
-    </nav>
+<CaseStudyLayout
+  title={project.data.title}
+  description={project.data.description}
+  product="sb"
+  company={{ name: 'Sublime Security', logo: '/images/logos/square-sublime.svg' }}
+  heading="Giving a security agent the right amount of control"
+  subline="I lead design for ADÉ, Sublime’s agent that writes detection rules to address missed threats."
+  brief={[
+    ['When', '2025 to now'],
+    ['Role', 'Staff Product Designer'],
+    ['Team', '1 PM, engineers, 2 designers'],
+    ['Outcome', 'New rule in under 2 hours, not days'],
+  ]}
+>
+  <HeroRule slot="hero" client:load />
 
-    <header class="qb-slide qb-hero">
-      <p class="qb-company"><img src="/images/logos/square-sublime.svg" width="30" height="30" alt="" />Sublime Security</p>
-      <h1>Giving a security agent the right amount of control</h1>
-      <p>I lead design for ADÉ, Sublime’s agent that writes detection rules to address missed threats.</p>
-      <dl class="qb-brief">
-        <div><dt>When</dt><dd>2025 to now</dd></div>
-        <div><dt>Role</dt><dd>Staff Product Designer</dd></div>
-        <div><dt>Team</dt><dd>1 PM, engineers, 2 designers</dd></div>
-        <div><dt>Outcome</dt><dd>New rule in under 2 hours, not days</dd></div>
-      </dl>
-      <HeroRule client:load />
-    </header>
+  <Slide id="problem" title="Each missed threat needed a new rule" line="An engineer wrote and tested each rule by hand, so a fix took days or weeks.">
+    <MessageDetail variant="gap" client:visible />
+  </Slide>
 
-    <section class="qb-slide" aria-labelledby="problem">
-      <h2 id="problem">Each missed threat needed a new rule</h2>
-      <p>An engineer wrote and tested each rule by hand, so a fix took days or weeks.</p>
-      <MessageDetail variant="gap" client:visible />
-    </section>
+  <Slide id="bet" title="The agent writes rules that people can read and change" line="Other vendors update a central model. ADÉ writes a rule each team can read, edit and turn off.">
+    <JobReview client:visible />
+  </Slide>
 
-    <section class="qb-slide" aria-labelledby="bet">
-      <h2 id="bet">The agent writes rules that people can read and change</h2>
-      <p>Other vendors update a central model. ADÉ writes a rule each team can read, edit and turn off.</p>
-      <JobReview client:visible />
-    </section>
+  <Slide id="handoff" title="The agent starts where the team finds the threat" line="One click beside the verdict starts a job, and the job page shows each step ADÉ does.">
+    <MessageDetail variant="handoff" client:visible />
+  </Slide>
 
-    <section class="qb-slide" aria-labelledby="handoff">
-      <h2 id="handoff">The agent starts where the team finds the threat</h2>
-      <p>One click beside the verdict starts a job, and the job page shows each step ADÉ does.</p>
-      <MessageDetail variant="handoff" client:visible />
-    </section>
+  <Slide id="evidence" title="Each rule shows what it would catch before it goes live" line="ADÉ runs each rule on the last 14 days of email and shows what it catches and wrongly blocks.">
+    <AutoAccepted client:visible />
+  </Slide>
 
-    <section class="qb-slide" aria-labelledby="evidence">
-      <h2 id="evidence">Each rule shows what it would catch before it goes live</h2>
-      <p>ADÉ runs each rule on the last 14 days of email and shows what it catches and wrongly blocks.</p>
-      <AutoAccepted client:visible />
-    </section>
+  <Slide id="limits" title="Each team decides how much the agent does alone" line="A team sets when ADÉ starts a job and the test score a rule needs to go live.">
+    <AutomationConfig client:visible />
+  </Slide>
 
-    <section class="qb-slide" aria-labelledby="limits">
-      <h2 id="limits">Each team decides how much the agent does alone</h2>
-      <p>A team sets when ADÉ starts a job and the test score a rule needs to go live.</p>
-      <AutomationConfig client:visible />
-    </section>
-
-    <section class="qb-slide" aria-labelledby="outcome">
-      <h2 id="outcome">Missed threats now get a rule in under 2 hours</h2>
-      <p>A fix that took an engineer days or weeks now arrives as a rule ready to accept.</p>
-      <AdeJobs client:visible />
-    </section>
-
-  </article>
-</PageLayout>
+  <Slide id="outcome" title="Missed threats now get a rule in under 2 hours" line="A fix that took an engineer days or weeks now arrives as a rule ready to accept.">
+    <AdeJobs client:visible />
+  </Slide>
+</CaseStudyLayout>
