@@ -18,14 +18,22 @@ Three reference implementations exist:
 - Expansion: `src/pages/work/expansion.astro` with screens rebuilt from Figma in
   `src/components/expansion/`
 - Sublime agents: `src/pages/work/sublime-agents.astro` with screens rebuilt
-  from prototype code in `src/components/sublime/`. Its scene plumbing
-  (`scene.tsx`: `useScene`, `SceneFrame`, `SceneTour`, `Camera`, `Pointer`,
-  `Expand`) is the most current pattern for animated demos.
-- Shared layout and rhythm: `src/components/case-study/case-study.css`
+  from prototype code in `src/components/sublime/`. Its scenes are the most
+  current pattern for animated demos.
+- Page shell: `src/layouts/CaseStudyLayout.astro` (nav, hero, brief, and a
+  `hero` slot for the hero visual) and `src/components/case-study/Slide.astro`
+  (headline, one line, visual). A page is the layout plus one `Slide` per point.
+- Shared layout, rhythm, demo and scene styles:
+  `src/components/case-study/case-study.css`, under `cs-` class names.
 - Shared demo plumbing in `src/components/case-study/`: `NativeStage`,
-  `DemoControls` and `DemoCursor` (`NativeStage.tsx`), `useDemoLoop.ts` and
-  `useRevealOnce.ts`. Stage and playback styles still live in
-  `query-builder.css`, which every case-study page imports.
+  `DemoControls` and `DemoCursor` (`NativeStage.tsx`), `useDemoLoop.ts`,
+  `useRevealOnce.ts`, and the scene system in `scene.tsx` (`useScene`,
+  `SceneFrame`, `SceneTour`, `Camera`, `Pointer`, `Zoom`, `Expand`, `Screens`,
+  `CountUp`, `Typing`).
+- Each product keeps its own stylesheet and namespace class (`qb-*`, `xp`,
+  `sb`), passed to the layout as `product`. It sets its type, color and surface
+  on `.cs-native` and `.cs-native-stage`, and a scene's card surface through
+  `--cs-card`, `--cs-ring` and `--cs-drop`.
 
 Reuse these patterns before inventing new ones.
 
@@ -205,8 +213,8 @@ still don't land after a round or two, cut it; the story can take it back later.
   (the card) still and fade only its content.
 - Prefer one live diagram whose elements move between states over crossfading
   whole frames.
-- Give each animated demo a tour under its stage (the Sublime `SceneTour` in
-  `src/components/sublime/scene.tsx`): a visible caption naming what the
+- Give each animated demo a tour under its stage (`SceneTour` in
+  `src/components/case-study/scene.tsx`): a visible caption naming what the
   current step shows, one segment per step that fills as it plays and jumps to
   that step when clicked, and a Pause/Play button (Replay on a demo that holds
   its end). Steps that share a caption form one segment. Write captions as
@@ -301,6 +309,10 @@ On Patrick's go-ahead:
 
 ## Gotchas
 
+- A page imports `case-study.css` first, then its product's stylesheet, so
+  product rules win over the shared ones at equal specificity. Don't import a
+  product stylesheet from inside a component: production puts component CSS
+  ahead of page CSS, which flips that order.
 - After installing dependencies or restarting work, the dev server can serve a
   stale render (hydration mismatches, old styles). Touch the changed files, or
   stop and restart the server with `pnpm astro dev stop`.

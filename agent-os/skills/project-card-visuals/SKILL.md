@@ -133,7 +133,7 @@ Present ranked findings before changing anything, as with case studies.
 
 - Set a card's own variables (`--pc-surface`, `--pc-line`, accents) on the
   element where the product's tokens are defined. Query Builder's tokens live on
-  `.qb-native`, so its card variables are set there, not on the figure.
+  `.cs-native`, so its card variables are set there, not on the figure.
 - Production bundles the stylesheets in a different order from development, so
   equal-specificity rules can resolve differently once deployed. The shared
   base rules (`.pc-bg`, `.pc-fg`, `.pc-title`, `.pc-cue`) are wrapped in
