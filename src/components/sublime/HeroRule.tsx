@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { JobHeading, Page, Recommendation, TimelineItem, job } from './SublimeUI';
+import { HuntEntry, JobHeading, Page, Recommendation, TimelineItem, Triggered, Worked, job } from './SublimeUI';
 import { Camera, SceneFrame, frame, useScene, useShot, useStage, useTargets } from './scene';
 
 // The hero: ADÉ's recommended rule on its job page (patrick/ade-workflow ade/ade-job-completed-review, JobCompletedCard), the one frame
@@ -31,8 +31,12 @@ export default function HeroRule() {
     <Camera view={view} width={stage.W} height={stage.box.height} cameraRef={t.ref} reduced={scene.reduced}>
       <Page crumbs={['Agents', 'ADÉ', job.subject]} style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr)', gap: narrow ? 24 : 36, padding: narrow ? '24px 16px 40px' : '36px 40px 48px' }}>
         <JobHeading />
-        <div className="sb-timeline" data-frame="rec">
-          <TimelineItem icon="shield" tone="active"><Recommendation actions={scene.step >= 1 || scene.reduced} codeLines={lines} /></TimelineItem>
+        {/* The rest of the job's timeline runs on below the fold, so the recommendation reads as one entry on it. */}
+        <div className="sb-timeline">
+          <TimelineItem icon="shield" tone="active"><div data-frame="rec"><Recommendation actions={scene.step >= 1 || scene.reduced} codeLines={lines} /></div></TimelineItem>
+          <TimelineItem icon="hunt"><HuntEntry /></TimelineItem>
+          <TimelineItem icon="clipboard"><Worked /></TimelineItem>
+          <TimelineItem icon="play"><Triggered /></TimelineItem>
         </div>
       </Page>
     </Camera>
