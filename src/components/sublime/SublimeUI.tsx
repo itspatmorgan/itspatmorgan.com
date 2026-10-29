@@ -1,4 +1,5 @@
 import type { CSSProperties, ReactNode, RefObject } from 'react';
+import { motion } from 'motion/react';
 import { CountUp, Expand, useNarrowLayout } from './scene';
 
 // Primitives for the Sublime screens. Sizes are the source's Tailwind values in CSS pixels; `Zoom` scales a source-sized layout to fill the frame card.
@@ -104,7 +105,7 @@ export const job = { subject: 'Action required: payroll profile verification', i
 /** ADÉ's recommendation (JobCompletedCard): rule fields beside the MQL, with Accept and Reject while it waits for review.
  *  Liberty taken: the header reads "ADÉ Recommended Rule" and carries the hunt's result in place of the source's "Create a new rule…"
  *  line, so the reason to accept or reject sits beside the buttons. */
-export function Recommendation({ actions = false, pressed = false, style, codeLines, compact = false }: { actions?: boolean; pressed?: boolean; style?: CSSProperties; codeLines?: number; compact?: boolean }) {
+export function Recommendation({ actions = false, pressed = false, style, codeLines }: { actions?: boolean; pressed?: boolean; style?: CSSProperties; codeLines?: number }) {
   const narrow = useNarrowLayout();
   return <div className="sb-cells" style={style}>
     <div data-frame="rec-head" style={{ display: 'flex', flexDirection: narrow ? 'column' : 'row', justifyContent: 'space-between', alignItems: narrow ? 'flex-start' : 'flex-end', gap: narrow ? 14 : 24, padding: narrow ? 16 : 24, background: 'var(--sb-cell-head)' }}>
@@ -114,7 +115,7 @@ export function Recommendation({ actions = false, pressed = false, style, codeLi
       </div>
       {(actions || !narrow) && <div className={`sb-fade ${actions ? '' : 'is-out'}`} style={{ display: 'flex', gap: 8 }}><span className={`sb-btn ${pressed ? 'is-pressed' : ''}`} data-target="accept">Accept</span><span className="sb-btn is-secondary">Reject</span></div>}
     </div>
-    {!compact && <div style={{ display: 'grid', gridTemplateColumns: narrow ? 'minmax(0, 1fr)' : '280px minmax(0, 1fr)', gap: narrow ? 20 : 40, padding: narrow ? 16 : 24 }}>
+    <div style={{ display: 'grid', gridTemplateColumns: narrow ? 'minmax(0, 1fr)' : '280px minmax(0, 1fr)', gap: narrow ? 20 : 40, padding: narrow ? 16 : 24 }}>
       <div style={{ display: 'grid', gap: 20, alignContent: 'start' }}>
         <div className="sb-field"><span>Rule Name</span><span className="sb-body">{ruleName}</span></div>
         <div className="sb-field"><span>Severity</span><span className="sb-severity" style={{ width: 'fit-content' }}>High Severity</span></div>
@@ -128,7 +129,7 @@ export function Recommendation({ actions = false, pressed = false, style, codeLi
         <span className="sb-label">Rule MQL</span>
         <RuleCode lines={codeLines} style={{ minHeight: narrow ? 0 : 300 }} />
       </div>
-    </div>}
+    </div>
   </div>;
 }
 
@@ -172,14 +173,14 @@ export function TimelineTitle({ children }: { children: ReactNode }) {
   return <p className="sb-tl-title"><span>{children}</span></p>;
 }
 
-/** Page heading for an ADÉ job (AdeJobDetailView), with room around it. */
-export function JobHeading({ status = 'done' }: { status?: 'done' | 'running' }) {
+/** Page heading for an ADÉ job (AdeJobDetailView), with room around it. With `animate`, the completed status fades in when it arrives. */
+export function JobHeading({ status = 'done', animate = false }: { status?: 'done' | 'running'; animate?: boolean }) {
   const narrow = useNarrowLayout();
   return <div style={{ display: 'grid', gap: 10, paddingLeft: narrow ? 0 : 48 }}>
     <p style={{ display: 'flex', alignItems: narrow ? 'flex-start' : 'center', gap: 10, fontSize: narrow ? 20 : 24, fontWeight: 600, lineHeight: narrow ? '27px' : '32px', letterSpacing: '-.2px' }}>{job.subject}<span style={{ color: 'var(--sb-link)', display: 'inline-flex', marginTop: narrow ? 6 : 0 }}>{Icon.external}</span></p>
     <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
       {status === 'done'
-        ? <span className="sb-verdict sb-body"><CheckCircle size={14} color="var(--sb-button)" />Completed in {job.took}</span>
+        ? <motion.span key="done" className="sb-verdict sb-body" initial={animate ? { opacity: 0, filter: 'blur(3px)' } : false} animate={{ opacity: 1, filter: 'blur(0px)' }} transition={{ duration: .5, ease: [.23, 1, .32, 1] }}><CheckCircle size={14} color="var(--sb-button)" />Completed in {job.took}</motion.span>
         : <span className="sb-verdict sb-body">{Icon.progress}In Progress</span>}
       {!narrow && <span className="sb-label">Job ID: {job.id}</span>}
     </div>
@@ -198,27 +199,27 @@ export function Accepted({ by, auto = false }: { by: string; auto?: boolean }) {
   </div>;
 }
 
-/** "ADÉ worked for 48m" (ChainOfThoughtTimelineItem), collapsed; `brief` shows its title line alone. */
-export function Worked({ brief = false }: { brief?: boolean }) {
+/** "ADÉ worked for 48m" (ChainOfThoughtTimelineItem), collapsed. */
+export function Worked() {
   return <div style={{ display: 'grid', gap: 16 }}>
     <TimelineTitle>ADÉ worked for {job.took}</TimelineTitle>
-    {!brief && <div className="sb-box sb-body" style={{ display: 'flex', justifyContent: 'space-between', padding: 16 }}>
+    <div className="sb-box sb-body" style={{ display: 'flex', justifyContent: 'space-between', padding: 16 }}>
       <span style={{ display: 'grid', gap: 8 }}><span className="sb-verdict">{Icon.sparkles}Collaborated with ASA Agent to generate a threat report</span><span className="sb-verdict">{Icon.bullseye}Validated recommendation with 1 hunt</span></span>
       <span className="sb-disclose">{Icon.chevron('down')}</span>
-    </div>}
+    </div>
   </div>;
 }
 
-/** "Patrick Morgan triggered ADÉ" (TriggeredTimelineItem): the message the job started from. `brief` folds it to its title line. */
-export function Triggered({ when = 'Jul 3, 2026, 2:12 PM', brief = false }: { when?: string; brief?: boolean }) {
-  return <div style={{ display: 'grid' }}>
+/** "Patrick Morgan triggered ADÉ" (TriggeredTimelineItem): the message the job started from. */
+export function Triggered({ when = 'Jul 3, 2026, 2:12 PM' }: { when?: string }) {
+  return <div style={{ display: 'grid', gap: 16 }}>
     <TimelineTitle>Patrick Morgan triggered ADÉ at {when}</TimelineTitle>
-    <Expand open={!brief}><div style={{ paddingTop: 16 }}><div className="sb-box sb-body" style={{ display: 'grid', gridTemplateColumns: '96px minmax(0, 1fr)', rowGap: 12, columnGap: 16, padding: 16 }}>
+    <div className="sb-box sb-body" style={{ display: 'grid', gridTemplateColumns: '96px minmax(0, 1fr)', rowGap: 12, columnGap: 16, padding: 16 }}>
       <span className="sb-label">Subject</span><span>{job.subject}</span>
       <span className="sb-label">Sender</span><span style={{ overflowWrap: 'anywhere' }}>payroll-verify@employee-benefits.co</span>
       <span className="sb-label">Recipient</span><span>alex.morgan@acme.com</span>
       <span className="sb-label">ASA Verdict</span><VerdictLabel verdict="malicious" />
-    </div></div></Expand>
+    </div>
   </div>;
 }
 
@@ -229,14 +230,14 @@ const huntRows = [
 ];
 
 /** The hunt entry (HuntTimelineItem): the hunt's summary, which opens onto its results (HuntResultsTable). Counts are the source's sample
- *  data; with `run` false they wait at zero, and `run` counts them up. `meets` adds the auto-accept line, and `brief` folds it to its title line. */
-export function HuntEntry({ run = true, reduced = false, meets = false, open = false, brief = false }: { run?: boolean; reduced?: boolean; meets?: boolean; open?: boolean; brief?: boolean }) {
+ *  data; with `run` false they wait at zero, and `run` counts them up. `meets` adds the auto-accept line. */
+export function HuntEntry({ run = true, reduced = false, meets = false, open = false }: { run?: boolean; reduced?: boolean; meets?: boolean; open?: boolean }) {
   const n = (to: number) => <CountUp to={to} run={run} reduced={reduced} />;
   const narrow = useNarrowLayout();
   const cols = narrow ? 'minmax(0, 1fr) 104px' : 'minmax(0, 1fr) 210px 64px 110px';
-  return <div style={{ display: 'grid' }} data-frame="hunt">
+  return <div style={{ display: 'grid', gap: 16 }} data-frame="hunt">
     <TimelineTitle>ADÉ hunted across 14 days and found {n(43)}&nbsp;message groups ({n(58)}&nbsp;total messages)</TimelineTitle>
-    <Expand open={!brief}><div style={{ paddingTop: 16 }}><div className="sb-hunt-box">
+    <div className="sb-hunt-box">
       <div style={{ display: 'flex', justifyContent: 'space-between', gap: 16, padding: 16 }}>
         <div className="sb-body" style={{ display: 'grid', gap: 12 }}>
           <span className="sb-verdict">{Icon.bullseye}<span>Recommended Rule is a <b style={{ fontWeight: 600 }}><CountUp to={93} run={run} reduced={reduced} format={v => `${Math.round(v)}%`} /></b> match with {n(40)} malicious matches and may introduce {n(2)} false positives (Benign).</span></span>
@@ -252,6 +253,6 @@ export function HuntEntry({ run = true, reduced = false, meets = false, open = f
           <div className="sb-label" style={{ padding: '10px 16px', borderTop: '1px solid var(--sb-border)' }}>Showing 3 of 43 message groups</div>
         </div>
       </Expand>
-    </div></div></Expand>
+    </div>
   </div>;
 }
