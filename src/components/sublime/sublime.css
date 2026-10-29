@@ -215,7 +215,9 @@
 .sb-camera { position: relative; transform-origin: 0 0; }
 .sb-pointer { position: absolute; z-index: 50; }
 .sb-btn, .sb-select, .sb-switch, .sb-list-row { transition: transform 160ms var(--sb-ease-out), background 200ms ease, box-shadow 200ms ease, opacity 200ms ease; }
-.sb-btn.is-pressed, .sb-select.is-pressed, .sb-list-row.is-pressed { transform: scale(.97); }
+.sb-btn.is-pressed, .sb-select.is-pressed { transform: scale(.97); }
+/* A list row fills its container, so a press darkens it instead of shrinking it away from the container's edges. */
+.sb-list-row.is-pressed { background: color-mix(in srgb, var(--sb-hover) 70%, var(--sb-border-strong)); }
 .sb-enter { transition: opacity 360ms var(--sb-ease-out), transform 480ms var(--sb-ease-out), filter 360ms var(--sb-ease-out); }
 .sb-enter.is-out { opacity: 0; transform: translateY(6px); filter: blur(2px); }
 @media (prefers-reduced-motion: reduce) { .sb-enter, .sb-btn, .sb-select { transition: none !important; } }
@@ -289,10 +291,10 @@
 .sb { --sb-filter-bg: #EDE9FE; --sb-filter-border: #DDD6FE; --sb-filter-value: #F5F3FF; --sb-filter-value-border: #C4B5FD; }
 .dark .sb { --sb-filter-bg: #2e2a3d; --sb-filter-border: #3d3754; --sb-filter-value: #26233a; --sb-filter-value-border: #5b4f8a; }
 /* AdeOffLoop, on a neutral stage: four marks on a ring with Time to Coverage in the middle; the marks settle in, then the arcs draw. */
-.sb-loop { position: relative; width: 400px; height: 400px; flex-shrink: 0; border-radius: 16px; background: var(--sb-subtle); box-shadow: inset 0 0 0 1px var(--sb-border); }
+.sb-loop { position: relative; width: 400px; height: 400px; flex-shrink: 0; }
 .sb-loop-center { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: grid; justify-items: center; }
 .sb-loop-center b { font-size: 34px; font-weight: 500; line-height: 42px; letter-spacing: -.8px; }
-.sb-loop-tile { position: absolute; display: grid; justify-items: center; align-content: center; gap: 12px; width: 116px; height: 112px; border-radius: 10px; background: var(--sb-card); box-shadow: 0 0 0 1px var(--sb-border), 0 6px 16px -10px rgba(0, 0, 0, .18); animation: sb-tile-in 520ms var(--sb-ease-out) both; }
+.sb-loop-tile { position: absolute; display: grid; justify-items: center; align-content: center; gap: 12px; width: 116px; height: 112px; border-radius: 10px; background: var(--sb-card); box-shadow: 0 0 0 1px var(--sb-border), 0 1px 2px rgba(0, 0, 0, .05), 0 10px 24px -10px rgba(0, 0, 0, .22); animation: sb-tile-in 520ms var(--sb-ease-out) both; }
 .sb-loop-mark { display: grid; place-items: center; height: 50px; }
 .sb-loop-label { font-size: 12px; font-weight: 500; white-space: nowrap; }
 .sb-disc { position: relative; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--sb-secondary); color: var(--sb-strong); }

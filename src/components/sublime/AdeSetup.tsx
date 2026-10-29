@@ -4,7 +4,7 @@ import { Camera, Pointer, SceneFrame, Screens, frame, useNarrowLayout, useScene,
 
 // Meeting ADÉ (patrick/mttc agents-hub, AdeOffPage and AdeOffLoop): from the hub, the ADÉ card opens ADÉ's page before it is on, which
 // tells the loop and its Time to Coverage. The page's Learn more dialog is left out so the scene stays on the page itself. Copy is the
-// source's (AdeOffPage). Liberties taken: the aqua stage behind the loop is redrawn on a neutral surface, and on a phone the loop sits
+// source's (AdeOffPage). Liberties taken: the aqua stage behind the loop is left out, so the tiles sit on the page, and on a phone the loop sits
 // below the copy. The hub's figures are the prototype's sample data.
 const timings = [1500, 700, 700, 300, 3000, 3400];
 const captions = [
@@ -22,12 +22,12 @@ const loopTiles = [
 ] as const;
 
 /** AdeOffLoop: four marks on a ring, clockwise, the last arc dashed as the loop-back; Time to Coverage in the middle. */
-function OffLoop({ narrow }: { narrow: boolean }) {
+function OffLoop() {
   const size = 400, c = size / 2, gap = 31;
   const pt = (deg: number) => [c + ringR * Math.sin(deg * Math.PI / 180), c - ringR * Math.cos(deg * Math.PI / 180)];
   const arc = (from: number, to: number) => { const [x1, y1] = pt(from), [x2, y2] = pt(to); return `M${x1} ${y1} A${ringR} ${ringR} 0 0 1 ${x2} ${y2}`; };
   const head = (to: number) => { const [x, y] = pt(to); const a = Math.atan2(-Math.cos((to + 90) * Math.PI / 180), Math.sin((to + 90) * Math.PI / 180)) + Math.PI; const w = (d: number) => `${x + 7 * Math.cos(a + d)} ${y + 7 * Math.sin(a + d)}`; return `M${w(.55)} L${x} ${y} L${w(-.55)}`; };
-  return <div className="sb-loop" data-frame="off-loop" style={narrow ? { borderRadius: 0, boxShadow: 'none' } : undefined} role="img" aria-label="The loop: a message your rules missed goes to ASA, then ADÉ, then a new rule goes live, and the loop closes so the next similar threat is caught. Time to Coverage is under 2 hours.">
+  return <div className="sb-loop" data-frame="off-loop" role="img" aria-label="The loop: a message your rules missed goes to ASA, then ADÉ, then a new rule goes live, and the loop closes so the next similar threat is caught. Time to Coverage is under 2 hours.">
     <svg width={size} height={size} aria-hidden="true" style={{ position: 'absolute', inset: 0 }}><g fill="none" stroke="var(--sb-weak)" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round">
       {[0, 1, 2, 3].map(i => <g key={i} className="sb-loop-arc" style={{ animationDelay: `${.25 + i * .18}s` }}><path d={arc(i * 90 + gap, i * 90 + 90 - gap)} strokeDasharray={i === 3 ? '4 4' : undefined} /><path d={head(i * 90 + 90 - gap)} /></g>)}
     </g></svg>
@@ -57,7 +57,7 @@ function OffPage({ height }: { height: number }) {
       </div>
       <div style={{ display: 'flex', gap: 8 }}><span className="sb-btn" data-target="setup">Set up ADÉ</span><span className="sb-btn is-ghost">Learn more</span></div>
     </div>
-    <OffLoop narrow={narrow} />
+    <OffLoop />
   </Page>;
 }
 
