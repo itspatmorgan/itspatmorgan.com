@@ -315,6 +315,10 @@
 .sb-sec-h { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 14px; font-weight: 600; line-height: 20px; }
 .sb-sec-h svg { color: var(--sb-weak); }
 
+/* How ADÉ works: its point pills (PillButton), the selected one in ADÉ's mint. */
+.sb-pill-tab { display: inline-flex; align-items: center; height: 26px; padding: 0 12px; border-radius: 999px; font-size: 12px; font-weight: 500; color: var(--sb-weak); box-shadow: inset 0 0 0 1px var(--sb-border); background: var(--sb-card); }
+.sb-pill-tab.is-on { color: var(--sb-strong); box-shadow: inset 0 0 0 1px #34b99b; background: color-mix(in srgb, #34b99b 10%, var(--sb-card)); }
+
 /* The close: the lessons, each beside the product excerpt it came from, then a note on the screens. */
 .sb-lessons { display: grid; gap: 24px; max-width: 1184px; margin: 48px auto 0; padding: 0; list-style: none; text-align: left; }
 .sb-lessons li { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: center; gap: clamp(32px, 5vw, 72px); }
