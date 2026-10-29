@@ -47,7 +47,7 @@ const captions = ['Ready-made dashboards for bot activity', 'Ready-made dashboar
 export default function Dashboards() {
   const scene = useScene(timings, captions, { loop: false });
   const grow = scene.step;
-  return <DemoFrame scene={scene} stage="xp-frame" title="the dashboards" label="Bot dashboards: bot signal trends, bot signals by type, bad bots, bot score trends, bot score, and bot versus non-bot traffic"><div className="cs-demo xp-dashboards">
+  return <DemoFrame scene={scene} caption={false} stage="xp-frame" title="the dashboards" label="Bot dashboards: bot signal trends, bot signals by type, bad bots, bot score trends, bot score, and bot versus non-bot traffic"><div className="cs-demo xp-dashboards">
     <NativeStage width={1240} height={900}>
       <div className="xp-card is-bare">
         {card(col[0], row[0], 463.79, <>

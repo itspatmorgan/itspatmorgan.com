@@ -17,7 +17,7 @@ const captions = ['The query written in J1QL', 'The same query as builder contro
 export default function QueryBuilderDemo() {
   const scene = useScene(timings, captions);
   const view = scene.step;
-  return <DemoFrame scene={scene} title="the query translation" label="The same query as J1QL and as visual controls"><div className="cs-demo qb-query-demo qb-query-toggle" data-view={views[view]}>
+  return <DemoFrame scene={scene} caption={false} title="the query translation" label="The same query as J1QL and as visual controls"><div className="cs-demo qb-query-demo qb-query-toggle" data-view={views[view]}>
     <div className="qb-view-toggle" role="group" aria-label="Query view">
       {views.map((label, i) => <button type="button" key={label} aria-pressed={view === i} onClick={() => scene.choose(i)}>{label}</button>)}
     </div>

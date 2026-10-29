@@ -16,7 +16,7 @@ const captions = frames.map((f, i) => (i === 0 ? 'An empty box, with no hint of 
 export default function QuerySearchBlank() {
   const scene = useScene(durations, captions);
   const text = frames[scene.step].text;
-  return <DemoFrame scene={scene} title="the search box" label="The original free-form search box"><div className="cs-demo qb-search-blank">
+  return <DemoFrame scene={scene} caption={false} title="the search box" label="The original free-form search box"><div className="cs-demo qb-search-blank">
     <div className="qb-film-stage"><NativeStage width={720} height={200}>
       <div className="q-blank-search">
         <div className="q-blank-field">

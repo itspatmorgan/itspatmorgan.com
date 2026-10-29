@@ -11,7 +11,7 @@ const captions = ['A Bot Kit from Signals, rules and dashboards', 'A Bot Kit fro
 export default function Kits() {
   const scene = useScene(timings, captions, { loop: false });
   const built = scene.step;
-  return <DemoFrame scene={scene} stage="xp-frame" title="the kits" label="Bot, API Security, and OWASP Attack kits, each made of Signals, Rules and Alerts, and Dashboards"><div className="cs-demo xp-kits">
+  return <DemoFrame scene={scene} caption={false} stage="xp-frame" title="the kits" label="Bot, API Security, and OWASP Attack kits, each made of Signals, Rules and Alerts, and Dashboards"><div className="cs-demo xp-kits">
     <NativeStage width={960} height={697}>
       <div className="xp-kits">{kits.map((kit, k) => <div key={kit} className={`xp-fade ${k < built ? '' : 'xp-dim'}`}>
         <span className="xp-kitname">{kit}</span>

@@ -103,37 +103,47 @@ export function SceneFrame({ scene, stage, label, title, size = 'wide', controls
 /** A scene on the plain stage: the product frame sits on the texture with the stage's own padding, and the tour runs under it. For
  *  demos laid out by their own component (Query Builder, Expansion) rather than in the Sublime card. Each take remounts the content, so a
  *  replay starts from its first frame instead of animating backward. */
-export function DemoFrame({ scene, label, title, stage = '', children }: { scene: Scene; label: string; title: string; stage?: string; children: ReactNode }) {
+export function DemoFrame({ scene, label, title, stage = '', caption = true, children }: { scene: Scene; label: string; title: string; stage?: string; caption?: boolean; children: ReactNode }) {
   return <figure className={`cs-scene ${scene.fade ? 'cs-loop-reset' : ''}`} ref={scene.ref as RefObject<HTMLElement>} aria-label={label}>
     <div className={`cs-stage texture-bg ${stage}`} key={scene.take}>{children}</div>
-    <SceneTour scene={scene} title={title} />
+    <SceneTour scene={scene} title={title} caption={caption} />
   </figure>;
 }
 
 /** Under the stage: what the current chapter shows, and a segment per chapter that fills as it plays. Segments jump to their chapter;
  *  the button pauses or plays, and replays a finished scene that doesn't cycle. */
-export function SceneTour({ scene, title }: { scene: Scene; title: string }) {
+export function SceneTour({ scene, title, caption = true }: { scene: Scene; title: string; caption?: boolean }) {
   const finished = scene.done && !scene.reduced && !scene.cycle;
   const label = finished ? `Replay ${title}` : `${scene.playing ? 'Pause' : 'Play'} ${title}`;
   const running = scene.playing && scene.visible && !scene.reduced;
+  // Without a visible caption (a demo the picture already explains), the controls sit alone at the right and the caption stays for screen readers.
+  if (!caption) return <div className="cs-tour is-quiet">
+    <figcaption className="sr-only">{scene.beats[scene.beat]?.caption}</figcaption>
+    <TourControls scene={scene} label={label} finished={finished} running={running} />
+  </div>;
   return <div className="cs-tour">
     <figcaption className="cs-tour-caption" aria-live={scene.playing && !scene.done ? 'off' : 'polite'}>
       <AnimatePresence mode="popLayout" initial={false}>
         <motion.span key={scene.beat} initial={{ opacity: 0, y: 4, filter: 'blur(2px)' }} animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }} exit={{ opacity: 0, y: -4, filter: 'blur(2px)' }} transition={{ duration: .26, ease: [.23, 1, .32, 1] }}>{scene.beats[scene.beat]?.caption}</motion.span>
       </AnimatePresence>
     </figcaption>
-    <div className="cs-tour-controls">
-      {scene.beats.length > 1 && <ol className="cs-beats">
-        {scene.beats.map((b, i) => <li key={i}>
-          <button type="button" className={i < scene.beat ? 'is-done' : i === scene.beat ? 'is-current' : ''} aria-current={i === scene.beat ? 'step' : undefined} aria-label={`Step ${i + 1} of ${scene.beats.length}: ${b.caption}`} onClick={() => scene.jumpTo(i)}>
-            <i key={i === scene.beat ? `${scene.cut}-${scene.take}` : 'idle'} style={i === scene.beat ? { animationDuration: `${b.duration}ms`, animationPlayState: running ? 'running' : 'paused' } : undefined} />
-          </button>
-        </li>)}
-      </ol>}
-      {!scene.reduced && <button type="button" className="cs-tour-play" aria-label={label} title={label} onClick={finished ? scene.replay : scene.toggle}>
-        <HugeiconsIcon icon={finished ? ArrowReloadHorizontalIcon : scene.playing ? PauseIcon : PlayIcon} size={14} strokeWidth={1.8} />
-      </button>}
-    </div>
+    <TourControls scene={scene} label={label} finished={finished} running={running} />
+  </div>;
+}
+
+/** The step segments (when there is more than one step) and the play, pause or replay button. */
+function TourControls({ scene, label, finished, running }: { scene: Scene; label: string; finished: boolean; running: boolean }) {
+  return <div className="cs-tour-controls">
+    {scene.beats.length > 1 && <ol className="cs-beats">
+      {scene.beats.map((b, i) => <li key={i}>
+        <button type="button" className={i < scene.beat ? 'is-done' : i === scene.beat ? 'is-current' : ''} aria-current={i === scene.beat ? 'step' : undefined} aria-label={`Step ${i + 1} of ${scene.beats.length}: ${b.caption}`} onClick={() => scene.jumpTo(i)}>
+          <i key={i === scene.beat ? `${scene.cut}-${scene.take}` : 'idle'} style={i === scene.beat ? { animationDuration: `${b.duration}ms`, animationPlayState: running ? 'running' : 'paused' } : undefined} />
+        </button>
+      </li>)}
+    </ol>}
+    {!scene.reduced && <button type="button" className="cs-tour-play" aria-label={label} title={label} onClick={finished ? scene.replay : scene.toggle}>
+      <HugeiconsIcon icon={finished ? ArrowReloadHorizontalIcon : scene.playing ? PauseIcon : PlayIcon} size={14} strokeWidth={1.8} />
+    </button>}
   </div>;
 }
 

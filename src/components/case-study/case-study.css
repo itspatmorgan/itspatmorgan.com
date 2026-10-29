@@ -72,6 +72,7 @@
 .cs-stage:not(.is-wide) + .cs-tour { max-width: 960px; }
 .cs-tour-caption { position: relative; flex: 1; min-width: 0; min-height: 24px; font-size: 15px; line-height: 24px; letter-spacing: -.01em; color: var(--foreground); }
 .cs-tour-caption > span { display: block; text-wrap: pretty; }
+.cs-tour.is-quiet { justify-content: flex-end; }
 .cs-tour-controls { display: flex; align-items: center; gap: 14px; flex-shrink: 0; height: 24px; }
 .cs-beats { display: flex; gap: 4px; margin: 0; padding: 0; list-style: none; }
 .cs-beats button { display: block; padding: 11px 0; background: none; border: 0; cursor: pointer; }

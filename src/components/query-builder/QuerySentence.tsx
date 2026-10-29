@@ -19,7 +19,7 @@ export default function QuerySentence() {
   const scene = useScene(timings, captions);
   const active = scene.step >= 1 && scene.step <= parts.length ? scene.step - 1 : -1;
   const labelled = scene.step === 0 ? 0 : Math.min(scene.step, parts.length);
-  return <DemoFrame scene={scene} title="the query's parts" label="A J1QL query split into three parts: what to find, which ones, and how it connects"><div className="cs-demo qb-sentence">
+  return <DemoFrame scene={scene} caption={false} title="the query's parts" label="A J1QL query split into three parts: what to find, which ones, and how it connects"><div className="cs-demo qb-sentence">
     <div className="qb-film-stage"><NativeStage width={1160} height={300}>
       <div className="q-sentence">
         {parts.map((part, i) => <div key={part.label} className={`q-part ${i === active ? 'is-active' : ''} ${i < labelled ? 'is-labelled' : ''}`}>

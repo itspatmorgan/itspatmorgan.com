@@ -220,8 +220,14 @@ still don't land after a round or two, cut it; the story can take it back later.
   that step when clicked, and a Pause/Play button (Replay on a demo that holds
   its end). Steps that share a caption form one segment. Write captions as
   plain statements, one line at desktop width, no trailing period. This is the
-  only playback pattern, on every case study, hero included. Even a one-step
-  demo gets its caption and Replay.
+  only playback pattern, on every case study, hero included.
+- Show a caption only when it names something the picture and the slide's
+  copy don't already say (a step in a product flow, the intent behind a
+  screen). When the demo explains itself (a two-step loop, a diagram with its
+  own titles, a chart drawing in), pass `caption={false}`: the segments and
+  button sit alone at the right, and the captions still name each segment for
+  screen readers. Of the first 20 demos, 11 kept captions: the Sublime flows,
+  the three Query Builder flows, the rule editor and the signal chain.
 - Tune timing until there are no dead pauses.
 - Each step changes one thing. When several things change at once, the
   in-between frames look broken even if the end state is right.

@@ -32,7 +32,7 @@ export default function QueryNaturalLanguage() {
   const scene = useScene(durations, captions);
   const { typed, shown, active } = frames[scene.step];
   const complete = typed === question.length;
-  return <DemoFrame scene={scene} title="the translation" label="A plain-language question translated into J1QL"><div className="cs-demo qb-nl">
+  return <DemoFrame scene={scene} caption={false} title="the translation" label="A plain-language question translated into J1QL"><div className="cs-demo qb-nl">
     <div className="qb-film-stage"><NativeStage width={960} height={400}>
       <div className="q-nl-canvas">
         <div className="q-blank-field q-nl-field">
