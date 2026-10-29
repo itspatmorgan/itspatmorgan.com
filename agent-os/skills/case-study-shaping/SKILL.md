@@ -1,6 +1,6 @@
 ---
 name: case-study-shaping
-description: Use when shaping, restructuring, or redesigning a Work case study on this site into the slide-like format proven by the Query Builder and Expansion case studies. Covers fact-finding (including pulling exact values from Figma), the story outline, copy rules, native demos, motion, layout rhythm, review, launch, and cleanup.
+description: Use when shaping, restructuring, or redesigning a Work case study on this site into the slide-like format proven by the Query Builder and Expansion case studies. Covers fact-finding (including pulling exact values from Figma or prototype code), the story outline, copy rules, native demos, motion, layout rhythm, review, launch, and cleanup.
 ---
 
 # Case Study Shaping
@@ -37,6 +37,10 @@ Reuse these patterns before inventing new ones.
 - Build on a preview route that is not linked or indexed. Swap it onto the live
   slug only when Patrick says to.
 - Present one coherent pass at a time, not a menu of options.
+- Show only what the product really does. A scene may compress time or skip
+  steps, but never invent behavior, dialogs, or states the product lacks.
+- Name every liberty taken with a source screen in a code comment beside it,
+  and flag illustrative values (sample counts, durations) to Patrick.
 
 ## Inputs
 
@@ -64,9 +68,21 @@ ask, in one batch, only what those sources don't answer:
 Write down anything unverified as an open question. Never smooth it over in the
 copy. If there is no hard outcome, say so plainly rather than implying one.
 
-### 2. Get exact values from Figma
+### 2. Get exact values from the source
 
 When source screens exist, rebuild them from the source's values, not by eye.
+
+When the source is prototype code (the Sublime agents case study came from the
+Design Studio archive):
+
+- Inventory the real screens and their states first, and map each slide to one
+  before building anything.
+- Copy tokens, spacing, and icon paths from the source components. Never redraw
+  an icon by hand; a hand-drawn mark reads as broken.
+- Keep components where they sit in the real layout and keep the real order of
+  content. A change that improves the design is welcome when it is named.
+
+When the source is Figma:
 
 - Prefer the Figma connector (`get_design_context`). If it is unavailable or
   rate-limited, use the signed-in browser: right-click the frame's layer, choose
@@ -92,6 +108,13 @@ worked twice:
 4. **Two or three moves**, each with its own visual.
 5. **Ending**: what Patrick learned, plus what actually happened. If there is no
    measured outcome, pair the transferable lesson with the honest ending.
+   Lessons are ideas, not screens: no product UI there, only quiet drawings on
+   the same backdrop.
+
+Put the bet directly after the problem, so the reader meets the why before the
+how. Make each idea once: a point a demo makes doesn't need a principle that
+repeats it. To show a metric, start from the surface the product built for it
+(a dashboard tile, a report) rather than staging a run that produces it.
 
 Cut any slide that only repeats the one before it. Merge an outcome slide and a
 lessons slide when they make the same point.
@@ -103,7 +126,8 @@ lessons slide when they make the same point.
   move ("for a new use case"), not the first use case ("bot defense").
 - Each headline says why its step mattered. No sequence words ("First,",
   "Then,", "And"), no eyebrows, no step numbers.
-- At most one supporting line per slide, aiming for one line at desktop width.
+- One supporting line per slide, one line at desktop width. Treat it as a hard
+  limit: a slide that needs more is two slides, or belongs in an interview.
   Never text beside a headline.
 - Keep brief values tight. Outcome can be qualitative ("A repeatable kit
   pattern") when there is no metric.
@@ -145,6 +169,20 @@ lessons slide when they make the same point.
   whole frames.
 - Show playback controls only on looping demos, pinned to the stage corner.
 - Tune timing until there are no dead pauses.
+- Each step changes one thing. When several things change at once, the
+  in-between frames look broken even if the end state is right.
+
+Camera and pointer scenes (zooms, pans, a cursor that clicks):
+
+- A zoom frames one whole component with padding, and its crop lands at a
+  layout gutter, never mid-word or past the page edge. Skip a zoom that only
+  trims edges.
+- Camera moves and pointer moves get separate steps. The pointer appears only
+  after the camera lands.
+- A new page arrives at full frame, never zoomed. Overlays that would run off
+  the frame flip, as the product does.
+- Direct attention with the camera, never with highlight rings or outlines that
+  could pass for UI.
 
 ### 7. Lay out the page
 
@@ -162,10 +200,26 @@ Use the shared rhythm in `case-study/case-study.css`:
 
 ### 8. Review holistically
 
+Do this before Patrick's first round of comments, and again before launch.
+Slide-by-slide comment rounds fix screens but let the arc drift.
+
 Review in the browser in light and dark across narrative, layout, spacing, and
 typography. Measure, don't eyeball: line counts per headline and description,
 stage widths and heights, ring and radius on screen. Present ranked findings
 (must fix, should fix, worth considering) before changing anything.
+
+### Previewing for Patrick
+
+The repo has no deploy previews, so Patrick reviews a published preview:
+
+- Build, then publish the preview route's page and only the files it reaches
+  as a private artifact. Rewrite absolute paths to relative ones (including
+  JS template strings) and rename `_astro/` to `assets/`.
+- The artifact viewer blocks browser storage. Test the page with
+  `localStorage` throwing: the theme must still follow the system and the
+  toggle must still switch it.
+- Work through his comments one thread at a time. Reply with what changed, then
+  resolve the thread. Republish to the same artifact so the link stays the same.
 
 ### 9. Launch
 
@@ -190,6 +244,9 @@ On Patrick's go-ahead:
 - Don't ship to the live site, merge, or publish without explicit approval.
 - Keep pages free of text-heavy sections. If something needs a paragraph, it
   probably belongs in an interview, not on the page.
+- No per-page note that the screens are recreated in code. The site says once,
+  on the landing page, that this is shipped work rebuilt from Patrick's own
+  prototypes.
 
 ## Gotchas
 
@@ -206,4 +263,8 @@ On Patrick's go-ahead:
 - In the browser at 390px, about 1140px, and 1600px, in light and dark: no
   horizontal overflow, no console errors, and every description on one line at
   desktop width.
+- Every animated scene checked frame by frame (contact sheets about 250ms
+  apart) at desktop and phone widths before each publish, not only its end
+  state.
+- The theme works with browser storage blocked.
 - Every claim on the page maps to an answer from fact-finding or a source.
