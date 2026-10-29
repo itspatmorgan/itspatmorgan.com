@@ -429,7 +429,9 @@ const elsewhere = [
       rollupBtn?.setAttribute("aria-expanded", String(open));
     }
 
-    const savedPreference = localStorage.getItem("sidebar-collapsed");
+    // Storage can be unavailable (an embedded preview); without it the sidebar starts collapsed and the toggle still works.
+    let savedPreference: string | null = null;
+    try { savedPreference = localStorage.getItem("sidebar-collapsed"); } catch { /* unavailable */ }
     const collapsed = savedPreference === null ? true : savedPreference === "true";
     sidebar.style.transition = "none";
     applyCollapsed(sidebar, collapsed);
@@ -443,7 +445,7 @@ const elsewhere = [
       const isNowCollapsed = !sidebar.classList.contains("is-collapsed");
       setRollupOpen(false);
       applyCollapsed(sidebar, isNowCollapsed);
-      localStorage.setItem("sidebar-collapsed", String(isNowCollapsed));
+      try { localStorage.setItem("sidebar-collapsed", String(isNowCollapsed)); } catch { /* unavailable */ }
       btn.dataset.sidebarTooltip = isNowCollapsed ? "Expand navigation" : "Collapse navigation";
     });
 

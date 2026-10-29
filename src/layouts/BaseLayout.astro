@@ -64,7 +64,9 @@ const ogImage = new URL(image ?? "/images/brand/profile-picture.jpg", siteConfig
 
     {/* Prevent flash of wrong theme */}
     <script is:inline>
-      const theme = localStorage.getItem("theme");
+      // Storage can be unavailable (an embedded preview); a read that throws must not stop the theme from following the system.
+      const stored = (key) => { try { return localStorage.getItem(key); } catch { return null; } };
+      const theme = stored("theme");
       if (
         theme === "dark" ||
         (!theme &&
@@ -73,7 +75,7 @@ const ogImage = new URL(image ?? "/images/brand/profile-picture.jpg", siteConfig
         document.documentElement.classList.add("dark");
       }
 
-      const sidebarPreference = localStorage.getItem("sidebar-collapsed");
+      const sidebarPreference = stored("sidebar-collapsed");
       if (sidebarPreference === null || sidebarPreference === "true") {
         document.documentElement.classList.add("sidebar-collapsed");
       }
