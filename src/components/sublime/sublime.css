@@ -171,7 +171,7 @@
 .sb-disclose { display: grid; place-items: center; width: 24px; height: 24px; flex-shrink: 0; border-radius: 50%; border: 1px solid var(--sb-border); color: var(--sb-weak); }
 .sb-disclose svg { transition: transform 300ms var(--sb-ease-out); }
 .sb-disclose.is-open svg { transform: rotate(-90deg) !important; }
-.sb-hunt-box { border-radius: 4px; box-shadow: inset 0 0 0 1px var(--sb-border-strong); background: var(--sb-card); overflow: hidden; transition: box-shadow 300ms ease; }
+.sb-hunt-box { border: 1px solid var(--sb-border-strong); border-radius: 4px; background: var(--sb-card); overflow: hidden; }
 .sb-hunt-table { border-top: 1px solid var(--sb-border); }
 .sb-hunt-table .sb-row { min-height: 44px; padding: 0 16px; font-size: 13px; }
 .sb-accepted { border: 1px solid color-mix(in srgb, var(--sb-success) 45%, var(--sb-border)); border-radius: 4px; overflow: hidden; }
