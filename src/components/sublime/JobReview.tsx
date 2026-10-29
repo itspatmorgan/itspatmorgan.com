@@ -1,5 +1,5 @@
 import { Accepted, HuntEntry, JobHeading, Page, Recommendation, TimelineItem, Triggered, Worked, job } from './SublimeUI';
-import { Camera, Pointer, SceneFrame, frame, useNarrowLayout, useScene, useShot, useStage, useTargets } from './scene';
+import { Camera, Pointer, SceneFrame, frame, useNarrowLayout, useScene, useShot, useStage, useTargets } from '../case-study/scene';
 
 // The ADÉ job page (patrick/ade-workflow ade/ade-job-completed-review, AdeJobTimeline and JobCompletedCard): ADÉ's recommended rule
 // waits for review, and accepting it runs through the product's Accept Recommendation modal. Copy is the source's; dates are its sample data.

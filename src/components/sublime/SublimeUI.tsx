@@ -1,14 +1,9 @@
-import type { CSSProperties, ReactNode, RefObject } from 'react';
-import { CountUp, Expand, useNarrowLayout } from './scene';
+import type { CSSProperties, ReactNode } from 'react';
+import { CountUp, Expand, useNarrowLayout } from '../case-study/scene';
 
-// Primitives for the Sublime screens. Sizes are the source's Tailwind values in CSS pixels; `Zoom` scales a source-sized layout to fill the frame card.
+// Primitives for the Sublime screens. Sizes are the source's Tailwind values in CSS pixels.
 
 export const ART = { asa: '/images/work/sublime/asa_cube.png', ade: '/images/work/sublime/ade_triangle.png' };
-
-/** Lays out children at `width` source pixels and scales them to fill `to` frame pixels. */
-export function Zoom({ width, to = 1020, children, style, zoomRef }: { width: number; to?: number; children: ReactNode; style?: CSSProperties; zoomRef?: RefObject<HTMLDivElement | null> }) {
-  return <div className="sb-zoom" ref={zoomRef} style={{ width, transform: `scale(${to / width})`, ...style }}>{children}</div>;
-}
 
 type Verdict = 'malicious' | 'spam' | 'graymail' | 'benign';
 const verdictGlyph: Record<Verdict, ReactNode> = {

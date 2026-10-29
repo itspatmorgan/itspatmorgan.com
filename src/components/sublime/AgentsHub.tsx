@@ -1,5 +1,5 @@
 import { ART } from './SublimeUI';
-import { useNarrowLayout } from './scene';
+import { useNarrowLayout } from '../case-study/scene';
 
 // The Agents hub (patrick/mttc agents-hub.jsx, AgentCard): "Your Agentic Teammates" with the two fluid agent cards, 529px tall, splitting
 // the row evenly as in the MTTC hub. Art offsets are the source's, measured from a card's right edge and moved left by each card's `nudge`.

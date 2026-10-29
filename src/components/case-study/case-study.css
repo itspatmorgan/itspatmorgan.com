@@ -53,6 +53,45 @@
 /* One window size across slides, so the sequence reads like a deck. */
 .qb-stage .qb-demo { max-width: 880px; margin-inline: auto; }
 
+/* Scenes (scene.tsx): the screen carries its own margins, so the stage drops its padding and the card bleeds off the bottom.
+   Wide stages run past the 960px text measure to the page's full width, so a product screen renders at about its true size. */
+.qb-case .cs-frame { padding: 0; overflow: hidden; }
+.qb-case .cs-frame.is-wide { max-width: 1184px; }
+.cs-scene { margin: 48px 0 0; }
+/* The shell holds the card and its ring, and fades both out toward the stage's bottom edge, so a crop reads as a bleed. */
+.cs-shell { position: absolute; bottom: 0; -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 120px), transparent 100%); mask-image: linear-gradient(to bottom, #000 calc(100% - 120px), transparent 100%); }
+@media (max-width: 640px) { .cs-frame:not(.is-ready) .cs-shell { visibility: hidden; } }
+.cs-shell.is-contained { -webkit-mask-image: none; mask-image: none; }
+.cs-shell.is-contained .cs-card { border-radius: 24px; }
+.cs-card { position: relative; height: 100%; overflow: hidden; background: var(--cs-card); border-radius: 24px 24px 0 0; box-shadow: 0 0 0 16px var(--cs-ring), var(--cs-drop); }
+@media (max-width: 640px) { .cs-card { border-radius: 18px 18px 0 0; box-shadow: 0 0 0 10px var(--cs-ring), var(--cs-drop); } .cs-shell { -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 90px), transparent 100%); mask-image: linear-gradient(to bottom, #000 calc(100% - 90px), transparent 100%); } }
+
+/* Under each stage: the chapter's caption on the left, a segment per chapter and the play button on the right. */
+.cs-tour { display: flex; align-items: flex-start; justify-content: space-between; gap: 32px; max-width: 1184px; margin: 18px auto 0; padding: 0 4px; text-align: left; }
+.qb-case .cs-frame:not(.is-wide) + .cs-tour { max-width: 960px; }
+.cs-tour-caption { position: relative; flex: 1; min-width: 0; min-height: 24px; font-size: 15px; line-height: 24px; letter-spacing: -.01em; color: var(--foreground); }
+.cs-tour-caption > span { display: block; text-wrap: pretty; }
+.cs-tour-controls { display: flex; align-items: center; gap: 14px; flex-shrink: 0; height: 24px; }
+.cs-beats { display: flex; gap: 4px; margin: 0; padding: 0; list-style: none; }
+.cs-beats button { display: block; padding: 11px 0; background: none; border: 0; cursor: pointer; }
+.cs-beats button > i { position: relative; display: block; width: 28px; height: 2px; border-radius: 1px; background: var(--border); overflow: hidden; transition: background 150ms ease; }
+.cs-beats button > i::after { content: ''; position: absolute; inset: 0; background: var(--foreground); transform: scaleX(0); transform-origin: left; }
+.cs-beats button:hover > i { background: color-mix(in srgb, var(--foreground) 28%, transparent); }
+.cs-beats button.is-done > i::after { transform: scaleX(1); }
+.cs-beats button.is-current > i::after { animation: cs-fill linear forwards; animation-duration: inherit; animation-play-state: inherit; }
+.cs-beats button:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; border-radius: 2px; }
+@keyframes cs-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.cs-tour-play { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--border); background: var(--background); color: var(--foreground); cursor: pointer; transition: transform 150ms cubic-bezier(.23, 1, .32, 1), background 150ms ease; }
+.cs-tour-play:hover { background: var(--muted, #f2f2f1); }
+.cs-tour-play:active { transform: scale(.94); }
+.cs-tour-play:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+@media (max-width: 640px) { .cs-tour { flex-direction: column-reverse; gap: 6px; margin-top: 12px; } .cs-tour-caption { font-size: 14px; line-height: 21px; } .cs-tour-controls { width: 100%; justify-content: space-between; } }
+@media (prefers-reduced-motion: reduce) { .cs-beats button.is-current > i::after { animation: none; transform: scaleX(1); } }
+/* Content is laid out in source pixels and zoomed to fill the card, so type keeps the product's proportions at a readable size. */
+.cs-zoom { position: absolute; top: 0; left: 0; transform-origin: top left; }
+.cs-camera { position: relative; transform-origin: 0 0; }
+.cs-pointer { position: absolute; z-index: 50; }
+
 /* Outcome: every day counted. */
 .qb-days { display: grid; gap: 16px; max-width: 960px; margin: 0 auto; text-align: left; }
 .qb-days-row { display: grid; grid-template-columns: 64px minmax(0, 1fr) 80px; gap: 20px; align-items: center; }

@@ -2,11 +2,10 @@ import { createContext, useContext, useEffect, useLayoutEffect, useRef, useState
 import { AnimatePresence, animate, motion, useMotionValue, useTransform, type MotionValue } from 'motion/react';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { ArrowReloadHorizontalIcon, Cursor01Icon, PauseIcon, PlayIcon } from '@hugeicons/core-free-icons';
-import { useDemoLoop } from '../case-study/useDemoLoop';
-import { NativeStage } from '../case-study/NativeStage';
-import { Zoom } from './SublimeUI';
+import { useDemoLoop } from './useDemoLoop';
+import { NativeStage } from './NativeStage';
 
-// Scene plumbing for the Sublime screens. A scene starts when it scrolls into view. By default it cycles: the last step holds for its
+// Scene plumbing for case-study demos, first built for the Sublime screens. A scene starts when it scrolls into view. By default it cycles: the last step holds for its
 // time, then the frame fades out and the scene starts again from its first frame, since a flow's last screen rarely tells the whole
 // story. A scene whose end state is the point (`loop: false`) plays once and holds it, with Replay. Reduced motion lands on the last frame.
 
@@ -62,6 +61,11 @@ const NarrowLayout = createContext(false);
 /** Inside a stage: true when the product is laid out for a phone. */
 export const useNarrowLayout = () => useContext(NarrowLayout);
 
+/** Lays out children at `width` source pixels and scales them to fill `to` frame pixels. */
+export function Zoom({ width, to = 1020, children, style, zoomRef }: { width: number; to?: number; children: ReactNode; style?: CSSProperties; zoomRef?: RefObject<HTMLDivElement | null> }) {
+  return <div className="cs-zoom" ref={zoomRef} style={{ width, transform: `scale(${to / width})`, ...style }}>{children}</div>;
+}
+
 /** Stage geometry, in stage pixels. Wide: a 1240 px stage with the card inset 64 px, so a 1000 px screen renders at about its true size
  *  on a laptop. Narrow: a 600 px stage with the card inset 20 px, holding a 400 px product layout. The card bleeds off the stage's
  *  bottom edge, as a page that goes on; a `contained` screen that ends sits whole inside the stage instead (wide only). */
@@ -80,12 +84,12 @@ export function SceneFrame({ scene, stage, label, title, size = 'wide', controls
   // The server renders the wide layout; on a phone the stage stays hidden until it has laid itself out for the phone.
   const [ready, setReady] = useState(false);
   useEffect(() => setReady(true), []);
-  return <figure className={`sb-scene ${scene.fade ? 'qb-loop-reset' : ''}`} ref={scene.ref as RefObject<HTMLElement>} aria-label={label}>
-    <div className={`qb-stage texture-bg sb-frame is-${size} ${ready ? 'is-ready' : ''}`}>
+  return <figure className={`cs-scene ${scene.fade ? 'qb-loop-reset' : ''}`} ref={scene.ref as RefObject<HTMLElement>} aria-label={label}>
+    <div className={`qb-stage texture-bg cs-frame is-${size} ${ready ? 'is-ready' : ''}`}>
       <NarrowLayout.Provider value={stage.narrow}>
         <NativeStage width={g.width} height={g.height}>
-          <div className={`sb-shell ${g.bottom ? 'is-contained' : ''}`} style={{ left: g.inset - g.ring, top: g.top - g.ring, bottom: g.bottom ? g.bottom - g.ring : 0, width: card + g.ring * 2, padding: g.bottom ? g.ring : `${g.ring}px ${g.ring}px 0` }}>
-            <div className="sb-card">
+          <div className={`cs-shell ${g.bottom ? 'is-contained' : ''}`} style={{ left: g.inset - g.ring, top: g.top - g.ring, bottom: g.bottom ? g.bottom - g.ring : 0, width: card + g.ring * 2, padding: g.bottom ? g.ring : `${g.ring}px ${g.ring}px 0` }}>
+            <div className="cs-card">
               <Zoom key={`${scene.take}-${stage.narrow}`} width={stage.W} to={card}>{children}</Zoom>
             </div>
           </div>
@@ -102,21 +106,21 @@ function SceneTour({ scene, title }: { scene: Scene; title: string }) {
   const finished = scene.done && !scene.reduced && !scene.cycle;
   const label = finished ? `Replay ${title}` : `${scene.playing ? 'Pause' : 'Play'} ${title}`;
   const running = scene.playing && scene.visible && !scene.reduced;
-  return <div className="sb-tour">
-    <figcaption className="sb-tour-caption" aria-live={scene.playing && !scene.done ? 'off' : 'polite'}>
+  return <div className="cs-tour">
+    <figcaption className="cs-tour-caption" aria-live={scene.playing && !scene.done ? 'off' : 'polite'}>
       <AnimatePresence mode="popLayout" initial={false}>
         <motion.span key={scene.beat} initial={{ opacity: 0, y: 4, filter: 'blur(2px)' }} animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }} exit={{ opacity: 0, y: -4, filter: 'blur(2px)' }} transition={{ duration: .26, ease: [.23, 1, .32, 1] }}>{scene.beats[scene.beat]?.caption}</motion.span>
       </AnimatePresence>
     </figcaption>
-    <div className="sb-tour-controls">
-      {scene.beats.length > 1 && <ol className="sb-beats">
+    <div className="cs-tour-controls">
+      {scene.beats.length > 1 && <ol className="cs-beats">
         {scene.beats.map((b, i) => <li key={i}>
           <button type="button" className={i < scene.beat ? 'is-done' : i === scene.beat ? 'is-current' : ''} aria-current={i === scene.beat ? 'step' : undefined} aria-label={`Step ${i + 1} of ${scene.beats.length}: ${b.caption}`} onClick={() => scene.jumpTo(i)}>
             <i key={i === scene.beat ? `${scene.cut}-${scene.take}` : 'idle'} style={i === scene.beat ? { animationDuration: `${b.duration}ms`, animationPlayState: running ? 'running' : 'paused' } : undefined} />
           </button>
         </li>)}
       </ol>}
-      {!scene.reduced && <button type="button" className="sb-tour-play" aria-label={label} title={label} onClick={finished ? scene.replay : scene.toggle}>
+      {!scene.reduced && <button type="button" className="cs-tour-play" aria-label={label} title={label} onClick={finished ? scene.replay : scene.toggle}>
         <HugeiconsIcon icon={finished ? ArrowReloadHorizontalIcon : scene.playing ? PauseIcon : PlayIcon} size={14} strokeWidth={1.8} />
       </button>}
     </div>
@@ -156,7 +160,7 @@ export function Camera({ view, width, height, children, cameraRef, style, reduce
     return () => controls.stop();
   }, [view.x, view.y, view.s, width, height, reduced]);
   return <CameraScale.Provider value={s}>
-    <motion.div ref={cameraRef} className="sb-camera" style={{ transform, ...style }}>{children}</motion.div>
+    <motion.div ref={cameraRef} className="cs-camera" style={{ transform, ...style }}>{children}</motion.div>
   </CameraScale.Provider>;
 }
 
@@ -244,7 +248,7 @@ export function Pointer({ at, visible, pressing = false, reduced = false }: { at
     const ax = animate(x, at!.x, glide), ay = animate(y, at!.y, glide);
     return () => { ax.stop(); ay.stop(); };
   }, [show, at?.x, at?.y]);
-  return <motion.div className="q-cursor sb-pointer" aria-hidden="true" style={{ left: 0, top: 0, x, y, opacity }}>
+  return <motion.div className="q-cursor cs-pointer" aria-hidden="true" style={{ left: 0, top: 0, x, y, opacity }}>
     <motion.div style={{ scale: counter, transformOrigin: '4px 3px' }}>
       <motion.div initial={false} animate={{ scale: pressing ? .86 : 1 }} transition={{ type: 'spring', bounce: 0, duration: .22 }} style={{ transformOrigin: '4px 3px' }}>
         <HugeiconsIcon icon={Cursor01Icon} size={23} strokeWidth={1.7} />
@@ -296,7 +300,7 @@ export function Screens({ id, children }: { id: string; children: ReactNode }) {
   // popLayout lifts the outgoing screen out of the flow, so the two crossfade over each other and the card is never empty.
   return <AnimatePresence mode="popLayout" initial={false}>
     <motion.div key={id} initial={{ opacity: 0, y: 8, filter: 'blur(3px)' }} animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }} exit={{ opacity: 0, filter: 'blur(2px)', transition: { duration: .3, ease: [.65, 0, .35, 1] } }}
-      transition={{ duration: .45, ease: [.23, 1, .32, 1] }} style={{ background: 'var(--sb-card)' }}>{children}</motion.div>
+      transition={{ duration: .45, ease: [.23, 1, .32, 1] }} style={{ background: 'var(--cs-card)' }}>{children}</motion.div>
   </AnimatePresence>;
 }
 

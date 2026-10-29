@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { Icon, Page, Switch, VerdictIcon } from './SublimeUI';
-import { Camera, Pointer, SceneFrame, frame, useScene, useShot, useStage, useTargets } from './scene';
+import { Camera, Pointer, SceneFrame, frame, useScene, useShot, useStage, useTargets } from '../case-study/scene';
 
 // ADÉ Automation (patrick/ade-workflow ade/ade-automation-config): per verdict, whether ADÉ starts a job on its own, who hears about it,
 // and the rule auto-acceptance threshold. The scene walks the on-ramp in the order the case study tells it: everything starts off, the
