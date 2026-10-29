@@ -1,71 +1,67 @@
 import type { ReactNode } from 'react';
-import { Icon, StatusPill, Switch, VerdictIcon, verdictName, type Status } from './SublimeUI';
+import { ART } from './SublimeUI';
 
-// The closing lessons, each beside the piece of the product it came from. Static excerpts of screens shown earlier, at their own size:
-// the ADÉ Automation rows (with the sample settings the automation slide ends on; on a phone the thresholds read as their short values), jobs ADÉ started from its page's list, and the head of a
-// recommendation with its hunt result. Liberty taken: each is cropped out of its page and set on its own.
+// The closing principles, each beside a small drawing on the case study's textured backdrop. These are ideas rather than screens, so the
+// drawings are quiet diagrams in the page's neutrals, not product UI: the autonomy levels' rising bars (from the product's How ADÉ works
+// graphic), the two agents' own marks with the hand-off between them, and the three things a reviewer sees before deciding.
 
-function Excerpt({ children }: { children: ReactNode }) {
-  return <div className="sb-lesson-stage texture-bg"><div className="sb-card qb-native sb-lesson-card">{children}</div></div>;
+function Stage({ label, children }: { label: string; children: ReactNode }) {
+  return <div className="sb-lesson-stage texture-bg" role="img" aria-label={label}><div className="sb-lesson-art">{children}</div></div>;
 }
 
-const automation = [
-  { verdict: 'malicious', on: true, threshold: 'Recommended (90%)', short: '90%' },
-  { verdict: 'spam', on: true, threshold: 'Recommended (85%)', short: '85%' },
-  { verdict: 'graymail', on: false, threshold: 'Require review', short: 'Review' },
-] as const;
+/** Manual, Auto-start, Auto-accept: each level lights one more bar. */
+function Levels() {
+  const levels = ['Manual', 'Auto-start', 'Auto-accept'];
+  return <div className="sb-art-levels">
+    {levels.map((l, i) => <div key={l} className="sb-art-tile">
+      <span className="sb-art-bars" aria-hidden="true">{[10, 16, 22].map((h, n) => <i key={n} style={{ height: h }} className={n <= i ? 'is-on' : ''} />)}</span>
+      <span>{l}</span>
+    </div>)}
+  </div>;
+}
 
-const jobs: { subject: string; status: Status | null }[] = [
-  { subject: 'Invoice payment confirmation required today', status: null },
-  { subject: 'Benefits enrollment form from rare sender', status: 'auto' },
-  { subject: 'Urgent wire transfer details for review', status: 'auto' },
-];
+/** ASA's verdict passes to ADÉ, out of sight, and leaves a trail. */
+function Handoff() {
+  return <div className="sb-art-handoff">
+    <div className="sb-art-agent"><img src={ART.asa} alt="" draggable={false} className="sb-art" /><span>ASA</span><small>Verdict</small></div>
+    <span className="sb-art-trail" aria-hidden="true"><i /><i /><i /><i /><i /></span>
+    <div className="sb-art-agent"><img src={ART.ade} alt="" draggable={false} className="sb-art" /><span>ADÉ</span><small>Rule</small></div>
+  </div>;
+}
 
-const lessons: { title: string; body: string; ui: ReactNode }[] = [
+/** The rule, the hunt that tested it and its result come together at one decision. */
+function Decision() {
+  return <div className="sb-art-decision">
+    <div className="sb-art-stack">{['The rule', 'The hunt that tested it', 'Its result'].map(s => <span key={s} className="sb-art-tile">{s}</span>)}</div>
+    <svg className="sb-art-join" viewBox="0 0 40 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 20 C 22 20, 18 60, 40 60 M0 60 L 40 60 M0 100 C 22 100, 18 60, 40 60" fill="none" stroke="currentColor" strokeWidth="1.25" vectorEffect="non-scaling-stroke" /></svg>
+    <span className="sb-art-tile is-strong">Your call</span>
+  </div>;
+}
+
+const lessons = [
   {
-    title: 'Autonomy is an on‑ramp',
-    body: 'Teams start ADÉ by hand, then let it start on its own, then let it accept rules that clear their bar. Each step is earned by the one before.',
-    ui: <div className="sb-cells">
-      <div className="sb-row is-head sb-lesson-auto"><span>Verdict</span><span>Auto-start</span><span><span className="sb-wide-only">Auto-accept threshold</span><span className="sb-narrow-only">Threshold</span></span></div>
-      {automation.map(r => <div key={r.verdict} className="sb-row sb-lesson-auto" style={{ minHeight: 52 }}>
-        <span className="sb-chip" style={{ width: 'fit-content', gap: 6 }}><VerdictIcon verdict={r.verdict} size={14} />{verdictName[r.verdict]}</span>
-        <Switch on={r.on} />
-        <span className="sb-select"><span><span className="sb-wide-only">{r.threshold}</span><span className="sb-narrow-only">{r.short}</span></span>{Icon.chevron('down')}</span>
-      </div>)}
-    </div>,
+    title: 'Autonomy is earned in steps',
+    body: 'Nobody hands an agent the keys on day one. Teams start ADÉ by hand, let it start on its own, then let it accept rules that clear their bar, each step earned by the one before.',
+    art: <Stage label="Three levels: Manual, Auto-start and Auto-accept, each with one more bar lit"><Levels /></Stage>,
   },
   {
-    title: 'Agents hand off in the background',
-    body: 'ASA’s verdict leads to ADÉ’s job while no one watches, so the product has to show where the work is and what it did.',
-    ui: <div className="sb-cells">
-      <div className="sb-row is-head" style={{ gridTemplateColumns: 'minmax(0, 1fr) 132px', padding: '0 16px' }}><span>Started by ADÉ</span><span>Recommendation</span></div>
-      {jobs.map(j => <div key={j.subject} className="sb-row" style={{ gridTemplateColumns: 'minmax(0, 1fr) 132px', padding: '0 16px', minHeight: 52 }}>
-        <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{j.subject}</span>
-        {j.status ? <StatusPill status={j.status} /> : <span className="sb-verdict sb-label"><span className="sb-spin" style={{ display: 'inline-flex' }}>{Icon.progress}</span>Running</span>}
-      </div>)}
-    </div>,
+    title: 'Background work needs a visible trail',
+    body: 'When one agent hands work to another while no one watches, the product’s job is to show where that work is and what it did.',
+    art: <Stage label="ASA's verdict passes to ADÉ, which returns a rule"><Handoff /></Stage>,
   },
   {
-    title: 'Review is a deliberate moment',
-    body: 'A person sees the rule, the hunt that tested it and its result in one place, and then decides.',
-    ui: <div className="sb-cells">
-      <div style={{ display: 'grid', gap: 16, padding: 20, background: 'var(--sb-cell-head)' }}>
-        <div>
-          <p className="sb-body" style={{ fontWeight: 600 }}>ADÉ Recommended Rule</p>
-          <p className="sb-body" style={{ marginTop: 4 }}><b style={{ fontWeight: 600 }}>93% match</b> in a 14-day hunt, with 40 malicious matches and 2 possible false positives.</p>
-        </div>
-        <div style={{ display: 'flex', gap: 8 }}><span className="sb-btn">Accept</span><span className="sb-btn is-secondary">Reject</span></div>
-      </div>
-    </div>,
+    title: 'Keep a person at the decision',
+    body: 'Review works when it is a deliberate moment: the rule, the hunt that tested it and its result in one place, and then a person decides.',
+    art: <Stage label="The rule, the hunt that tested it and its result lead to your call"><Decision /></Stage>,
   },
 ];
 
-/** What the agents taught me, each lesson beside the product it shaped. */
+/** Principles for agents people trust, each beside a small drawing. */
 export default function Lessons() {
   return <ol className="sb-lessons">
     {lessons.map(l => <li key={l.title}>
       <div className="sb-lesson-copy"><h3>{l.title}</h3><p>{l.body}</p></div>
-      <Excerpt>{l.ui}</Excerpt>
+      {l.art}
     </li>)}
   </ol>;
 }
