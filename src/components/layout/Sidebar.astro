@@ -401,6 +401,7 @@ const elsewhere = [
 </style>
 
 <script>
+  import { switchTheme } from "@/scripts/theme";
   function applyCollapsed(sidebar: HTMLElement, collapsed: boolean) {
     const elsewhereGroup = sidebar.querySelector(".elsewhere-group") as HTMLElement | null;
     const rollupBtn = sidebar.querySelector("#elsewhere-rollup-btn") as HTMLButtonElement | null;
@@ -428,7 +429,9 @@ const elsewhere = [
       rollupBtn?.setAttribute("aria-expanded", String(open));
     }
 
-    const savedPreference = localStorage.getItem("sidebar-collapsed");
+    // Storage can be unavailable (an embedded preview); without it the sidebar starts collapsed and the toggle still works.
+    let savedPreference: string | null = null;
+    try { savedPreference = localStorage.getItem("sidebar-collapsed"); } catch { /* unavailable */ }
     const collapsed = savedPreference === null ? true : savedPreference === "true";
     sidebar.style.transition = "none";
     applyCollapsed(sidebar, collapsed);
@@ -442,7 +445,7 @@ const elsewhere = [
       const isNowCollapsed = !sidebar.classList.contains("is-collapsed");
       setRollupOpen(false);
       applyCollapsed(sidebar, isNowCollapsed);
-      localStorage.setItem("sidebar-collapsed", String(isNowCollapsed));
+      try { localStorage.setItem("sidebar-collapsed", String(isNowCollapsed)); } catch { /* unavailable */ }
       btn.dataset.sidebarTooltip = isNowCollapsed ? "Expand navigation" : "Collapse navigation";
     });
 
@@ -544,18 +547,7 @@ const elsewhere = [
       const isDark = document.documentElement.classList.contains("dark");
       const next = isDark ? "light" : "dark";
 
-      const apply = () => {
-        document.documentElement.classList.toggle("dark", next === "dark");
-        localStorage.setItem("theme", next);
-        updateThemeLabel();
-      };
-
-      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if (!reduced && "startViewTransition" in document) {
-        (document as Document & { startViewTransition: (cb: () => void) => void }).startViewTransition(apply);
-      } else {
-        apply();
-      }
+      switchTheme(next, updateThemeLabel);
     });
   }
 

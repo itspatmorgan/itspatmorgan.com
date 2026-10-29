@@ -1,5 +1,5 @@
-import { NativeStage } from '../query-builder/NativeUI';
-import { useDemoLoop } from '../query-builder/useDemoLoop';
+import { NativeStage } from '../case-study/NativeStage';
+import { useDemoLoop } from '../case-study/useDemoLoop';
 
 // The deck's "Defense Kits" diagram: the same three pieces, regrouped for each use case. No ship status.
 const kits = ['Bot Kit', 'API Security Kit', 'OWASP Attack Kit'];

@@ -41,3 +41,4 @@ resources when a skill needs them.
 | --- | --- |
 | `refactor-radar/` | Find targeted refactors and maintenance opportunities for approval |
 | `case-study-shaping/` | Shape a Work entry into a slide-like case study, from fact-finding to launch |
+| `project-card-visuals/` | Build the live visual on a case study's project card, in place of a thumbnail |

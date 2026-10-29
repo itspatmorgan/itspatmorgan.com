@@ -64,19 +64,26 @@ const ogImage = new URL(image ?? "/images/brand/profile-picture.jpg", siteConfig
 
     {/* Prevent flash of wrong theme */}
     <script is:inline>
-      const theme = localStorage.getItem("theme");
-      if (
-        theme === "dark" ||
-        (!theme &&
-          window.matchMedia("(prefers-color-scheme: dark)").matches)
-      ) {
-        document.documentElement.classList.add("dark");
-      }
+      (() => {
+      // Storage can be unavailable (an embedded preview); a read that throws must not stop the theme from following the system.
+      const stored = (key) => { try { return localStorage.getItem(key); } catch { return null; } };
+      // Light or dark: a page shown inside a viewer that sets data-theme on the root (the artifact preview) follows the viewer, at load
+      // and whenever it switches. Otherwise a saved choice wins, then the system setting, which is followed live until a choice is saved.
+      const root = document.documentElement;
+      const system = window.matchMedia("(prefers-color-scheme: dark)");
+      const host = () => { const t = root.getAttribute("data-theme"); return t === "dark" || t === "light" ? t : null; };
+      const applyTheme = (dark) => { root.classList.toggle("dark", dark); root.style.colorScheme = dark ? "dark" : "light"; };
+      const theme = stored("theme");
+      applyTheme(host() ? host() === "dark" : theme ? theme === "dark" : system.matches);
+      new MutationObserver(() => { if (host()) applyTheme(host() === "dark"); })
+        .observe(root, { attributes: true, attributeFilter: ["data-theme"] });
+      system.addEventListener("change", (event) => { if (!host() && !stored("theme")) applyTheme(event.matches); });
 
-      const sidebarPreference = localStorage.getItem("sidebar-collapsed");
+      const sidebarPreference = stored("sidebar-collapsed");
       if (sidebarPreference === null || sidebarPreference === "true") {
         document.documentElement.classList.add("sidebar-collapsed");
       }
+      })();
     </script>
   </head>
   <body>

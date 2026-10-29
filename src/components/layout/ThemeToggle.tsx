@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Moon02Icon, Sun03Icon } from "@hugeicons/core-free-icons";
 import { Button } from "@/components/ui/button";
+import { switchTheme } from "@/scripts/theme";
 
 export function ThemeToggle() {
   const [theme, setTheme] = useState<"light" | "dark">("light");
@@ -15,19 +16,7 @@ export function ThemeToggle() {
   function toggleTheme() {
     const next = theme === "dark" ? "light" : "dark";
 
-    const apply = () => {
-      setTheme(next);
-      document.documentElement.classList.toggle("dark", next === "dark");
-      localStorage.setItem("theme", next);
-    };
-
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (!reduced && "startViewTransition" in document) {
-      (document as Document & { startViewTransition: (cb: () => void) => void })
-        .startViewTransition(apply);
-    } else {
-      apply();
-    }
+    switchTheme(next, () => setTheme(next));
   }
 
   return (

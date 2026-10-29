@@ -9,7 +9,8 @@ const projects = defineCollection({
     type: z.enum(["professional", "experiment"]),
     description: z.string(),
     skills: z.array(z.string()),
-    thumbnail: z.string(),
+    // Optional for a case study whose cards show its live demo instead (see ProjectDemo).
+    thumbnail: z.string().optional(),
     thumbnailDark: z.string().optional(),
     thumbnailWide: z.string().optional(),
     thumbnailWideDark: z.string().optional(),

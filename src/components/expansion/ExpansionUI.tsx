@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
+import { useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { ArrowDown01Icon, Delete02Icon } from '@hugeicons/core-free-icons';
 import { barColors, type Bar } from './figma-bars';
@@ -24,20 +24,6 @@ export function Select({ x, y, w, mono, children }: { x: number; y: number; w: n
 
 export function IconButton({ x, y }: { x: number; y: number }) {
   return <Box x={x} y={y} w={41.07} h={41.07} style={{ border: '.85px solid var(--x-line)', display: 'grid', placeItems: 'center' }}><HugeiconsIcon icon={Delete02Icon} size={14} strokeWidth={1.8} /></Box>;
-}
-
-/** Plays an intro once, the first time the element scrolls into view, and then holds. */
-export function useRevealOnce<T extends HTMLElement>() {
-  const ref = useRef<T>(null);
-  const [shown, setShown] = useState(false);
-  useEffect(() => {
-    const node = ref.current;
-    if (!node) return;
-    const observer = new IntersectionObserver(([entry]) => { if (entry.isIntersecting) { setShown(true); observer.disconnect(); } }, { threshold: .25 });
-    observer.observe(node);
-    return () => observer.disconnect();
-  }, []);
-  return { ref, shown };
 }
 
 /**

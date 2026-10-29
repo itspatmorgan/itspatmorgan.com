@@ -144,3 +144,20 @@
 /* The agent diagram's 1920-unit frames, fitted into the standard frame card. */
 .xp-agent-fit .xp-agent { background: none; }
 .xp-agent-fit { position: absolute; left: 0; top: 0; width: 1920px; height: 1500px; transform: scale(.53125); transform-origin: top left; }
+
+/* The project card (ExpansionCard), in the shared card frame: the Bot Signals chart's shape behind, the card's signals in front. */
+.xc { --pc-surface: var(--x-card); --pc-line: var(--x-line); }
+.xc .qb-native { color: var(--x-ink); }
+.xc-chart { left: 112px; }
+.xc-bars { position: absolute; left: 18px; right: 0; bottom: 28px; height: 150px; display: flex; align-items: flex-end; gap: 4px; }
+.xc-bars span { display: flex; flex-direction: column; flex: 1; min-width: 0; overflow: hidden; border-radius: 2px 2px 0 0; transform: scaleY(.15); transform-origin: bottom; transition: transform 700ms cubic-bezier(.23, 1, .32, 1); }
+.xc-bars.is-up span { transform: none; }
+.xc-bars i { flex-basis: 0; }
+.xc-signals { left: 28px; top: 56px; width: 220px; padding-bottom: 8px; }
+.xc-title { padding-bottom: 12px; border-bottom: 1px solid var(--x-ink-2); }
+.xc-row { display: flex; align-items: center; justify-content: space-between; height: 40px; border-bottom: 1px solid var(--x-line); }
+.xc-row:last-child { border-bottom: 0; }
+.xc-name { display: inline-flex; align-items: center; gap: 10px; font-size: 13px; letter-spacing: .005em; }
+.xc-name i { width: 8px; height: 8px; border-radius: 2px; }
+.xc-row b { font: 500 13px 'IBM Plex Mono', monospace; letter-spacing: .01em; }
+@media (prefers-reduced-motion: reduce) { .xc-bars span { transition: none; } }

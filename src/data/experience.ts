@@ -18,12 +18,19 @@ export const roles: Role[] = [
     role: "Staff Product Designer",
     dateRange: "2025–Now",
     summary: "Designed a multi-agent system for email threat detection, pairing analyst triage with detection engineering automation, and shipped high-stakes security features. Separately, I built an internal, AI-assisted prototyping platform now used daily by the design team.",
+    projects: ["sublime-agents"],
     links: [
       {
         label: "AI-Assisted Prototyping Environment",
         href: "https://www.youtube.com/watch?v=628c4YuxAEM",
         image: "https://i.ytimg.com/vi/628c4YuxAEM/maxresdefault.jpg",
         alt: "Podcast cover for building an agent-agnostic prototyping platform",
+      },
+      {
+        label: "Build Your Own AI Design Sandbox",
+        href: "https://maven.com/p/0e87f2/build-your-own-ai-design-sandbox",
+        image: "https://d2426xcxuh3ht5.cloudfront.net/f9OPHTgQSIKMI3CQ7KfX_Duo%20Instructor%20-%20theme%20a.jpg",
+        alt: "Maven talk cover for building your own AI design sandbox",
       },
     ],
     descriptions: [

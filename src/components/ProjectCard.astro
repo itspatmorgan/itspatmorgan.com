@@ -5,7 +5,7 @@ interface Props {
   title: string;
   description: string;
   skills: string[];
-  thumbnail: string;
+  thumbnail?: string;
   thumbnailDark?: string;
   thumbnailWide?: string;
   thumbnailWideDark?: string;
@@ -47,6 +47,10 @@ const compactWideThumbnail = thumbnailWide ?? thumbnail;
 const compactWideThumbnailDark = thumbnailWideDark ?? thumbnailDark;
 const hasResponsiveCompactImage = squareDesktop && !square;
 const href = `/work/${slug}`;
+// A card with a live demo (the `visual` slot) shows it in place of its thumbnail. A demo can hold links of its own, and a link can't
+// sit inside another, so that card is a plain box with its link stretched over it.
+const hasVisual = Astro.slots.has("visual");
+const CompactCard = hasVisual ? "div" : "a";
 ---
 
 {variant === "full" ? (
@@ -128,10 +132,13 @@ const href = `/work/${slug}`;
   </a>
 ) : (
   /* Compact variant */
-  <a href={href} class="group flex h-full flex-col" data-project-card>
+  <CompactCard href={hasVisual ? undefined : href} class:list={["group flex h-full flex-col", hasVisual && "relative"]} data-project-card>
+    {hasVisual && <a href={href} class="absolute inset-0 z-10 rounded-xl" aria-label={title}></a>}
     <article class="flex h-full flex-col overflow-hidden rounded-xl border border-border bg-card transition-all duration-300 group-hover:-translate-y-0.5 group-hover:shadow-md group-hover:shadow-black/5 dark:group-hover:shadow-black/20">
-      <div class="texture-bg shrink-0 overflow-hidden">
-        {hasResponsiveCompactImage ? (
+      <div class:list={["texture-bg shrink-0 overflow-hidden", hasVisual && "relative aspect-video"]}>
+        {hasVisual ? (
+          <slot name="visual" />
+        ) : hasResponsiveCompactImage ? (
           <>
             <img
               src={compactWideThumbnail}
@@ -184,5 +191,5 @@ const href = `/work/${slug}`;
         )}
       </div>
     </article>
-  </a>
+  </CompactCard>
 )}
