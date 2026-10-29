@@ -178,13 +178,13 @@
 
 /* Motion: one ease-out for things arriving, one ease-in-out for things moving on screen. */
 .sb { --sb-ease-out: cubic-bezier(.23, 1, .32, 1); --sb-ease-in-out: cubic-bezier(.65, 0, .35, 1); }
-.sb-camera { position: relative; transform-origin: 0 0; transition: transform 1100ms var(--sb-ease-in-out); will-change: transform; }
+.sb-camera { position: relative; transform-origin: 0 0; }
 .sb-pointer { position: absolute; z-index: 50; }
 .sb-btn, .sb-select, .sb-switch, .sb-list-row { transition: transform 160ms var(--sb-ease-out), background 200ms ease, box-shadow 200ms ease, opacity 200ms ease; }
 .sb-btn.is-pressed, .sb-select.is-pressed, .sb-list-row.is-pressed { transform: scale(.97); }
 .sb-enter { transition: opacity 360ms var(--sb-ease-out), transform 480ms var(--sb-ease-out), filter 360ms var(--sb-ease-out); }
 .sb-enter.is-out { opacity: 0; transform: translateY(6px); filter: blur(2px); }
-@media (prefers-reduced-motion: reduce) { .sb-camera, .sb-enter, .sb-btn, .sb-select { transition: none !important; } }
+@media (prefers-reduced-motion: reduce) { .sb-enter, .sb-btn, .sb-select { transition: none !important; } }
 
 /* The verdict head, inverted from the product's red banner so the page isn't shouting. */
 .sb-verdict-head { display: flex; align-items: center; gap: 14px; padding: 18px 24px; background: color-mix(in srgb, var(--sb-malicious) 7%, var(--sb-card)); border-bottom: 1px solid color-mix(in srgb, var(--sb-malicious) 18%, var(--sb-card)); }
@@ -249,6 +249,8 @@
 /* Header info popover (the threshold explainer): opens from its icon, scale and fade from the anchor corner. */
 .sb-popover { position: absolute; right: 0; top: calc(100% + 8px); z-index: 6; width: 340px; padding: 14px 16px; display: grid; gap: 10px; border-radius: 6px; background: var(--sb-card); color: var(--sb-strong); font-size: 13px; line-height: 19px; font-weight: 400; text-transform: none; letter-spacing: 0; white-space: normal; box-shadow: 0 0 0 1px var(--sb-border-strong), 0 12px 28px rgba(0, 0, 0, .16); transform-origin: top right; transition: opacity 200ms var(--sb-ease-out), transform 200ms var(--sb-ease-out), visibility 0s linear 0s; }
 .sb-popover.is-out { opacity: 0; visibility: hidden; transform: scale(.96) translateY(-2px); transition: opacity 150ms ease, transform 150ms ease, visibility 0s linear 150ms; }
+.sb-popover.is-above { top: auto; bottom: calc(100% + 8px); transform-origin: bottom right; }
+.sb-popover.is-above.is-out { transform: scale(.96) translateY(2px); }
 .sb-popover dl { display: grid; grid-template-columns: 1fr auto; row-gap: 4px; margin: 0; padding: 8px 10px; border-radius: 4px; background: var(--sb-secondary); }
 .sb-popover dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }
 @media (prefers-reduced-motion: reduce) { .sb-popover, .sb-menu { transition: none !important; } }

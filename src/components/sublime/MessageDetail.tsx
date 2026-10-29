@@ -1,6 +1,6 @@
 import { NativeStage } from '../case-study/NativeStage';
 import { Icon, JobHeading, Page, TimelineItem, TimelineTitle, Triggered, VerdictIcon, VerdictPanel, Zoom, job } from './SublimeUI';
-import { Camera, Expand, Pointer, SceneControls, Screens, Typing, focus, useScene, useTargets } from './scene';
+import { Camera, Expand, Pointer, SceneControls, Screens, Typing, frame, useScene, useShot, useTargets } from './scene';
 
 // The message detail page (patrick/ade-workflow user-reports, MessageDetailView and AdeStatusCard): ASA's verdict on a message no rule caught.
 // `gap` is the page before ADÉ: a malicious verdict over an empty Matched Detection Rules section, and the way to coverage running through
@@ -13,19 +13,19 @@ type Variant = 'gap' | 'handoff';
 const W = 1000;
 const H = 820 * W / 1020;
 const timings: Record<Variant, number[]> = {
-  gap: [1400, 2800, 1100, 350, 5200],
-  handoff: [1200, 1300, 350, 700, 1300, 350, 4400],
+  gap: [1400, 2800, 1100, 900, 350, 5200],
+  handoff: [1200, 1300, 900, 350, 900, 900, 900, 350, 4400],
 };
 const captions: Record<Variant, string[]> = {
-  gap: ['ASA calls the message malicious', 'Malicious, and no Detection Rule matched it', 'The way to a rule: send the message to the Rule Editor', 'The way to a rule: send the message to the Rule Editor', 'And write the rule by hand, then test it'],
-  handoff: ['ADÉ sits under Review Status, on the page where the miss is found', 'Trigger ADÉ', 'Trigger ADÉ', 'Starting ADÉ', 'The job is in progress: open its report', 'The job is in progress: open its report', 'The job page, with ADÉ at work'],
+  gap: ['ASA calls the message malicious', 'Malicious, and no Detection Rule matched it', 'The way to a rule: send the message to the Rule Editor', 'The way to a rule: send the message to the Rule Editor', 'The way to a rule: send the message to the Rule Editor', 'And write the rule by hand, then test it'],
+  handoff: ['ADÉ sits under Review Status, on the page where the miss is found', 'ADÉ sits under Review Status, on the page where the miss is found', 'Trigger ADÉ', 'Trigger ADÉ', 'Starting ADÉ', 'The job is in progress', 'The job is in progress: open its report', 'The job is in progress: open its report', 'The job page, with ADÉ at work'],
 };
 const classifications = ['malicious', 'spam', 'graymail', 'benign'] as const;
 const other = ['Send EML to Rule Editor', 'Send EML to Sublime', 'Send to ThreadSafe', 'Share feedback'];
 
 /** AdeStatusCard: ready to trigger, starting, then the running job with the way into its report. */
 function AdeCard({ phase, pressed, viewPressed }: { phase: 'ready' | 'starting' | 'running'; pressed: boolean; viewPressed: boolean }) {
-  return <section className="sb-sec">
+  return <section className="sb-sec" data-frame="ade-side">
     <p className="sb-sec-h"><span>ADÉ (Autonomous Detection Engineer)</span>{Icon.info}</p>
     <div className={`sb-ade-card ${phase !== 'ready' ? 'is-running' : ''}`} data-frame="ade"><div style={{ padding: 20 }}>
       <Expand open={phase !== 'running'}>
@@ -96,19 +96,19 @@ export default function MessageDetail({ variant }: { variant: Variant }) {
   const step = scene.step;
   const t = useTargets(step);
   const gap = variant === 'gap';
-  const editor = gap && step === 4;
-  const jobPage = !gap && step >= 6;
+  const editor = gap && step === 5;
+  const jobPage = !gap && step >= 8;
+  const box = { width: W, height: H, bottom: t.height };
 
-  let view = { x: 0, y: 0, s: 1 };
+  // The camera moves on steps of its own, and the pointer only moves once it has landed. Gap: close in on the verdict over the empty
+  // Matched Detection Rules, then step back to the page for the way to a rule. Handoff: close in on the ADÉ card for the whole exchange;
+  // View Report is a page load, so the job page arrives at full frame.
+  const shot = gap ? (step === 1 ? 'analysis' : null) : !jobPage && step >= 1 ? 'ade' : null;
+  const view = useShot(shot, shot === 'analysis' ? frame(t.rect('analysis'), box, { pad: 32, x: 'start' }) : shot === 'ade' ? frame(t.rect('ade-side'), box, { pad: 40, max: 1.45, y: 'start' }) : null);
   let pointer: { key: string; pressing?: boolean } | null = null;
-  if (gap) {
-    if (step === 1) view = focus(t.rect('analysis'), 1.22, W, H, .5);
-    if (step === 2 || step === 3) pointer = { key: 'editor', pressing: step === 3 };
-  } else if (!jobPage) {
-    if (step >= 1) view = focus(t.rect('ade'), 1.5, W, H, .5);
-    if (step === 1 || step === 2) pointer = { key: 'trigger', pressing: step === 2 };
-    if (step === 4 || step === 5) pointer = { key: 'view-job', pressing: step === 5 };
-  }
+  if (gap && (step === 3 || step === 4)) pointer = { key: 'editor', pressing: step === 4 };
+  if (!gap && (step === 2 || step === 3)) pointer = { key: 'trigger', pressing: step === 3 };
+  if (!gap && (step === 6 || step === 7)) pointer = { key: 'view-job', pressing: step === 7 };
 
   const verdict = <VerdictPanel>
     <div style={{ display: 'grid', gap: 18, padding: '18px 24px 22px' }}>
@@ -159,10 +159,10 @@ export default function MessageDetail({ variant }: { variant: Variant }) {
     <section className="sb-sec">
       <p className="sb-sec-h">Other</p>
       <div className="sb-cells">
-        {other.map((o, i) => <div key={o} className={`sb-list-row ${gap && i === 0 && step >= 2 ? 'is-hover' : ''} ${gap && i === 0 && step === 3 ? 'is-pressed' : ''}`} data-target={i === 0 ? 'editor' : undefined} style={{ height: 40, padding: '0 16px', borderTop: i ? '1px solid var(--sb-border)' : undefined }}>{o}{Icon.chevron()}</div>)}
+        {other.map((o, i) => <div key={o} className={`sb-list-row ${gap && i === 0 && step >= 2 ? 'is-hover' : ''} ${gap && i === 0 && step === 4 ? 'is-pressed' : ''}`} data-target={i === 0 ? 'editor' : undefined} style={{ height: 40, padding: '0 16px', borderTop: i ? '1px solid var(--sb-border)' : undefined }}>{o}{Icon.chevron()}</div>)}
       </div>
     </section>
-    {!gap && <AdeCard phase={step >= 4 ? 'running' : step === 3 ? 'starting' : 'ready'} pressed={step === 2} viewPressed={step === 5} />}
+    {!gap && <AdeCard phase={step >= 5 ? 'running' : step === 4 ? 'starting' : 'ready'} pressed={step === 3} viewPressed={step === 7} />}
   </div>;
 
   const message = <Page crumbs={['User Reports', job.subject]} style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 300px', gap: 32, padding: '28px 32px 40px' }}>
@@ -176,12 +176,12 @@ export default function MessageDetail({ variant }: { variant: Variant }) {
     <NativeStage width={1240} height={900}>
       <div className="sb-card">
         <Zoom key={scene.take} width={W}>
-          <Camera view={view} cameraRef={t.ref}>
-            <Screens id={editor ? 'editor' : jobPage ? 'job' : 'message'}>
-              {editor ? <RuleEditor run={editor} reduced={scene.reduced} /> : jobPage ? <JobInProgress /> : message}
-            </Screens>
-            <Pointer at={pointer ? t.at(pointer.key) : null} visible={!!pointer} pressing={pointer?.pressing} scale={view.s} reduced={scene.reduced} />
-          </Camera>
+          <Screens id={editor ? 'editor' : jobPage ? 'job' : 'message'}>
+            {editor ? <RuleEditor run={editor} reduced={scene.reduced} /> : jobPage ? <JobInProgress /> : <Camera view={view} width={W} height={H} cameraRef={t.ref} reduced={scene.reduced}>
+              {message}
+              <Pointer at={pointer ? t.at(pointer.key) : null} visible={!!pointer} pressing={pointer?.pressing} reduced={scene.reduced} />
+            </Camera>}
+          </Screens>
         </Zoom>
       </div>
     </NativeStage>

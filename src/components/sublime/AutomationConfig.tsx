@@ -4,7 +4,8 @@ import { Pointer, SceneControls, useScene, useTargets } from './scene';
 
 // ADÉ Automation (patrick/ade-workflow ade/ade-automation-config): per disposition, whether ADÉ starts a job on its own and the rule
 // auto-acceptance threshold. The scene walks one customer up the on-ramp for malicious mail. The threshold explainer is the column
-// header's info popover; its copy and the recommended thresholds are the source's.
+// header's info popover; its copy and the recommended thresholds are the source's. It opens upward, as the product's popovers flip when the
+// window has no room below.
 const W = 820;
 const timings = [1400, 800, 900, 800, 4200, 800, 900, 700, 900, 800, 3800];
 const captions = [
@@ -74,7 +75,7 @@ export default function AutomationConfig() {
                   <div className="sb-row is-head" style={{ gridTemplateColumns: cols, background: 'var(--sb-cell-head)', borderRadius: '4px 4px 0 0', overflow: 'visible' }}>
                     <span className="sb-verdict" style={{ fontSize: 11 }}>Disposition {Icon.info}</span><span>Auto-start ADÉ job</span><span>Alerts</span>
                     <span className="sb-verdict" style={{ fontSize: 11, position: 'relative' }}>Rule auto-acceptance threshold <span data-target="info" style={{ display: 'inline-flex', color: explain ? 'var(--sb-strong)' : undefined }}>{Icon.info}</span>
-                      <span className={`sb-popover ${explain ? '' : 'is-out'}`} role="tooltip">
+                      <span className={`sb-popover is-above ${explain ? '' : 'is-out'}`} role="tooltip">
                         <span>ADÉ uses the rule to hunt for similar message groups from the last 14 days and checks how often the verdict matches the original message.</span>
                         <span>A rule is auto-accepted once the match rate meets the threshold.</span>
                         <span><span className="sb-label" style={{ display: 'block', marginBottom: 4 }}>Sublime recommendations</span>
