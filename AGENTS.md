@@ -27,7 +27,7 @@ restrained, content-first design over decorative complexity.
 - Content: Astro content collections with Zod schemas
 - Fonts: Geist Sans for body text, Geist Mono for labels, metadata, and code
 - Package manager: pnpm 10+
-- Node: v22.12.0+ (Node 24 pinned locally and used in CI)
+- Node: v22.23.4+, the minimum Astro supports (Node 24 pinned in `.mise.toml` and `.nvmrc`, and used in CI)
 - Deployment: GitHub Pages through GitHub Actions on pushes to `main`
 
 ## Commands
