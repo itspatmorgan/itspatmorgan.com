@@ -100,7 +100,13 @@
 .cs-tour-play:hover { background: var(--muted, #f2f2f1); }
 .cs-tour-play:active { transform: scale(.94); }
 .cs-tour-play:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
-@media (max-width: 640px) { .cs-tour { flex-direction: column-reverse; gap: 6px; margin-top: 12px; } .cs-tour-caption { font-size: 14px; line-height: 21px; } .cs-tour-controls { width: 100%; justify-content: space-between; } }
+/* On a phone the caption takes the full width, with room for two lines so the stage doesn't jump as captions change, and the controls
+   sit under it as one group: play first, then the steps. */
+@media (max-width: 640px) {
+  .cs-tour { flex-direction: column; align-items: stretch; gap: 8px; margin-top: 14px; }
+  .cs-tour-caption { min-height: 40px; font-size: 14px; line-height: 20px; }
+  .cs-tour-controls { flex-direction: row-reverse; justify-content: flex-end; gap: 12px; }
+}
 @media (prefers-reduced-motion: reduce) { .cs-beats button.is-current > i::after { animation: none; transform: scaleX(1); } }
 /* Content is laid out in source pixels and zoomed to fill the card, so type keeps the product's proportions at a readable size. */
 .cs-zoom { position: absolute; top: 0; left: 0; transform-origin: top left; }
