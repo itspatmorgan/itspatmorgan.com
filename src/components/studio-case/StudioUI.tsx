@@ -29,11 +29,11 @@ export function StudioMark({ size = 22 }: { size?: number }) {
   </svg>;
 }
 
-/** The open-source Studio's rail (MainNav): mark, search, Prototypes, Systems, Documentation; panel, settings and color mode below. */
+/** The open-source Studio's rail (MainNav), its mark drawn at the product's size (a touch smaller than the icons): mark, search, Prototypes, Systems, Documentation; panel, settings and color mode below. */
 export function OsRail({ on = 'home' }: { on?: string }) {
   const items: [string, IconSvg][] = [['search', Search01Icon], ['prototypes', CursorInWindowIcon], ['systems', Shapes01Icon], ['docs', BookOpen01Icon]];
   return <nav className="sc-rail" aria-hidden="true">
-    <span className="sc-mark" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}><StudioMark size={20} /></span>
+    <span className="sc-mark" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}><StudioMark size={16} /></span>
     {items.map(([key, i]) => <span key={key} className={`sc-rail-item ${on === key ? 'is-on' : ''}`}>{icon(i, 18)}</span>)}
     <span className="sc-rail-item sc-rail-end">{icon(PanelLeftCloseIcon, 18)}</span>
     <span className="sc-rail-item">{icon(Settings01Icon, 18)}</span>
