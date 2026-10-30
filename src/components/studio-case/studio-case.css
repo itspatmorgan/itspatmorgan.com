@@ -90,7 +90,10 @@
 .sc-side li { display: flex; align-items: center; gap: 8px; height: 26px; padding: 0 8px; border-radius: 6px; white-space: nowrap; overflow: hidden; transition: background-color 200ms ease, color 200ms ease; }
 .sc-side li.is-on { background: var(--sc-select); color: var(--sc-fg); }
 .sc-side li.is-group { font-weight: 500; color: var(--sc-fg); }
-.sc-side li.is-child { padding-left: 26px; }
+.sc-side li.is-child { padding-left: 31px; }
+/* Every row's icon takes a 15px slot, so labels share one edge whatever the glyph size, and a child's icon sits under its parent's label. */
+.sc-side li svg[width="13"] { margin: 0 1px; }
+.sc-side li svg[width="14"] { margin: 0 .5px; }
 .sc-side li svg { flex: none; color: var(--sc-weak); }
 .sc-canvas { position: absolute; inset: 0; background-color: var(--sc-bg); background-image: radial-gradient(var(--sc-dot) 1px, transparent 1px); background-size: 16px 16px; }
 .sc-toolbar { position: absolute; z-index: 2; left: 50%; top: 12px; display: flex; gap: 2px; padding: 4px; transform: translateX(-50%); border: 1px solid var(--sc-line); border-radius: 8px; background: var(--sc-bg); box-shadow: 0 1px 3px rgba(0, 0, 0, .06); color: var(--sc-side-fg); }

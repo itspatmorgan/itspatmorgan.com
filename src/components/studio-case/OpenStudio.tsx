@@ -68,7 +68,7 @@ function Prototype({ lofi, menu, pick }: { lofi: boolean; menu: boolean; pick: b
         {li(CodeIcon, 'Feedback Detail', 'is-child')}
         <li className="is-group">{icon(ArrowDown01Icon, 13)}States</li>
         <li className="is-child is-group">{icon(ArrowDown01Icon, 13)}Inbox</li>
-        {['Open Issues', 'Empty', 'No Matches', 'New Feedback'].map(t => <li key={t} className="is-child" style={{ paddingLeft: 44 }}>{icon(CodeIcon, 14)}{t}</li>)}
+        {['Open Issues', 'Empty', 'No Matches', 'New Feedback'].map(t => <li key={t} className="is-child" style={{ paddingLeft: 54 }}>{icon(CodeIcon, 14)}{t}</li>)}
         <li className="is-group">{icon(ArrowDown01Icon, 13)}Discovery</li>
         {li(CodeIcon, 'Lo-fi Inbox', 'is-child')}
         {li(Presentation01Icon, 'Breadboard', 'is-child')}
