@@ -13,7 +13,7 @@ export const mediaFeatures = [
   },
   {
     image: "/images/studio-case/launch-post.jpg", alt: "The launch video: a coding agent beside the open-source Design Studio, with the Feedback Inbox handoff canvas open",
-    fallback: "X", title: "Open-source launch post", sub: "30k+ views on X and LinkedIn",
+    fallback: "X", title: "Design Studio open-source launch", sub: "30k+ views on X and LinkedIn",
     href: "https://x.com/itspatmorgan/status/2114742504738443277",
   },
 ];
