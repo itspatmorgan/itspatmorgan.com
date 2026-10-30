@@ -45,7 +45,7 @@ export const roles: Role[] = [
     logo: "/images/logos/career-sigsci.svg",
     role: "Senior Product Designer",
     dateRange: "2019–2021",
-    summary: "Signal Sciences, bought by Fastly in 2020, protects websites and APIs from attacks. I designed how customers write firewall rules, set rate limits and stop bots, and ran the workshops, diagrams and prototypes that kept design, product and engineering on the same page.",
+    summary: "Signal Sciences, bought by Fastly in 2020, protects websites and APIs from attacks. I designed how customers write firewall rules, set rate limits and stop bots.",
     projects: ["expansion", "vision"],
     descriptions: [
       "Designed features for enterprise firewall rules management, rate limiting, and bot defense.",
