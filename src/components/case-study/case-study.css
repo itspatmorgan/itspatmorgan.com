@@ -11,14 +11,15 @@
    Spacing roughly doubles at each level: 24 within a group, 48 to its visual, 72 from the hero brief, 144 between sections. */
 .cs-slide { padding-top: 144px; text-align: center; scroll-margin-top: 24px; }
 /* One content measure: titles, copy and stages all sit within 960px, so nothing outruns the visual below it. */
-.cs-slide h1, .cs-slide h2 { max-width: 960px; margin-inline: auto; font-weight: 500; text-wrap: balance; }
-.cs-slide h1 { max-width: 15em; font-size: clamp(42px, 5.2vw, 76px); line-height: 1.02; letter-spacing: -.05em; }
-.cs-slide h2 { font-size: clamp(28px, 2.9vw, 40px); line-height: 1.05; letter-spacing: -.045em; }
+/* Only the slide's own headings: a demo's headings inside the stage keep their product's type. */
+.cs-slide > h1, .cs-slide > h2 { max-width: 960px; margin-inline: auto; font-weight: 500; text-wrap: balance; }
+.cs-slide > h1 { max-width: 15em; font-size: clamp(42px, 5.2vw, 76px); line-height: 1.02; letter-spacing: -.05em; }
+.cs-slide > h2 { font-size: clamp(28px, 2.9vw, 40px); line-height: 1.05; letter-spacing: -.045em; }
 .cs-slide > p { max-width: 840px; margin: 24px auto 0; font-size: clamp(17px, 1.4vw, 19px); line-height: 1.5; letter-spacing: -.012em; color: var(--muted-foreground); text-wrap: pretty; }
 .cs-slide > .cs-stage, .cs-slide .cs-scene { margin-top: 48px; }
 /* Hero rhythm: a tight title group (company, title, subline), a clear step to the brief, a larger step to the visual. */
 .cs-hero { padding-top: 22px; container-type: inline-size; }
-.cs-hero h1 { font-size: clamp(38px, 3.9vw, 52px); line-height: 1.08; }
+.cs-hero > h1 { font-size: clamp(38px, 3.9vw, 52px); line-height: 1.08; }
 .cs-hero > p { margin-top: 28px; text-wrap: balance; }
 .cs-hero > .cs-company { display: inline-flex; align-items: center; gap: 7px; margin: 0 0 32px; color: var(--foreground); font-size: 17px; font-weight: 500; letter-spacing: -.01em; }
 .cs-company img { width: 30px; height: 30px; filter: invert(1); }.dark .cs-company img { filter: none; }
@@ -111,10 +112,10 @@
   .cs-nav { padding-block: 24px; }
   .cs-slide { padding-top: 88px; }
   .cs-hero { padding-top: 28px; }
-  .cs-slide h1 { font-size: 36px; }
+  .cs-slide > h1 { font-size: 36px; }
   .cs-brief { margin-top: 40px; }
   .cs-brief > div { padding: 0 12px; }
-  .cs-slide h2 { font-size: 28px; }
+  .cs-slide > h2 { font-size: 28px; }
   .cs-slide > .cs-stage, .cs-slide .cs-scene { margin-top: 28px; }
   .cs-stage { border-radius: 12px; }
   }

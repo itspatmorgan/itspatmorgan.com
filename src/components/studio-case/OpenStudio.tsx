@@ -89,7 +89,7 @@ function Prototype({ lofi, menu, pick }: { lofi: boolean; menu: boolean; pick: b
       </div>
       <div className="sc-echo-body">
         <div className="sc-echo-head">
-          <div><h2>Feedback inbox</h2><p>Everything customers have told us, newest first.</p></div>
+          <h2>Feedback inbox</h2>
           <span className="sc-echo-btn">{icon(PlusSignIcon, 14)}New feedback</span>
         </div>
         <div className="sc-echo-tabs"><span className="is-on">All</span><span>New</span><span>Triaged</span><span>Planned</span><span>Resolved</span></div>
