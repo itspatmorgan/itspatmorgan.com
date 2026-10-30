@@ -119,8 +119,10 @@ function getRoleProjects(slugs: string[] = []) {
     <h2 class="mb-8 text-2xl font-semibold tracking-tight">Skills</h2>
     <div class="flex flex-col gap-5">
       {[
-        { label: "Design", skills: ["Product design", "Prototyping", "Interaction design", "Systems design", "Design systems", "User research", "Figma", "Framer", "Midjourney"] },
-        { label: "Dev", skills: ["HTML", "CSS", "Javascript", "React", "Tailwind", "ShadCN", "Git", "Github", "Claude Code", "Astro", "PNPM"] },
+        { label: "Design", skills: ["Product design", "Interaction design", "Systems design", "Design systems", "Prototyping in code", "User research", "Figma"] },
+        { label: "Coding agents", skills: ["Claude Code", "Codex", "Cursor"] },
+        { label: "This site", skills: ["Astro", "React", "Tailwind CSS", "shadcn/ui", "GitHub Pages"] },
+        { label: "Design Studio", skills: ["React", "Vite", "TanStack Router", "Tailwind CSS", "shadcn/ui and Base UI", "Excalidraw", "CodeMirror", "MDX"] },
         { label: "Domains", skills: ["B2B & Enterprise SaaS", "Cybersecurity", "FinTech"] },
       ].map(({ label, skills }) => (
         <div>
