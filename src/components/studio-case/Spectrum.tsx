@@ -14,7 +14,7 @@ export default function Spectrum() {
   const middle = step >= 1, links = step >= 2;
   const ends = middle ? 'is-dim' : '';
   return <DemoFrame scene={scene} caption={false} stage="sc-plain" title="where Design Studio sits"
-    label="Two usual ways to prototype with AI: one-off prototypes in Claude, v0 or Figma Make, which connect to nothing; or the production repo, too heavy to explore in. Design Studio sits between them: fast to explore and true to the product, with the product's own components and rules in one repo the team shares, so work builds up">
+    label="Two usual ways to prototype with AI: one-off prototypes in Claude, v0 or Figma Make, which connect to nothing; or the production repo, too heavy to explore in. Design Studio sits between them: fast to explore and true to the product, with the product's own components and rules in one repo the team shares, so work compounds">
     <div className="cs-demo">
       <NativeStage width={960} height={697}>
         <div className="sc-dia">
@@ -25,7 +25,7 @@ export default function Spectrum() {
           <div className={`sc-node ${ends}`} style={{ left: 56, top: 330, width: 270, height: 170 }}>
             <h3>One-off prototypes</h3>
             <p>Claude, v0, Figma Make</p>
-            <p className="sc-node-note">Connect to nothing, so nothing builds up</p>
+            <p className="sc-node-note">Connect to nothing, so nothing compounds</p>
           </div>
           <div className={`sc-node ${ends}`} style={{ right: 56, top: 330, width: 270, height: 170 }}>
             <h3>The production repo</h3>
@@ -41,7 +41,7 @@ export default function Spectrum() {
           <div className={`sc-node is-accent ${middle ? '' : 'is-off'}`} style={{ left: 320, top: 96, width: 320, height: 200, transform: middle ? 'none' : 'translateY(12px)' }}>
             <h3>Design Studio</h3>
             <p>Fast to explore, true to the product</p>
-            <p className={`sc-node-note ${links ? '' : 'is-off'}`}>The product’s own components and rules, in one repo the team shares, so work builds up</p>
+            <p className={`sc-node-note ${links ? '' : 'is-off'}`}>The product’s own components and rules, in one repo the team shares, so work compounds</p>
           </div>
           <span className={middle ? '' : 'is-off'} style={{ position: 'absolute', left: 480, top: 551, width: 18, height: 18, marginLeft: -9, borderRadius: 999, background: 'var(--sc-accent)', boxShadow: '0 0 0 5px var(--sc-accent-soft)' }} />
         </div>

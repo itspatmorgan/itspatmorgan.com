@@ -408,3 +408,10 @@
 .sc-era button:not([aria-pressed=true]):hover { color: color-mix(in srgb, var(--foreground) 75%, transparent); }
 .sc-era-thumb { position: absolute; z-index: 0; inset: 0; border-radius: 99px; background: var(--background); box-shadow: 0 1px 2px #0000001a, 0 0 0 .5px #0000000d; }
 .sc-era button:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+
+/* On a phone the then-and-now toggle steps down a size and keeps clear air above the card. */
+@media (max-width: 640px) {
+  .sc-era button { min-height: 26px; padding: 0 12px; font-size: 12px; }
+  .sc-era button > span { height: 26px; gap: 5px; }
+  .cs-stage-bar:has(.sc-era) { padding-top: 14px; margin-bottom: -6px; }
+}
