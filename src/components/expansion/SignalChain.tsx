@@ -1,5 +1,5 @@
 import { NativeStage } from '../case-study/NativeStage';
-import { DemoFrame, useScene } from '../case-study/scene';
+import { DemoFrame, usePhone, useScene } from '../case-study/scene';
 import { T, Tag } from './ExpansionUI';
 import { SigSciLogo } from './SigSciLogo';
 
@@ -113,8 +113,9 @@ const stepCaptions = steps.map(s => captions[s.screen]);
 export default function SignalChain() {
   const scene = useScene(steps.map(s => s.ms), stepCaptions);
   const step = steps[scene.step];
+  const phone = usePhone();
   return <DemoFrame scene={scene} stage="xp-frame" title="the signal, rule and timeline" label="Bot Signals for search engines, scrapers, scanners and bad bots; a Scraper rule that flags and blocks IPs over 50 signals a minute; and the timeline of one IP being flagged and blocked"><div className="cs-demo xp-chain">
-    <NativeStage width={1240} height={900}>
+    <NativeStage width={1240} height={900} crop={phone ? { x: 130, y: 90, width: 520, height: 600 } : undefined}>
       <div className="xp-card">{screens.map((name, i) => <div key={name} className={`xp-fade xp-seq ${i === step.screen ? '' : 'xp-off'}`} style={{ inset: 0 }} aria-hidden={i !== step.screen}>
         {i === 0 && <SignalsTable />}{i === 1 && <ScraperRule />}{i === 2 && <Timeline shown={step.screen === 2 ? step.events : events.length} />}
       </div>)}</div>

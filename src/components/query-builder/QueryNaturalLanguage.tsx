@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { SourceIcon } from './NativeUI';
 import { NativeStage } from '../case-study/NativeStage';
-import { DemoFrame, useScene } from '../case-study/scene';
+import { DemoFrame, usePhone, useScene } from '../case-study/scene';
 
 // A plain-language question, then its J1QL translation one clause at a time; each clause lights the words it came from.
 const segments: { text: string; clause?: number }[] = [
@@ -32,8 +32,9 @@ export default function QueryNaturalLanguage() {
   const scene = useScene(durations, captions);
   const { typed, shown, active } = frames[scene.step];
   const complete = typed === question.length;
+  const phone = usePhone();
   return <DemoFrame scene={scene} caption={false} title="the translation" label="A plain-language question translated into J1QL"><div className="cs-demo qb-nl">
-    <div className="qb-film-stage"><NativeStage width={960} height={400}>
+    <div className="qb-film-stage"><NativeStage width={960} height={400} crop={phone ? { x: 56, y: 40, width: 760, height: 300 } : undefined}>
       <div className="q-nl-canvas">
         <div className="q-blank-field q-nl-field">
           <SourceIcon name="Search" size={24} />

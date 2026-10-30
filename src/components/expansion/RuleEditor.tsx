@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { NativeStage } from '../case-study/NativeStage';
-import { DemoFrame, useScene } from '../case-study/scene';
+import { DemoFrame, usePhone, useScene } from '../case-study/scene';
 import { T, Box, Select, IconButton } from './ExpansionUI';
 
 // Frame 700's rule editor, filled in as a customer's workaround: a rule that exists only to tag likely bot traffic with a signal of their own.
@@ -33,9 +33,12 @@ const bar = (x: number, y: number, h: number) => <i className="xp-hair" style={{
 export default function RuleEditor() {
   const scene = useScene(durations, captions, { loop: false });
   const { chars, focus } = frames[scene.step];
+  // A phone follows the typing: the conditions, their values, then the signal and rate limit further down.
+  const phone = usePhone();
+  const crop = scene.step === 0 ? { x: 120, y: 90 } : focus === 0 || focus === 1 ? { x: 630, y: 160 } : { x: 130, y: 440 };
   const value = (i: number) => <>{typed[i].text.slice(0, chars[i])}{focus === i && <i className="xp-caret" />}</>;
   return <DemoFrame scene={scene} stage="xp-frame" title="the custom rule" label="A custom rule: requests from a python-requests user agent to /products/* are tagged with a suspected-bot signal, and IPs over 100 signals a minute are blocked"><div className="cs-demo xp-rule-editor">
-    <NativeStage width={1240} height={900}>
+    <NativeStage width={1240} height={900} crop={phone ? { ...crop, width: 420, height: 460 } : undefined}>
       <div className="xp-card">
         {heading(27.38, 'Conditions')}
         {block(68.46, 294.36)}

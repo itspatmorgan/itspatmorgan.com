@@ -244,6 +244,26 @@ Camera and pointer scenes (zooms, pans, a cursor that clicks):
 - Direct attention with the camera, never with highlight rings or outlines that
   could pass for UI.
 
+### Phones
+
+Phones (640px and below) keep the desktop layout and crop it, at a size a phone
+can read. Never lay a screen out again for a phone: that shows a product that
+never shipped. The hero carries one note on phones saying the demos are cropped,
+with a Share button.
+
+- Scene card (`SceneFrame`): pass `focus` for each step, usually
+  `onCard(t.rect(key), view)` with `'start'`, `'center'` (a pointer target) or
+  `'end'` (buttons at a row's right). The stage shows 480 source pixels across
+  (`PHONE_SPAN`), so 14px product text reads at about 10px, and pans between
+  steps. Screens without a camera take a fixed focus.
+- Plain stage (`DemoFrame`): give `NativeStage` a `crop` when `usePhone()` is
+  true. Aim for product text of 9 to 11px on screen; for a step that moves
+  across the frame, change the crop per step and keep its size.
+- The crop fades at its edges where the screen goes on. Cut at a gutter where
+  you can; a cut word under the fade is fine, a cut control the step uses is not.
+- Check every step at 390px: the step's subject sits inside the crop, and the
+  first crop lands without a pan.
+
 ### 7. Lay out the page
 
 Use the shared rhythm in `case-study/case-study.css`:

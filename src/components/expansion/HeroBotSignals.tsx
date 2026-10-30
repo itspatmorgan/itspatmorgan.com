@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react';
 import { NativeStage } from '../case-study/NativeStage';
-import { DemoFrame, useScene } from '../case-study/scene';
+import { DemoFrame, usePhone, useScene } from '../case-study/scene';
 import { BotSignalsCard } from './ExpansionUI';
 import { botSignalBars } from './figma-bars';
 
@@ -13,8 +13,10 @@ const captions = ['Requests with bot signals, by bot type', 'Requests with bot s
 /** Bot signals drawing in on the hero card. */
 export default function HeroBotSignals() {
   const scene = useScene(timings, captions, { loop: false });
+  // A phone crops to the card itself.
+  const phone = usePhone();
   return <DemoFrame scene={scene} caption={false} stage="xp-frame" title="the Bot Signals chart" label="The Bot Signals card: requests with bot signals over time, by bot type"><div className="cs-demo xp-hero">
-    <NativeStage width={2250} height={1500} crop={{ x: 91.67, y: 0, width: 2066.67, height: 1500 }}>
+    <NativeStage width={2250} height={1500} crop={phone ? { x: 490, y: 100, width: 1270, height: 1400 } : { x: 91.67, y: 0, width: 2066.67, height: 1500 }}>
       <div className="xp-card" style={{ left: 536, top: 136, width: 1178, '--x-card-ring': '26.67px', '--x-card-radius': '40px' } as CSSProperties}>
         <BotSignalsCard bars={botSignalBars} grow={scene.step} count={23} span={[58.19, 287.52]} style={{ left: 0, top: 0, boxShadow: 'none', background: 'transparent', transform: 'scale(3.8241)', transformOrigin: 'top left' }} />
       </div>

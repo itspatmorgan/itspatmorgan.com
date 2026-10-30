@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { NativeStage } from '../case-study/NativeStage';
 import { T, Tag, Bars, BotSignalsCard, CardHeader, Axis, ButtonGroup } from './ExpansionUI';
-import { DemoFrame, useScene } from '../case-study/scene';
+import { DemoFrame, usePhone, useScene } from '../case-study/scene';
 import { barColors, botSignalBars, badBotBars, botScoreBars } from './figma-bars';
 
 // Frame 400: six dashboard cards in a 3 × 2 grid. Card-relative positions from the source; cards are 308 units wide.
@@ -47,8 +47,10 @@ const captions = ['Ready-made dashboards for bot activity', 'Ready-made dashboar
 export default function Dashboards() {
   const scene = useScene(timings, captions, { loop: false });
   const grow = scene.step;
+  // A phone crops to the Bot Signals dashboard, with its neighbors at either edge.
+  const phone = usePhone();
   return <DemoFrame scene={scene} caption={false} stage="xp-frame" title="the dashboards" label="Bot dashboards: bot signal trends, bot signals by type, bad bots, bot score trends, bot score, and bot versus non-bot traffic"><div className="cs-demo xp-dashboards">
-    <NativeStage width={1240} height={900}>
+    <NativeStage width={1240} height={900} crop={phone ? { x: 408, y: 90, width: 420, height: 500 } : undefined}>
       <div className="xp-card is-bare">
         {card(col[0], row[0], 463.79, <>
           <CardHeader title="Bot Signal Trends" subtitle="Bot signal activity compared to previous period" wrap={266.98} />

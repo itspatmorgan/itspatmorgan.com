@@ -1,5 +1,5 @@
 import { NativeStage } from '../case-study/NativeStage';
-import { DemoFrame, useScene } from '../case-study/scene';
+import { DemoFrame, usePhone, useScene } from '../case-study/scene';
 
 // The deck's "Defense Kits" diagram: the same three pieces, regrouped for each use case. No ship status.
 const kits = ['Bot Kit', 'API Security Kit', 'OWASP Attack Kit'];
@@ -11,8 +11,9 @@ const captions = ['A Bot Kit from Signals, rules and dashboards', 'A Bot Kit fro
 export default function Kits() {
   const scene = useScene(timings, captions, { loop: false });
   const built = scene.step;
+  const phone = usePhone();
   return <DemoFrame scene={scene} caption={false} stage="xp-frame" title="the kits" label="Bot, API Security, and OWASP Attack kits, each made of Signals, Rules and Alerts, and Dashboards"><div className="cs-demo xp-kits">
-    <NativeStage width={960} height={697}>
+    <NativeStage width={960} height={697} crop={phone ? { x: 160, y: 90, width: 620, height: 520 } : undefined}>
       <div className="xp-kits">{kits.map((kit, k) => <div key={kit} className={`xp-fade ${k < built ? '' : 'xp-dim'}`}>
         <span className="xp-kitname">{kit}</span>
         <div className="xp-kitrow">{pieces.map((piece, i) => <span key={piece} style={{ display: 'contents' }}>{i > 0 && <b aria-hidden="true">+</b>}<span>{piece}</span></span>)}</div>

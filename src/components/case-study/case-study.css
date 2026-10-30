@@ -37,6 +37,16 @@
   .cs-brief dd { white-space: normal; text-wrap: balance; }
 }
 
+/* On phones only, under the brief: why the demos are cropped, and a way to send the page somewhere larger. */
+.cs-phone-note { display: none; }
+@media (max-width: 640px) {
+  .cs-phone-note { display: grid; justify-items: center; gap: 14px; max-width: 34em; margin: 36px auto 0; }
+  .cs-phone-note p { font-size: 14px; line-height: 1.5; letter-spacing: -.005em; color: var(--muted-foreground); text-wrap: pretty; }
+  .cs-share { display: inline-flex; align-items: center; gap: 7px; height: 32px; padding: 0 14px; border: 1px solid var(--border); border-radius: 999px; background: var(--background); color: var(--foreground); font: 500 13px/1 inherit; cursor: pointer; transition: transform 150ms cubic-bezier(.23, 1, .32, 1), background 150ms ease; }
+  .cs-share:active { transform: scale(.96); }
+  .cs-hero > .cs-phone-note + .cs-stage, .cs-hero > .cs-phone-note + * .cs-scene { margin-top: 40px; }
+}
+
 /* Stage: the site texture surface; the source UI floats on it as a product shot. Capped so the panel hugs its window on wide screens. */
 .cs-stage { position: relative; max-width: 960px; margin: 0 auto; text-align: left; padding: clamp(16px, 4.5vw, 64px); border-radius: 16px; }
 /* One window size across slides, so the sequence reads like a deck. */
@@ -48,6 +58,12 @@
 .cs-native-stage { position: relative; width: 100%; overflow: clip; border-radius: 0; transition: opacity 240ms ease; }
 .cs-loop-reset .cs-native-stage { opacity: 0; transition-duration: 180ms; }
 .cs-canvas { position: absolute; top: 0; left: 0; transform-origin: top left; }
+/* A cropped stage (a phone's view of a desktop frame) eases from one crop to the next, and fades at its edges, where the screen goes on. On desktop, a crop only trims a frame's margins. */
+@media (max-width: 640px) {
+  astro-island[ssr] .cs-canvas { visibility: hidden; }
+  .cs-native-stage.is-panning .cs-canvas { transition: transform 900ms cubic-bezier(.65, 0, .35, 1); }
+  .cs-native-stage.is-cropped { --fade: linear-gradient(to right, transparent, #000 24px, #000 calc(100% - 32px), transparent), linear-gradient(to bottom, #000 calc(100% - 48px), transparent); -webkit-mask-image: var(--fade); -webkit-mask-composite: source-in; mask-image: var(--fade); mask-composite: intersect; }
+}
 .cs-native button, .cs-native input { font: inherit; letter-spacing: inherit; color: inherit; }
 .cs-native button { border: 0; background: transparent; cursor: pointer; }
 .cs-native h4, .cs-native p, .cs-native ul { margin: 0; padding: 0; font-family: inherit; }.cs-native ul { list-style: none; }
@@ -61,11 +77,11 @@
 .cs-page .cs-frame.is-wide { max-width: 1184px; }
 /* The shell holds the card and its ring, and fades both out toward the stage's bottom edge, so a crop reads as a bleed. */
 .cs-shell { position: absolute; bottom: 0; -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 120px), transparent 100%); mask-image: linear-gradient(to bottom, #000 calc(100% - 120px), transparent 100%); }
-@media (max-width: 640px) { .cs-frame:not(.is-ready) .cs-shell { visibility: hidden; } }
+/* On a phone the scene crops to one part of the stage: reserve the crop's height before the scene runs, and keep the card hidden until it has cropped. */
+@media (max-width: 640px) { .cs-frame .cs-native-stage { aspect-ratio: 1 / 1.15 !important; } .cs-frame:not(.is-ready) .cs-shell { visibility: hidden; } }
 .cs-shell.is-contained { -webkit-mask-image: none; mask-image: none; }
 .cs-shell.is-contained .cs-card { border-radius: 24px; }
 .cs-card { position: relative; height: 100%; overflow: hidden; background: var(--cs-card); border-radius: 24px 24px 0 0; box-shadow: 0 0 0 16px var(--cs-ring), var(--cs-drop); }
-@media (max-width: 640px) { .cs-card { border-radius: 18px 18px 0 0; box-shadow: 0 0 0 10px var(--cs-ring), var(--cs-drop); } .cs-shell { -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 90px), transparent 100%); mask-image: linear-gradient(to bottom, #000 calc(100% - 90px), transparent 100%); } }
 
 /* Under each stage: the chapter's caption on the left, a segment per chapter and the play button on the right. */
 .cs-tour { display: flex; align-items: flex-start; justify-content: space-between; gap: 32px; max-width: 1184px; margin: 18px auto 0; padding: 0 4px; text-align: left; }

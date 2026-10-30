@@ -1,6 +1,6 @@
 import { useLayoutEffect, useState, type CSSProperties, type ReactNode } from 'react';
 import { NativeStage } from '../case-study/NativeStage';
-import { DemoFrame, useScene } from '../case-study/scene';
+import { DemoFrame, usePhone, useScene } from '../case-study/scene';
 
 // The Agent Processing section as one live diagram: the source's twelve 1920 × 1500 frames (001–005, 100–102, 200–202, 000)
 // become steps, and each element moves, stretches or fades between its positions in those frames.
@@ -75,8 +75,10 @@ export default function AgentFlow() {
   const phases = s.agent >= 2, full = s.agent === 3;
   // Connector ends from the source: they meet the message boxes before the agent exists, and the agent after.
   const inEnd = wide ? 833 : 650, outStart = wide ? 1090 : 1263;
+  // A phone crops to the agent and its two collectors; the client and server sit just off either edge.
+  const phone = usePhone();
   return <DemoFrame scene={scene} caption={false} stage="xp-frame" title="the agent processing flow" label="The Signal Sciences agent processing flow: requests and responses pass through the agent's pre and post phases, and collectors send data to the cloud"><div className="cs-demo xp-agent-flow">
-    <NativeStage width={1240} height={900}><div className="xp-card"><div className="xp-agent-fit">
+    <NativeStage width={1240} height={900} crop={phone ? { x: 285, y: 110, width: 650, height: 730 } : undefined}><div className="xp-card"><div className="xp-agent-fit">
       <div className={`xp-agent xp-live ${jump ? 'is-jump' : ''}`}>
         {titles.map((t, i) => titles.indexOf(t) === i && <div key={i} className="xp-script" style={show(titles[scene.step] === t, { fontWeight: states[t].bold ? 700 : 400 })} aria-hidden={titles[scene.step] !== t}>{states[t].title}</div>)}
 

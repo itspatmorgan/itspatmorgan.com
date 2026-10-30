@@ -1,5 +1,4 @@
 import { ART } from './SublimeUI';
-import { useNarrowLayout } from '../case-study/scene';
 
 // The Agents hub (patrick/mttc agents-hub.jsx, AgentCard): "Your Agentic Teammates" with the two fluid agent cards, 529px tall, splitting
 // the row evenly as in the MTTC hub. Art offsets are the source's, measured from a card's right edge and moved left by each card's `nudge`.
@@ -12,14 +11,12 @@ const agents = [
 
 /** The hub: heading and the two agent cards; `hover` names the card under the pointer. */
 export function AgentsHub({ hover, pressed = false }: { hover?: string | null; pressed?: boolean }) {
-  // Liberty taken: on a phone the two cards stack.
-  const narrow = useNarrowLayout();
-  return <div style={{ display: 'grid', gap: narrow ? 24 : 32, padding: narrow ? '20px 16px 32px' : '28px 28px 32px' }}>
+  return <div style={{ display: 'grid', gap: 32, padding: '28px 28px 32px' }}>
     <div>
       <p className="sb-h">Your Agentic Teammates</p>
       <p className="sb-body" style={{ fontWeight: 500 }}>AI teammates that work alongside you to protect your organization.</p>
     </div>
-    <div style={{ display: 'grid', gridTemplateColumns: narrow ? 'minmax(0, 1fr)' : '1fr 1fr', gap: narrow ? 16 : 24 }}>
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
       {agents.map(agent => {
         const on = hover === agent.id;
         return <div key={agent.id} className={`sb-agent ${on ? 'is-hover' : ''} ${on && pressed ? 'is-pressed' : ''}`} data-target={`card-${agent.id}`} data-frame={`card-${agent.id}`}>
@@ -30,7 +27,7 @@ export function AgentsHub({ hover, pressed = false }: { hover?: string | null; p
           </div>
           <div style={{ position: 'absolute', left: 29, right: 29, bottom: 29, display: 'grid', gap: 26 }}>
             <div><p className="sb-h">{agent.role}</p><p className="sb-body" style={{ marginTop: 4, fontWeight: 500 }}>{agent.description}</p></div>
-            <div style={{ display: 'flex', gap: narrow ? 28 : 54 }}>{agent.stats.map(([value, label]) => <div key={label}><p className="sb-agent-stat">{value}</p><p className="sb-agent-caption" style={{ marginTop: 0 }}>{label}</p></div>)}</div>
+            <div style={{ display: 'flex', gap: 54 }}>{agent.stats.map(([value, label]) => <div key={label}><p className="sb-agent-stat">{value}</p><p className="sb-agent-caption" style={{ marginTop: 0 }}>{label}</p></div>)}</div>
           </div>
         </div>;
       })}

@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { NativeBuilder } from './NativeUI';
 import { NativeStage } from '../case-study/NativeStage';
-import { DemoFrame, useScene } from '../case-study/scene';
+import { DemoFrame, usePhone, useScene } from '../case-study/scene';
 
 function Kw({ children }: { children: string }) { return <span className="q-code-keyword">{children}</span>; }
 function Arrow({ children }: { children: string }) { return <span className="q-code-arrow">{children}</span>; }
@@ -17,11 +17,13 @@ const captions = ['The query written in J1QL', 'The same query as builder contro
 export default function QueryBuilderDemo() {
   const scene = useScene(timings, captions);
   const view = scene.step;
+  // A phone crops to the query, at a size it can read.
+  const phone = usePhone();
   return <DemoFrame scene={scene} caption={false} title="the query translation" label="The same query as J1QL and as visual controls"><div className="cs-demo qb-query-demo qb-query-toggle" data-view={views[view]}>
     <div className="qb-view-toggle" role="group" aria-label="Query view">
       {views.map((label, i) => <button type="button" key={label} aria-pressed={view === i} onClick={() => scene.choose(i)}>{label}</button>)}
     </div>
-    <div className="qb-query-stage"><NativeStage width={960} height={600}>
+    <div className="qb-query-stage"><NativeStage width={960} height={600} crop={phone ? { x: 190, y: 20, width: 520, height: 560 } : undefined}>
       <div className="q-toggle-canvas">
         <div className="q-toggle-view q-toggle-code" data-active={view === 0} aria-hidden={view !== 0}><code>
           <Clause part="0"><Kw>FIND</Kw> DataStore</Clause>

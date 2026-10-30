@@ -1,5 +1,5 @@
 import { Accepted, HuntEntry, JobHeading, Page, Recommendation, TimelineItem, Triggered, Worked, job } from './SublimeUI';
-import { Camera, Pointer, SceneFrame, frame, useNarrowLayout, useScene, useShot, useStage, useTargets } from '../case-study/scene';
+import { Camera, HOME, Pointer, SceneFrame, onCard, useScene, useStage, useTargets } from '../case-study/scene';
 
 // The ADÉ job page (patrick/ade-workflow ade/ade-job-completed-review, AdeJobTimeline and JobCompletedCard): ADÉ's recommended rule
 // waits for review, and accepting it runs through the product's Accept Recommendation modal. Copy is the source's; dates are its sample data.
@@ -11,9 +11,8 @@ const captions = [
 ];
 
 function AcceptModal({ open, pressed }: { open: boolean; pressed: boolean }) {
-  const narrow = useNarrowLayout();
-  return <div className={`sb-scrim ${open ? '' : 'is-out'}`} style={narrow ? { paddingTop: 180 } : undefined}>
-    <div className="sb-modal" style={narrow ? { width: 368 } : undefined}>
+  return <div className={`sb-scrim ${open ? '' : 'is-out'}`}>
+    <div className="sb-modal" data-frame="modal">
       <p style={{ padding: '16px 20px', fontSize: 16, fontWeight: 600, borderBottom: '1px solid var(--sb-border)' }}>Accept Recommendation</p>
       <div style={{ display: 'grid', gap: 20, padding: '20px' }} className="sb-body">
         <p>This will create the recommended detection rule and apply an Auto-Quarantine action. You’ll be able to edit the Rule at any time after it’s created.</p>
@@ -29,21 +28,19 @@ export default function JobReview() {
   const scene = useScene(timings, captions);
   const stage = useStage({ wide: 1000 });
   const step = scene.step;
-  const t = useTargets(step, stage.narrow);
+  const t = useTargets(step);
   const accepted = step === 5;
   const modal = step === 3 || step === 4;
-  const narrow = stage.narrow;
-  // The whole recommendation fits a laptop frame, so the camera stays put there. On a phone it opens on the recommendation, then returns
-  // to the top of the timeline for the accepted rule.
-  const shot = narrow && step < 5 ? 'rec' : null;
-  const view = useShot(shot, shot ? frame(t.rect(shot), { ...stage.box, bottom: t.height }, { scale: 1, pad: 16, y: 'start' }) : null);
+  // The whole recommendation fits a laptop frame, so the camera stays put. A phone crops to the recommendation's header, then to its
+  // buttons, the confirmation, and the accepted rule at the top of the timeline.
+  const focus = step === 0 ? onCard(t.rect('rec-head'), HOME) : step < 3 ? onCard(t.rect('rec-head'), HOME, 'end') : modal ? onCard(t.rect('modal'), HOME, 'end') : onCard(t.rect('accepted'), HOME);
   const pointer = step === 1 || step === 2 ? { key: 'accept', pressing: step === 2 } : modal ? { key: 'activate', pressing: step === 4 } : null;
-  return <SceneFrame scene={scene} stage={stage} title="the rule review" label="An ADÉ job page: the recommendation shows the rule's name, severity, description, labels, action and MQL. Accept opens a confirmation, then the rule is accepted and activated">
-    <Camera view={view} width={stage.W} height={stage.box.height} cameraRef={t.ref} reduced={scene.reduced}>
-      <Page crumbs={['Agents', 'ADÉ', job.subject]} style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr)', gap: narrow ? 24 : 36, padding: narrow ? '24px 16px 40px' : '36px 40px 48px' }}>
+  return <SceneFrame scene={scene} stage={stage} focus={focus} title="the rule review" label="An ADÉ job page: the recommendation shows the rule's name, severity, description, labels, action and MQL. Accept opens a confirmation, then the rule is accepted and activated">
+    <Camera view={HOME} width={stage.W} height={stage.box.height} cameraRef={t.ref} reduced={scene.reduced}>
+      <Page crumbs={['Agents', 'ADÉ', job.subject]} style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr)', gap: 36, padding: '36px 40px 48px' }}>
         <JobHeading />
         <div className="sb-timeline">
-          <TimelineItem open={accepted} icon="check" tone="success"><Accepted by="Patrick Morgan" /></TimelineItem>
+          <TimelineItem open={accepted} icon="check" tone="success"><div data-frame="accepted"><Accepted by="Patrick Morgan" /></div></TimelineItem>
           <TimelineItem icon="shield" tone={accepted ? undefined : 'active'}><div data-frame="rec"><Recommendation actions={!accepted} pressed={step === 2} /></div></TimelineItem>
           <TimelineItem icon="hunt"><HuntEntry /></TimelineItem>
           <TimelineItem icon="clipboard"><Worked /></TimelineItem>
