@@ -18,14 +18,23 @@ Three reference implementations exist:
 - Expansion: `src/pages/work/expansion.astro` with screens rebuilt from Figma in
   `src/components/expansion/`
 - Sublime agents: `src/pages/work/sublime-agents.astro` with screens rebuilt
-  from prototype code in `src/components/sublime/`. Its scene plumbing
-  (`scene.tsx`: `useScene`, `SceneFrame`, `SceneTour`, `Camera`, `Pointer`,
-  `Expand`) is the most current pattern for animated demos.
-- Shared layout and rhythm: `src/components/case-study/case-study.css`
-- Shared demo plumbing in `src/components/case-study/`: `NativeStage`,
-  `DemoControls` and `DemoCursor` (`NativeStage.tsx`), `useDemoLoop.ts` and
-  `useRevealOnce.ts`. Stage and playback styles still live in
-  `query-builder.css`, which every case-study page imports.
+  from prototype code in `src/components/sublime/`. Its scenes are the most
+  current pattern for animated demos.
+- Page shell: `src/layouts/CaseStudyLayout.astro` (nav, hero, brief, and a
+  `hero` slot for the hero visual) and `src/components/case-study/Slide.astro`
+  (headline, one line, visual). A page is the layout plus one `Slide` per point.
+- Shared layout, rhythm, demo and scene styles:
+  `src/components/case-study/case-study.css`, under `cs-` class names.
+- Shared demo plumbing in `src/components/case-study/`: `NativeStage` and
+  `DemoCursor` (`NativeStage.tsx`), `useDemoLoop.ts`, and the scene system in
+  `scene.tsx`: `useScene` for playback; `SceneFrame` (a screen in the Sublime
+  card that bleeds off the stage) or `DemoFrame` (a demo on the plain stage,
+  as in Query Builder and Expansion), both with `SceneTour` under the stage;
+  and `Camera`, `Pointer`, `Zoom`, `Expand`, `Screens`, `CountUp`, `Typing`.
+- Each product keeps its own stylesheet and namespace class (`qb-*`, `xp`,
+  `sb`), passed to the layout as `product`. It sets its type, color and surface
+  on `.cs-native` and `.cs-native-stage`, and a scene's card surface through
+  `--cs-card`, `--cs-ring` and `--cs-drop`.
 
 Reuse these patterns before inventing new ones.
 
@@ -191,12 +200,12 @@ still don't land after a round or two, cut it; the story can take it back later.
 
 ### 6. Set the motion
 
-- Loop only the visuals that explain a process (Expansion's agent flow and
-  Signals sequence). Everything else plays once on scroll and holds
-  (`useDemoLoop(..., once = true)` or `useRevealOnce`).
+- Every demo runs on `useScene(timings, captions, { loop })` inside
+  `SceneFrame` or `DemoFrame`. It starts when it scrolls into view.
 - A flow's last screen rarely tells the whole story, so a process scene cycles
-  rather than stopping on its end state (the Sublime scenes: `useScene`). Hold
-  only a scene whose end state is the slide's point, such as a metric.
+  rather than stopping on its end state (the default). Hold (`loop: false`,
+  which shows Replay) only a scene whose end state is the slide's point: a
+  metric, a chart drawing in, a diagram that builds to its answer.
 - Looping demos start on a complete frame. Under reduced motion, every demo
   shows its final frame without animating.
 - On a loop restart, fade out, jump to the first frame with transitions off,
@@ -205,14 +214,20 @@ still don't land after a round or two, cut it; the story can take it back later.
   (the card) still and fade only its content.
 - Prefer one live diagram whose elements move between states over crossfading
   whole frames.
-- Give each animated demo a tour under its stage (the Sublime `SceneTour` in
-  `src/components/sublime/scene.tsx`): a visible caption naming what the
+- Give each animated demo a tour under its stage (`SceneTour` in
+  `src/components/case-study/scene.tsx`): a visible caption naming what the
   current step shows, one segment per step that fills as it plays and jumps to
   that step when clicked, and a Pause/Play button (Replay on a demo that holds
   its end). Steps that share a caption form one segment. Write captions as
-  plain statements, one line at desktop width. This is the standard for every
-  case study; Query Builder and Expansion still use the older corner button
-  (`DemoControls`) until they move over.
+  plain statements, one line at desktop width, no trailing period. This is the
+  only playback pattern, on every case study, hero included.
+- Show a caption only when it names something the picture and the slide's
+  copy don't already say (a step in a product flow, the intent behind a
+  screen). When the demo explains itself (a two-step loop, a diagram with its
+  own titles, a chart drawing in), pass `caption={false}`: the segments and
+  button sit alone at the right, and the captions still name each segment for
+  screen readers. Of the first 20 demos, 11 kept captions: the Sublime flows,
+  the three Query Builder flows, the rule editor and the signal chain.
 - Tune timing until there are no dead pauses.
 - Each step changes one thing. When several things change at once, the
   in-between frames look broken even if the end state is right.
@@ -228,6 +243,32 @@ Camera and pointer scenes (zooms, pans, a cursor that clicks):
   the frame flip, as the product does.
 - Direct attention with the camera, never with highlight rings or outlines that
   could pass for UI.
+
+### Phones
+
+Phones (640px and below) show each demo's whole desktop frame at its desktop
+proportions, small. Patrick rejected crops that change the aspect ratio
+(2026-10-30): at rest, a phone must see everything. Never lay a screen out again
+for a phone, because that shows a product that never shipped. No phone-only
+note or Share button: Patrick had one removed (2026-10-30).
+
+- Closer looks keep the frame's proportions and zoom in by `PHONE_ZOOM` (1.6).
+  When the step's subject is wider than that (a button and the dialog it opens,
+  a row of fields with their labels), ease off with a focus `zoom` (1.2 to 1.3)
+  or `zoomCrop`'s `zoom` argument. Patrick's rule (2026-10-30): the gist matters
+  more than detail, and no zoom beats a wrong one. A crop must never cut the
+  step's key fact (a headline metric, a title, the field a value belongs to).
+- Hold one view per chapter rather than chasing the pointer step by step, and
+  end a scene on the whole frame when its last chapter sums up the page.
+- Scene card (`SceneFrame`): step 0 and reduced motion always show the whole
+  stage. Pass a `focus` for the later steps, usually
+  `onCard(t.rect(key), view)` with the alignment `'start'`, `'center'` (for a
+  pointer target) or `'end'` (for buttons at a row's right).
+- Plain stage (`DemoFrame`): no crop by default. When a step needs a closer
+  look, pass `NativeStage` the result of `zoomCrop(width, height, at)`. Pass
+  `null` as `at` for the other steps, so the view eases in and out.
+- Check every step at 390px: the first frame is whole, and each zoom keeps
+  the step's subject in view.
 
 ### 7. Lay out the page
 
@@ -301,6 +342,10 @@ On Patrick's go-ahead:
 
 ## Gotchas
 
+- A page imports `case-study.css` first, then its product's stylesheet, so
+  product rules win over the shared ones at equal specificity. Don't import a
+  product stylesheet from inside a component: production puts component CSS
+  ahead of page CSS, which flips that order.
 - After installing dependencies or restarting work, the dev server can serve a
   stale render (hydration mismatches, old styles). Touch the changed files, or
   stop and restart the server with `pnpm astro dev stop`.

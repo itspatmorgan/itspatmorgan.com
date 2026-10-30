@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { SourceIcon } from './NativeUI';
-import { NativeStage, DemoControls } from '../case-study/NativeStage';
-import { useDemoLoop } from '../case-study/useDemoLoop';
+import { NativeStage } from '../case-study/NativeStage';
+import { DemoFrame, useScene } from '../case-study/scene';
 
 // A plain-language question, then its J1QL translation one clause at a time; each clause lights the words it came from.
 const segments: { text: string; clause?: number }[] = [
@@ -24,13 +24,15 @@ for (let i = 1; i <= question.length; i++) frames.push({ typed: i, shown: 0, act
 for (let c = 0; c < clauses.length; c++) frames.push({ typed: question.length, shown: c + 1, active: c, ms: 1500 });
 frames.push({ typed: question.length, shown: clauses.length, active: -1, ms: 3200 });
 const durations = frames.map(f => f.ms);
+const clauseCaptions = ['“Data stores” becomes what to find', '“Production” becomes a property filter', '“Access policies that allow them” becomes a relationship'];
+const captions = frames.map(f => (f.active >= 0 ? clauseCaptions[f.active] : f.shown ? 'The question and its whole query' : 'A question in plain language'));
 
 /** Today's entry point: natural language in, the query language out, taught through the translation. */
 export default function QueryNaturalLanguage() {
-  const loop = useDemoLoop(durations, frames.length - 1);
-  const { typed, shown, active } = frames[loop.step];
+  const scene = useScene(durations, captions);
+  const { typed, shown, active } = frames[scene.step];
   const complete = typed === question.length;
-  return <figure className={`qb-demo qb-nl ${loop.resetting ? 'qb-loop-reset' : ''}`} ref={loop.ref} aria-label="A plain-language question translated into J1QL">
+  return <DemoFrame scene={scene} caption={false} title="the translation" label="A plain-language question translated into J1QL"><div className="cs-demo qb-nl">
     <div className="qb-film-stage"><NativeStage width={960} height={400}>
       <div className="q-nl-canvas">
         <div className="q-blank-field q-nl-field">
@@ -44,6 +46,5 @@ export default function QueryNaturalLanguage() {
         </div>
       </div>
     </NativeStage></div>
-    <DemoControls loop={loop} title="natural language translation" caption={shown ? `Clause ${shown} of ${clauses.length}` : 'Typing a question'} />
-  </figure>;
+  </div></DemoFrame>;
 }

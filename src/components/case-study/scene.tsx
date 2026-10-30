@@ -2,11 +2,10 @@ import { createContext, useContext, useEffect, useLayoutEffect, useRef, useState
 import { AnimatePresence, animate, motion, useMotionValue, useTransform, type MotionValue } from 'motion/react';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { ArrowReloadHorizontalIcon, Cursor01Icon, PauseIcon, PlayIcon } from '@hugeicons/core-free-icons';
-import { useDemoLoop } from '../case-study/useDemoLoop';
-import { NativeStage } from '../case-study/NativeStage';
-import { Zoom } from './SublimeUI';
+import { useDemoLoop } from './useDemoLoop';
+import { NativeStage, PHONE_ZOOM } from './NativeStage';
 
-// Scene plumbing for the Sublime screens. A scene starts when it scrolls into view. By default it cycles: the last step holds for its
+// Scene plumbing for case-study demos, first built for the Sublime screens. A scene starts when it scrolls into view. By default it cycles: the last step holds for its
 // time, then the frame fades out and the scene starts again from its first frame, since a flow's last screen rarely tells the whole
 // story. A scene whose end state is the point (`loop: false`) plays once and holds it, with Replay. Reduced motion lands on the last frame.
 
@@ -46,85 +45,128 @@ export function useScene(timings: readonly number[], captions: readonly string[]
 }
 export type Scene = ReturnType<typeof useScene>;
 
-/** Whether the page is phone-sized. Scenes then lay the product out in one narrow column, so its text stays readable. */
-export function useNarrow() {
-  const [narrow, setNarrow] = useState(false);
-  useEffect(() => {
+const useIsomorphicLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect;
+/** Whether the page is phone-sized. Demos keep their desktop layout and proportions there, shown whole, and zoom in a little on the
+ *  steps that need a closer look. */
+export function usePhone() {
+  const [phone, setPhone] = useState(false);
+  // Set before the first paint after hydration, so a phone never sees the uncropped frame.
+  useIsomorphicLayoutEffect(() => {
     const media = window.matchMedia('(max-width: 640px)');
-    const update = () => setNarrow(media.matches);
+    const update = () => setPhone(media.matches);
     update();
     media.addEventListener('change', update);
     return () => media.removeEventListener('change', update);
   }, []);
-  return narrow;
+  return phone;
 }
-const NarrowLayout = createContext(false);
-/** Inside a stage: true when the product is laid out for a phone. */
-export const useNarrowLayout = () => useContext(NarrowLayout);
 
-/** Stage geometry, in stage pixels. Wide: a 1240 px stage with the card inset 64 px, so a 1000 px screen renders at about its true size
- *  on a laptop. Narrow: a 600 px stage with the card inset 20 px, holding a 400 px product layout. The card bleeds off the stage's
- *  bottom edge, as a page that goes on; a `contained` screen that ends sits whole inside the stage instead (wide only). */
-export function useStage({ wide, narrow: narrowWidth = 400, height = 760, contained = false }: { wide: number; narrow?: number; height?: number; contained?: boolean }) {
-  const narrow = useNarrow();
-  const g = narrow ? { width: 600, height: 780, inset: 20, top: 24, ring: 10, bottom: 0 } : { width: 1240, height, inset: 64, top: 64, ring: 16, bottom: contained ? 64 : 0 };
+/** Lays out children at `width` source pixels and scales them to fill `to` frame pixels. */
+export function Zoom({ width, to = 1020, children, style, zoomRef }: { width: number; to?: number; children: ReactNode; style?: CSSProperties; zoomRef?: RefObject<HTMLDivElement | null> }) {
+  return <div className="cs-zoom" ref={zoomRef} style={{ width, transform: `scale(${to / width})`, ...style }}>{children}</div>;
+}
+
+/** Stage geometry, in stage pixels: a 1240 px stage with the card inset 64 px, so a 1000 px screen renders at about its true size on a
+ *  laptop. The card bleeds off the stage's bottom edge, as a page that goes on; a `contained` screen that ends sits whole inside the
+ *  stage instead. Phones get the same stage (see `phoneCrop`). */
+export function useStage({ wide, height = 760, contained = false }: { wide: number; height?: number; contained?: boolean }) {
+  const phone = usePhone();
+  const g = { width: 1240, height, inset: 64, top: 64, ring: 16, bottom: contained ? 64 : 0 };
   const card = g.width - g.inset * 2;
-  const W = narrow ? narrowWidth : wide;
-  return { narrow, W, g, card, box: { width: W, height: (g.height - g.top - g.bottom) * W / card } };
+  return { phone, W: wide, g, card, box: { width: wide, height: (g.height - g.top - g.bottom) * wide / card } };
 }
 export type Stage = ReturnType<typeof useStage>;
 
-/** A scene: the stage, with the product card bleeding off its bottom edge and fading out, then the chapter captions and progress. */
-export function SceneFrame({ scene, stage, label, title, size = 'wide', controls = true, children }: { scene: Scene; stage: Stage; label: string; title: string; size?: 'wide' | 'normal'; controls?: boolean; children: ReactNode }) {
+/** What a phone zooms to: a point or rect in source pixels as the card shows them, set at the zoomed frame's left edge, center or right
+ *  edge (a little room either side). A rect's top sits near the frame's top; a centered point sits a little above its middle. `zoom`
+ *  eases off PHONE_ZOOM when the step's subject is wider than a closer look allows. */
+export type Focus = { x: number; y: number; w?: number; align?: 'start' | 'center' | 'end'; zoom?: number };
+/** A phone's view of a stage: the whole stage at its desktop proportions, or with a `focus`, zoomed in (PHONE_ZOOM unless the focus
+ *  says otherwise), same proportions. */
+export function phoneCrop(focus: Focus | null, { g, card, W }: Stage) {
+  if (!focus) return { x: 0, y: 0, width: g.width, height: g.height };
+  const zoom = focus.zoom ?? PHONE_ZOOM;
+  const k = card / W, width = g.width / zoom, height = g.height / zoom, span = width / k;
+  const { x, y, w = 0, align = 'start' } = focus;
+  const room = 24 / k;
+  const left = align === 'start' ? x - room : align === 'end' ? x + w + room - span : x + w / 2 - span / 2;
+  const top = align === 'center' ? y - height / k * .4 : y - room;
+  const clamp = (v: number, hi: number) => Math.round(Math.min(Math.max(0, v), hi));
+  return { x: clamp(g.inset + left * k, g.width - width), y: clamp(g.top + top * k, g.height - height), width, height };
+}
+/** The focus for a measured rect (or point) once the camera is at `view`. */
+export function onCard(r: { x: number; y: number; w?: number } | null, view: View, align: Focus['align'] = 'start', zoom?: number): Focus | null {
+  return r && { x: (r.x - view.x) * view.s, y: (r.y - view.y) * view.s, w: (r.w ?? 0) * view.s, align, zoom };
+}
+
+/** A scene: the stage, with the product card bleeding off its bottom edge and fading out, then the chapter captions and progress. On a
+ *  phone the first step shows the whole stage; later steps zoom to `focus` (see `phoneCrop`), and the view eases between them. Reduced
+ *  motion keeps the whole stage. */
+export function SceneFrame({ scene, stage, label, title, size = 'wide', controls = true, focus = null, children }: { scene: Scene; stage: Stage; label: string; title: string; size?: 'wide' | 'normal'; controls?: boolean; focus?: Focus | null; children: ReactNode }) {
   const { g, card } = stage;
-  // The server renders the wide layout; on a phone the stage stays hidden until it has laid itself out for the phone.
-  const [ready, setReady] = useState(false);
-  useEffect(() => setReady(true), []);
-  return <figure className={`sb-scene ${scene.fade ? 'qb-loop-reset' : ''}`} ref={scene.ref as RefObject<HTMLElement>} aria-label={label}>
-    <div className={`qb-stage texture-bg sb-frame is-${size} ${ready ? 'is-ready' : ''}`}>
-      <NarrowLayout.Provider value={stage.narrow}>
-        <NativeStage width={g.width} height={g.height}>
-          <div className={`sb-shell ${g.bottom ? 'is-contained' : ''}`} style={{ left: g.inset - g.ring, top: g.top - g.ring, bottom: g.bottom ? g.bottom - g.ring : 0, width: card + g.ring * 2, padding: g.bottom ? g.ring : `${g.ring}px ${g.ring}px 0` }}>
-            <div className="sb-card">
-              <Zoom key={`${scene.take}-${stage.narrow}`} width={stage.W} to={card}>{children}</Zoom>
-            </div>
+  return <figure className={`cs-scene ${scene.fade ? 'cs-loop-reset' : ''}`} ref={scene.ref as RefObject<HTMLElement>} aria-label={label}>
+    <div className={`cs-stage texture-bg cs-frame is-${size}`}>
+      <NativeStage width={g.width} height={g.height} crop={stage.phone ? phoneCrop(scene.step > 0 && !scene.reduced ? focus : null, stage) : undefined}>
+        <div className={`cs-shell ${g.bottom ? 'is-contained' : ''}`} style={{ left: g.inset - g.ring, top: g.top - g.ring, bottom: g.bottom ? g.bottom - g.ring : 0, width: card + g.ring * 2, padding: g.bottom ? g.ring : `${g.ring}px ${g.ring}px 0` }}>
+          <div className="cs-card">
+            <Zoom key={scene.take} width={stage.W} to={card}>{children}</Zoom>
           </div>
-        </NativeStage>
-      </NarrowLayout.Provider>
+        </div>
+      </NativeStage>
     </div>
     {controls ? <SceneTour scene={scene} title={title} /> : <figcaption className="sr-only">{scene.caption}</figcaption>}
   </figure>;
 }
 
+/** A scene on the plain stage: the product frame sits on the texture with the stage's own padding, and the tour runs under it. For
+ *  demos laid out by their own component (Query Builder, Expansion) rather than in the Sublime card. Each take remounts the content, so a
+ *  replay starts from its first frame instead of animating backward. */
+export function DemoFrame({ scene, label, title, stage = '', caption = true, children }: { scene: Scene; label: string; title: string; stage?: string; caption?: boolean; children: ReactNode }) {
+  return <figure className={`cs-scene ${scene.fade ? 'cs-loop-reset' : ''}`} ref={scene.ref as RefObject<HTMLElement>} aria-label={label}>
+    <div className={`cs-stage texture-bg ${stage}`} key={scene.take}>{children}</div>
+    <SceneTour scene={scene} title={title} caption={caption} />
+  </figure>;
+}
+
 /** Under the stage: what the current chapter shows, and a segment per chapter that fills as it plays. Segments jump to their chapter;
  *  the button pauses or plays, and replays a finished scene that doesn't cycle. */
-function SceneTour({ scene, title }: { scene: Scene; title: string }) {
+export function SceneTour({ scene, title, caption = true }: { scene: Scene; title: string; caption?: boolean }) {
   const finished = scene.done && !scene.reduced && !scene.cycle;
   const label = finished ? `Replay ${title}` : `${scene.playing ? 'Pause' : 'Play'} ${title}`;
   const running = scene.playing && scene.visible && !scene.reduced;
-  return <div className="sb-tour">
-    <figcaption className="sb-tour-caption" aria-live={scene.playing && !scene.done ? 'off' : 'polite'}>
+  // Without a visible caption (a demo the picture already explains), the controls sit alone at the right and the caption stays for screen readers.
+  if (!caption) return <div className="cs-tour is-quiet">
+    <figcaption className="sr-only">{scene.beats[scene.beat]?.caption}</figcaption>
+    <TourControls scene={scene} label={label} finished={finished} running={running} />
+  </div>;
+  return <div className="cs-tour">
+    <figcaption className="cs-tour-caption" aria-live={scene.playing && !scene.done ? 'off' : 'polite'}>
       <AnimatePresence mode="popLayout" initial={false}>
         <motion.span key={scene.beat} initial={{ opacity: 0, y: 4, filter: 'blur(2px)' }} animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }} exit={{ opacity: 0, y: -4, filter: 'blur(2px)' }} transition={{ duration: .26, ease: [.23, 1, .32, 1] }}>{scene.beats[scene.beat]?.caption}</motion.span>
       </AnimatePresence>
     </figcaption>
-    <div className="sb-tour-controls">
-      {scene.beats.length > 1 && <ol className="sb-beats">
-        {scene.beats.map((b, i) => <li key={i}>
-          <button type="button" className={i < scene.beat ? 'is-done' : i === scene.beat ? 'is-current' : ''} aria-current={i === scene.beat ? 'step' : undefined} aria-label={`Step ${i + 1} of ${scene.beats.length}: ${b.caption}`} onClick={() => scene.jumpTo(i)}>
-            <i key={i === scene.beat ? `${scene.cut}-${scene.take}` : 'idle'} style={i === scene.beat ? { animationDuration: `${b.duration}ms`, animationPlayState: running ? 'running' : 'paused' } : undefined} />
-          </button>
-        </li>)}
-      </ol>}
-      {!scene.reduced && <button type="button" className="sb-tour-play" aria-label={label} title={label} onClick={finished ? scene.replay : scene.toggle}>
-        <HugeiconsIcon icon={finished ? ArrowReloadHorizontalIcon : scene.playing ? PauseIcon : PlayIcon} size={14} strokeWidth={1.8} />
-      </button>}
-    </div>
+    <TourControls scene={scene} label={label} finished={finished} running={running} />
+  </div>;
+}
+
+/** The step segments (when there is more than one step) and the play, pause or replay button. */
+function TourControls({ scene, label, finished, running }: { scene: Scene; label: string; finished: boolean; running: boolean }) {
+  return <div className="cs-tour-controls">
+    {scene.beats.length > 1 && <ol className="cs-beats">
+      {scene.beats.map((b, i) => <li key={i}>
+        <button type="button" className={i < scene.beat ? 'is-done' : i === scene.beat ? 'is-current' : ''} aria-current={i === scene.beat ? 'step' : undefined} aria-label={`Step ${i + 1} of ${scene.beats.length}: ${b.caption}`} onClick={() => scene.jumpTo(i)}>
+          <i key={i === scene.beat ? `${scene.cut}-${scene.take}` : 'idle'} style={i === scene.beat ? { animationDuration: `${b.duration}ms`, animationPlayState: running ? 'running' : 'paused' } : undefined} />
+        </button>
+      </li>)}
+    </ol>}
+    {!scene.reduced && <button type="button" className="cs-tour-play" aria-label={label} title={label} onClick={finished ? scene.replay : scene.toggle}>
+      <HugeiconsIcon icon={finished ? ArrowReloadHorizontalIcon : scene.playing ? PauseIcon : PlayIcon} size={14} strokeWidth={1.8} />
+    </button>}
   </div>;
 }
 
 export type View = { x: number; y: number; s: number };
-const HOME: View = { x: 0, y: 0, s: 1 };
+export const HOME: View = { x: 0, y: 0, s: 1 };
 const CameraScale = createContext<MotionValue<number> | null>(null);
 
 /** A camera over the screen: `view` puts source point (x, y) at the frame's top left at scale `s`, for a `width` × `height` frame.
@@ -156,7 +198,7 @@ export function Camera({ view, width, height, children, cameraRef, style, reduce
     return () => controls.stop();
   }, [view.x, view.y, view.s, width, height, reduced]);
   return <CameraScale.Provider value={s}>
-    <motion.div ref={cameraRef} className="sb-camera" style={{ transform, ...style }}>{children}</motion.div>
+    <motion.div ref={cameraRef} className="cs-camera" style={{ transform, ...style }}>{children}</motion.div>
   </CameraScale.Provider>;
 }
 
@@ -244,7 +286,7 @@ export function Pointer({ at, visible, pressing = false, reduced = false }: { at
     const ax = animate(x, at!.x, glide), ay = animate(y, at!.y, glide);
     return () => { ax.stop(); ay.stop(); };
   }, [show, at?.x, at?.y]);
-  return <motion.div className="q-cursor sb-pointer" aria-hidden="true" style={{ left: 0, top: 0, x, y, opacity }}>
+  return <motion.div className="cs-cursor cs-pointer" aria-hidden="true" style={{ left: 0, top: 0, x, y, opacity }}>
     <motion.div style={{ scale: counter, transformOrigin: '4px 3px' }}>
       <motion.div initial={false} animate={{ scale: pressing ? .86 : 1 }} transition={{ type: 'spring', bounce: 0, duration: .22 }} style={{ transformOrigin: '4px 3px' }}>
         <HugeiconsIcon icon={Cursor01Icon} size={23} strokeWidth={1.7} />
@@ -296,7 +338,7 @@ export function Screens({ id, children }: { id: string; children: ReactNode }) {
   // popLayout lifts the outgoing screen out of the flow, so the two crossfade over each other and the card is never empty.
   return <AnimatePresence mode="popLayout" initial={false}>
     <motion.div key={id} initial={{ opacity: 0, y: 8, filter: 'blur(3px)' }} animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }} exit={{ opacity: 0, filter: 'blur(2px)', transition: { duration: .3, ease: [.65, 0, .35, 1] } }}
-      transition={{ duration: .45, ease: [.23, 1, .32, 1] }} style={{ background: 'var(--sb-card)' }}>{children}</motion.div>
+      transition={{ duration: .45, ease: [.23, 1, .32, 1] }} style={{ background: 'var(--cs-card)' }}>{children}</motion.div>
   </AnimatePresence>;
 }
 

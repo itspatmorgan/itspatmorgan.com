@@ -1,6 +1,6 @@
 import { Icon, JobHeading, Page, TimelineItem, TimelineTitle, Triggered, VerdictIcon, VerdictPanel, job } from './SublimeUI';
 import { useEffect, useState } from 'react';
-import { Camera, Expand, Pointer, SceneFrame, Screens, Typing, frame, useNarrowLayout, useScene, useShot, useStage, useTargets } from './scene';
+import { Camera, Expand, Pointer, SceneFrame, Screens, Typing, frame, onCard, useScene, useShot, useStage, useTargets } from '../case-study/scene';
 
 // The message detail page (patrick/ade-workflow user-reports, MessageDetailView and AdeStatusCard): ASA's verdict on a message no rule caught.
 // `gap` is the page before ADÉ: a malicious verdict over an empty Matched Detection Rules section, and the way to coverage running through
@@ -10,7 +10,7 @@ import { Camera, Expand, Pointer, SceneFrame, Screens, Typing, frame, useNarrowL
 // states are the source's. Liberties taken for the case study: ASA's red banner is a tinted head; section headings sit flat on the page
 // instead of in gray bars; Matched Detection Rules shows its empty state (the product hides the section when nothing matched); the
 // Rule Editor is drawn for the story (the archive has no Rule Editor screen; the prototypes stop at its button), as a bare MQL editor
-// with a rule begun by hand; and on phones the page stacks into one column. Message and job copy are the prototype's sample data.
+// with a rule begun by hand. Message and job copy are the prototype's sample data.
 type Variant = 'gap' | 'handoff';
 const timings: Record<Variant, number[]> = {
   gap: [2400, 700, 800, 350, 4400],
@@ -81,8 +81,7 @@ function AdeCard({ phase, pressed, viewPressed }: { phase: 'ready' | 'starting' 
 
 /** The job page while ADÉ works. */
 function JobInProgress() {
-  const narrow = useNarrowLayout();
-  return <Page crumbs={['Agents', 'ADÉ', job.subject]} style={{ display: 'grid', gap: narrow ? 28 : 40, padding: narrow ? '28px 20px 40px' : '40px 40px 48px' }}>
+  return <Page crumbs={['Agents', 'ADÉ', job.subject]} style={{ display: 'grid', gap: 40, padding: '40px 40px 48px' }}>
     <JobHeading status="running" />
     <div className="sb-timeline">
       <TimelineItem icon="spinner" tone="running">
@@ -101,25 +100,23 @@ function JobInProgress() {
 
 /** The Rule Editor, drawn for the story: a rule started by hand. */
 function RuleEditor({ run, reduced }: { run: boolean; reduced: boolean }) {
-  const narrow = useNarrowLayout();
   return <Page crumbs={['Detection Rules', 'Rule Editor']}>
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, padding: narrow ? '14px 16px' : '16px 24px' }}>
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, padding: '16px 24px' }}>
       <span style={{ whiteSpace: 'nowrap' }}><b style={{ fontSize: 18, fontWeight: 600 }}>Untitled rule</b><span className="sb-label" style={{ marginLeft: 10 }}>Draft</span></span>
-      <span style={{ display: 'flex', gap: 8 }}><span className="sb-btn is-secondary">Test Rule</span>{!narrow && <span className="sb-btn" style={{ opacity: .45 }}>Save Rule</span>}</span>
+      <span style={{ display: 'flex', gap: 8 }}><span className="sb-btn is-secondary">Test Rule</span><span className="sb-btn" style={{ opacity: .45 }}>Save Rule</span></span>
     </div>
     <div className="sb-editor-code">
       <span className="n">1</span><span><Typing text="type.inbound" run={run} reduced={reduced} /></span>
       <span className="n">2</span><span><span className="k"><Typing text="and " run={run} every={90} reduced={reduced} /></span><span className="sb-caret" /></span>
-      {Array.from({ length: narrow ? 18 : 26 }, (_, i) => <span key={i} style={{ display: 'contents' }}><span className="n">{i + 3}</span><span /></span>)}
+      {Array.from({ length: 26 }, (_, i) => <span key={i} style={{ display: 'contents' }}><span className="n">{i + 3}</span><span /></span>)}
     </div>
   </Page>;
 }
 
-/** The message page: ASA's verdict and the empty Matched Detection Rules on the left, the review sidebar on the right (one column on a phone). */
+/** The message page: ASA's verdict and the empty Matched Detection Rules on the left, the review sidebar on the right. */
 function MessagePage({ gap, step }: { gap: boolean; step: number }) {
-  const narrow = useNarrowLayout();
   const verdict = <VerdictPanel>
-    <div style={{ display: 'grid', gap: 18, padding: narrow ? '16px 18px 18px' : '18px 24px 22px' }}>
+    <div style={{ display: 'grid', gap: 18, padding: '18px 24px 22px' }}>
       <div style={{ display: 'grid', gap: 6 }}>
         <span className="sb-label">Executive Summary</span>
         <p className="sb-body" style={{ lineHeight: '22px' }}>This message impersonates Payroll Operations and urges the recipient to verify their payroll profile through an unfamiliar domain. The sender fails DMARC, does not align with the organization’s trusted HR infrastructure, and uses credential-harvesting language under the pretext of an upcoming pay cycle.</p>
@@ -129,8 +126,8 @@ function MessagePage({ gap, step }: { gap: boolean; step: number }) {
 
   // Liberty taken: a short header names the email (subject, sender, recipient) above the verdict; the source page
   // opens on the verdict, with these fields in its details further down.
-  const header = <header style={{ display: 'grid', gap: 8, gridColumn: '1 / -1' }}>
-    <p style={{ fontSize: narrow ? 19 : 22, fontWeight: 600, lineHeight: narrow ? '26px' : '30px', letterSpacing: '-.2px' }}>{job.subject}</p>
+  const header = <header style={{ display: 'grid', gap: 8, gridColumn: '1 / -1' }} data-frame="head">
+    <p style={{ fontSize: 22, fontWeight: 600, lineHeight: '30px', letterSpacing: '-.2px' }}>{job.subject}</p>
     <div className="sb-body" style={{ display: 'flex', flexWrap: 'wrap', columnGap: 28, rowGap: 4 }}>
       <span style={{ overflowWrap: 'anywhere' }}><span className="sb-label" style={{ marginRight: 8 }}>From</span>Payroll Operations &lt;payroll-verify@employee-benefits.co&gt;</span>
       <span><span className="sb-label" style={{ marginRight: 8 }}>To</span>alex.morgan@acme.com</span>
@@ -145,7 +142,7 @@ function MessagePage({ gap, step }: { gap: boolean; step: number }) {
   const content = <section className="sb-sec">
     <p className="sb-sec-h">Message Content</p>
     <div className="sb-cells" style={{ padding: '16px 20px', display: 'grid', gap: 14 }}>
-      <div className="sb-tabs-row"><b>User View</b><span>Text View</span><span>HTML View</span>{!narrow && <span>EML View</span>}</div>
+      <div className="sb-tabs-row"><b>User View</b><span>Text View</span><span>HTML View</span><span>EML View</span></div>
       <div className="sb-mail">
         <p className="sb-mail-caution"><b>CAUTION:</b> This message originated outside of your organization.</p>
         <p className="sb-label">From: Payroll Operations &lt;payroll-verify@employee-benefits.co&gt;</p>
@@ -178,13 +175,10 @@ function MessagePage({ gap, step }: { gap: boolean; step: number }) {
     {!gap && <AdeCard phase={step >= 5 ? 'running' : step === 4 ? 'starting' : 'ready'} pressed={step === 3} viewPressed={step === 7} />}
   </div>;
 
-  return <Page crumbs={['User Reports', job.subject]} style={narrow
-    ? { display: 'grid', gap: 28, padding: '20px 16px 40px' }
-    : { display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 300px', gap: 32, padding: '28px 32px 40px' }}>
+  return <Page crumbs={['User Reports', job.subject]} style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 300px', gap: 32, padding: '28px 32px 40px' }}>
     {header}
-    <div style={{ display: 'grid', gap: 28, alignContent: 'start' }}>{verdict}{matched}{!narrow && content}</div>
+    <div style={{ display: 'grid', gap: 28, alignContent: 'start' }}>{verdict}{matched}{content}</div>
     {side}
-    {narrow && content}
   </Page>;
 }
 
@@ -193,7 +187,7 @@ export default function MessageDetail({ variant }: { variant: Variant }) {
   const scene = useScene(timings[variant], captions[variant]);
   const stage = useStage({ wide: 1000 });
   const step = scene.step;
-  const t = useTargets(step, stage.narrow);
+  const t = useTargets(step);
   const gap = variant === 'gap';
   const editor = gap && step === 4;
   const jobPage = !gap && step >= 8;
@@ -202,13 +196,16 @@ export default function MessageDetail({ variant }: { variant: Variant }) {
   // The camera only scrolls, at the page's own scale. It moves on steps of its own, and the pointer moves only once it has landed.
   // Gap: scroll down to the sidebar's Other section before the pointer comes in. Handoff: scroll to the ADÉ card.
   const shot = gap ? (step >= 1 && step <= 3 ? 'other' : null) : !jobPage && step >= 1 ? 'ade-side' : null;
-  const view = useShot(shot ? `${shot}-${stage.narrow}` : null, shot ? frame(t.rect(shot), box, { scale: 1, pad: 24, y: stage.narrow ? 'start' : 'center' }) : null);
+  const view = useShot(shot, shot ? frame(t.rect(shot), box, { scale: 1, pad: 24, y: 'center' }) : null);
+  // A phone crops to the sidebar section the step works in. The editor has no camera: the crop sits at its top left, where the rule is
+  // typed. The job page shows whole, as does the email before the pointer comes in.
+  const focus = editor ? { x: 0, y: 0 } : shot ? onCard(t.rect(shot), view) : null;
   let pointer: { key: string; pressing?: boolean } | null = null;
   if (gap && (step === 2 || step === 3)) pointer = { key: 'editor', pressing: step === 3 };
   if (!gap && (step === 2 || step === 3)) pointer = { key: 'trigger', pressing: step === 3 };
   if (!gap && (step === 6 || step === 7)) pointer = { key: 'view-job', pressing: step === 7 };
 
-  return <SceneFrame scene={scene} stage={stage} title={gap ? 'the missed threat' : 'the handoff to ADÉ'} label={gap
+  return <SceneFrame scene={scene} stage={stage} focus={focus} title={gap ? 'the missed threat' : 'the handoff to ADÉ'} label={gap
     ? 'The message detail page: ASA rates a payroll phishing message malicious and Matched Detection Rules is empty; Send EML to Rule Editor opens the Rule Editor, where the rule is written by hand'
     : 'The same page with ADÉ in the sidebar under Review Status and Other: Trigger ADÉ starts a job, and View Report opens the job page, where ADÉ is working'}>
     <Screens id={editor ? 'editor' : jobPage ? 'job' : 'message'}>

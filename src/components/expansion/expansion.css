@@ -25,12 +25,11 @@
 
 /* Frame stages: the screen composition carries its own margins, so the stage drops its padding and the card bleeds off the bottom. */
 .xp .xp-frame { padding: 0; overflow: hidden; }
-.xp .xp-frame .qb-native-stage, .xp .xp-frame .qb-native { background: transparent; }
+.xp .xp-frame .cs-native-stage, .xp .xp-frame .cs-native { background: transparent; }
 /* Playback control pinned to the stage's corner, not the demo's. */
-.xp .qb-stage .qb-demo { position: static; }
-.xp .qb-stage .qb-play { right: 16px; bottom: 16px; }
-.xp .qb-native { font-family: 'Inter Variable', 'Inter', sans-serif; color: var(--x-ink); letter-spacing: 0; }
-.xp .qb-native-stage { transition: opacity 240ms ease; }
+.xp .cs-stage .cs-demo { position: static; }
+.xp .cs-native { font-family: 'Inter Variable', 'Inter', sans-serif; color: var(--x-ink); letter-spacing: 0; }
+.xp .cs-native-stage { transition: opacity 240ms ease; }
 .xp-t { position: absolute; white-space: nowrap; }
 .xp-mono { font-family: 'IBM Plex Mono', monospace; }
 .xp-sf { font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Inter Variable', sans-serif; color: var(--x-black); }
@@ -147,7 +146,7 @@
 
 /* The project card (ExpansionCard), in the shared card frame: the Bot Signals chart's shape behind, the card's signals in front. */
 .xc { --pc-surface: var(--x-card); --pc-line: var(--x-line); }
-.xc .qb-native { color: var(--x-ink); }
+.xc .cs-native { color: var(--x-ink); }
 .xc-chart { left: 112px; }
 .xc-bars { position: absolute; left: 18px; right: 0; bottom: 28px; height: 150px; display: flex; align-items: flex-end; gap: 4px; }
 .xc-bars span { display: flex; flex-direction: column; flex: 1; min-width: 0; overflow: hidden; border-radius: 2px 2px 0 0; transform: scaleY(.15); transform-origin: bottom; transition: transform 700ms cubic-bezier(.23, 1, .32, 1); }

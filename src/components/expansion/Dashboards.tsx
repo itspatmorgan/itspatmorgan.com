@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { NativeStage } from '../case-study/NativeStage';
 import { T, Tag, Bars, BotSignalsCard, CardHeader, Axis, ButtonGroup } from './ExpansionUI';
-import { useRevealOnce } from '../case-study/useRevealOnce';
+import { DemoFrame, useScene } from '../case-study/scene';
 import { barColors, botSignalBars, badBotBars, botScoreBars } from './figma-bars';
 
 // Frame 400: six dashboard cards in a 3 × 2 grid. Card-relative positions from the source; cards are 308 units wide.
@@ -40,11 +40,14 @@ const lines: [string, string][] = [
   ['58.2,158.23 123.82,173.71 157.06,148.65 188.25,165.97 220.66,159.71 252.28,139.06 286.67,125.79', barColors[0]],
 ];
 
+const timings = [400, 3600];
+const captions = ['Ready-made dashboards for bot activity', 'Ready-made dashboards for bot activity'];
+
 /** Monitoring: the dashboards that showed whether the defense was working. */
 export default function Dashboards() {
-  const reveal = useRevealOnce<HTMLElement>();
-  const grow = reveal.shown ? 1 : 0;
-  return <figure className="qb-demo xp-dashboards" ref={reveal.ref} aria-label="Bot dashboards: bot signal trends, bot signals by type, bad bots, bot score trends, bot score, and bot versus non-bot traffic">
+  const scene = useScene(timings, captions, { loop: false });
+  const grow = scene.step;
+  return <DemoFrame scene={scene} caption={false} stage="xp-frame" title="the dashboards" label="Bot dashboards: bot signal trends, bot signals by type, bad bots, bot score trends, bot score, and bot versus non-bot traffic"><div className="cs-demo xp-dashboards">
     <NativeStage width={1240} height={900}>
       <div className="xp-card is-bare">
         {card(col[0], row[0], 463.79, <>
@@ -91,5 +94,5 @@ export default function Dashboards() {
         </>)}
       </div>
     </NativeStage>
-  </figure>;
+  </div></DemoFrame>;
 }

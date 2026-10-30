@@ -15,7 +15,7 @@ This repository contains the source for [itspatmorgan.com](https://itspatmorgan.
 
 Prerequisites:
 
-- Node.js 22.12.0+ (Node 24 is pinned in `.mise.toml` and used in CI)
+- Node.js 22.23.4+ (Node 24 is pinned in `.mise.toml` and `.nvmrc`, and used in CI)
 - pnpm 10+
 
 Recommended local location:

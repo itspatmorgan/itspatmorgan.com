@@ -1,5 +1,5 @@
-import { NativeStage, DemoControls } from '../case-study/NativeStage';
-import { useDemoLoop } from '../case-study/useDemoLoop';
+import { NativeStage } from '../case-study/NativeStage';
+import { DemoFrame, useScene } from '../case-study/scene';
 import { T, Tag } from './ExpansionUI';
 import { SigSciLogo } from './SigSciLogo';
 
@@ -107,17 +107,17 @@ const steps: { screen: number; events: number; ms: number }[] = [
   ...events.map((_, i) => ({ screen: 2, events: i + 1, ms: i === events.length - 1 ? 3600 : 700 })),
 ];
 const captions = ['Templated Signals tag common bots', 'A rule flags and blocks scraper IPs', 'The timeline records each step'];
+const stepCaptions = steps.map(s => captions[s.screen]);
 
 /** Detection connected to response: a Signal, the rule that acts on it, and the record it leaves. */
 export default function SignalChain() {
-  const loop = useDemoLoop(steps.map(s => s.ms), steps.length - 1);
-  const step = steps[loop.step];
-  return <figure className={`qb-demo xp-chain ${loop.resetting ? 'qb-loop-reset' : ''}`} ref={loop.ref} aria-label="Bot Signals for search engines, scrapers, scanners and bad bots; a Scraper rule that flags and blocks IPs over 50 signals a minute; and the timeline of one IP being flagged and blocked">
+  const scene = useScene(steps.map(s => s.ms), stepCaptions);
+  const step = steps[scene.step];
+  return <DemoFrame scene={scene} stage="xp-frame" title="the signal, rule and timeline" label="Bot Signals for search engines, scrapers, scanners and bad bots; a Scraper rule that flags and blocks IPs over 50 signals a minute; and the timeline of one IP being flagged and blocked"><div className="cs-demo xp-chain">
     <NativeStage width={1240} height={900}>
       <div className="xp-card">{screens.map((name, i) => <div key={name} className={`xp-fade xp-seq ${i === step.screen ? '' : 'xp-off'}`} style={{ inset: 0 }} aria-hidden={i !== step.screen}>
         {i === 0 && <SignalsTable />}{i === 1 && <ScraperRule />}{i === 2 && <Timeline shown={step.screen === 2 ? step.events : events.length} />}
       </div>)}</div>
     </NativeStage>
-    <DemoControls loop={loop} title="signal, rule and timeline" caption={captions[step.screen]} />
-  </figure>;
+  </div></DemoFrame>;
 }

@@ -1,25 +1,30 @@
 import { useLayoutEffect, useState, type CSSProperties, type ReactNode } from 'react';
-import { NativeStage, DemoControls } from '../case-study/NativeStage';
-import { useDemoLoop } from '../case-study/useDemoLoop';
+import { NativeStage } from '../case-study/NativeStage';
+import { DemoFrame, useScene } from '../case-study/scene';
 
 // The Agent Processing section as one live diagram: the source's twelve 1920 × 1500 frames (001–005, 100–102, 200–202, 000)
 // become steps, and each element moves, stretches or fades between its positions in those frames.
-type State = { title: ReactNode; caption: string; agent: 0 | 1 | 2 | 3; top: number; bottom: number; bold?: boolean };
+type State = { title: ReactNode; agent: 0 | 1 | 2 | 3; top: number; bottom: number; bold?: boolean };
 const states: State[] = [
-  { title: 'Requests enter', caption: 'A request travels from the client to the server', agent: 0, top: 0, bottom: 0 },
-  { title: 'Responses flow back', caption: 'The response travels back to the client', agent: 0, top: 0, bottom: 0 },
-  { title: 'Agent intercepts both sides', caption: 'The agent sits between client and server', agent: 1, top: 0, bottom: 0 },
-  { title: 'Agent phases', caption: 'The agent works in pre and post phases', agent: 2, top: 0, bottom: 0 },
-  { title: 'Agent sub-phases', caption: 'Each phase has early, main and late steps', agent: 3, top: 0, bottom: 0 },
-  { title: <>Collect <b>incoming</b> data</>, caption: 'A collector sends incoming data out', agent: 3, top: 1, bottom: 0 },
-  { title: <>Collect <b>incoming</b> data</>, caption: 'Incoming data goes to the cloud', agent: 3, top: 2, bottom: 0 },
-  { title: <>Collect <b>incoming</b> data</>, caption: 'Data also flows back from the cloud', agent: 3, top: 3, bottom: 0 },
-  { title: <>Collect <b>outgoing</b> data</>, caption: 'A second collector sends outgoing data out', agent: 3, top: 3, bottom: 1 },
-  { title: <>Collect <b>outgoing</b> data</>, caption: 'Outgoing data goes to the cloud', agent: 3, top: 3, bottom: 2 },
-  { title: <>Collect <b>outgoing</b> data</>, caption: 'Data also flows back on the way out', agent: 3, top: 3, bottom: 3 },
-  { title: 'Agent processing flow', caption: 'The full agent processing flow', agent: 3, top: 3, bottom: 3, bold: true },
+  { title: 'Requests enter', agent: 0, top: 0, bottom: 0 },
+  { title: 'Responses flow back', agent: 0, top: 0, bottom: 0 },
+  { title: 'Agent intercepts both sides', agent: 1, top: 0, bottom: 0 },
+  { title: 'Agent phases', agent: 2, top: 0, bottom: 0 },
+  { title: 'Agent sub-phases', agent: 3, top: 0, bottom: 0 },
+  { title: <>Collect <b>incoming</b> data</>, agent: 3, top: 1, bottom: 0 },
+  { title: <>Collect <b>incoming</b> data</>, agent: 3, top: 2, bottom: 0 },
+  { title: <>Collect <b>incoming</b> data</>, agent: 3, top: 3, bottom: 0 },
+  { title: <>Collect <b>outgoing</b> data</>, agent: 3, top: 3, bottom: 1 },
+  { title: <>Collect <b>outgoing</b> data</>, agent: 3, top: 3, bottom: 2 },
+  { title: <>Collect <b>outgoing</b> data</>, agent: 3, top: 3, bottom: 3 },
+  { title: 'Agent processing flow', agent: 3, top: 3, bottom: 3, bold: true },
 ];
 const timings = states.map((_, i) => (i === states.length - 1 ? 4200 : 2000));
+// The tour's chapters: one segment per chapter, and the text screen readers hear. The diagram's own titles narrate it on screen.
+const chapters = ['A request goes to the server, and the response comes back', 'A request goes to the server, and the response comes back', 'The agent sits between client and server',
+  'The agent works in phases before and after the server', 'The agent works in phases before and after the server', 'A collector sends incoming data to the cloud and back',
+  'A collector sends incoming data to the cloud and back', 'A collector sends incoming data to the cloud and back', 'A second collector does the same for outgoing data',
+  'A second collector does the same for outgoing data', 'A second collector does the same for outgoing data', 'The full agent processing flow'];
 // Titles that repeat across steps share one element, so they hold still instead of crossfading into themselves.
 const titles = [0, 1, 2, 3, 4, 5, 5, 5, 8, 8, 8, 11];
 
@@ -55,25 +60,25 @@ const chip = (text: string, left: number, main: boolean, style: CSSProperties = 
 
 /** How a request moved through the agent, and where data was collected on each side. */
 export default function AgentFlow() {
-  const loop = useDemoLoop(timings, states.length - 1);
+  const scene = useScene(timings, chapters);
   // On restart the stage has faded out; jump to the first frame without transitions, then let later steps animate.
   const [jump, setJump] = useState(false);
   useLayoutEffect(() => {
-    if (loop.step !== 0) return;
+    if (scene.step !== 0) return;
     setJump(true);
     let frame = requestAnimationFrame(() => { frame = requestAnimationFrame(() => setJump(false)); });
     return () => cancelAnimationFrame(frame);
-  }, [loop.step]);
-  const s = states[loop.step];
+  }, [scene.step]);
+  const s = states[scene.step];
   const wide = s.agent === 0;
-  const responded = loop.step > 0;
+  const responded = scene.step > 0;
   const phases = s.agent >= 2, full = s.agent === 3;
   // Connector ends from the source: they meet the message boxes before the agent exists, and the agent after.
   const inEnd = wide ? 833 : 650, outStart = wide ? 1090 : 1263;
-  return <figure className={`qb-demo xp-agent-flow ${loop.resetting ? 'qb-loop-reset' : ''}`} ref={loop.ref} aria-label="The Signal Sciences agent processing flow: requests and responses pass through the agent's pre and post phases, and collectors send data to the cloud">
+  return <DemoFrame scene={scene} caption={false} stage="xp-frame" title="the agent processing flow" label="The Signal Sciences agent processing flow: requests and responses pass through the agent's pre and post phases, and collectors send data to the cloud"><div className="cs-demo xp-agent-flow">
     <NativeStage width={1240} height={900}><div className="xp-card"><div className="xp-agent-fit">
       <div className={`xp-agent xp-live ${jump ? 'is-jump' : ''}`}>
-        {titles.map((t, i) => titles.indexOf(t) === i && <div key={i} className="xp-script" style={show(titles[loop.step] === t, { fontWeight: states[t].bold ? 700 : 400 })} aria-hidden={titles[loop.step] !== t}>{states[t].title}</div>)}
+        {titles.map((t, i) => titles.indexOf(t) === i && <div key={i} className="xp-script" style={show(titles[scene.step] === t, { fontWeight: states[t].bold ? 700 : 400 })} aria-hidden={titles[scene.step] !== t}>{states[t].title}</div>)}
 
         {/* Request path, then the response path. */}
         {v(200, 591, 673)}{h(197.5, inEnd - 24, 591)}{head(inEnd, 591, 'right')}
@@ -111,6 +116,5 @@ export default function AgentFlow() {
         <Cloud x={342} y={1236} on={s.bottom > 1} />
       </div>
     </div></div></NativeStage>
-    <DemoControls loop={loop} title="agent processing flow" caption={s.caption} />
-  </figure>;
+  </div></DemoFrame>;
 }

@@ -24,45 +24,12 @@
   --sb-drop: 0 4px 4px rgba(0, 0, 0, .4);
 }
 
-/* Frame stages: the screen carries its own margins, so the stage drops its padding and the card bleeds off the bottom (as in Expansion).
-   Wide stages run past the 960px text measure to the page's full width, so a product screen renders at about its true size. */
-.sb .sb-frame { padding: 0; overflow: hidden; }
-.sb .sb-frame.is-wide { max-width: 1184px; }
-.sb .sb-frame .qb-native-stage, .sb .sb-frame .qb-native { background: transparent; }
-.sb .qb-native { font-family: 'Inter Variable', 'Inter', sans-serif; font-weight: 400; color: var(--sb-strong); letter-spacing: 0; font-feature-settings: 'cv11'; }
-.sb .qb-native-stage { transition: opacity 240ms ease; }
-.sb-scene { margin: 48px 0 0; }
-/* The shell holds the card and its ring, and fades both out toward the stage's bottom edge, so a crop reads as a bleed. */
-.sb-shell { position: absolute; bottom: 0; -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 120px), transparent 100%); mask-image: linear-gradient(to bottom, #000 calc(100% - 120px), transparent 100%); }
-@media (max-width: 640px) { .sb-frame:not(.is-ready) .sb-shell { visibility: hidden; } }
-.sb-shell.is-contained { -webkit-mask-image: none; mask-image: none; }
-.sb-shell.is-contained .sb-card { border-radius: 24px; }
-.sb-card { position: relative; height: 100%; overflow: hidden; background: var(--sb-card); border-radius: 24px 24px 0 0; box-shadow: 0 0 0 16px var(--sb-ring), var(--sb-drop); }
-@media (max-width: 640px) { .sb-card { border-radius: 18px 18px 0 0; box-shadow: 0 0 0 10px var(--sb-ring), var(--sb-drop); } .sb-shell { -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 90px), transparent 100%); mask-image: linear-gradient(to bottom, #000 calc(100% - 90px), transparent 100%); } }
+.sb .cs-frame .cs-native-stage, .sb .cs-frame .cs-native { background: transparent; }
+.sb .cs-native { font-family: 'Inter Variable', 'Inter', sans-serif; font-weight: 400; color: var(--sb-strong); letter-spacing: 0; font-feature-settings: 'cv11'; }
+.sb .cs-native-stage { transition: opacity 240ms ease; }
+/* The scene card takes the product's surface, ring and shadow. */
+.sb { --cs-card: var(--sb-card); --cs-ring: var(--sb-ring); --cs-drop: var(--sb-drop); }
 
-/* Under each stage: the chapter's caption on the left, a segment per chapter and the play button on the right. */
-.sb-tour { display: flex; align-items: flex-start; justify-content: space-between; gap: 32px; max-width: 1184px; margin: 18px auto 0; padding: 0 4px; text-align: left; }
-.sb .sb-frame:not(.is-wide) + .sb-tour { max-width: 960px; }
-.sb-tour-caption { position: relative; flex: 1; min-width: 0; min-height: 24px; font-size: 15px; line-height: 24px; letter-spacing: -.01em; color: var(--foreground); }
-.sb-tour-caption > span { display: block; text-wrap: pretty; }
-.sb-tour-controls { display: flex; align-items: center; gap: 14px; flex-shrink: 0; height: 24px; }
-.sb-beats { display: flex; gap: 4px; margin: 0; padding: 0; list-style: none; }
-.sb-beats button { display: block; padding: 11px 0; background: none; border: 0; cursor: pointer; }
-.sb-beats button > i { position: relative; display: block; width: 28px; height: 2px; border-radius: 1px; background: var(--border); overflow: hidden; transition: background 150ms ease; }
-.sb-beats button > i::after { content: ''; position: absolute; inset: 0; background: var(--foreground); transform: scaleX(0); transform-origin: left; }
-.sb-beats button:hover > i { background: color-mix(in srgb, var(--foreground) 28%, transparent); }
-.sb-beats button.is-done > i::after { transform: scaleX(1); }
-.sb-beats button.is-current > i::after { animation: sb-fill linear forwards; animation-duration: inherit; animation-play-state: inherit; }
-.sb-beats button:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; border-radius: 2px; }
-@keyframes sb-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
-.sb-tour-play { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--border); background: var(--background); color: var(--foreground); cursor: pointer; transition: transform 150ms var(--sb-ease-out, ease), background 150ms ease; }
-.sb-tour-play:hover { background: var(--muted, #f2f2f1); }
-.sb-tour-play:active { transform: scale(.94); }
-.sb-tour-play:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
-@media (max-width: 640px) { .sb-tour { flex-direction: column-reverse; gap: 6px; margin-top: 12px; } .sb-tour-caption { font-size: 14px; line-height: 21px; } .sb-tour-controls { width: 100%; justify-content: space-between; } }
-@media (prefers-reduced-motion: reduce) { .sb-beats button.is-current > i::after { animation: none; transform: scaleX(1); } }
-/* Content is laid out in source pixels and zoomed to fill the card, so type keeps the product's proportions at a readable size. */
-.sb-zoom { position: absolute; top: 0; left: 0; transform-origin: top left; }
 .sb-fade { transition: opacity 400ms ease, transform 500ms cubic-bezier(.22, 1, .36, 1); }
 .sb-fade.is-out { opacity: 0; transform: translateY(8px); }
 /* A swap between two stacked layers: the outgoing one leaves first, so the two never show together. */
@@ -213,8 +180,6 @@
 
 /* Motion: one ease-out for things arriving, one ease-in-out for things moving on screen. */
 .sb { --sb-ease-out: cubic-bezier(.23, 1, .32, 1); --sb-ease-in-out: cubic-bezier(.65, 0, .35, 1); }
-.sb-camera { position: relative; transform-origin: 0 0; }
-.sb-pointer { position: absolute; z-index: 50; }
 .sb-btn, .sb-select, .sb-switch, .sb-list-row { transition: transform 160ms var(--sb-ease-out), background 200ms ease, box-shadow 200ms ease, opacity 200ms ease; }
 .sb-btn.is-pressed, .sb-select.is-pressed { transform: scale(.97); }
 /* A list row fills its container, so a press darkens it instead of shrinking it away from the container's edges. */
@@ -309,7 +274,7 @@
 
 /* The project card (SublimeCard), in the shared card frame: ADÉ's hub card behind, the rule it auto-accepted in front. */
 .sb-pc { --pc-surface: var(--sb-card); --pc-line: var(--sb-border); }
-.sb-pc .qb-native { font-family: 'Inter Variable', 'Inter', sans-serif; color: var(--sb-strong); letter-spacing: 0; }
+.sb-pc .cs-native { font-family: 'Inter Variable', 'Inter', sans-serif; color: var(--sb-strong); letter-spacing: 0; }
 /* The hub card's glow and art, at card size; `is-up` is the hub card's hover: the glow comes up and the art eases up and grows. */
 .sb-pc .sb-pc-agent { top: 16px; right: 28px; bottom: 42px; padding: 20px 22px; -webkit-mask-image: none; mask-image: none; }
 .sb-pc-agent::before { content: ''; position: absolute; inset: 0; opacity: .7; background: radial-gradient(ellipse 60% 70% at 72% 34%, var(--sb-glow) 0%, var(--sb-glow-2) 50%, transparent 80%); transition: opacity 700ms ease; }

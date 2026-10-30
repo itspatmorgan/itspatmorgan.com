@@ -65,7 +65,7 @@ export function Bars({ bars, grow = 1, count, span }: { bars: Bar[]; grow?: numb
 
   useLayoutEffect(() => {
     const node = plot.current;
-    const stage = node?.closest('.qb-native-stage');
+    const stage = node?.closest('.cs-native-stage');
     if (!node || !stage) return;
     const measure = () => {
       const rect = node.getBoundingClientRect();
@@ -79,7 +79,7 @@ export function Bars({ bars, grow = 1, count, span }: { bars: Bar[]; grow?: numb
     const observer = new ResizeObserver(measure);
     observer.observe(stage);
     const rescale = new MutationObserver(measure);
-    const canvas = stage.querySelector('.q-canvas');
+    const canvas = stage.querySelector('.cs-canvas');
     if (canvas) rescale.observe(canvas, { attributes: true, attributeFilter: ['style'] });
     return () => { observer.disconnect(); rescale.disconnect(); };
   }, [columns.length, step, width]);

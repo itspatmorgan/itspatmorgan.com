@@ -1,10 +1,10 @@
-import { AnimatePresence, MotionConfig, motion } from 'motion/react';
+import { AnimatePresence, motion } from 'motion/react';
 import { SourceIcon, NativeBuilder, EntityPill, AddConnection, menuMotion, type SourceGlyph } from './NativeUI';
-import { NativeStage, DemoControls, DemoCursor } from '../case-study/NativeStage';
-import { useDemoLoop } from '../case-study/useDemoLoop';
+import { NativeStage, DemoCursor } from '../case-study/NativeStage';
+import { DemoFrame, useScene } from '../case-study/scene';
 
 type Flow = 'select' | 'filter' | 'direction';
-const flowTitles = { select: 'entity selection', filter: 'property filtering', direction: 'relationship direction' };
+const flowTitles = { select: 'the entity picker', filter: 'the property filter', direction: 'the relationship direction' };
 const timings = {
   select: [450, 500, 1900, 1100, 2400, 650, 700, 450],
   filter: [550, 550, 1000, 550, 450, 850, 1400, 700, 600, 1200, 500, 700, 3200],
@@ -15,10 +15,11 @@ const cursors = {
   filter: [[220, 71], [480, 69], [515, 69], [450, 120], [450, 120], [112, 138], [114, 138], [100, 170], [265, 138], [265, 138], [265, 141], [350, 138], [355, 138]],
   direction: [[240, 230], [105, 226], [69, 227], [69, 227], [69, 227], [235, 290]],
 };
+// One caption per step; steps that share a caption form one chapter in the tour.
 const captions = {
-  select: ['A recognizable starting point.', 'Choose specific entities.', 'Categories, classes, and context.', 'Preview a class and its types.', 'Select Channel and its four types.', 'The selection follows you.', 'A concrete first step.', 'Remove the selection to start again.'],
-  filter: ['Start with a data store.', 'Actions appear in context.', 'A label makes the action clear.', 'Add a property filter.', 'Choose the filter action.', 'Property, operator, value.', 'Discover available properties.', 'Choose pltfm_env.', 'The property is in place.', 'Operators explain the comparison.', 'Choose “Equal to”.', 'Finish with a value.', 'Only production data stores.'],
-  direction: ['A connection between two entities.', 'Actions appear on hover.', 'Bidirectional.', 'Toward the source.', 'Toward the target.', 'The direction remains visible.'],
+  select: ['The query starts from a plain prompt', 'The query starts from a plain prompt', 'Asset types sit in categories, with a preview of each', 'Asset types sit in categories, with a preview of each', 'Choosing Channel selects it and its four types', 'Choosing Channel selects it and its four types', 'Choosing Channel selects it and its four types', 'Choosing Channel selects it and its four types'],
+  filter: ['Hovering the data store shows its actions', 'Hovering the data store shows its actions', 'Hovering the data store shows its actions', 'Add filter starts a property filter', 'Add filter starts a property filter', 'The property menu lists what can be filtered', 'The property menu lists what can be filtered', 'The property menu lists what can be filtered', 'The property menu lists what can be filtered', 'Each operator says how it compares', 'Each operator says how it compares', 'A value finishes it: only production data stores', 'A value finishes it: only production data stores'],
+  direction: ['Hovering a relationship shows its controls', 'Hovering a relationship shows its controls', 'The arrow reads both ways', 'The arrow points toward the source', 'The arrow points toward the target', 'The relationship keeps its direction in view'],
 };
 const categories: { name: string; icon: SourceGlyph; color: string }[] = [
   { name: 'Applications & Services', icon: 'Dns', color: '#26a69a' }, { name: 'Compute', icon: 'Memory', color: '#0d47a1' },
@@ -61,55 +62,17 @@ function SelectionScene({ phase, choose }: { phase: number; choose: (phase: numb
 }
 
 export default function FigmaFlow({ sequence }: { sequence: Flow }) {
-  const loop = useDemoLoop(timings[sequence], sequence === 'select' ? 2 : sequence === 'filter' ? timings.filter.length - 1 : 0);
-  const phase = loop.step;
+  const scene = useScene(timings[sequence], captions[sequence]);
+  const phase = scene.step;
   const [width, height] = sequence === 'select' ? [932, 565] : [600, 400];
   const [sourceX, sourceY] = cursors[sequence][phase];
   const direction = phase === 3 ? 1 : phase >= 4 ? 2 : 0;
   const tooltip = phase === 2 ? 'Bidirectional' : phase === 3 ? 'Toward source' : phase === 4 ? 'Toward target' : undefined;
-  const nextDirection = () => loop.choose(direction === 0 ? 3 : direction === 1 ? 4 : 2);
-  return <figure className={`qb-demo qb-flow qb-flow-${sequence} ${loop.resetting ? 'qb-loop-reset' : ''}`} ref={loop.ref} data-step={phase} aria-label={`${flowTitles[sequence]} design demo`} onKeyDown={e => { if (e.key === 'Escape') loop.choose(sequence === 'select' ? (phase >= 4 ? 6 : 0) : sequence === 'filter' ? (phase < 5 ? 0 : phase < 8 ? 5 : 8) : 0); }}>
-    <div className="qb-film-stage"><NativeStage width={width} height={height} crop={sequence === 'select' ? undefined : { x: 0, y: 12, width: 588, height: 360 }} interactive={!loop.playing}>
-      {sequence === 'select' ? <SelectionScene phase={phase} choose={loop.choose} /> : <NativeBuilder filterPhase={sequence === 'filter' ? phase : 12} onFilterPhase={sequence === 'filter' ? loop.choose : undefined} hoverRoot={sequence === 'filter' && phase >= 1 && phase <= 4} tooltip={sequence === 'filter' && phase === 2} filterMenu={sequence === 'filter' && (phase === 3 || phase === 4)} menuHover={phase === 4} animated={sequence === 'filter' && loop.playing} relation={sequence === 'direction'} direction={direction} directionTooltip={sequence === 'direction' ? tooltip : undefined} relationHover={sequence === 'direction' && phase >= 1 && phase <= 4} onDirection={nextDirection} />}
-      <DemoCursor x={sourceX} y={sourceY} visible={loop.playing} reduced={loop.reduced} pressing={sequence === 'filter' ? [4, 7, 10].includes(phase) : sequence === 'select' ? phase === 4 : phase === 3 || phase === 4} />
+  const nextDirection = () => scene.choose(direction === 0 ? 3 : direction === 1 ? 4 : 2);
+  return <DemoFrame scene={scene} title={flowTitles[sequence]} label={`Design demo: ${flowTitles[sequence]}`}><div className={`cs-demo qb-flow qb-flow-${sequence}`} data-step={phase} onKeyDown={e => { if (e.key === 'Escape') scene.choose(sequence === 'select' ? (phase >= 4 ? 6 : 0) : sequence === 'filter' ? (phase < 5 ? 0 : phase < 8 ? 5 : 8) : 0); }}>
+    <div className="qb-film-stage"><NativeStage width={width} height={height} crop={sequence === 'select' ? undefined : { x: 0, y: 12, width: 588, height: 360 }} interactive={!scene.playing}>
+      {sequence === 'select' ? <SelectionScene phase={phase} choose={scene.choose} /> : <NativeBuilder filterPhase={sequence === 'filter' ? phase : 12} onFilterPhase={sequence === 'filter' ? scene.choose : undefined} hoverRoot={sequence === 'filter' && phase >= 1 && phase <= 4} tooltip={sequence === 'filter' && phase === 2} filterMenu={sequence === 'filter' && (phase === 3 || phase === 4)} menuHover={phase === 4} animated={sequence === 'filter' && scene.playing} relation={sequence === 'direction'} direction={direction} directionTooltip={sequence === 'direction' ? tooltip : undefined} relationHover={sequence === 'direction' && phase >= 1 && phase <= 4} onDirection={nextDirection} />}
+      <DemoCursor x={sourceX} y={sourceY} visible={scene.playing} reduced={scene.reduced} pressing={sequence === 'filter' ? [4, 7, 10].includes(phase) : sequence === 'select' ? phase === 4 : phase === 3 || phase === 4} />
     </NativeStage></div>
-    <DemoControls loop={loop} title={flowTitles[sequence]} caption={captions[sequence][phase]} />
-  </figure>;
-}
-
-type Concept = 'words' | 'entities' | 'relationships' | 'direction' | 'filters' | 'operators' | 'optional';
-type Token = { text: string; type?: Concept };
-const t = (text: string, type?: Concept): Token => ({ text, type });
-const syntaxLines: Token[][] = [
-  [t('FIND UNIQUE', 'words'), t(' '), t('DataStore', 'entities')],
-  [t('WITH', 'words'), t(' '), t('tag.pltfm_env', 'filters'), t(' '), t('=', 'operators'), t(' '), t('“production”', 'filters'), t(' AS', 'words'), t(' ds')],
-  [t('THAT', 'words'), t(' '), t('ALLOWS', 'relationships'), t(' '), t('<<', 'direction'), t(' '), t('AccessPolicy', 'entities')],
-  [t('(', 'optional'), t('THAT', 'words'), t(' '), t('ASSIGNED', 'relationships'), t(' '), t('>>', 'direction'), t(' '), t('AccessRole', 'entities'), t(')?', 'optional')],
-  [t('(', 'optional'), t('THAT', 'words'), t(' '), t('USES', 'relationships'), t(' '), t('<<', 'direction'), t(' google_iam_binding'), t(')?', 'optional')],
-  [t('(', 'optional'), t('THAT', 'words'), t(' '), t('ASSIGNED', 'relationships'), t(' '), t('>>', 'direction'), t(' '), t('UserGroup', 'entities'), t(')?', 'optional')],
-  [t('THAT', 'words'), t(' ('), t('ASSIGNED', 'relationships'), t('|', 'operators'), t('HAS', 'relationships'), t(') '), t('>>', 'direction'), t(' '), t('User', 'entities'), t(' WITH', 'words'), t(' _type', 'filters'), t(' '), t('!=', 'operators'), t(' “google_iam_service_account”', 'filters')],
-];
-const concepts: { key: Concept; title: string; label: string; description: string }[] = [
-  { key: 'words', title: 'A language with a structure.', label: 'Keywords', description: 'Protected words establish the shape of a query.' },
-  { key: 'entities', title: 'Start with the things you know.', label: 'Entities', description: 'Entities give an unfamiliar environment a recognizable vocabulary.' },
-  { key: 'relationships', title: 'Then follow the connections.', label: 'Relationships', description: 'Relationships describe how one entity connects to another.' },
-  { key: 'direction', title: 'The direction changes the question.', label: 'Direction', description: 'Traverse toward a source, toward a target, or in both directions.' },
-  { key: 'filters', title: 'Narrow the question.', label: 'Filters', description: 'Properties and values focus the query on the data that matters.' },
-  { key: 'operators', title: 'Make the comparison explicit.', label: 'Operators', description: 'Operators describe how values should be compared or combined.' },
-  { key: 'optional', title: 'Explore further. Keep the starting point.', label: 'Optionality', description: 'Optional traversals preserve an entity even when a connection is absent.' },
-];
-const syntaxTimings = [3000, 3000, 3000, 3000, 3000, 3000, 3600];
-export function SyntaxSequence() {
-  const loop = useDemoLoop(syntaxTimings);
-  const current = concepts[loop.step];
-  return <MotionConfig reducedMotion="user"><figure className={`qb-demo qb-syntax-sequence ${loop.resetting ? 'qb-loop-reset' : ''}`} ref={loop.ref} aria-label="Query syntax features" data-concept={current.key}>
-    <div className="q-syntax-surface qb-native">
-      <div className="q-syntax-editor">
-        <div className="q-editor-bar"><span className="q-editor-tab"><SourceIcon name="Code" size={14} />access-review.j1ql</span><span className="q-editor-language">J1QL</span></div>
-        <div className="q-syntax-code"><code>{syntaxLines.map((line, row) => <div className="q-editor-line" key={row}><span className="q-editor-line-number" aria-hidden="true">{row + 1}</span><span className={`q-syntax-line ${row > 1 ? 'q-syntax-indent' : ''}`}>{line.map((token, i) => <span key={i} className={`q-syntax-token ${token.type ? `q-syntax-${token.type}` : ''} ${token.type === current.key ? 'q-token-active' : 'q-token-muted'}`} style={{ transitionDelay: `${i * 12}ms` }}>{token.text}</span>)}</span></div>)}</code></div>
-        <div className="q-editor-status q-concept-steps" role="group" aria-label="J1QL concepts">{concepts.map((c, i) => <button type="button" key={c.key} className="q-concept-step" aria-pressed={i === loop.step} onClick={() => loop.choose(i)}>{c.label}</button>)}</div>
-      </div>
-    </div>
-    <DemoControls loop={loop} title="syntax features" caption={current.description} />
-  </figure></MotionConfig>;
+  </div></DemoFrame>;
 }
