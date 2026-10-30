@@ -397,12 +397,9 @@
 .pt-attrib img.is-dark, .dark .pt-attrib img.is-light { display: none; }
 .dark .pt-attrib img.is-dark { display: block; }
 .pt.is-open { padding-top: 28px; }
-/* Then and now: which moment the gallery shows. */
-.sc-era { position: absolute; z-index: 3; right: 16px; top: 11px; display: flex; align-items: center; gap: 10px; height: 32px; padding: 0 14px; border: 1px solid var(--sc-line); border-radius: 999px; background: var(--sc-bg); box-shadow: 0 1px 3px rgba(0, 0, 0, .06); font-size: 12.5px; color: var(--sc-weak); }
-.sc-era span { display: flex; align-items: baseline; gap: 6px; transition: color 300ms ease; }
-.sc-era b { font-weight: 500; }
-.sc-era span.is-on { color: var(--sc-fg); }
-.sc-era span.is-on b { font-weight: 600; }
-.sc-era i { position: relative; width: 36px; height: 2px; border-radius: 2px; background: var(--sc-line); overflow: hidden; }
-.sc-era i::after { content: ''; position: absolute; inset: 0; background: var(--sc-accent); transform: scaleX(0); transform-origin: 0 50%; transition: transform 600ms cubic-bezier(.22, 1, .36, 1); }
-.sc-era[data-step="1"] i::after { transform: scaleX(1); }
+/* Then and now: which gallery the demo shows, a toggle above the stage (as the query builder case study's Code / Visual). */
+.sc-era { display: flex; width: max-content; margin: 36px auto 4px; padding: 3px; gap: 2px; border-radius: 99px; background: color-mix(in oklch, var(--foreground) 7%, transparent); }
+.sc-era button { display: flex; align-items: center; gap: 6px; min-height: 30px; padding: 0 16px; border-radius: 99px; color: var(--muted-foreground); font: 500 13px var(--font-sans); cursor: pointer; transition: background 200ms ease, color 200ms ease; }
+.sc-era button b { font-weight: 500; color: inherit; }
+.sc-era button[aria-pressed=true] { background: var(--background); color: var(--foreground); box-shadow: 0 1px 2px #0000001a; }
+.sc-era button[aria-pressed=true] b { font-weight: 600; }
