@@ -33,17 +33,13 @@ if (!project) throw new Error('Design Studio case study is missing');
     ['When', 'Jan 2026 to now'],
     ['Role', 'Creator, sole designer and builder'],
     ['Team', 'About 12 people at Sublime'],
-    ['Outcome', 'Hundreds of prototypes, several a week'],
+    ['Outcome', 'Adopted by the whole product team, then open-sourced'],
   ]}
 >
   <Workspace slot="hero" client:load />
 
-  <Slide id="problem" title="Neither usual way to prototype with AI worked for the team" line="One‑off prototypes connect to nothing. The production repo is too slow to explore in.">
-    <Spectrum variant="problem" client:visible />
-  </Slide>
-
-  <Slide id="bet" title="Design Studio sits between the two" line="It knows enough of the product to design with, and stays apart from it to move fast.">
-    <Spectrum variant="bet" client:visible />
+  <Slide id="bet" title="AI prototypes were either throwaway or too heavy" line="Design Studio sits between: it knows the product, and stays apart from it to move fast.">
+    <Spectrum client:visible />
   </Slide>
 
   <Slide id="adoption" title="The whole product team designs in one place" line="About a dozen people have made hundreds of prototypes, with several more each week.">

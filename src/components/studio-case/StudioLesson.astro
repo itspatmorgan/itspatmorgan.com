@@ -1,31 +1,39 @@
 ---
-// The lesson, drawn: one small working thing at the center, and the people it reached, each line arriving after the thing existed.
-// Lessons are ideas, not screens, so this is a quiet drawing on the site's texture backdrop (case-study-shaping, step 3).
-const people = [
-  [190, 150], [150, 330], [250, 500], [770, 140], [820, 320], [720, 500], [480, 90], [480, 560],
+// The lesson, drawn as what happened: a quiet timeline from one folder to an open-source launch, with no pitch anywhere on it.
+// Moments and order are Patrick's (Xinran's newsletter draft of the Maven talk, and his notes of 2026-10-30): it began at the end
+// of January 2026 as one folder of screens; product designers, then brand, then PMs asked to join (no date given, so none shown);
+// the Dive Club interview aired in August; the open-source version launched with the Maven lesson in October.
+const moments = [
+  ['Jan 2026', 'One folder of screens', 'Built for my own work'],
+  ['Then', 'The team asks to join', 'Designers, then brand, then PMs'],
+  ['Aug 2026', 'Dive Club interview', 'Viewers ask for their own'],
+  ['Oct 2026', 'Open-source launch', '600+ signed up for the lesson'],
 ];
 ---
 
-<figure class="cs-stage texture-bg sc-lesson" aria-label="A drawing: one small working prototype at the center, with lines out to the people who asked for it">
-  <svg viewBox="0 0 960 640" aria-hidden="true">
-    <g class="sc-lesson-lines">
-      {people.map(([x, y]) => <path d={`M480 320 L${x} ${y}`} />)}
-    </g>
-    <rect x="390" y="262" width="180" height="116" rx="10" class="sc-lesson-frame" />
-    <path d="M390 288 H570" class="sc-lesson-rule" />
-    <circle cx="404" cy="275" r="3" class="sc-lesson-dot" /><circle cx="415" cy="275" r="3" class="sc-lesson-dot" /><circle cx="426" cy="275" r="3" class="sc-lesson-dot" />
-    <path d="M410 312 H520 M410 332 H490 M410 352 H540" class="sc-lesson-rule" />
-    {people.map(([x, y]) => <circle cx={x} cy={y} r="10" class="sc-lesson-person" />)}
-  </svg>
+<figure class="cs-stage texture-bg sc-lesson" aria-label="A timeline: January 2026, one folder of screens built for Patrick's own work; then the team asks to join; August 2026, the Dive Club interview; October 2026, the open-source launch">
+  <ol>
+    {moments.map(([when, what, note]) => (
+      <li><small>{when}</small><b>{what}</b><span>{note}</span></li>
+    ))}
+  </ol>
 </figure>
 
 <style>
-  .sc-lesson { margin-top: 48px; }
-  .sc-lesson svg { display: block; width: 100%; height: auto; color: var(--foreground); }
-  .sc-lesson-lines path { stroke: currentColor; stroke-opacity: .22; stroke-width: 1.5; stroke-dasharray: 3 6; fill: none; }
-  .sc-lesson-frame { fill: var(--card); stroke: currentColor; stroke-opacity: .55; stroke-width: 1.5; }
-  .sc-lesson-rule { stroke: currentColor; stroke-opacity: .35; stroke-width: 1.5; fill: none; stroke-linecap: round; }
-  .sc-lesson-dot { fill: currentColor; fill-opacity: .35; }
-  .sc-lesson-person { fill: var(--card); stroke: currentColor; stroke-opacity: .5; stroke-width: 1.5; }
-  @media (max-width: 640px) { .sc-lesson { margin-top: 28px; } }
+  .sc-lesson { margin-top: 48px; padding: clamp(40px, 8vw, 96px) clamp(20px, 5vw, 64px); }
+  .sc-lesson ol { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; margin: 0; padding: 0; list-style: none; text-align: left; }
+  .sc-lesson ol::before { content: ''; position: absolute; left: 6px; right: calc((100% - 72px) / 4 - 7px); top: 6px; height: 1.5px; background: color-mix(in srgb, var(--foreground) 18%, transparent); }
+  .sc-lesson li { position: relative; display: flex; flex-direction: column; gap: 4px; padding-top: 32px; }
+  .sc-lesson li::before { content: ''; position: absolute; left: 0; top: 0; width: 13px; height: 13px; border-radius: 999px; background: var(--card); border: 1.5px solid color-mix(in srgb, var(--foreground) 45%, transparent); }
+  .sc-lesson li:last-child::before { background: var(--foreground); border-color: var(--foreground); }
+  .sc-lesson small { font-size: 13px; color: var(--muted-foreground); }
+  .sc-lesson b { font-size: 17px; line-height: 23px; font-weight: 500; letter-spacing: -.01em; }
+  .sc-lesson span { font-size: 14px; line-height: 20px; color: var(--muted-foreground); }
+  @media (max-width: 640px) {
+    .sc-lesson { margin-top: 28px; }
+    .sc-lesson ol { grid-template-columns: minmax(0, 1fr); gap: 22px; padding-left: 28px; }
+    .sc-lesson ol::before { left: 6px; right: auto; top: 6px; bottom: 6px; width: 1.5px; height: auto; }
+    .sc-lesson li { padding-top: 0; }
+    .sc-lesson li::before { left: -28px; top: 3px; }
+  }
 </style>

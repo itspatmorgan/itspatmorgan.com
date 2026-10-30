@@ -1,5 +1,5 @@
 import { HugeiconsIcon } from '@hugeicons/react';
-import { CanvasIcon, CodeIcon, File01Icon, Note01Icon, Robot01Icon, SourceCodeIcon } from '@hugeicons/core-free-icons';
+import { CanvasIcon, CodeIcon, File01Icon, Note01Icon } from '@hugeicons/core-free-icons';
 import { NativeStage } from '../case-study/NativeStage';
 import { DemoFrame, useScene } from '../case-study/scene';
 
@@ -21,25 +21,22 @@ export default function Handoff() {
       <NativeStage width={960} height={697}>
         <div className="sc-dia">
           <svg className="sc-line" viewBox="0 0 960 697" aria-hidden="true">
-            <defs><marker id="sc-ho" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 1 9 5 0 9" fill="none" stroke="var(--sc-accent)" strokeWidth="1.6" /></marker></defs>
-            <path className={`is-accent ${step >= 1 ? '' : 'is-off'}`} d="M346 348 L440 348" markerEnd="url(#sc-ho)" />
-            <path className={`is-accent ${step >= 3 ? '' : 'is-off'}`} d="M680 348 L744 348" markerEnd="url(#sc-ho)" />
+            <defs><marker id="sc-ho" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 1 9 5 0 9" fill="none" stroke="var(--sc-ink-weak)" strokeWidth="1.6" /></marker></defs>
+            <path className={step >= 1 ? '' : 'is-off'} d="M318 348 L362 348" markerEnd="url(#sc-ho)" />
+            <path className={step >= 3 ? '' : 'is-off'} d="M618 348 L662 348" markerEnd="url(#sc-ho)" />
           </svg>
-          <div className="sc-node is-accent" style={{ left: 40, top: 198, width: 300, height: 300, justifyContent: 'flex-start', paddingTop: 26 }}>
-            <span className="sc-tag is-good" style={{ alignSelf: 'flex-start' }}>Design Studio</span>
-            <h3 style={{ marginTop: 6 }}>The prototype</h3>
-            <div style={{ display: 'grid', gap: 12, marginTop: 14 }}>{holds.map(([i, t]) => <span key={t} className="sc-file" style={{ fontFamily: 'inherit', fontSize: 17 }}><HugeiconsIcon icon={i} size={19} strokeWidth={1.6} />{t}</span>)}</div>
+          <div className="sc-node sc-step" style={{ left: 50, top: 208, width: 260, height: 280 }}>
+            <h3>The prototype</h3>
+            <p>Handed off whole</p>
+            <div className="sc-step-list">{holds.map(([i, t]) => <span key={t}><HugeiconsIcon icon={i} size={17} strokeWidth={1.6} />{t}</span>)}</div>
           </div>
-          <span className={`sc-axis-label ${step >= 1 ? '' : 'is-off'}`} style={{ left: 346, top: 302, width: 100, textAlign: 'center', whiteSpace: 'normal', lineHeight: '19px', fontSize: 14 }}>Handed off whole</span>
-          <div className={`sc-node ${step >= 2 ? '' : 'is-off'}`} style={{ left: 452, top: 238, width: 220, height: 220 }}>
-            <HugeiconsIcon icon={Robot01Icon} size={26} strokeWidth={1.5} />
+          <div className={`sc-node sc-step ${step >= 2 ? '' : 'is-off'}`} style={{ left: 370, top: 268, width: 240, height: 160 }}>
             <h3>An engineer’s agent</h3>
-            <p>Runs the porting skills engineering wrote</p>
+            <p>Runs the porting skills engineering wrote for prototypes</p>
           </div>
-          <div className={`sc-node ${step >= 3 ? '' : 'is-off'}`} style={{ left: 752, top: 238, width: 176, height: 220, padding: '18px 18px' }}>
-            <HugeiconsIcon icon={SourceCodeIcon} size={26} strokeWidth={1.5} />
-            <h3>The production repo</h3>
-            <p>Code that follows the product’s rules</p>
+          <div className={`sc-node sc-step ${step >= 3 ? '' : 'is-off'}`} style={{ left: 670, top: 268, width: 240, height: 160 }}>
+            <h3>Production code</h3>
+            <p>Code that follows the production repo’s rules</p>
           </div>
         </div>
       </NativeStage>

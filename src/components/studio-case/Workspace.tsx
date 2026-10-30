@@ -1,113 +1,133 @@
 import { HugeiconsIcon } from '@hugeicons/react';
 import {
-  ArrowDown01Icon, ArrowRight02Icon, Book01Icon, Cancel01Icon, CircleIcon, CodeIcon, Cursor01Icon, DiamondIcon, Eraser01Icon, HandIcon,
-  Menu01Icon, MinusSignIcon, PencilIcon, Presentation01Icon, Search01Icon, Shapes01Icon, SquareIcon, SquareUnlock02Icon, TextIcon,
+  ArrowRight02Icon, Cursor01Icon, CodeIcon, File01Icon, HandIcon, PencilIcon, Presentation01Icon, SquareIcon, TextIcon,
 } from '@hugeicons/core-free-icons';
-import { SceneFrame, useScene, useStage } from '../case-study/scene';
-import { Frame, Rail, Thumb, icon } from './StudioUI';
+import { SceneFrame, Screens, useScene, useStage } from '../case-study/scene';
+import { Rail, icon } from './StudioUI';
 
-// The hero: one project in the internal Studio, Patrick's Mailbox Takeover Signals (Drive: sublime-prototype-canvas.png). The section
-// sidebar keeps the project's context (explorations and team reviews, as canvases) beside its code (views grouped by round and
-// release); the canvas lays out each workflow from the project's live views, annotated. The canvas zooms in on the first workflow,
-// then pans to the second, as a person would with the canvas's own zoom; its zoom readout follows.
-// Copy, frame titles and notes are the canvas's own. Liberties: the frames are drawn as thumbnails (on the canvas they are the live
-// React views at 35%, too small to read either way); the canvas's Excalidraw tools are matched with Hugeicons; Workflow 2's third
-// branch (No incidents), below the fold in the source, is left out.
-const timings = [2600, 3400, 3600];
+// The hero: one project in the internal Studio, Patrick's Mailbox Takeover Signals (Drive: sublime-prototype-canvas.png), drawn for
+// the idea rather than the file tree: a project keeps its brief, its flows and its working screens together. The scene moves from
+// the brief to the canvas to one screen, and the sidebar follows.
+// Liberties, all for clarity (Patrick, 2026-10-30: "make the structure a lot simpler to understand"):
+// - The real sidebar groups ~20 items under Context and Code; here three groups (Brief, Canvas, Screens) hold eight.
+// - The brief is condensed from the canvas's own frame notes; the real project keeps its context as canvases and reviews.
+// - The canvas shows Workflow 1's first four frames with their notes shortened; "Round 5" prefixes and Workflow 2 are left out.
+// - The At-risk mailboxes screen follows its frame note (risk, findings, signals sent, when it started); the rows are illustrative.
+const timings = [3000, 3400, 3800];
 const captions = [
-  'A project keeps its explorations and reviews beside its code',
-  'Its canvas lays out each workflow from the live screens',
-  'Branches cover every path through the feature',
+  'A project starts from its brief',
+  'Its canvas lays out the flow from live screens',
+  'Every frame is a working screen',
 ];
 
-const views = [
-  { x: 30, y: 84, s: .54, zoom: '35%' },
-  { x: 8, y: 70, s: .96, zoom: '65%' },
-  { x: 8, y: -196, s: .9, zoom: '60%' },
-];
-
-const W = 250;
-const flow1 = [
-  ['Round 5: At-risk mailboxes', 'The queue lists mailboxes with an unresolved incident: risk, findings, signals sent, and when it started. Click a row.'],
-  ['Round 5: mailbox page', 'The mailbox page, under Admin › Mailboxes. The active incident leads, then details and history.'],
-  ['Round 5 mailbox: resolving', 'Resolve asks what the team found, with a note. It records the outcome.'],
-  ['Round 5 mailbox: just resolved', 'The incident moves to the top of Incidents. Nothing takes its place: no active incident, nothing to act on.'],
-  ['Round 5 queue: Resolved', 'The Resolved tab is the team record: outcome, findings, signals, and time frame.'],
+const flow = [
+  ['At-risk mailboxes', 'Every mailbox with an unresolved incident'],
+  ['Mailbox page', 'The active incident leads'],
+  ['Resolve', 'Records what the team found'],
+  ['Resolved', 'The team’s record of outcomes'],
 ] as const;
 
-function Arrow({ d }: { d: string }) {
-  return <path d={d} markerEnd="url(#sc-head)" />;
+const rows = [
+  ['Dana Whitfield', 'High', 4, 3, '2h ago'],
+  ['Marcus Bell', 'High', 3, 2, '5h ago'],
+  ['Priya Raman', 'Medium', 2, 2, 'Yesterday'],
+  ['Owen Castillo', 'Medium', 2, 1, 'Yesterday'],
+  ['Lena Fischer', 'Low', 1, 1, '2 days ago'],
+] as const;
+
+function Side({ on }: { on: string }) {
+  const item = (key: string, glyph: typeof CodeIcon, label = key) =>
+    <li key={key} className={on === key ? 'is-on' : ''}>{icon(glyph, 15)}{label}</li>;
+  return <aside className="sc-side sc-side-simple" aria-hidden="true">
+    <h4>Mailbox Takeover Signals</h4>
+    <h5>Brief</h5>
+    <ul>{item('Project brief', File01Icon)}{item('Team review (Oct 29)', Presentation01Icon)}</ul>
+    <h5>Canvas</h5>
+    <ul>{item('Respond to a takeover', Presentation01Icon)}</ul>
+    <h5>Screens</h5>
+    <ul>{flow.map(([t]) => item(t, CodeIcon))}</ul>
+  </aside>;
 }
 
-function Board() {
-  return <>
-    <div className="sc-section" style={{ left: 0, top: 0, width: 1286, height: 218 }}>
-      <p>Workflow 1: Respond to a possible takeover (Detect &amp; Respond → At-risk mailboxes)</p>
-      {flow1.map(([title, note], i) => <Frame key={title} title={title} note={note} x={24 + i * W} y={26}><Thumb dialog={i === 2} dark={i === 1} rows={i === 3 ? 4 : 6} /></Frame>)}
-    </div>
-    <div className="sc-section" style={{ left: 0, top: 300, width: 1060, height: 486 }}>
-      <p>Workflow 2: Check on a mailbox (Admin → Mailboxes)</p>
-      <p style={{ position: 'absolute', left: 24, top: 222, fontSize: 11, color: 'var(--sc-ink)' }}>Start: every mailbox</p>
-      <Frame title="Round 5: mailboxes list" note="Every mailbox. The Incidents column shows an active incident with its risk, past incidents, or none. Active incidents sort first." x={24} y={244}><Thumb rows={7} /></Frame>
-      <p style={{ position: 'absolute', left: 290, top: 22, fontSize: 11, color: 'var(--sc-ink)' }}>Filter to Active incident</p>
-      <Frame title="Round 5 mailboxes: filtered to active incidents" note="Filters › Incidents: Active incident. The same set as the At-risk mailboxes queue." x={290} y={44}><Thumb rows={5} /></Frame>
-      <Frame title="Round 5: mailbox page" note="A mailbox with an active incident. The incident leads, with Resolve." x={556} y={44}><Thumb dark rows={5} /></Frame>
-      <p style={{ position: 'absolute', left: 290, top: 270, fontSize: 11, color: 'var(--sc-ink)' }}>Filter to Past incidents only</p>
-      <Frame title="Round 5 mailboxes: filtered to past incidents" note="Filters › Incidents: Past incidents only. Mailboxes to keep an eye on." x={290} y={292}><Thumb rows={5} /></Frame>
-      <Frame title="Round 5 mailbox: no active incident" note="A mailbox with past incidents only: details, then its history." x={556} y={292}><Thumb rows={3} /></Frame>
-      <Frame title="Round 5 mailbox: past incident open" note="Open a past incident to see its Analysis, Response, and Resolution." x={822} y={292}><Thumb rows={4} /></Frame>
-    </div>
-    <svg className="sc-arrow" width="1300" height="820" style={{ left: 0, top: 0 }} aria-hidden="true">
-      <defs><marker id="sc-head" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 1 9 5 0 9" fill="none" stroke="currentColor" strokeWidth="1.4" /></marker></defs>
-      <g fill="none" stroke="currentColor" strokeWidth="1.2">
-        {[0, 1, 2, 3].map(i => <Arrow key={i} d={`M${220 + i * W} ${96 + (i % 2 ? -10 : 10)} L${268 + i * W} ${96 + (i % 2 ? 10 : -10)}`} />)}
-        <Arrow d="M220 620 L284 412" />
-        <Arrow d="M220 632 L284 660" />
-        <Arrow d="M486 412 L550 426" />
-        <Arrow d="M486 660 L550 662" />
-        <Arrow d="M752 662 L816 670" />
-      </g>
-    </svg>
-  </>;
+function Brief() {
+  return <div className="sc-doc">
+    <h1>Mailbox Takeover Signals</h1>
+    <p className="sc-doc-sub">Project brief</p>
+    <p>When a mailbox may be taken over, the team needs to see it, act on it, and keep a record of what it found.</p>
+    <h3>The flow</h3>
+    <ol>
+      <li>At-risk mailboxes lists every mailbox with an unresolved incident.</li>
+      <li>The mailbox page leads with the active incident.</li>
+      <li>Resolve asks what the team found, and records it.</li>
+      <li>The Resolved tab keeps the team’s record.</li>
+    </ol>
+    <h3>Reviews</h3>
+    <p className="sc-doc-link">{icon(Presentation01Icon, 15)}Team review, Oct 29</p>
+  </div>;
 }
 
-/** Mailbox Takeover Signals in the internal Studio: context and code in the sidebar, workflows on the canvas. */
+function Mini({ i }: { i: number }) {
+  return <div className={`sc-mini ${i === 2 ? 'is-dim' : ''}`}>
+    <span className="sc-mini-nav" />
+    <span className="sc-mini-page">
+      <i className="is-h" />
+      {i === 1 ? <><i className="is-card" /><i /><i /></> : Array.from({ length: i === 3 ? 4 : 5 }, (_, r) => <span key={r} className="sc-mini-row"><i /><i className="is-pill" /><i /></span>)}
+    </span>
+    {i === 2 && <span className="sc-mini-dialog" />}
+  </div>;
+}
+
+function Canvas() {
+  const tools = [Cursor01Icon, HandIcon, SquareIcon, ArrowRight02Icon, PencilIcon, TextIcon];
+  return <div className="sc-canvas">
+    <div className="sc-toolbar">{tools.map((t, i) => <span key={i} className={i === 0 ? 'is-on' : ''}><HugeiconsIcon icon={t} size={15} strokeWidth={1.6} /></span>)}</div>
+    <div className="sc-flow">
+      <p>Respond to a possible takeover</p>
+      <div className="sc-flow-row">
+        {flow.map(([title, note], i) => <div key={title} className="sc-flow-step">
+          <div className="sc-flow-frame"><b>{title}</b><Mini i={i} /></div>
+          <span>{note}</span>
+          {i < flow.length - 1 && <svg className="sc-flow-arrow" viewBox="0 0 22 10" aria-hidden="true"><path d="M1 5h18M15 1l4 4-4 4" /></svg>}
+        </div>)}
+      </div>
+    </div>
+  </div>;
+}
+
+function Queue() {
+  return <div className="sc-queue">
+    <span className="sc-queue-nav">{Array.from({ length: 6 }, (_, i) => <i key={i} />)}</span>
+    <div className="sc-queue-page">
+      <h2>At-risk mailboxes</h2>
+      <p>Mailboxes with an unresolved incident</p>
+      <div className="sc-queue-tabs"><span className="is-on">Unresolved</span><span>Resolved</span></div>
+      <table>
+        <thead><tr><th>Mailbox</th><th>Risk</th><th>Findings</th><th>Signals sent</th><th>Started</th></tr></thead>
+        <tbody>{rows.map(([name, risk, f, s, when]) => <tr key={name}>
+          <td>{name}</td><td><span className={`sc-risk is-${risk.toLowerCase()}`}>{risk}</span></td><td>{f}</td><td>{s}</td><td>{when}</td>
+        </tr>)}</tbody>
+      </table>
+    </div>
+  </div>;
+}
+
+/** Mailbox Takeover Signals in the internal Studio: the brief, the flow on its canvas, then one of its working screens. */
 export default function Workspace() {
   const scene = useScene(timings, captions);
   const stage = useStage({ wide: 1000, height: 760 });
-  const step = scene.reduced ? 0 : scene.step;
-  const v = views[step];
-  const tool = [SquareUnlock02Icon, HandIcon, Cursor01Icon, SquareIcon, DiamondIcon, CircleIcon, ArrowRight02Icon, MinusSignIcon, PencilIcon, TextIcon, Eraser01Icon, Shapes01Icon];
-  return <SceneFrame scene={scene} stage={stage} title="the project workspace" focus={{ x: 300, y: 40, w: 680, align: 'start', zoom: 1.3 }}
-    label="A project in Sublime's Design Studio, Mailbox Takeover Signals: a sidebar lists its context (explorations and team reviews) and its code (views grouped by review round and release); a canvas lays out two workflows as annotated sequences of the product's screens">
+  const step = scene.step;
+  const on = ['Project brief', 'Respond to a takeover', 'At-risk mailboxes'][step];
+  return <SceneFrame scene={scene} stage={stage} title="the project workspace"
+    label="A project in Sublime's Design Studio, Mailbox Takeover Signals. Its sidebar groups the project's brief, its canvas and its screens. The brief describes the flow; the canvas lays out the flow's four screens with notes; each frame opens as a working screen, such as the At-risk mailboxes queue">
     <div className="sc-app" style={{ height: stage.box.height }}>
       <Rail on="prototypes" />
-      <aside className="sc-side" aria-hidden="true">
-        <h4>Mailbox Takeover Signals</h4>
-        <h5>Context</h5>
-        <ul>
-          {['Detail Explorations', 'List Explorations', 'Mailbox Experience (Round 5)', 'Team Review (Oct 29)'].map((t, i) => <li key={t} className={i === 2 ? 'is-on' : ''}>{icon(Presentation01Icon, 15)}{t}</li>)}
-        </ul>
-        <h5>Code <span style={{ display: 'flex', gap: 10, color: 'var(--sc-weak)' }}>{icon(Search01Icon, 14)}{icon(Cancel01Icon, 14)}</span></h5>
-        <ul>
-          <li className="is-group">{icon(ArrowDown01Icon, 13)}Team review (Oct 29)</li>
-          {['Detail: resolved by me', 'Detail: resolved by a team…', 'Detail: ongoing', 'List: Resolved', 'List: Unresolved'].map(t => <li key={t} className="is-child">{icon(CodeIcon, 14)}{t}</li>)}
-          <li className="is-group">{icon(ArrowDown01Icon, 13)}Mailboxes (production copy)</li>
-          <li className="is-child">{icon(CodeIcon, 14)}Mailboxes</li>
-          <li className="is-group">{icon(ArrowDown01Icon, 13)}Private beta</li>
-          {['Mailbox', 'Settings', 'Flagged mailboxes'].map(t => <li key={t} className="is-child">{icon(CodeIcon, 14)}{t}</li>)}
-          <li className="is-group">{icon(ArrowDown01Icon, 13)}Public beta</li>
-          {['Settings', 'Mailbox'].map(t => <li key={t} className="is-child">{icon(CodeIcon, 14)}{t}</li>)}
-        </ul>
-      </aside>
+      <Side on={on} />
       <div className="sc-main" aria-hidden="true">
-        <div className="sc-canvas">
-          <span style={{ position: 'absolute', zIndex: 2, left: 12, top: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', width: 34, height: 34, border: '1px solid var(--sc-line)', borderRadius: 8, background: 'var(--sc-bg)' }}>{icon(Menu01Icon, 16)}</span>
-          <div className="sc-toolbar">{tool.map((t, i) => <span key={i} className={i === 2 ? 'is-on' : ''}><HugeiconsIcon icon={t} size={15} strokeWidth={1.6} /></span>)}</div>
-          <span style={{ position: 'absolute', zIndex: 2, right: 12, top: 12, display: 'flex', alignItems: 'center', gap: 8, height: 34, padding: '0 12px', border: '1px solid var(--sc-line)', borderRadius: 8, background: 'var(--sc-bg)', fontSize: 13 }}>{icon(Book01Icon, 15)}Library</span>
-          <div className="sc-board sc-scroll" style={{ transform: `translate(${v.x}px, ${v.y}px) scale(${v.s})` }}><Board /></div>
-          <div className="sc-zoomctl"><span>−</span><span style={{ minWidth: 34, textAlign: 'center' }}>{v.zoom}</span><span>+</span></div>
-        </div>
+        <Screens id={String(step)}>
+          <div style={{ position: 'relative', height: stage.box.height, overflow: 'hidden' }}>
+            {step === 0 ? <Brief /> : step === 1 ? <Canvas /> : <Queue />}
+          </div>
+        </Screens>
       </div>
     </div>
   </SceneFrame>;

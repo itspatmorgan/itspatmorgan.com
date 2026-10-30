@@ -26,7 +26,8 @@ Four reference implementations exist:
   one namespace (`sc` for the internal Studio, `sc-os` for the open-source one),
   idea slides drawn as quiet diagrams in `DemoFrame` on a `NativeStage`, and
   social proof as page blocks (`StudioQuote`, a teammate's public words, and
-  `StudioProof`, talk and post cards with real links).
+  `StudioProof`, even cards that lead with one fact and need no outside
+  images, since the preview viewer blocks them).
 - Page shell: `src/layouts/CaseStudyLayout.astro` (nav, hero, brief, and a
   `hero` slot for the hero visual) and `src/components/case-study/Slide.astro`
   (headline, one line, visual). A page is the layout plus one `Slide` per point.

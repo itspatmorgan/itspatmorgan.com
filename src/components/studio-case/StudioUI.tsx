@@ -1,4 +1,3 @@
-import type { ReactNode } from 'react';
 import { HugeiconsIcon } from '@hugeicons/react';
 import {
   Book02Icon, BookOpen01Icon, CursorInWindowIcon, Layers01Icon, Moon02Icon, PanelLeftCloseIcon, Search01Icon, Settings01Icon, Shapes01Icon,
@@ -70,22 +69,3 @@ export function Filters({ team = 'all' }: { team?: string }) {
   </div>;
 }
 
-/** A Sublime product screen as it sits on a canvas at 35%: the dark nav, a header, a table. The real frames are live React views. */
-export function Thumb({ rows = 6, dialog = false, dark = false }: { rows?: number; dialog?: boolean; dark?: boolean }) {
-  return <div className={`sc-thumb ${dialog ? 'is-dim' : ''} ${dark ? 'is-dark' : ''}`}>
-    <div className="sc-thumb-nav" />
-    <div className="sc-thumb-page">
-      <i className="is-h" />
-      {Array.from({ length: rows }, (_, r) => <div className="sc-thumb-row" key={r}><i /><i className="is-pill" style={{ margin: 0 }} /><i /></div>)}
-    </div>
-    {dialog && <div className="sc-thumb-dialog" />}
-  </div>;
-}
-
-export function Frame({ title, note, x, y, children }: { title: string; note?: ReactNode; x: number; y: number; children: ReactNode }) {
-  return <div className="sc-frame" style={{ left: x, top: y }}>
-    <div className="sc-frame-head"><span>{title}</span></div>
-    {children}
-    {note && <p className="sc-frame-note">{note}</p>}
-  </div>;
-}

@@ -1,49 +1,27 @@
 ---
 // Outside demand for Design Studio: the Dive Club interview that started it, the Maven lesson with Xinran Ma that launched it, and
-// the launch posts. Real links with their real covers, set as quiet cards rather than an infographic. Figures are Patrick's
-// (2026-10-30): 600+ registered and 100+ live for Maven; 10,000 to 20,000 views across the launch posts.
-const talks = [
-  {
-    kind: 'Podcast · Aug 2026',
-    title: 'Dive Club: an AI-assisted prototyping environment',
-    note: 'The walkthrough that made people ask for their own.',
-    href: 'https://www.youtube.com/watch?v=628c4YuxAEM',
-    image: 'https://i.ytimg.com/vi/628c4YuxAEM/maxresdefault.jpg',
-    alt: 'Dive Club episode cover',
-  },
-  {
-    kind: 'Maven lesson · Oct 2026',
-    title: 'Build your own AI design sandbox, with Xinran Ma',
-    note: 'The launch: 600+ signed up, 100+ watched live.',
-    href: 'https://maven.com/p/0e87f2/build-your-own-ai-design-sandbox',
-    image: 'https://d2426xcxuh3ht5.cloudfront.net/f9OPHTgQSIKMI3CQ7KfX_Duo%20Instructor%20-%20theme%20a.jpg',
-    alt: 'Maven lesson cover',
-  },
-];
-const posts = [
-  { kind: 'LinkedIn', title: 'I built my team an AI design sandbox. Now I’m open-sourcing a better version for everyone.', href: 'https://www.linkedin.com/feed/update/urn:li:activity:7520509267661983745/' },
-  { kind: 'X', title: 'The launch video: Codex driving a whole Design Studio workflow.', href: 'https://x.com/itspatmorgan/status/2114742504738443277' },
-];
+// the launch posts. Three even cards with real links; each leads with its one fact. No outside cover images: the episode and
+// lesson covers are hosted on YouTube and Maven, which this page can't rely on. Figures are Patrick's (2026-10-30): 600+
+// registered and 100+ live for Maven; 10,000 to 20,000 views across the launch posts on LinkedIn and X.
 ---
 
 <div class="sc-proof">
-  <div class="sc-talks">
-    {talks.map(t => (
-      <a class="sc-talk" href={t.href} target="_blank" rel="noopener noreferrer">
-        <img src={t.image} alt={t.alt} loading="lazy" decoding="async" width="1280" height="720" />
-        <small>{t.kind}</small>
-        <b>{t.title}</b>
-        <span>{t.note}</span>
-      </a>
-    ))}
-  </div>
-  <div class="sc-links">
-    {posts.map(p => (
-      <a class="sc-link" href={p.href} target="_blank" rel="noopener noreferrer">
-        <small>{p.kind} · launch post</small>
-        <b>{p.title}</b>
-      </a>
-    ))}
-    <div class="sc-link sc-stat"><small>Reach</small><b>10,000 to 20,000 views</b><span>across the launch posts</span></div>
+  <a class="sc-card-proof" href="https://www.youtube.com/watch?v=628c4YuxAEM" target="_blank" rel="noopener noreferrer">
+    <span class="sc-proof-lead" aria-hidden="true"><svg class="sc-play" viewBox="0 0 48 48"><circle cx="24" cy="24" r="23" /><path d="M20 16.5v15l12-7.5z" /></svg></span>
+    <span class="sc-proof-meta">Dive Club podcast, Aug 2026</span>
+    <b>An AI-assisted prototyping environment</b>
+    <span class="sc-proof-note">The walkthrough that made people ask for their own.</span>
+  </a>
+  <a class="sc-card-proof" href="https://maven.com/p/0e87f2/build-your-own-ai-design-sandbox" target="_blank" rel="noopener noreferrer">
+    <span class="sc-proof-lead"><strong>600+</strong></span>
+    <span class="sc-proof-meta">Maven lesson with Xinran Ma, Oct 2026</span>
+    <b>Build your own AI design sandbox</b>
+    <span class="sc-proof-note">Signed up for the launch, and 100+ watched live.</span>
+  </a>
+  <div class="sc-card-proof">
+    <span class="sc-proof-lead"><strong>10–20k</strong></span>
+    <span class="sc-proof-meta">Launch posts</span>
+    <b>I built my team an AI design sandbox. Now I’m open-sourcing a better version.</b>
+    <span class="sc-proof-note">Views on <a href="https://www.linkedin.com/feed/update/urn:li:activity:7520509267661983745/" target="_blank" rel="noopener noreferrer">LinkedIn</a> and <a href="https://x.com/itspatmorgan/status/2114742504738443277" target="_blank" rel="noopener noreferrer">X</a>.</span>
   </div>
 </div>
