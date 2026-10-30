@@ -1,9 +1,11 @@
 ---
 // Design Studio's case study card, the wide one beneath the homepage's two Work cards: the case study's title and description beside a
 // live visual on the project card system (StudioCard). Like a Work card, the whole card opens the case study and hovering it replays the
-// visual. Its open source links sit above the card's stretched link.
+// visual. Its links to the project's landing page and repo sit above the card's stretched link.
 import { getEntry } from "astro:content";
+import Icon from "@/components/icons/Icon.astro";
 import StudioCard from "@/components/design-studio/StudioCard";
+import { BrowserIcon, GithubIcon } from "@hugeicons/core-free-icons";
 import "@/components/case-study/case-study.css";
 
 interface Props {
@@ -14,22 +16,29 @@ const { description } = Astro.props;
 const project = await getEntry("projects", "design-studio");
 if (!project) throw new Error("Design Studio case study is missing");
 const caseStudy = "/work/design-studio";
-const repo = "https://github.com/itspatmorgan/design-studio";
-const quietLink = "relative z-20 transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring";
+const links = [
+  { label: "Design Studio site", href: "/design-studio", icon: BrowserIcon },
+  { label: "GitHub", href: "https://github.com/itspatmorgan/design-studio", icon: GithubIcon, external: true },
+];
 ---
 
     <div data-project-card-item class="group relative" data-project-card>
       <a href={caseStudy} class="absolute inset-0 z-10 rounded-xl" aria-label={project.data.title}></a>
       <article class="grid overflow-hidden rounded-xl border border-border bg-card transition-all duration-300 group-hover:-translate-y-0.5 group-hover:shadow-md group-hover:shadow-black/5 dark:group-hover:shadow-black/20 motion-reduce:translate-y-0 motion-reduce:transition-none lg:grid-cols-[1fr_2fr]">
-        {/* The text, centered in its column: the case study's title and description, then a quiet open source line. */}
-        <div class="order-2 flex flex-col justify-center p-4 lg:order-1 lg:p-8">
-          <h3 class="mb-2 text-base font-semibold tracking-tight lg:text-xl">{project.data.title}</h3>
-          <p class="max-w-lg text-sm leading-relaxed text-muted-foreground lg:text-base">{description}</p>
-          <p class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground lg:mt-6">
-            <span>Open source</span>
-            <a href="/design-studio" class={quietLink}>Try it <span aria-hidden="true">→</span></a>
-            <a href={repo} target="_blank" rel="noopener noreferrer" class={quietLink}>GitHub <span aria-hidden="true">→</span></a>
-          </p>
+        {/* Two parts: the case study's title and description centered in the column, and the project's site and repo pinned to the
+            bottom beneath a divider inset to the content's width. */}
+        <div class="order-2 flex flex-col lg:order-1">
+          <div class="flex flex-1 flex-col justify-center p-4 lg:p-8">
+            <h3 class="mb-2 text-base font-semibold tracking-tight lg:text-xl">{project.data.title}</h3>
+            <p class="max-w-lg text-sm leading-relaxed text-muted-foreground lg:text-base">{description}</p>
+          </div>
+          <div class="px-4 pb-4 lg:px-8 lg:pb-8">
+            <ul class="flex flex-wrap gap-x-5 gap-y-2 border-t border-border/70 pt-4 text-[13px] text-muted-foreground lg:pt-5" aria-label="More about Design Studio">
+              {links.map((link) => (
+                <li><a href={link.href} target={link.external ? "_blank" : undefined} rel={link.external ? "noopener noreferrer" : undefined} class="relative z-20 inline-flex items-center gap-2 transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"><Icon icon={link.icon} size={15} aria-hidden="true" />{link.label}</a></li>
+              ))}
+            </ul>
+          </div>
         </div>
         {/* The visual, 16:9 like the Work cards' and in the same inert frame. */}
         <div class="texture-bg relative order-1 flex items-center overflow-hidden border-b border-border lg:order-2 lg:border-b-0 lg:border-l">
