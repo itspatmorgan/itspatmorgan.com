@@ -4,6 +4,7 @@ import ProjectCard from "@/components/ProjectCard.astro";
 import ProjectDemo from "@/components/ProjectDemo.astro";
 import { liveDemoSlugs } from "@/data/project-demos";
 import { roles } from "@/data/experience";
+import { mediaFeatures } from "@/data/media";
 import { getCollection } from "astro:content";
 
 const allProjects = await getCollection("projects", ({ data }) => !data.draft);
@@ -89,6 +90,28 @@ function getRoleProjects(slugs: string[] = []) {
         );
       })}
     </div>
+  </section>
+
+  {/* Media: talks and posts about the work, kept apart from the case studies. A cover that can't load leaves the source's name. */}
+  <section class="mx-auto max-w-3xl px-6 pt-20" data-resume-media>
+    <p class="mb-10 font-mono text-sm uppercase tracking-widest text-muted-foreground">Media</p>
+    <ul class="grid gap-3">
+      {mediaFeatures.map((item) => (
+        <li>
+          <a href={item.href} target="_blank" rel="noopener noreferrer" class="group/media flex items-center gap-4 rounded-xl border border-border bg-card p-3 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md hover:shadow-black/5 dark:hover:shadow-black/20 sm:gap-5">
+            <span class="relative aspect-video w-28 shrink-0 overflow-hidden rounded-lg bg-muted sm:w-40">
+              <span class="absolute inset-0 grid place-items-center text-sm font-medium text-muted-foreground" aria-hidden="true">{item.fallback}</span>
+              <img src={item.image} alt={item.alt} loading="lazy" onerror="this.remove()" class="relative h-full w-full object-cover" />
+            </span>
+            <span class="flex min-w-0 flex-col gap-0.5">
+              <span class="text-base font-semibold tracking-tight">{item.title}</span>
+              <span class="text-sm text-muted-foreground">{item.sub}</span>
+            </span>
+            <span class="ml-auto pr-2 text-muted-foreground transition-colors group-hover/media:text-foreground" aria-hidden="true">↗</span>
+          </a>
+        </li>
+      ))}
+    </ul>
   </section>
 
   {/* Skills */}
