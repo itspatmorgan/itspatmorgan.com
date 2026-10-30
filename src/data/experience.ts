@@ -69,7 +69,7 @@ export const roles: Role[] = [
     logo: "/images/logos/career-amex.svg",
     role: "Design Engineer",
     dateRange: "2013–2016",
-    summary: "I joined American Express as a design engineer, building the interface for one platform that Amex, Walmart and Target each ran under their own brand. I also led prototyping in code, which let us settle responsive design decisions early and concretely.",
+    summary: "At American Express, I worked on Serve, the platform behind three products: one from Amex, one from Walmart and one from Target. I led prototyping in code as part of the design process and delivered the platform's front-end code.",
     descriptions: [
       "Built UI for a multi-brand platform used by Amex, Walmart, and Target.",
       "Led prototyping in code to design flexible and robust responsive web UX.",
