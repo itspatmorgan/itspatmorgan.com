@@ -131,22 +131,62 @@ import StudioHomeModule from "@/components/design-studio/StudioHomeModule.astro"
   </section>
 
 
-  <p class={`${homeShell} font-mono text-xs uppercase tracking-widest text-accent`}>Concept A (recommended): the prototype and its artifacts</p>
+  <div class={`${homeShell} pt-12`}>
+    <p class="font-mono text-xs uppercase tracking-widest text-accent">1 · Every shape</p>
+    <p class="mt-2 max-w-2xl text-sm text-muted-foreground">The five kinds of artifact Studio makes. Hover walks through them and the panel becomes each one.</p>
+    <button type="button" class="mt-3 rounded border border-border px-3 py-1.5 text-xs" data-play>Play hover</button>
+  </div>
   {/* ── Design Studio ────────────────────────────────────── */}
-  <section class={homeSection} aria-labelledby="home-design-studio-title">
-    <div class={homeSectionHeader} data-home-section-header>
+  <section class={`${homeShell} pb-4 pt-4`} aria-labelledby="home-design-studio-title">
+    <div hidden>
       <p class="font-mono text-xs uppercase tracking-widest text-muted-foreground">Open source</p>
       <a href={designStudioRepo} target="_blank" rel="noopener noreferrer" class="text-xs text-muted-foreground transition-colors hover:text-foreground">View on GitHub →</a>
     </div>
-    <StudioHomeModule concept="artifacts" />
+    <StudioHomeModule concept="shapes" />
   </section>
-  <p class={`${homeShell} font-mono text-xs uppercase tracking-widest text-accent`}>Concept B: sketch to product</p>
+  <div class={`${homeShell} pt-12`}>
+    <p class="font-mono text-xs uppercase tracking-widest text-accent">2 · Scaffold</p>
+    <p class="mt-2 max-w-2xl text-sm text-muted-foreground">The sidebar renamed to show what Studio sets up: screens, the states every app needs, and the context around them. Hover steps through Empty, Error and the Brief.</p>
+    <button type="button" class="mt-3 rounded border border-border px-3 py-1.5 text-xs" data-play>Play hover</button>
+  </div>
   {/* ── Design Studio ────────────────────────────────────── */}
-  <section class={homeSection} aria-labelledby="home-design-studio-title">
-    <div class={homeSectionHeader} data-home-section-header>
+  <section class={`${homeShell} pb-4 pt-4`} aria-labelledby="home-design-studio-title">
+    <div hidden>
       <p class="font-mono text-xs uppercase tracking-widest text-muted-foreground">Open source</p>
       <a href={designStudioRepo} target="_blank" rel="noopener noreferrer" class="text-xs text-muted-foreground transition-colors hover:text-foreground">View on GitHub →</a>
     </div>
-    <StudioHomeModule concept="fidelity" />
+    <StudioHomeModule concept="scaffold" />
   </section>
+  <div class={`${homeShell} pt-12`}>
+    <p class="font-mono text-xs uppercase tracking-widest text-accent">3 · Context beside the prototype</p>
+    <p class="mt-2 max-w-2xl text-sm text-muted-foreground">The prototype stays put; its brief, flow and design system sit in front. Hover flips through them.</p>
+    <button type="button" class="mt-3 rounded border border-border px-3 py-1.5 text-xs" data-play>Play hover</button>
+  </div>
+  {/* ── Design Studio ────────────────────────────────────── */}
+  <section class={`${homeShell} pb-4 pt-4`} aria-labelledby="home-design-studio-title">
+    <div hidden>
+      <p class="font-mono text-xs uppercase tracking-widest text-muted-foreground">Open source</p>
+      <a href={designStudioRepo} target="_blank" rel="noopener noreferrer" class="text-xs text-muted-foreground transition-colors hover:text-foreground">View on GitHub →</a>
+    </div>
+    <StudioHomeModule concept="context" />
+  </section>
+  <div class={`${homeShell} pt-12`}>
+    <p class="font-mono text-xs uppercase tracking-widest text-accent">4 · States on a canvas</p>
+    <p class="mt-2 max-w-2xl text-sm text-muted-foreground">The prototype's states laid out together, as on Studio's handoff canvas, with the one you're in up close. Hover steps through them.</p>
+    <button type="button" class="mt-3 rounded border border-border px-3 py-1.5 text-xs" data-play>Play hover</button>
+  </div>
+  {/* ── Design Studio ────────────────────────────────────── */}
+  <section class={`${homeShell} pb-4 pt-4`} aria-labelledby="home-design-studio-title">
+    <div hidden>
+      <p class="font-mono text-xs uppercase tracking-widest text-muted-foreground">Open source</p>
+      <a href={designStudioRepo} target="_blank" rel="noopener noreferrer" class="text-xs text-muted-foreground transition-colors hover:text-foreground">View on GitHub →</a>
+    </div>
+    <StudioHomeModule concept="canvas" />
+  </section>
+  <script>
+    document.querySelectorAll<HTMLButtonElement>("[data-play]").forEach((b) => b.addEventListener("click", () => {
+      const card = b.parentElement?.nextElementSibling?.querySelector("[data-project-card]");
+      card?.dispatchEvent(new MouseEvent("mouseenter"));
+    }));
+  </script>
 </PageLayout>

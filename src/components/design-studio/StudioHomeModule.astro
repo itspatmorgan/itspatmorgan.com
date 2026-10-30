@@ -4,8 +4,8 @@ import Icon from "@/components/icons/Icon.astro";
 import StudioCardSlot from "@/components/design-studio/StudioCardSlot.astro";
 import { PlayCircleIcon } from "@hugeicons/core-free-icons";
 
-interface Props { concept?: "artifacts" | "fidelity"; }
-const { concept = "artifacts" } = Astro.props;
+interface Props { concept?: import("@/components/design-studio/StudioCardSlot.astro").StudioConcept; }
+const { concept = "shapes" } = Astro.props;
 const designStudioLinks = [
   { label: "Dive Club interview", href: "https://www.youtube.com/watch?v=628c4YuxAEM", icon: PlayCircleIcon },
   { label: "Maven talk", href: "https://maven.com/p/0e87f2/build-your-own-ai-design-sandbox", icon: PlayCircleIcon },
