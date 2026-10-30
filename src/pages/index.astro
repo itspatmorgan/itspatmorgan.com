@@ -24,6 +24,8 @@ const labEntries = (await getCollection("lab", ({ data }) => !data.draft))
     }
     return a.data.title.localeCompare(b.data.title);
   });
+// The homepage's writing list drops a title's closing aside, like "(And That's Okay)", so each title fits on one line.
+const shortTitle = (title: string) => title.replace(/\s*\([^)]*\)$/, "");
 const writingPosts = (await getCollection("writing", ({ data }) => !data.draft))
   .sort((a, b) => b.data.publishedDate.getTime() - a.data.publishedDate.getTime());
 const professionalProjects = allProjects
@@ -280,7 +282,7 @@ const homeWorkGrid = "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:gap-6";
               href={`/writing/${post.id}`}
               class="group flex items-baseline justify-between gap-4 py-3 text-sm transition-colors hover:text-accent"
             >
-              <span class="font-medium leading-snug">{post.data.title}</span>
+              <span class="font-medium leading-snug">{shortTitle(post.data.title)}</span>
               <span class="shrink-0 font-mono text-xs text-muted-foreground">
                 {post.data.publishedDate.toLocaleDateString("en-US", { month: "short", year: "numeric" })}
               </span>
