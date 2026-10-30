@@ -217,6 +217,7 @@
 .sc-rule { position: absolute; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; border: 1.5px solid var(--sc-node-line); border-radius: 10px; background: var(--sc-node); text-align: center; white-space: nowrap; transition: opacity 400ms ease; }
 .sc-rule b { font-family: 'Geist Mono Variable', ui-monospace, monospace; font-size: 15px; font-weight: 500; letter-spacing: 0; }
 .sc-rule span { font-size: 14px; color: var(--sc-ink-weak); }
+.sc-rule.is-agent b { font-family: 'Inter Variable', 'Inter', sans-serif; font-size: 16px; font-weight: 600; letter-spacing: -.01em; }
 .sc-rule.is-entry { border-color: var(--sc-accent); box-shadow: 0 0 0 4px var(--sc-accent-soft); }
 .sc-rule.is-entry b { font-size: 18px; font-weight: 600; }
 .sc-rule-group { position: absolute; padding: 20px 22px 22px; border: 1.5px solid var(--sc-node-line); border-radius: 12px; background: var(--sc-node); transition: opacity 400ms ease; }
