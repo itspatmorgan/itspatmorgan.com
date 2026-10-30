@@ -6,8 +6,9 @@ import { icon } from './StudioUI';
 // and any documents in it. Engineers learn the design from the canvas and its notes; to build it, they pull the repo, point their
 // agent at the folder, and the agent translates it with skills the engineering team wrote. The folder is the real ADÉ Workflow
 // prototype (archive: src/prototypes/patrick/ade-workflow), and the counts are its own (meta.json's 32 views; the canvas's 5 sections
-// and 27 frames). Liberties: the tree is trimmed to fit (ade-workflow's detection-rules, exclusions and messages folders are left out,
-// and joe/ stands for the other contributors' folders); the engineer's prompt and the agent's lines are illustrative, not a transcript.
+// and 27 frames). Liberties: the tree is trimmed to fit and ordered for the story, the files an agent reads first and the screen folders after
+// (ade-workflow's _lib, detection-rules, exclusions and messages folders are left out, and joe/ stands for the other contributors'
+// folders); the muted notes beside rows are explanations, not part of an editor; the engineer's prompt and the agent's lines are illustrative, not a transcript.
 // The open file is the canvas's own JSON (lines 291 to 308), with its \u escapes shown as the characters they stand for.
 const timings = [3000, 2600, 4400];
 const captions = [
@@ -16,22 +17,21 @@ const captions = [
   'Skills engineering wrote turn it into production code',
 ];
 
-type Row = { name: string; depth: number; kind: 'folder' | 'open' | 'file' | 'canvas'; read?: boolean };
+type Row = { name: string; depth: number; kind: 'folder' | 'open' | 'file' | 'canvas'; read?: boolean; note?: string };
 const tree: Row[] = [
   { name: 'design-studio', depth: 0, kind: 'open' },
   { name: 'src/prototypes', depth: 1, kind: 'open' },
   { name: 'joe', depth: 2, kind: 'folder' },
   { name: 'patrick', depth: 2, kind: 'open' },
-  { name: 'ade-workflow', depth: 3, kind: 'open' },
-  { name: '_lib', depth: 4, kind: 'folder' },
-  { name: 'ade', depth: 4, kind: 'folder' },
-  { name: 'ade-module', depth: 4, kind: 'folder' },
+  { name: 'ade-workflow', depth: 3, kind: 'open', note: 'one prototype' },
+  { name: 'meta.json', depth: 4, kind: 'file', read: true, note: 'title, owner, views' },
   { name: 'canvases', depth: 4, kind: 'open' },
-  { name: 'ade-workflow.json', depth: 5, kind: 'canvas', read: true },
-  { name: 'components', depth: 4, kind: 'folder' },
-  { name: 'user-reports', depth: 4, kind: 'folder' },
-  { name: 'layout.jsx', depth: 4, kind: 'file', read: true },
-  { name: 'meta.json', depth: 4, kind: 'file', read: true },
+  { name: 'ade-workflow.json', depth: 5, kind: 'canvas', read: true, note: 'the canvas' },
+  { name: 'layout.jsx', depth: 4, kind: 'file', read: true, note: 'product shell' },
+  { name: 'ade', depth: 4, kind: 'folder', note: 'screens' },
+  { name: 'ade-module', depth: 4, kind: 'folder', note: 'screens' },
+  { name: 'user-reports', depth: 4, kind: 'folder', note: 'screens' },
+  { name: 'components', depth: 4, kind: 'folder', note: 'shared parts' },
   { name: 'agent-config', depth: 3, kind: 'folder' },
   { name: 'mttc', depth: 3, kind: 'folder' },
 ];
@@ -73,6 +73,7 @@ function Tree({ step }: { step: number }) {
         <span className="sc-tree-chev">{glyph && icon(glyph, 12)}</span>
         {icon(kind, 14)}
         {row.name}
+        {row.note && <span className="sc-tree-note">{row.note}</span>}
       </li>;
     })}</ul>
   </aside>;
@@ -103,7 +104,7 @@ export default function Handoff() {
   const scene = useScene(timings, captions);
   const stage = useStage({ wide: 1000, height: 760 });
   const step = scene.step;
-  return <SceneFrame scene={scene} stage={stage} title="the engineering handoff" focus={step >= 1 ? { x: 316, y: 330, w: 660, align: 'start', zoom: 1.45 } : null}
+  return <SceneFrame scene={scene} stage={stage} title="the engineering handoff" focus={step >= 1 ? { x: 380, y: 330, w: 596, align: 'start', zoom: 1.45 } : null}
     label="The ADÉ Workflow prototype is a folder in the Design Studio repo, holding its code, its canvas and its metadata. An engineer pulls the repo and asks their agent to build ADÉ Workflow in production from that folder. The agent reads the prototype's metadata, its canvas of 27 frames and their notes, and its layout, then ports it with skills the engineering team wrote">
     <div className="sc-editor" style={{ height: stage.box.height }}>
       <Tree step={step} />

@@ -69,7 +69,7 @@ export function PrototypeCard({ p, hover = false, target }: { p: Prototype; hove
 
 /** The catalog's team tabs (CatalogFilterBar with NAV_TEAMS) and search. */
 export function Filters({ team = 'all' }: { team?: string }) {
-  const tabs = [['all', 'All'], ['creative', 'Creative'], ['product-design', 'Product Design'], ['product', 'Product Management']];
+  const tabs = [['all', 'All'], ['product-design', 'Product Design'], ['product', 'Product Management'], ['creative', 'Creative']];
   return <div className="sc-filters">
     <div className="sc-tabs">{tabs.map(([key, label]) => <span key={key} className={team === key ? 'is-on' : ''} data-target={`tab-${key}`}>{label}</span>)}</div>
     <div className="sc-search">{icon(Search01Icon, 16)}Search prototypes...</div>

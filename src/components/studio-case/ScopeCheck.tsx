@@ -7,7 +7,7 @@ import { DemoFrame, useScene } from '../case-study/scene';
 // Maven talk). Each contributor owns a folder under src/prototypes; the agent knows who you are from your Git identity and keeps
 // your work there. A check on every pull request auto-approves one whose files all sit in its author's scope; a change to shared
 // code (the product components, the Studio itself) waits for a review. The approval text is the bot's own, from Joe's pull request
-// (Drive: sublime-pull-request-joe.jpg). button.tsx stands for any shared file; the folder list is trimmed to four people. Drawn as a diagram rather than a copy of GitHub, which is not Patrick's UI.
+// (Drive: sublime-pull-request-joe.jpg); the review text is the same check's out-of-scope message (archive: .github/workflows/scope-approval.yml). button.tsx stands for any shared file; the folder list is trimmed to four people. Drawn as a diagram rather than a copy of GitHub, which is not Patrick's UI.
 const timings = [2200, 3000, 3200];
 const captions = ['Each contributor works in a folder of their own', 'Changes inside it are approved on their own', 'Changes to shared code wait for a review'];
 
@@ -50,6 +50,7 @@ export default function ScopeCheck() {
           <div className={`sc-node ${step >= 2 ? '' : 'is-off'}`} style={{ position: 'relative', padding: '20px 22px' }}>
             <p className="sc-pr"><HugeiconsIcon icon={GitPullRequestIcon} size={17} strokeWidth={1.6} />A change to a shared component</p>
             <span className="sc-check is-review">Waiting for review</span>
+            <p style={{ fontSize: 15, lineHeight: '22px' }}>This PR includes files outside the author’s owned scope. A maintainer review is required before merging.</p>
           </div>
           </div>
           </div></div>
