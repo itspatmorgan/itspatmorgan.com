@@ -32,22 +32,27 @@ export default function ScopeCheck() {
     <div className="cs-demo">
       <NativeStage width={960} height={697}>
         <div className="sc-dia">
-          <div className="sc-node" style={{ left: 72, top: 120, width: 380, justifyContent: 'flex-start', gap: 0, padding: '22px 24px' }}>
+          {/* The two pull requests stand beside the tree, top edge to top edge and bottom edge to bottom edge, the pair centered on the stage. */}
+          <div style={{ position: 'absolute', left: 72, right: 72, top: 0, bottom: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}><div style={{ display: 'flex', gap: 56 }}>
+          <div className="sc-node" style={{ position: 'relative', width: 380, justifyContent: 'flex-start', gap: 0, padding: '22px 24px' }}>
             {tree.map(row => <div key={row.name + row.depth} className={`sc-file ${lit(row) ? 'is-lit' : ''} ${row.shared ? 'is-shared' : ''}`} style={{ paddingLeft: row.depth * 22, height: 42, marginTop: row.depth === 0 && row.name !== 'src/prototypes/' ? 14 : 0 }}>
               <HugeiconsIcon icon={row.kind === 'folder' ? Folder01Icon : File01Icon} size={17} strokeWidth={1.6} />{row.name}
               {row.shared && row.depth === 0 && <span className="sc-owner"><HugeiconsIcon icon={UserGroupIcon} size={12} strokeWidth={1.8} />shared</span>}
             </div>)}
           </div>
 
-          <div className={`sc-node ${step >= 1 ? '' : 'is-off'}`} style={{ left: 508, top: 140, width: 380, padding: '20px 22px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', width: 380 }}>
+          <div className={`sc-node ${step >= 1 ? '' : 'is-off'}`} style={{ position: 'relative', padding: '20px 22px' }}>
             <p className="sc-pr"><HugeiconsIcon icon={GitPullRequestIcon} size={17} strokeWidth={1.6} />Joe’s pull request</p>
             <span className="sc-check"><HugeiconsIcon icon={CheckmarkCircle02Icon} size={18} strokeWidth={1.8} />Auto-approved</span>
             <p style={{ fontSize: 15, lineHeight: '22px' }}>All changed files are within joe’s owned scope (prototypes + owned tools). Auto-approved — you can merge when status checks pass.</p>
           </div>
-          <div className={`sc-node ${step >= 2 ? '' : 'is-off'}`} style={{ left: 508, top: 410, width: 380, padding: '20px 22px' }}>
+          <div className={`sc-node ${step >= 2 ? '' : 'is-off'}`} style={{ position: 'relative', padding: '20px 22px' }}>
             <p className="sc-pr"><HugeiconsIcon icon={GitPullRequestIcon} size={17} strokeWidth={1.6} />A change to a shared component</p>
             <span className="sc-check is-review">Waiting for review</span>
           </div>
+          </div>
+          </div></div>
         </div>
       </NativeStage>
     </div>
