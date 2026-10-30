@@ -13,6 +13,7 @@ import Handoff from '@/components/studio-case/Handoff';
 import OpenStudio from '@/components/studio-case/OpenStudio';
 import StudioQuote from '@/components/studio-case/StudioQuote.astro';
 import StudioLesson from '@/components/studio-case/StudioLesson.astro';
+import StudioPress from '@/components/studio-case/StudioPress.astro';
 import '@/components/case-study/case-study.css';
 import '@/components/sublime/sublime.css';
 import '@/components/studio-case/studio-case.css';
@@ -66,6 +67,10 @@ if (!project) throw new Error('Design Studio case study is missing');
 
   <Slide id="rebuild" title="An open-source version, rebuilt from scratch" line="It had to be fully separate from Sublime’s version, and it’s better for it: built on everything the team taught me.">
     <OpenStudio client:visible />
+  </Slide>
+
+  <Slide id="press" title="Designers outside Sublime wanted one too" line="A podcast interview, a live lesson and a launch post brought Design Studio to a wider audience.">
+    <StudioPress />
   </Slide>
 
   <Slide id="lesson" title="From one folder to the whole team" line="I never pitched Design Studio. I built it for my own work, and it grew because people kept asking for it.">
