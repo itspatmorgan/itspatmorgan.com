@@ -6,12 +6,12 @@ import { Rail, icon } from './StudioUI';
 // The hero: Patrick's Phishing Training Beta prototype in the internal Studio (archive: src/prototypes/patrick/phishing-training-beta),
 // chosen because one prototype holds every kind of artifact: documents, a canvas, lo-fi views and hi-fi views. Its Landing page canvas
 // (canvases/landing-page-flow.json) opens on the handoff and the design context, then the hi-fi screens, then the lo-fi storyboard of
-// the same flow. Frame labels and notes are the canvas's own; the views are rebuilt from the prototype's code
+// the same flow. Frame labels are the canvas's own; the views are rebuilt from the prototype's code
 // (private-beta-product/private-beta-flow-v1.jsx for hi-fi, landing-page/private-beta-flow-v1.jsx and _components/ProductLofi.jsx for
 // lo-fi) with the product's own type scale and palette, and scaled as the canvas scales a 1440 × 900 view.
 // Liberties: the canvas stacks its sections; here "1. Start here" sits beside the other two so all three fit one screen. Each section
 // shows one row (Private beta), its label beside the section title, "1. Start here" its two documents (Sam's two source prototypes are left out), and the section notes
-// are shortened. Captions are drawn at reading size, not at the canvas's zoom. The prototype's views are light only;
+// are shortened, and so are the frame notes, cut to their gist at Patrick's ask (2026-10-30). Captions are drawn at reading size, not at the canvas's zoom. The prototype's views are light only;
 // here they follow the page's theme. Product icons stand in with the closest Hugeicons. The sidebar is simplified to tell the story in
 // order: the canvas, its two documents, then the lo-fi and hi-fi private-beta screens by their canvas labels (the real one also lists
 // the archive canvas, the public-beta groups and the archive, and names views by their meta.json descriptions).
@@ -120,7 +120,7 @@ function Doc() {
 // ── The Landing page canvas ─────────────────────────────────────────────────────────────────
 type Frame = [string, string, ReactNode];
 const docs: Frame[] = [
-  ['Handoff: start here', 'What to build for the recipient training landing. Older explorations are on Archive - landing page.', <article className="pt-doc">
+  ['Handoff: start here', 'What to build.', <article className="pt-doc">
     <h1>Design handoff: Phishing Training Beta</h1>
     <p className="pt-doc-desc">Start here. Recipient training after a simulated phish: Notice, Learn, Done (private); plus optional Team note and knowledge check (public).</p>
     <h2>Build from</h2>
@@ -128,17 +128,17 @@ const docs: Frame[] = [
     <p><strong>Private beta.</strong> Notice → Learn → Done.</p>
     <ul><li><a>Notice</a></li><li><a>Learn</a></li><li><a>Done</a></li></ul>
   </article>],
-  ['Design context', 'Why this shape: problem, Sam’s source, direction, and open questions.', <Doc />],
+  ['Design context', 'Why this shape.', <Doc />],
 ];
 const hifi: Frame[] = [
-  ['1. Notice', 'Training Page enabled on a neutral customer training surface.', <Page lofi={false}><Notice /></Page>],
-  ['2. Learn', 'Product-blue teaching accent for warning signs/highlights; muted email evidence.', <Page lofi={false}><Learn lofi={false} /></Page>],
-  ['3. Done', 'Success treatment + Sublime attribution as infrastructure.', <Page lofi={false}><Done /></Page>],
+  ['1. Notice', 'A neutral training page.', <Page lofi={false}><Notice /></Page>],
+  ['2. Learn', 'Blue warning signs.', <Page lofi={false}><Learn lofi={false} /></Page>],
+  ['3. Done', 'Sublime attribution.', <Page lofi={false}><Done /></Page>],
 ];
 const lofi: Frame[] = [
-  ['1. Notice', 'Training Page enabled: assigns short training and Start training · 2 min.', <Page lofi><Notice /></Page>],
-  ['2. Learn', 'All warning signs reviewed; Complete training finishes the flow.', <Page lofi><Learn lofi /></Page>],
-  ['3. Done', 'Short completion confirmation.', <Page lofi><Done /></Page>],
+  ['1. Notice', 'Assigns a short training.', <Page lofi><Notice /></Page>],
+  ['2. Learn', 'Review each sign.', <Page lofi><Learn lofi /></Page>],
+  ['3. Done', 'A short confirmation.', <Page lofi><Done /></Page>],
 ];
 
 function Card({ frame: [label, note, view], doc }: { frame: Frame; doc?: boolean }) {
@@ -160,10 +160,10 @@ function Canvas() {
   return <div className="sc-canvas">
     <span className="sc-canvas-menu">{icon(Menu01Icon, 16)}</span>
     <div className="pt-board">
-      <Section title="1. Start here" note="Handoff first (what to build), then why this shape" frames={docs} doc />
+      <Section title="1. Start here" note="Handoff, then context." frames={docs} doc />
       <div className="pt-col">
         <Section title="2. Hi-fi" note="Product-fidelity translations." row="Private beta" frames={hifi} />
-        <Section title="3. Lo-fi" note="Baseline click landing first, then private and public training storyboards." row="Private beta" frames={lofi} />
+        <Section title="3. Lo-fi" note="The same flow as storyboards." row="Private beta" frames={lofi} />
       </div>
     </div>
     <div className="sc-zoomctl"><span>−</span><span style={{ minWidth: 34, textAlign: 'center' }}>30%</span><span>+</span></div>
