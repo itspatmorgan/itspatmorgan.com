@@ -105,10 +105,13 @@
 .sc-flow-section h3 { font-size: 14px; line-height: 20px; font-weight: 600; color: var(--sc-fg); }
 .sc-flow-section > p { margin-top: 2px; font-size: 11.5px; line-height: 16px; color: var(--sc-weak); }
 .sc-flow-frames { display: flex; gap: 32px; margin-top: 16px; }
-.sc-flow-cell { position: relative; }
+.sc-flow-cell { position: relative; display: flex; }
+.sc-flow-cell > .sc-flow-card { flex: 1; }
 .sc-flow-card { overflow: hidden; border: 1px solid var(--sc-line); border-radius: 6px; background: var(--sc-bg); box-shadow: 0 1px 3px rgba(0, 0, 0, .06); }
-.sc-flow-card > b { display: block; padding: 6px 9px; font-size: 11px; font-weight: 500; color: var(--sc-fg); border-bottom: 1px solid var(--sc-line); }
-.sc-flow-arrow { position: absolute; right: -27px; top: 112px; width: 22px; height: 10px; fill: none; stroke: var(--sc-ink-weak); stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+.sc-flow-caption { width: 250px; padding: 9px 10px 10px; border-top: 1px solid var(--sc-line); }
+.sc-flow-caption b { display: block; margin-bottom: 3px; font-size: 10.5px; line-height: 14px; font-weight: 600; color: var(--sc-weak); }
+.sc-flow-caption p { font-size: 11.5px; line-height: 15px; color: var(--sc-fg); }
+.sc-flow-arrow { position: absolute; right: -27px; top: 90px; width: 22px; height: 10px; fill: none; stroke: var(--sc-ink-weak); stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
 .sc-live { position: relative; overflow: hidden; }
 .sb-embed { position: absolute; left: 0; top: 0; transform-origin: 0 0; background: var(--sb-card); font-family: 'Inter Variable', 'Inter', sans-serif; color: var(--sb-strong); font-feature-settings: 'cv11'; pointer-events: none; }
 
@@ -240,12 +243,36 @@
 .sc-menu div.is-hover { background: var(--os-muted); }
 .sc-menu hr { margin: 4px -4px; border: 0; border-top: 1px solid var(--os-line); }
 
-/* The engineering handoff (Handoff): the live page, and the dev handoff note pinned to the Studio's corner (mttc HandoffNote). */
-.sc-note { position: absolute; right: 16px; top: 388px; z-index: 3; display: flex; flex-direction: column; gap: 8px; width: 340px; padding: 16px; border: 1px solid #d4d4d8; border-radius: 8px; background: #fff; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, .1), 0 4px 6px -4px rgba(0, 0, 0, .1); color: #18181b; transition: opacity 300ms ease, transform 400ms cubic-bezier(.22, 1, .36, 1); }
-.sc-note.is-off { opacity: 0; transform: translateY(8px); }
-.sc-note-head { display: flex; align-items: center; gap: 8px; }
-.sc-note-tag { padding: 2px 8px; border: 1px solid rgba(245, 158, 11, .5); border-radius: 999px; background: #fffbeb; font-size: 11px; line-height: 16px; font-weight: 600; color: #92400e; }
-.sc-note-phase { font-size: 11px; line-height: 16px; font-weight: 500; color: #71717a; }
-.sc-note-hide { margin-left: auto; font-size: 12px; line-height: 16px; font-weight: 500; color: #71717a; }
-.sc-note-title { font-size: 13px; line-height: 20px; font-weight: 600; }
-.sc-note-body { font-size: 12px; line-height: 18px; font-weight: 500; color: #71717a; }
+/* The engineering handoff (Handoff): the prototype's folder in the repo, and an engineer's agent reading it. */
+.sc-editor { position: absolute; inset: 0; display: flex; background: var(--sc-bg); color: var(--sc-fg); }
+.sc-tree { flex: none; width: 300px; padding: 16px 8px; background: var(--sc-side); border-right: 1px solid var(--sc-line); font-family: 'Geist Mono Variable', ui-monospace, monospace; font-size: 13px; color: var(--sc-side-fg); }
+.sc-tree h5 { margin: 0 0 10px; padding: 0 10px; font-family: 'Inter Variable', 'Inter', sans-serif; font-size: 12.5px; font-weight: 500; color: var(--sc-fg); }
+.sc-tree ul { list-style: none; margin: 0; padding: 0; }
+.sc-tree li { display: flex; align-items: center; gap: 6px; height: 28px; padding-right: 10px; border-radius: 6px; white-space: nowrap; transition: background-color 300ms ease, color 300ms ease; }
+.sc-tree li svg { flex: none; color: var(--sc-weak); transition: color 300ms ease; }
+.sc-tree-chev { display: flex; width: 12px; flex: none; }
+.sc-tree li.is-lit { color: var(--sc-fg); }
+.sc-tree li.is-lit svg { color: var(--sc-accent); }
+.sc-tree li.is-on { background: var(--sc-select); color: var(--sc-fg); }
+.sc-editor-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.sc-code { flex: none; height: 311px; overflow: hidden; border-bottom: 1px solid var(--sc-line); }
+.sc-code-tab { display: flex; align-items: center; gap: 7px; height: 40px; padding: 0 16px; border-bottom: 1px solid var(--sc-line); background: var(--sc-side); font-family: 'Geist Mono Variable', ui-monospace, monospace; font-size: 12.5px; color: var(--sc-fg); }
+.sc-code-tab svg { color: var(--sc-accent); }
+.sc-code ol { margin: 0; padding: 10px 0; list-style: none; counter-reset: line 290; font-family: 'Geist Mono Variable', ui-monospace, monospace; font-size: 12.5px; line-height: 20px; color: var(--sc-side-fg); }
+.sc-code li { display: flex; padding-right: 16px; counter-increment: line; transition: background-color 300ms ease; }
+.sc-code li::before { content: counter(line); flex: none; width: 52px; padding-right: 16px; text-align: right; color: var(--sc-weak); opacity: .7; }
+.sc-code code { font: inherit; white-space: pre-wrap; overflow-wrap: anywhere; padding-left: 8ch; text-indent: -8ch; }
+.sc-code li.is-lit { background: var(--sc-accent-soft); }
+.sc-code li.is-lit code { color: var(--sc-fg); }
+.sc-term { flex: 1; min-width: 0; display: flex; flex-direction: column; background: #1c1b19; color: #e9e6e0; }
+.sc-term-tabs { flex: none; display: flex; align-items: center; height: 36px; padding: 0 20px; border-bottom: 1px solid #2e2c29; font-size: 12.5px; font-weight: 500; color: #a8a49c; }
+.sc-term-body { padding: 14px 20px; display: grid; align-content: start; gap: 8px; font-family: 'Geist Mono Variable', ui-monospace, monospace; font-size: 13px; line-height: 20px; }
+.sc-term-body p { transition: opacity 350ms ease, transform 450ms cubic-bezier(.22, 1, .36, 1); }
+.sc-term-body p.is-off { opacity: 0; transform: translateY(4px); }
+.sc-term-body i { font-style: normal; color: #8f8b83; margin-right: 6px; }
+.sc-term-body b { font-weight: 500; color: #8f8b83; margin-right: 8px; }
+.sc-term-read { padding-left: 2px; color: #cfcbc4; }
+.sc-term-read span { color: #8f8b83; }
+.sc-term-read b { font-size: 9px; vertical-align: 2px; }
+.sc-term-read b.is-accent { color: var(--sc-accent); }
+.dark .sc-term { background: #141311; }

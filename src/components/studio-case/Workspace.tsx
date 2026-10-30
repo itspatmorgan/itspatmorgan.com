@@ -6,13 +6,13 @@ import { Rail, icon } from './StudioUI';
 
 // The hero: Patrick's ADÉ Workflow prototype in the internal Studio (archive: src/prototypes/patrick/ade-workflow), the project
 // behind the Sublime agents case study. Its canvas (canvases/ade-workflow.json) lays out each flow from the prototype's live views;
-// here, Flow 1's last three frames, with the section's own title, its description shortened, and the frames' own titles. The frames
+// here, Flow 1's last three frames, with the section's own title, its description shortened, and each frame's own label and note under it, as the canvas shows them (studio/app/canvas/Frame.jsx). The frames
 // are the real job pages, rebuilt for the Sublime case study (src/components/sublime) and scaled as the canvas scales its live
 // views. Then Needs Review opens at full size, as clicking a frame does.
 // Liberties: the sidebar shows the ADÉ group open and the other groups closed; view names follow meta.json's descriptions, shortened.
 const timings = [4400, 4800];
 const captions = [
-  'A prototype’s canvas lays out each flow from its live screens',
+  'A prototype’s canvas lays out each flow, with a note on every screen',
   'Each frame opens as the working view',
 ];
 
@@ -57,7 +57,11 @@ function Done() {
   </Page>;
 }
 
-const frames: [string, () => ReactNode][] = [['3 · ADÉ working', Working], ['4 · Needs Review', Review], ['5 · Accepted', Done]];
+const frames: [string, string, () => ReactNode][] = [
+  ['3 · ADÉ working', 'The job timeline uses the agent motion graphic while rule generation and validation run; then Needs Review appears in place.', Working],
+  ['4 · Needs Review', 'ADÉ presents its generated rule, hunt evidence, reasoning, and analyst decisions.', Review],
+  ['5 · Accepted', 'The analyst accepted and activated the recommended detection rule.', Done],
+];
 
 function Side({ open }: { open: boolean }) {
   return <aside className="sc-side" aria-hidden="true">
@@ -83,10 +87,10 @@ function Canvas() {
         <h3>Flow 1 · Manual start, review, and acceptance</h3>
         <p>Trigger ADÉ → In Progress → View Report → watch the job complete → Accept/Reject</p>
         <div className="sc-flow-frames">
-          {frames.map(([title, View], i) => <div key={title} className="sc-flow-cell">
+          {frames.map(([title, note, View], i) => <div key={title} className="sc-flow-cell">
             <div className="sc-flow-card">
-              <b>{title}</b>
               <Live scale={S}><View /></Live>
+              <div className="sc-flow-caption"><b>{title}</b><p>{note}</p></div>
             </div>
             {i < frames.length - 1 && <svg className="sc-flow-arrow" viewBox="0 0 22 10" aria-hidden="true"><path d="M1 5h18M15 1l4 4-4 4" /></svg>}
           </div>)}

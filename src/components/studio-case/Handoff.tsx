@@ -1,81 +1,116 @@
-import { ArrowDown01Icon, ArrowRight01Icon, CodeIcon } from '@hugeicons/core-free-icons';
-import type { ReactNode } from 'react';
-import { Pointer, SceneFrame, useScene, useStage, useTargets } from '../case-study/scene';
-import { AgentsHub } from '../sublime/AgentsHub';
-import { Page } from '../sublime/SublimeUI';
-import { Rail, icon } from './StudioUI';
+import { ArrowDown01Icon, ArrowRight01Icon, CodeIcon, File01Icon, Folder01Icon, PresentationBarChart01Icon } from '@hugeicons/core-free-icons';
+import { SceneFrame, useScene, useStage } from '../case-study/scene';
+import { icon } from './StudioUI';
 
-// How engineering builds from a prototype: Patrick's dev handoff for the Agents hub (archive: src/prototypes/patrick/mttc), the work
-// behind the Sublime agents case study. The handoff is the prototype itself: one clickable flow of live pages per phase, each page
-// carrying a note on what dev builds for it, tagged New, Changed, Existing or No change (components/HandoffNote.jsx, HandoffPages.jsx).
-// Engineers' agents build from it with skills engineering wrote (Patrick, 2026-10-30). The note is the hub's real phase 1 note.
-// Liberties: the hub shows its both-agents-with-data state (the site's AgentsHub rebuild); view and group names are meta.json's,
-// shortened to fit the sidebar; the page is scaled to the Studio's main area, while the note keeps its own size, as it is pinned to the
-// Studio's window rather than the page, and it sits just under the cards so the frame's fade doesn't cover it.
-const timings = [2600, 4600, 3400];
+// How engineering builds from a prototype, as Patrick tells it (2026-10-30): a prototype is just a folder, with its code, its canvas
+// and any documents in it. Engineers learn the design from the canvas and its notes; to build it, they pull the repo, point their
+// agent at the folder, and the agent translates it with skills the engineering team wrote. The folder is the real ADÉ Workflow
+// prototype (archive: src/prototypes/patrick/ade-workflow), and the counts are its own (meta.json's 32 views; the canvas's 5 sections
+// and 27 frames). Liberties: the tree is trimmed to fit (ade-workflow's detection-rules, exclusions and messages folders are left out,
+// and joe/ stands for the other contributors' folders); the engineer's prompt and the agent's lines are illustrative, not a transcript.
+// The open file is the canvas's own JSON (lines 291 to 308), with its \u escapes shown as the characters they stand for.
+const timings = [3000, 2600, 4400];
 const captions = [
-  'The handoff is the prototype, split into phases',
-  'A note on each screen says what to build',
-  'Every screen keeps its real behavior',
+  'A prototype is just a folder: its code, its canvas, its notes',
+  'An engineer pulls the repo and points their agent at it',
+  'Skills engineering wrote turn it into production code',
 ];
 
-// The page renders 1320 wide and scales to the main area, so the cards end high enough to leave the note room below them.
-const MAIN_W = 1000 - 48 - 236, SRC_W = 1320, S = MAIN_W / SRC_W;
-const flow = ['Agents hub', 'ADÉ page', 'ADÉ automation', 'ASA page', 'ASA automation'];
+type Row = { name: string; depth: number; kind: 'folder' | 'open' | 'file' | 'canvas'; read?: boolean };
+const tree: Row[] = [
+  { name: 'design-studio', depth: 0, kind: 'open' },
+  { name: 'src/prototypes', depth: 1, kind: 'open' },
+  { name: 'joe', depth: 2, kind: 'folder' },
+  { name: 'patrick', depth: 2, kind: 'open' },
+  { name: 'ade-workflow', depth: 3, kind: 'open' },
+  { name: '_lib', depth: 4, kind: 'folder' },
+  { name: 'ade', depth: 4, kind: 'folder' },
+  { name: 'ade-module', depth: 4, kind: 'folder' },
+  { name: 'canvases', depth: 4, kind: 'open' },
+  { name: 'ade-workflow.json', depth: 5, kind: 'canvas', read: true },
+  { name: 'components', depth: 4, kind: 'folder' },
+  { name: 'user-reports', depth: 4, kind: 'folder' },
+  { name: 'layout.jsx', depth: 4, kind: 'file', read: true },
+  { name: 'meta.json', depth: 4, kind: 'file', read: true },
+  { name: 'agent-config', depth: 3, kind: 'folder' },
+  { name: 'mttc', depth: 3, kind: 'folder' },
+];
+const json: [string, boolean?][] = [
+  ['    {'],
+  ['      "id": "manual-review",'],
+  ['      "label": "4 · Needs Review",'],
+  ['      "annotation": "ADÉ presents its generated rule, hunt evidence, reasoning, and analyst decisions.",', true],
+  ['      "ref": {'],
+  ['        "group": "ade",'],
+  ['        "view": "ade-job-completed-review.jsx"'],
+  ['      }'],
+  ['    },'],
+  ['    {'],
+  ['      "id": "manual-accepted",'],
+  ['      "label": "5 · Accepted",'],
+  ['      "annotation": "The analyst accepted and activated the recommended detection rule.",', true],
+  ['      "ref": {'],
+  ['        "group": "ade",'],
+  ['        "view": "ade-job-completed-accepted.jsx"'],
+  ['      }'],
+  ['    },'],
+];
+const reads = [
+  ['meta.json', '32 views'],
+  ['canvases/ade-workflow.json', '5 sections, 27 frames and their notes'],
+  ['layout.jsx', 'the product shell'],
+];
 
-function Side() {
-  return <aside className="sc-side" aria-hidden="true">
-    <h4>MTTC</h4>
-    <h5>Code</h5>
-    <ul>
-      <li>{icon(CodeIcon, 14)}Agents Hub</li>
-      <li>{icon(CodeIcon, 14)}ADÉ Detail</li>
-      <li>{icon(CodeIcon, 14)}ASA Detail</li>
-      <li className="is-group">{icon(ArrowRight01Icon, 13)}Dev handoff: start each phase</li>
-      <li className="is-group">{icon(ArrowDown01Icon, 13)}Flow screens</li>
-      {flow.map((v, i) => <li key={v} className={`is-child ${i === 0 ? 'is-on' : ''}`}>{icon(CodeIcon, 14)}Phase 1 · {v}</li>)}
-      <li className="is-group">{icon(ArrowRight01Icon, 13)}Archive</li>
-    </ul>
+function Tree({ step }: { step: number }) {
+  return <aside className="sc-tree" aria-hidden="true">
+    <h5>Explorer</h5>
+    <ul>{tree.map(row => {
+      const inside = row.depth >= 4 || row.name === 'ade-workflow';
+      const lit = step === 0 ? inside : step === 2 && !!row.read;
+      const glyph = row.kind === 'open' ? ArrowDown01Icon : row.kind === 'folder' ? ArrowRight01Icon : null;
+      const kind = row.kind === 'canvas' ? PresentationBarChart01Icon : row.kind === 'file' ? (row.name.endsWith('.jsx') ? CodeIcon : File01Icon) : Folder01Icon;
+      return <li key={row.name + row.depth} className={`${lit ? 'is-lit' : ''} ${row.name === 'ade-workflow' && step >= 1 ? 'is-on' : ''}`} style={{ paddingLeft: 10 + row.depth * 14 }}>
+        <span className="sc-tree-chev">{glyph && icon(glyph, 12)}</span>
+        {icon(kind, 14)}
+        {row.name}
+      </li>;
+    })}</ul>
   </aside>;
 }
 
-function Note({ show }: { show: boolean }) {
-  return <aside className={`sc-note ${show ? '' : 'is-off'}`}>
-    <div className="sc-note-head">
-      <span className="sc-note-tag">Changed</span>
-      <span className="sc-note-phase">Phase 1</span>
-      <span className="sc-note-hide">Hide</span>
-    </div>
-    <p className="sc-note-title">Agents hub</p>
-    <p className="sc-note-body">The two cards split the width 50/50 with a one-line caption each. ASA shows Hrs Saved and Investigations. ADÉ shows Time to Coverage: it is the only stat until ADÉ has data, then it comes first. It shows the platform average until ADÉ’s first recommended rule.</p>
-  </aside>;
-}
-
-function Live({ children, height }: { children: ReactNode; height: number }) {
-  return <div className="sc-live" style={{ width: MAIN_W, height }}>
-    <div className="sb sb-embed" style={{ width: SRC_W, height: height / S, transform: `scale(${S})` }}>{children}</div>
+function Code({ step }: { step: number }) {
+  return <div className="sc-code" aria-hidden="true">
+    <div className="sc-code-tab">{icon(PresentationBarChart01Icon, 13)}canvases/ade-workflow.json</div>
+    <ol>{json.map(([line, note], i) => <li key={i} className={note && step !== 1 ? 'is-lit' : ''}><code>{line}</code></li>)}</ol>
   </div>;
 }
 
-/** The Agents hub's dev handoff in the internal Studio: the live page, its phase note, then the page's own hover. */
+function Terminal({ step }: { step: number }) {
+  const later = (ms: number) => ({ transitionDelay: step >= 2 ? `${ms}ms` : '0ms' });
+  return <div className="sc-term" aria-hidden="true">
+    <div className="sc-term-tabs"><span>Terminal</span></div>
+    <div className="sc-term-body">
+      <p><i>~/design-studio</i> git pull</p>
+      <p className={step >= 1 ? '' : 'is-off'}><b>›</b> Build ADÉ Workflow in production from src/prototypes/patrick/ade-workflow</p>
+      {reads.map(([file, note], i) => <p key={file} className={`sc-term-read ${step >= 2 ? '' : 'is-off'}`} style={later(300 + i * 600)}><b>●</b>Read {file}<span> · {note}</span></p>)}
+      <p className={`sc-term-read ${step >= 2 ? '' : 'is-off'}`} style={later(2300)}><b className="is-accent">●</b>Porting with engineering’s skills</p>
+    </div>
+  </div>;
+}
+
+/** The ADÉ Workflow prototype as a folder in the Studio repo, and an engineer's agent reading it to build it in production. */
 export default function Handoff() {
   const scene = useScene(timings, captions);
   const stage = useStage({ wide: 1000, height: 760 });
   const step = scene.step;
-  const t = useTargets(step);
-  const hover = step >= 2 ? 'ade' : null;
-  return <SceneFrame scene={scene} stage={stage} title="the engineering handoff" focus={step >= 1 ? { x: 600, y: 520, w: 384, align: 'end', zoom: 1.5 } : null}
-    label="Patrick's dev handoff for Sublime's Agents hub, in Design Studio. The handoff is the prototype itself, split into phases: the live Agents hub, with a note pinned to the corner for engineering. The note is tagged Changed, phase 1, and says what to build: the two agent cards split the width, and ADÉ shows Time to Coverage first. The page keeps its real behavior: hovering the ADÉ card lifts it">
-    <div className="sc-app" ref={t.ref} style={{ height: stage.box.height }}>
-      <Rail on="prototypes" />
-      <Side />
-      <div className="sc-main" aria-hidden="true" style={{ position: 'relative', overflow: 'hidden' }}>
-        <Live height={stage.box.height}>
-          <Page crumbs={['Agents']}><AgentsHub hover={hover} /></Page>
-        </Live>
-        <Note show={step >= 1} />
+  return <SceneFrame scene={scene} stage={stage} title="the engineering handoff" focus={step >= 1 ? { x: 316, y: 330, w: 660, align: 'start', zoom: 1.45 } : null}
+    label="The ADÉ Workflow prototype is a folder in the Design Studio repo, holding its code, its canvas and its metadata. An engineer pulls the repo and asks their agent to build ADÉ Workflow in production from that folder. The agent reads the prototype's metadata, its canvas of 27 frames and their notes, and its layout, then ports it with skills the engineering team wrote">
+    <div className="sc-editor" style={{ height: stage.box.height }}>
+      <Tree step={step} />
+      <div className="sc-editor-main">
+        <Code step={step} />
+        <Terminal step={step} />
       </div>
-      <Pointer at={step >= 2 ? t.at('card-ade') : null} visible={step >= 2} reduced={scene.reduced} />
     </div>
   </SceneFrame>;
 }
