@@ -4,7 +4,18 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { Cursor01Icon } from '@hugeicons/core-free-icons';
 
 // Shared plumbing for case-study demos: a source frame scaled crisply to its stage, and a demo cursor. Playback lives in scene.tsx.
-// A `crop` shows one region of the frame at a larger scale (a phone's view); a new crop pans and zooms to it.
+// A `crop` shows one region of the frame at a larger scale (a phone's closer look); a new crop eases to it.
+
+/** How far a phone zooms in for a closer look, keeping the frame's proportions. */
+export const PHONE_ZOOM = 1.6;
+/** A phone's view of a `width` × `height` frame: the whole frame, or PHONE_ZOOM closer with the same proportions, centered on `at`
+ *  inside the frame. Passing the whole frame rather than no crop lets the view ease in and out of a closer look. */
+export function zoomCrop(width: number, height: number, at: readonly [number, number] | null) {
+  if (!at) return { x: 0, y: 0, width, height };
+  const [x, y] = at, w = width / PHONE_ZOOM, h = height / PHONE_ZOOM;
+  const clamp = (v: number, hi: number) => Math.round(Math.min(Math.max(0, v), hi));
+  return { x: clamp(x - w / 2, width - w), y: clamp(y - h / 2, height - h), width: w, height: h };
+}
 
 export function NativeStage({ width, height, children, className = '', interactive = true, crop }: { width: number; height: number; children: ReactNode; className?: string; interactive?: boolean; crop?: { x: number; y: number; width: number; height: number } }) {
   const viewportWidth = crop?.width ?? width;
@@ -28,7 +39,7 @@ export function NativeStage({ width, height, children, className = '', interacti
     const id = requestAnimationFrame(() => requestAnimationFrame(() => setPans(true)));
     return () => cancelAnimationFrame(id);
   }, [!!crop, !!box]);
-  return <div className={`cs-native-stage ${crop ? 'is-cropped' : ''} ${pans ? 'is-panning' : ''} ${className}`} ref={ref} style={{ aspectRatio: `${viewportWidth} / ${viewportHeight}`, containerType: 'inline-size' }}>
+  return <div className={`cs-native-stage ${crop && crop.width < width ? 'is-cropped' : ''} ${pans ? 'is-panning' : ''} ${className}`} ref={ref} style={{ aspectRatio: `${viewportWidth} / ${viewportHeight}`, containerType: 'inline-size' }}>
     <div className="cs-native cs-canvas" inert={!interactive} style={{ width, height, transform: `${scale ? `scale(${scale})` : `scale(calc(100cqw / ${viewportWidth}px))`} ${offset}` }}><MotionConfig reducedMotion="user">{children}</MotionConfig></div>
   </div>;
 }

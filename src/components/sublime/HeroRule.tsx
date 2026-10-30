@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { HuntEntry, JobHeading, Page, Recommendation, TimelineItem, Triggered, Worked, job } from './SublimeUI';
-import { Camera, HOME, SceneFrame, onCard, useScene, useStage, useTargets } from '../case-study/scene';
+import { Camera, HOME, SceneFrame, useScene, useStage, useTargets } from '../case-study/scene';
 
 // The hero: ADÉ's recommended rule on its job page (patrick/ade-workflow ade/ade-job-completed-review, JobCompletedCard), the one frame
 // that carries the case study's argument. The MQL arrives a line at a time, as if from the agent, and then the rule waits for review.
@@ -24,8 +24,7 @@ export default function HeroRule() {
     const timer = window.setInterval(() => { n += 1; setLines(n); if (n >= RULE_LINES) window.clearInterval(timer); }, 85);
     return () => window.clearInterval(timer);
   }, [start, scene.reduced, scene.take]);
-  // On a phone, crop to the rule ADÉ writes.
-  return <SceneFrame scene={scene} stage={stage} focus={onCard(t.rect('mql'), HOME)} controls={false} title="the recommended rule" label="An ADÉ job page: ADÉ's recommended rule, a 99% match in a 14-day hunt with 40 malicious matches and 2 possible false positives, shows its name, severity, description, labels, action and the MQL it wrote, with Accept and Reject">
+  return <SceneFrame scene={scene} stage={stage} controls={false} title="the recommended rule" label="An ADÉ job page: ADÉ's recommended rule, a 99% match in a 14-day hunt with 40 malicious matches and 2 possible false positives, shows its name, severity, description, labels, action and the MQL it wrote, with Accept and Reject">
     <Camera view={HOME} width={stage.W} height={stage.box.height} cameraRef={t.ref} reduced={scene.reduced}>
       <Page crumbs={['Agents', 'ADÉ', job.subject]} style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr)', gap: 36, padding: '36px 40px 48px' }}>
         <JobHeading />

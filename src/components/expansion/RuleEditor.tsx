@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { NativeStage } from '../case-study/NativeStage';
+import { NativeStage, zoomCrop } from '../case-study/NativeStage';
 import { DemoFrame, usePhone, useScene } from '../case-study/scene';
 import { T, Box, Select, IconButton } from './ExpansionUI';
 
@@ -33,12 +33,12 @@ const bar = (x: number, y: number, h: number) => <i className="xp-hair" style={{
 export default function RuleEditor() {
   const scene = useScene(durations, captions, { loop: false });
   const { chars, focus } = frames[scene.step];
-  // A phone follows the typing: the conditions, their values, then the signal and rate limit further down.
+  // On a phone, the typing zooms in a little: on the condition values, then on the signal and rate limit. The rest shows the whole rule.
   const phone = usePhone();
-  const crop = scene.step === 0 ? { x: 120, y: 90 } : focus === 0 || focus === 1 ? { x: 630, y: 160 } : { x: 130, y: 440 };
+  const near = focus === 0 || focus === 1 ? [800, 300] as const : focus >= 2 ? [400, 640] as const : null;
   const value = (i: number) => <>{typed[i].text.slice(0, chars[i])}{focus === i && <i className="xp-caret" />}</>;
   return <DemoFrame scene={scene} stage="xp-frame" title="the custom rule" label="A custom rule: requests from a python-requests user agent to /products/* are tagged with a suspected-bot signal, and IPs over 100 signals a minute are blocked"><div className="cs-demo xp-rule-editor">
-    <NativeStage width={1240} height={900} crop={phone ? { ...crop, width: 420, height: 460 } : undefined}>
+    <NativeStage width={1240} height={900} crop={phone ? zoomCrop(1240, 900, near) : undefined}>
       <div className="xp-card">
         {heading(27.38, 'Conditions')}
         {block(68.46, 294.36)}

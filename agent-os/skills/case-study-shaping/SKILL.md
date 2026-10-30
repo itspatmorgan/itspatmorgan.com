@@ -246,23 +246,23 @@ Camera and pointer scenes (zooms, pans, a cursor that clicks):
 
 ### Phones
 
-Phones (640px and below) keep the desktop layout and crop it, at a size a phone
-can read. Never lay a screen out again for a phone: that shows a product that
-never shipped. The hero carries one note on phones saying the demos are cropped,
-with a Share button.
+Phones (640px and below) show each demo's whole desktop frame at its desktop
+proportions, small. Patrick rejected crops that change the aspect ratio
+(2026-10-30): at rest, a phone must see everything. Never lay a screen out again
+for a phone, because that shows a product that never shipped. On phones the hero
+carries one note saying the demos are shown at desktop proportions, with a Share
+button.
 
-- Scene card (`SceneFrame`): pass `focus` for each step, usually
-  `onCard(t.rect(key), view)` with `'start'`, `'center'` (a pointer target) or
-  `'end'` (buttons at a row's right). The stage shows 480 source pixels across
-  (`PHONE_SPAN`), so 14px product text reads at about 10px, and pans between
-  steps. Screens without a camera take a fixed focus.
-- Plain stage (`DemoFrame`): give `NativeStage` a `crop` when `usePhone()` is
-  true. Aim for product text of 9 to 11px on screen; for a step that moves
-  across the frame, change the crop per step and keep its size.
-- The crop fades at its edges where the screen goes on. Cut at a gutter where
-  you can; a cut word under the fade is fine, a cut control the step uses is not.
-- Check every step at 390px: the step's subject sits inside the crop, and the
-  first crop lands without a pan.
+- Closer looks keep the frame's proportions and zoom in by `PHONE_ZOOM` (1.6).
+- Scene card (`SceneFrame`): step 0 and reduced motion always show the whole
+  stage. Pass a `focus` for the later steps, usually
+  `onCard(t.rect(key), view)` with the alignment `'start'`, `'center'` (for a
+  pointer target) or `'end'` (for buttons at a row's right).
+- Plain stage (`DemoFrame`): no crop by default. When a step needs a closer
+  look, pass `NativeStage` the result of `zoomCrop(width, height, at)`. Pass
+  `null` as `at` for the other steps, so the view eases in and out.
+- Check every step at 390px: the first frame is whole, and each zoom keeps
+  the step's subject in view.
 
 ### 7. Lay out the page
 

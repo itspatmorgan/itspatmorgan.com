@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from 'motion/react';
 import { SourceIcon, NativeBuilder, EntityPill, AddConnection, menuMotion, type SourceGlyph } from './NativeUI';
 import { NativeStage, DemoCursor } from '../case-study/NativeStage';
-import { DemoFrame, usePhone, useScene } from '../case-study/scene';
+import { DemoFrame, useScene } from '../case-study/scene';
 
 type Flow = 'select' | 'filter' | 'direction';
 const flowTitles = { select: 'the entity picker', filter: 'the property filter', direction: 'the relationship direction' };
@@ -65,15 +65,12 @@ export default function FigmaFlow({ sequence }: { sequence: Flow }) {
   const scene = useScene(timings[sequence], captions[sequence]);
   const phase = scene.step;
   const [width, height] = sequence === 'select' ? [932, 565] : [600, 400];
-  // The builder's own frame trims its margins; a phone crops tighter, to the picker's categories and types, or to the builder's controls.
-  const phone = usePhone();
-  const crop = sequence === 'select' ? (phone ? { x: 20, y: 10, width: 380, height: 460 } : undefined) : phone ? { x: 0, y: 12, width: 480, height: 360 } : { x: 0, y: 12, width: 588, height: 360 };
   const [sourceX, sourceY] = cursors[sequence][phase];
   const direction = phase === 3 ? 1 : phase >= 4 ? 2 : 0;
   const tooltip = phase === 2 ? 'Bidirectional' : phase === 3 ? 'Toward source' : phase === 4 ? 'Toward target' : undefined;
   const nextDirection = () => scene.choose(direction === 0 ? 3 : direction === 1 ? 4 : 2);
   return <DemoFrame scene={scene} title={flowTitles[sequence]} label={`Design demo: ${flowTitles[sequence]}`}><div className={`cs-demo qb-flow qb-flow-${sequence}`} data-step={phase} onKeyDown={e => { if (e.key === 'Escape') scene.choose(sequence === 'select' ? (phase >= 4 ? 6 : 0) : sequence === 'filter' ? (phase < 5 ? 0 : phase < 8 ? 5 : 8) : 0); }}>
-    <div className="qb-film-stage"><NativeStage width={width} height={height} crop={crop} interactive={!scene.playing}>
+    <div className="qb-film-stage"><NativeStage width={width} height={height} crop={sequence === 'select' ? undefined : { x: 0, y: 12, width: 588, height: 360 }} interactive={!scene.playing}>
       {sequence === 'select' ? <SelectionScene phase={phase} choose={scene.choose} /> : <NativeBuilder filterPhase={sequence === 'filter' ? phase : 12} onFilterPhase={sequence === 'filter' ? scene.choose : undefined} hoverRoot={sequence === 'filter' && phase >= 1 && phase <= 4} tooltip={sequence === 'filter' && phase === 2} filterMenu={sequence === 'filter' && (phase === 3 || phase === 4)} menuHover={phase === 4} animated={sequence === 'filter' && scene.playing} relation={sequence === 'direction'} direction={direction} directionTooltip={sequence === 'direction' ? tooltip : undefined} relationHover={sequence === 'direction' && phase >= 1 && phase <= 4} onDirection={nextDirection} />}
       <DemoCursor x={sourceX} y={sourceY} visible={scene.playing} reduced={scene.reduced} pressing={sequence === 'filter' ? [4, 7, 10].includes(phase) : sequence === 'select' ? phase === 4 : phase === 3 || phase === 4} />
     </NativeStage></div>

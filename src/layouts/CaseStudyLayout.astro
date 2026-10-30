@@ -32,9 +32,9 @@ const { title, description, image, product, company, heading, subline, brief } =
       <dl class="cs-brief">
         {brief.map(([label, value]) => <div><dt>{label}</dt><dd>{value}</dd></div>)}
       </dl>
-      {/* Phones only: the demos are desktop products, cropped to one part of the screen. Share hands the link on, to open somewhere larger. */}
+      {/* Phones only: the demos are desktop products, shown whole and small. Share hands the link on, to open somewhere larger. */}
       <aside class="cs-phone-note">
-        <p>These are desktop products. On a phone, each demo shows one part of the screen. Open this page on a larger screen for the full walk-through.</p>
+        <p>These are desktop products, shown here at desktop proportions, so they’re small on a phone. Open this page on a larger screen to see them at full size.</p>
         <button type="button" class="cs-share" data-title={title}><Icon icon={Share01Icon} size={15} /><span>Share</span></button>
       </aside>
       <slot name="hero" />

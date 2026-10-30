@@ -3,7 +3,7 @@ import { AnimatePresence, animate, motion, useMotionValue, useTransform, type Mo
 import { HugeiconsIcon } from '@hugeicons/react';
 import { ArrowReloadHorizontalIcon, Cursor01Icon, PauseIcon, PlayIcon } from '@hugeicons/core-free-icons';
 import { useDemoLoop } from './useDemoLoop';
-import { NativeStage } from './NativeStage';
+import { NativeStage, PHONE_ZOOM } from './NativeStage';
 
 // Scene plumbing for case-study demos, first built for the Sublime screens. A scene starts when it scrolls into view. By default it cycles: the last step holds for its
 // time, then the frame fades out and the scene starts again from its first frame, since a flow's last screen rarely tells the whole
@@ -46,8 +46,8 @@ export function useScene(timings: readonly number[], captions: readonly string[]
 export type Scene = ReturnType<typeof useScene>;
 
 const useIsomorphicLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect;
-/** Whether the page is phone-sized. Demos keep their desktop layout there, and the stage crops to the part each step is about, at a size
- *  a phone can read. */
+/** Whether the page is phone-sized. Demos keep their desktop layout and proportions there, shown whole, and zoom in a little on the
+ *  steps that need a closer look. */
 export function usePhone() {
   const [phone, setPhone] = useState(false);
   // Set before the first paint after hydration, so a phone never sees the uncropped frame.
@@ -68,28 +68,27 @@ export function Zoom({ width, to = 1020, children, style, zoomRef }: { width: nu
 
 /** Stage geometry, in stage pixels: a 1240 px stage with the card inset 64 px, so a 1000 px screen renders at about its true size on a
  *  laptop. The card bleeds off the stage's bottom edge, as a page that goes on; a `contained` screen that ends sits whole inside the
- *  stage instead. Phones get the same stage, cropped (see `phoneCrop`), and run it longer, so the crop can move down the page. */
+ *  stage instead. Phones get the same stage (see `phoneCrop`). */
 export function useStage({ wide, height = 760, contained = false }: { wide: number; height?: number; contained?: boolean }) {
   const phone = usePhone();
-  const g = { width: 1240, height: phone ? 1600 : height, inset: 64, top: 64, ring: 16, bottom: contained ? 64 : 0 };
+  const g = { width: 1240, height, inset: 64, top: 64, ring: 16, bottom: contained ? 64 : 0 };
   const card = g.width - g.inset * 2;
   return { phone, W: wide, g, card, box: { width: wide, height: (g.height - g.top - g.bottom) * wide / card } };
 }
 export type Stage = ReturnType<typeof useStage>;
 
-/** What a phone's crop frames: a point or rect in source pixels as the card shows them, set at the crop's left edge, center or right edge
- *  (a little room either side). A rect's top sits near the crop's top; a centered point sits a little above the crop's middle, so what
- *  opens under the pointer has room. */
+/** What a phone zooms to: a point or rect in source pixels as the card shows them, set at the zoomed frame's left edge, center or right
+ *  edge (a little room either side). A rect's top sits near the frame's top; a centered point sits a little above its middle. */
 export type Focus = { x: number; y: number; w?: number; align?: 'start' | 'center' | 'end' };
-/** A phone's crop of a stage: 480 source pixels across, so product text reads at about 10 px, and a little taller than it is wide. */
-export const PHONE_SPAN = 480, PHONE_RATIO = 1.15;
+/** A phone's view of a stage: the whole stage at its desktop proportions, or with a `focus`, zoomed in by PHONE_ZOOM, same proportions. */
 export function phoneCrop(focus: Focus | null, { g, card, W }: Stage) {
-  const k = card / W, width = PHONE_SPAN * k, height = Math.min(width * PHONE_RATIO, g.height);
-  const { x, y, w = 0, align = 'start' } = focus ?? { x: 0, y: 0 };
+  if (!focus) return { x: 0, y: 0, width: g.width, height: g.height };
+  const k = card / W, width = g.width / PHONE_ZOOM, height = g.height / PHONE_ZOOM, span = width / k;
+  const { x, y, w = 0, align = 'start' } = focus;
   const room = 24 / k;
-  const left = align === 'start' ? x - room : align === 'end' ? x + w + room - PHONE_SPAN : x + w / 2 - PHONE_SPAN / 2;
+  const left = align === 'start' ? x - room : align === 'end' ? x + w + room - span : x + w / 2 - span / 2;
+  const top = align === 'center' ? y - height / k * .4 : y - room;
   const clamp = (v: number, hi: number) => Math.round(Math.min(Math.max(0, v), hi));
-  const top = align === 'center' ? y - PHONE_SPAN * PHONE_RATIO * .4 : y - room;
   return { x: clamp(g.inset + left * k, g.width - width), y: clamp(g.top + top * k, g.height - height), width, height };
 }
 /** The focus for a measured rect (or point) once the camera is at `view`. */
@@ -98,15 +97,13 @@ export function onCard(r: { x: number; y: number; w?: number } | null, view: Vie
 }
 
 /** A scene: the stage, with the product card bleeding off its bottom edge and fading out, then the chapter captions and progress. On a
- *  phone the stage crops to `focus` (see `phoneCrop`), and pans as it changes. */
+ *  phone the first step shows the whole stage; later steps zoom to `focus` (see `phoneCrop`), and the view eases between them. Reduced
+ *  motion keeps the whole stage. */
 export function SceneFrame({ scene, stage, label, title, size = 'wide', controls = true, focus = null, children }: { scene: Scene; stage: Stage; label: string; title: string; size?: 'wide' | 'normal'; controls?: boolean; focus?: Focus | null; children: ReactNode }) {
   const { g, card } = stage;
-  // The server renders the whole stage; on a phone the card stays hidden until the stage has cropped itself.
-  const [ready, setReady] = useState(false);
-  useEffect(() => setReady(true), []);
   return <figure className={`cs-scene ${scene.fade ? 'cs-loop-reset' : ''}`} ref={scene.ref as RefObject<HTMLElement>} aria-label={label}>
-    <div className={`cs-stage texture-bg cs-frame is-${size} ${ready ? 'is-ready' : ''}`}>
-      <NativeStage width={g.width} height={g.height} crop={stage.phone ? phoneCrop(focus, stage) : undefined}>
+    <div className={`cs-stage texture-bg cs-frame is-${size}`}>
+      <NativeStage width={g.width} height={g.height} crop={stage.phone ? phoneCrop(scene.step > 0 && !scene.reduced ? focus : null, stage) : undefined}>
         <div className={`cs-shell ${g.bottom ? 'is-contained' : ''}`} style={{ left: g.inset - g.ring, top: g.top - g.ring, bottom: g.bottom ? g.bottom - g.ring : 0, width: card + g.ring * 2, padding: g.bottom ? g.ring : `${g.ring}px ${g.ring}px 0` }}>
           <div className="cs-card">
             <Zoom key={scene.take} width={stage.W} to={card}>{children}</Zoom>
