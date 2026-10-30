@@ -27,7 +27,7 @@ export default function ScopeCheck() {
   const scene = useScene(timings, captions);
   const step = scene.step;
   const lit = (row: typeof tree[number]) => step === 1 ? row.who === 'joe' : step === 2 ? !!row.shared && row.depth === 1 : false;
-  return <DemoFrame scene={scene} stage="sc-plain" title="the scope check"
+  return <DemoFrame scene={scene} caption={false} stage="sc-plain" title="the scope check"
     label="Each contributor owns a folder under src/prototypes. A pull request from Joe that only changes files in his folder is auto-approved by a check: all changed files are within Joe's owned scope. A change to shared product components waits for a review">
     <div className="cs-demo">
       <NativeStage width={960} height={697}>

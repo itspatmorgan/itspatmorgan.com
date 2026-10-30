@@ -11,7 +11,7 @@ import { Filters, PrototypeCard, Rail, icon, type Prototype } from './StudioUI';
 // released in late 2025. Descriptions end where the screenshot's two-line clamp does.
 const timings = [3000, 4200];
 const eras = [['Day one', 'Jan 2026'], ['Today', 'Oct 2026']] as const;
-const captions = ['January 2026, day one: one project in one folder', 'Nine months later: the whole product team publishes here'];
+const captions = ['One project, in one folder', 'The whole product team publishes here'];
 
 const today: Prototype[] = [
   { who: 'Patrick', title: 'Mailbox Takeover Signals', desc: 'Patrick’s simplified iteration of AJ’s Mailbox Takeover Signals, private beta first. Scaffolded…', date: 'Updated Oct 29, 2026' },

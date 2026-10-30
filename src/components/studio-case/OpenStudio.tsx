@@ -114,7 +114,7 @@ export default function OpenStudio() {
   const step = scene.reduced ? 5 : scene.step;
   const t = useTargets(step);
   const at = step === 1 ? t.at('inbox') : step === 3 ? t.at('view') : step === 4 ? t.at('lofi') : null;
-  return <SceneFrame scene={scene} stage={stage} title="the open-source Studio" focus={step >= 3 ? { x: 160, y: 150, w: 520, align: 'start', zoom: 1.4 } : null}
+  return <SceneFrame scene={scene} stage={stage} title="the open-source Studio" focus={step >= 3 ? { x: 0, y: 80, w: 760, align: 'start', zoom: 1.3 } : null}
     label="The open-source Design Studio: a home that lists the latest prototypes and the systems; the Feedback Inbox sample prototype, with its views, states and discovery work in a sidebar beside a working inbox; then the same inbox switched to lo-fi, in grayscale with handwritten type">
     <div ref={t.ref} style={{ position: 'relative', height: stage.box.height }} aria-hidden="true">
       <div className="sc-os">

@@ -104,7 +104,7 @@ export default function Handoff() {
   const scene = useScene(timings, captions);
   const stage = useStage({ wide: 1000, height: 760 });
   const step = scene.step;
-  return <SceneFrame scene={scene} stage={stage} title="the engineering handoff" focus={step >= 1 ? { x: 380, y: 330, w: 596, align: 'start', zoom: 1.45 } : null}
+  return <SceneFrame scene={scene} stage={stage} title="the engineering handoff" focus={step >= 1 ? { x: 386, y: 330, w: 600, align: 'start', zoom: 1.76 } : null}
     label="The ADÉ Workflow prototype is a folder in the Design Studio repo, holding its code, its canvas and its metadata. An engineer pulls the repo and asks their agent to build ADÉ Workflow in production from that folder. The agent reads the prototype's metadata, its canvas of 27 frames and their notes, and its layout, then ports it with skills the engineering team wrote">
     <div className="sc-editor" style={{ height: stage.box.height }}>
       <Tree step={step} />
