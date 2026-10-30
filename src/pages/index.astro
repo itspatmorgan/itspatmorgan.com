@@ -33,6 +33,7 @@ const featuredProjectDescriptions: Record<string, string> = {
   "sublime-agents": "Designed an AI agent that writes detection rules, and gives security teams control over its autonomy.",
   "query-language": "Designed a visual query builder that taught a complex query language as customers used it.",
   expansion: "Shaped how a new SKU came to market by extending the platform, not rebuilding it.",
+  "design-studio": "Designed and built the environment where Sublime's product team and their agents prototype together, then open-sourced it.",
 };
 
 const heroHeadline = "Patrick is a designer who builds.";
@@ -80,16 +81,13 @@ const homeCommunityPhotos = [
   },
 ] as const;
 
-// Design Studio's public repo, linked from the Open source section header.
-const designStudioRepo = "https://github.com/itspatmorgan/design-studio";
-
 // 1296 less 56 a side leaves 1184 of content, the case studies' widest stage, so the homepage and the work it links to share one measure.
 const homeShell = "mx-auto w-full max-w-[1296px] px-6 sm:px-8 lg:px-14";
 const homeSection = `${homeShell} py-12 sm:py-14 lg:py-16`;
 const homeFirstSection = `${homeShell} pt-5 pb-12 sm:pt-10 sm:pb-14 lg:pt-10 lg:pb-16`;
 const homeSectionHeader = "mb-7 flex items-center justify-between";
 const homeCardGrid = "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6";
-// Featured work runs two wide cards side by side, using the wide thumbnails.
+// Featured work runs two wide cards side by side, using the wide thumbnails, then Design Studio's case study across the full width.
 const homeWorkGrid = "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:gap-6";
 ---
 
@@ -223,15 +221,9 @@ const homeWorkGrid = "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:gap-6";
         </div>
       ))}
     </div>
-  </section>
-
-  {/* ── Design Studio ────────────────────────────────────── */}
-  <section class={homeSection} aria-labelledby="home-design-studio-title">
-    <div class={homeSectionHeader} data-home-section-header>
-      <p class="font-mono text-xs uppercase tracking-widest text-muted-foreground">Open source</p>
-      <a href={designStudioRepo} target="_blank" rel="noopener noreferrer" class="text-xs text-muted-foreground transition-colors hover:text-foreground">View on GitHub →</a>
+    <div class="mt-5 lg:mt-6">
+      <StudioHomeModule description={featuredProjectDescriptions["design-studio"]} />
     </div>
-    <StudioHomeModule />
   </section>
 
   {/* ── Writing ──────────────────────────────────────────── */}

@@ -8,7 +8,7 @@ import './studio-card.css';
 // The homepage's Design Studio visual: one idea, in every shape Studio can give it. In front, the five kinds of artifact its landing page
 // names; behind, the artifact selected. It rests on the interactive prototype; hovering walks the list from the wireframe down and the
 // panel becomes each artifact in turn, so the hover shows what the list only names.
-// Drawn at 560 × 315 because the Open source card's visual column is wider than a Work card, which puts type at the Work cards' size.
+// Drawn at 560 × 315 because the homepage's wide Design Studio card has a visual column is wider than a Work card, which puts type at the Work cards' size.
 // Phones, where that column is a Work card's width, get the same composition drawn at the Work cards' 400 × 225, and so does the Work
 // page's card (`size="card"`), which is a Work card at every width.
 // Content is the Feedback Inbox sample project that ships with Design Studio (see the home-*.png captures). Liberties: the list's
