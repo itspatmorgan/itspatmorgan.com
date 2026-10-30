@@ -11,14 +11,13 @@ type IconSvg = typeof Search01Icon;
 export const icon = (i: IconSvg, size = 16, stroke = 1.6) => <HugeiconsIcon icon={i} size={size} strokeWidth={stroke} />;
 
 /** The internal Studio's rail (GallerySidebar, collapsed): Sublime's mark, search, then Prototypes, Tools, Guide, Principles,
- *  Personas, Systems and Blueprints, with the panel toggle and color mode at the foot. */
+ *  Personas, Systems and Blueprints, with color mode at the foot. */
 export function Rail({ on = 'prototypes' }: { on?: string }) {
   const items: [string, IconSvg][] = [['search', Search01Icon], ['prototypes', Layers01Icon], ['tools', Wrench01Icon], ['guide', Book02Icon], ['principles', Target01Icon], ['personas', UserCircleIcon], ['systems', Shapes01Icon], ['blueprints', WebDesign01Icon]];
   return <nav className="sc-rail" aria-hidden="true">
     <img className="sc-mark" src="/images/studio-case/sublime-mark.svg" alt="" />
     {items.map(([key, i]) => <span key={key} className={`sc-rail-item ${on === key ? 'is-on' : ''}`}>{icon(i, 18)}</span>)}
-    <span className="sc-rail-item sc-rail-end">{icon(PanelLeftCloseIcon, 18)}</span>
-    <span className="sc-rail-item">{icon(Moon02Icon, 18)}</span>
+    <span className="sc-rail-item sc-rail-end">{icon(Moon02Icon, 18)}</span>
   </nav>;
 }
 
@@ -42,10 +41,18 @@ export function OsRail({ on = 'home' }: { on?: string }) {
   </nav>;
 }
 
-// ContributorAvatar shows each person's GitHub photo. A monogram in a muted color stands in, one per teammate.
-const tones: Record<string, string> = { Patrick: '#6b5d4f', Joe: '#4f6b8a', Ahry: '#5f8a6b', AJ: '#8a6f4f', Samantha: '#8a4f5f' };
+// ContributorAvatar shows each person's GitHub picture. Patrick's is his own photo; Ahry's and Samantha's are GitHub's default
+// identicons, drawn here in their colors (Drive: sublime-team-prototypes.png). Joe's and AJ's are photos, so a quiet monogram
+// stands in.
+const identicons: Record<string, [string, number[]]> = {
+  Ahry: ['#7fbf7f', [0b10101, 0b01110, 0b10001, 0b01010, 0b10101]],
+  Samantha: ['#d0605e', [0b11111, 0b00100, 0b11011, 0b00000, 0b01110]],
+};
 export function Avatar({ name }: { name: string }) {
-  return <span className="sc-avatar" style={{ background: tones[name] ?? '#71717a' }}>{name.slice(0, name === 'AJ' ? 2 : 1)}</span>;
+  if (name === 'Patrick') return <img className="sc-avatar" src="/images/brand/profile-picture.jpg" alt="" />;
+  const id = identicons[name];
+  if (id) return <svg className="sc-avatar is-id" viewBox="-1 -1 7 7" aria-hidden="true">{id[1].flatMap((row, y) => [0, 1, 2, 3, 4].filter(x => row & (1 << (4 - x))).map(x => <rect key={`${x}-${y}`} x={x} y={y} width="1" height="1" fill={id[0]} />))}</svg>;
+  return <span className="sc-avatar">{name.slice(0, name === 'AJ' ? 2 : 1)}</span>;
 }
 
 export type Prototype = { who: string; title: string; desc: string; date: string };

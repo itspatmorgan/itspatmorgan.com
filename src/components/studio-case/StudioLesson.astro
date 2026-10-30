@@ -6,15 +6,15 @@
 const moments = [
   ['Jan 2026', 'One folder of screens', 'Built for my own work'],
   ['Then', 'The team asks to join', 'Designers, then brand, then PMs'],
-  ['Aug 2026', 'Dive Club interview', 'Viewers ask for their own'],
-  ['Oct 2026', 'Open-source launch', '600+ signed up for the lesson'],
+  ['Aug 2026', 'Dive Club interview', 'Viewers ask for their own', 'https://www.youtube.com/watch?v=628c4YuxAEM'],
+  ['Oct 2026', 'Open-source launch', '600+ signed up for the Maven lesson', 'https://maven.com/p/0e87f2/build-your-own-ai-design-sandbox'],
 ];
 ---
 
 <figure class="cs-stage texture-bg sc-lesson" aria-label="A timeline: January 2026, one folder of screens built for Patrick's own work; then the team asks to join; August 2026, the Dive Club interview; October 2026, the open-source launch">
   <ol>
-    {moments.map(([when, what, note]) => (
-      <li><small>{when}</small><b>{what}</b><span>{note}</span></li>
+    {moments.map(([when, what, note, href]) => (
+      <li><small>{when}</small>{href ? <a href={href} target="_blank" rel="noopener noreferrer"><b>{what}</b></a> : <b>{what}</b>}<span>{note}</span></li>
     ))}
   </ol>
 </figure>
@@ -28,6 +28,7 @@ const moments = [
   .sc-lesson li:last-child::before { background: var(--foreground); border-color: var(--foreground); }
   .sc-lesson small { font-size: 13px; color: var(--muted-foreground); }
   .sc-lesson b { font-size: 17px; line-height: 23px; font-weight: 500; letter-spacing: -.01em; }
+  .sc-lesson a { color: inherit; text-decoration: underline; text-underline-offset: 4px; text-decoration-color: color-mix(in srgb, var(--foreground) 25%, transparent); }
   .sc-lesson span { font-size: 14px; line-height: 20px; color: var(--muted-foreground); }
   @media (max-width: 640px) {
     .sc-lesson { margin-top: 28px; }

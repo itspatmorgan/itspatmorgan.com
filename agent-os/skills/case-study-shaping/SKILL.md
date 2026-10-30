@@ -22,12 +22,12 @@ Four reference implementations exist:
   current pattern for animated demos.
 - Design Studio: `src/pages/work/design-studio-preview.astro` (preview route
   until Patrick ships it) with screens in `src/components/studio-case/`. It
-  extends the pattern for a product with no single shipped UI: two products in
-  one namespace (`sc` for the internal Studio, `sc-os` for the open-source one),
-  idea slides drawn as quiet diagrams in `DemoFrame` on a `NativeStage`, and
-  social proof as page blocks (`StudioQuote`, a teammate's public words, and
-  `StudioProof`, even cards that lead with one fact and need no outside
-  images, since the preview viewer blocks them).
+  shows a tool through real work made in it: the hero's canvas frames are the
+  Sublime case study's real screens, scaled (`Live` in `Workspace.tsx`), and
+  the handoff slide is a real handoff document from the archive and the view
+  it opens. Two products share one namespace (`sc` internal, `sc-os` open
+  source). Patrick rejected drawn stand-ins (gray-bar thumbnails, invented
+  documents) and link-card proof sections as looking cheap.
 - Page shell: `src/layouts/CaseStudyLayout.astro` (nav, hero, brief, and a
   `hero` slot for the hero visual) and `src/components/case-study/Slide.astro`
   (headline, one line, visual). A page is the layout plus one `Slide` per point.

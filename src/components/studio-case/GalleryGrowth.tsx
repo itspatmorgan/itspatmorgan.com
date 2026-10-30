@@ -5,12 +5,11 @@ import { Filters, PrototypeCard, Rail, icon, type Prototype } from './StudioUI';
 
 // Day one, then today. The first gallery (Drive: sublime-humble-beginning.jpg) held one project, Agent Configuration, in a list view
 // under a Sublime header; today's (Drive: sublime-team-prototypes.png) is the catalog every teammate publishes to, newest first,
-// with team tabs. The scene crossfades from one to the other, then scrolls down the catalog.
+// with team tabs. The scene crossfades from one to the other.
 // Liberties: the first gallery's card is dated Jan 26, 2026; its meta.json reads 2025, a typo, since the initial commit names a model
-// released in late 2025. Avatars are monograms in place of GitHub photos. Descriptions end where the screenshot's two-line clamp does.
-// Cards below the screenshot's fold are Patrick's own prototypes from the archive, with their real titles, descriptions and dates.
-const timings = [2800, 2600, 3400];
-const captions = ['Day one: one project in one folder', 'Today: the whole product team publishes here', 'Hundreds of prototypes, with several more each week'];
+// released in late 2025. Descriptions end where the screenshot's two-line clamp does.
+const timings = [3000, 4200];
+const captions = ['Day one: one project in one folder', 'Today: the whole product team publishes here'];
 
 const today: Prototype[] = [
   { who: 'Patrick', title: 'Mailbox Takeover Signals', desc: 'Patrick’s simplified iteration of AJ’s Mailbox Takeover Signals, private beta first. Scaffolded…', date: 'Updated Oct 29, 2026' },
@@ -25,9 +24,6 @@ const today: Prototype[] = [
   { who: 'Samantha', title: 'Custom Training Builder', desc: 'Timeline editor for custom security awareness training. Add sections three ways: a custom…', date: 'Oct 23, 2026' },
   { who: 'Samantha', title: 'Phish Sims for Email Agents', desc: 'Agent campaign type in Phish Sims: pick mailboxes, send a link hidden from the human…', date: 'Oct 23, 2026' },
   { who: 'Samantha', title: 'Phishing Sim Post-Click', desc: 'Credential pages and attachment lures added to the current phishing sims campaign builder, wit…', date: 'Oct 23, 2026' },
-  { who: 'Patrick', title: 'MTTC', desc: 'Rebuilding Alex’s MTTC Agentic Hub to the Figma spec: research, reference assets, and a map of the gaps.', date: 'Updated Oct 20, 2026' },
-  { who: 'Patrick', title: 'Vendor Management (Public Beta)', desc: 'Additive public-beta scope on top of private beta — logos, vendor stats, archive, and message-detail vendor branding.', date: 'Aug 24, 2026' },
-  { who: 'Patrick', title: 'Vendor Management (Beta)', desc: 'High-fidelity beta-scope Vendor Management prototype organized around the user journey.', date: 'Updated Aug 21, 2026' },
 ];
 
 const pages: [string, typeof SquareIcon][] = [
@@ -52,11 +48,11 @@ function FirstGallery() {
   </div>;
 }
 
-function TodayGallery({ scrolled }: { scrolled: boolean }) {
+function TodayGallery() {
   return <div className="sc-app">
     <Rail on="prototypes" />
     <div className="sc-main">
-      <div className="sc-scroll" style={{ transform: `translateY(${scrolled ? -470 : 0}px)` }}>
+      <div>
         <div className="sc-gallery">
           <h2 className="sc-title">Prototypes</h2>
           <p className="sc-desc">Every prototype in the gallery, newest first.</p>
@@ -72,13 +68,13 @@ function TodayGallery({ scrolled }: { scrolled: boolean }) {
 export default function GalleryGrowth() {
   const scene = useScene(timings, captions);
   const stage = useStage({ wide: 1000, height: 760 });
-  const step = scene.reduced ? 2 : scene.step;
+  const step = scene.step;
   return <SceneFrame scene={scene} stage={stage} title="the gallery, then and now"
     label="Sublime's Design Studio on day one: a list with one project, Agent Configuration, by Patrick, January 2026. Then today: a catalog of prototypes from Patrick, Joe, Ahry, AJ and Samantha across product design, product management and creative, newest first">
     <div style={{ position: 'relative', height: stage.box.height }} aria-hidden="true">
       <Screens id={step === 0 ? 'first' : 'today'}>
         <div style={{ position: 'relative', height: stage.box.height, overflow: 'hidden' }}>
-          {step === 0 ? <FirstGallery /> : <TodayGallery scrolled={step >= 2} />}
+          {step === 0 ? <FirstGallery /> : <TodayGallery />}
         </div>
       </Screens>
     </div>

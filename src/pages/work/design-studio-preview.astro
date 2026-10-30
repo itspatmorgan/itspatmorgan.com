@@ -12,9 +12,9 @@ import ScopeCheck from '@/components/studio-case/ScopeCheck';
 import Handoff from '@/components/studio-case/Handoff';
 import OpenStudio from '@/components/studio-case/OpenStudio';
 import StudioQuote from '@/components/studio-case/StudioQuote.astro';
-import StudioProof from '@/components/studio-case/StudioProof.astro';
 import StudioLesson from '@/components/studio-case/StudioLesson.astro';
 import '@/components/case-study/case-study.css';
+import '@/components/sublime/sublime.css';
 import '@/components/studio-case/studio-case.css';
 
 const project = await getEntry('projects', 'design-studio');
@@ -30,10 +30,10 @@ if (!project) throw new Error('Design Studio case study is missing');
   heading="Building a design environment for people and agents"
   subline="I designed and built Design Studio on my own. Sublime’s product team designs in it, and engineering builds from it."
   brief={[
-    ['When', 'Jan 2026 to now'],
-    ['Role', 'Creator, sole designer and builder'],
-    ['Team', 'About 12 people at Sublime'],
-    ['Outcome', 'Adopted by the whole product team, then open-sourced'],
+    ['When', '2026 to now'],
+    ['Role', 'Sole designer and builder'],
+    ['Team', 'About 12 at Sublime'],
+    ['Outcome', 'Adopted team-wide'],
   ]}
 >
   <Workspace slot="hero" client:load />
@@ -57,10 +57,6 @@ if (!project) throw new Error('Design Studio case study is missing');
 
   <Slide id="handoff" title="Engineering builds from the prototype itself" line="Engineers wrote agent skills that turn a handed‑off prototype into production code.">
     <Handoff client:visible />
-  </Slide>
-
-  <Slide id="demand" title="People outside Sublime asked for their own" line="Viewers of a Dive Club interview asked for it. 600+ signed up for the launch lesson.">
-    <StudioProof />
   </Slide>
 
   <Slide id="rebuild" title="Open source meant starting over, with what the team taught me" line="It had to stand apart from Sublime’s version. It builds on all I learned from the first.">
