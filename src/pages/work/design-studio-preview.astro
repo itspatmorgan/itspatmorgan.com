@@ -28,7 +28,7 @@ if (!project) throw new Error('Design Studio case study is missing');
   noindex
   company={{ name: 'Design Studio', logo: '/images/studio-case/design-studio-mark.svg' }}
   heading="Building a design environment for people and agents"
-  subline="I designed and built Design Studio on my own. Sublime’s product team designs in it, and engineering builds from it."
+  subline="Design Studio is one codebase where a product team prototypes with AI agents, using the product’s real components. I designed and built it on my own at Sublime, then released an open-source version anyone can use."
   brief={[
     ['When', '2026 to now'],
     ['Role', 'Sole designer and builder'],
@@ -36,9 +36,13 @@ if (!project) throw new Error('Design Studio case study is missing');
     ['Outcome', 'Adopted team-wide'],
   ]}
 >
+  <nav slot="actions" class="sc-next sc-hero-links" aria-label="Design Studio">
+    <a class="is-primary" href="/design-studio">Explore Design Studio</a>
+    <a href="https://github.com/itspatmorgan/design-studio" target="_blank" rel="noopener noreferrer">Open source on GitHub</a>
+  </nav>
   <Workspace slot="hero" client:load />
 
-  <Slide id="bet" title="AI prototypes were either throwaway or too heavy" line="Design Studio sits between: it knows the product, and stays apart from it to move fast.">
+  <Slide id="bet" title="AI prototypes were throwaway, and product code too heavy to explore in" line="Design Studio sits between them: the product’s real components and rules, in a repo of its own where trying ideas is cheap.">
     <Spectrum client:visible />
   </Slide>
 
@@ -46,21 +50,21 @@ if (!project) throw new Error('Design Studio case study is missing');
     <GalleryGrowth client:visible />
   </Slide>
 
-  <Slide id="agents" title="Agents read the same rules the team does" line="One AGENTS.md file points every coding agent to the team’s rules, systems and skills.">
+  <Slide id="agents" title="Agents follow the same rules the team does" line="People build by asking coding agents. One AGENTS.md file points every agent to the team’s rules, systems and skills.">
     <RulesMap client:visible />
   </Slide>
 
-  <Slide id="scope" title="Each person works in a space no one else can break" line="Changes inside your own folder are approved on their own. Shared code gets a review.">
+  <Slide id="scope" title="A dozen people share one codebase without breaking each other’s work" line="Each person owns a folder. Changes inside it are approved on their own; shared code gets a review.">
     <ScopeCheck client:visible />
   </Slide>
 
   <StudioQuote />
 
-  <Slide id="handoff" title="Engineering builds from the prototype itself" line="Engineers wrote agent skills that turn a handed‑off prototype into production code.">
+  <Slide id="handoff" title="Engineering builds from the prototype itself" line="An engineer points their agent at a prototype’s folder, and skills the engineers wrote turn it into production code.">
     <Handoff client:visible />
   </Slide>
 
-  <Slide id="rebuild" title="Open source meant starting over, with what the team taught me" line="It had to stand apart from Sublime’s version. It builds on all I learned from the first.">
+  <Slide id="rebuild" title="Then I rebuilt it as open source, with what the team taught me" line="Sublime’s version is built around Sublime’s product, so the open-source one starts fresh for any team.">
     <OpenStudio client:visible />
     <nav class="sc-next" aria-label="Design Studio">
       <a class="is-primary" href="/design-studio">Explore Design Studio</a>

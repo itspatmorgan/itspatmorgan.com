@@ -210,6 +210,8 @@
 .sc-next { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 32px; }
 .sc-next a { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px; border: 1px solid var(--border); border-radius: 999px; font-size: 14px; font-weight: 500; color: var(--foreground); text-decoration: none; transition: border-color 200ms ease; }
 .sc-next a.is-primary { background: var(--foreground); color: var(--background); border-color: var(--foreground); }
+.cs-hero > .sc-hero-links { margin-top: 32px; }
+@media (max-width: 640px) { .sc-hero-links { gap: 8px; } .sc-hero-links a { height: 36px; padding: 0 14px; font-size: 13px; } }
 .sc-next a:hover { border-color: color-mix(in srgb, var(--foreground) 40%, transparent); }
 @media (max-width: 640px) { .sc-pr-log { margin-top: 32px; padding: 16px 18px; font-size: 13px; } .sc-pr-log::before { display: none; } }
 

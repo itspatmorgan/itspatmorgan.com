@@ -31,6 +31,7 @@ const { title, description, image, product, company, heading, subline, brief, no
       <p class="cs-company"><img src={company.logo} width="30" height="30" alt="" />{company.name}</p>
       <h1>{heading}</h1>
       <p>{subline}</p>
+      <slot name="actions" />
       <dl class="cs-brief">
         {brief.map(([label, value]) => <div><dt>{label}</dt><dd>{value}</dd></div>)}
       </dl>
