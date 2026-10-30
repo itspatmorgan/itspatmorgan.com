@@ -1,5 +1,6 @@
 import { HugeiconsIcon } from '@hugeicons/react';
 import { ArrowDown01Icon, DashboardSquare01Icon, File01Icon, Menu01Icon, SquareIcon } from '@hugeicons/core-free-icons';
+import { motion, useReducedMotion } from 'motion/react';
 import { SceneFrame, Screens, useScene, useStage } from '../case-study/scene';
 import { Filters, PrototypeCard, Rail, icon, type Prototype } from './StudioUI';
 
@@ -69,8 +70,14 @@ export default function GalleryGrowth() {
   const scene = useScene(timings, captions);
   const stage = useStage({ wide: 1000, height: 760 });
   const step = scene.step;
+  const reduced = useReducedMotion();
+  // The pressed thumb slides between the two sides as the gallery changes, on the same beat as the screen's crossfade; the labels
+  // keep one weight so nothing shifts while it moves.
   const bar = <div className="sc-era" role="group" aria-label="Which gallery">
-    {eras.map(([what, when], i) => <button type="button" key={what} aria-pressed={step === i} onClick={() => scene.choose(i)}><b>{what}</b>{when}</button>)}
+    {eras.map(([what, when], i) => <button type="button" key={what} aria-pressed={step === i} onClick={() => scene.choose(i)}>
+      {step === i && <motion.i className="sc-era-thumb" layoutId="sc-era-thumb" transition={reduced ? { duration: 0 } : { type: 'spring', duration: .5, bounce: .12 }} />}
+      <span><b>{what}</b>{when}</span>
+    </button>)}
   </div>;
   return <SceneFrame scene={scene} stage={stage} bar={bar} title="the gallery, then and now"
     label="Sublime's Design Studio as first built, in January 2026: a list with one project, Agent Configuration, by Patrick, January 2026. Then nine months later, today: a catalog of prototypes from Patrick, Joe, Ahry, AJ and Samantha across product design, product management and creative, newest first">

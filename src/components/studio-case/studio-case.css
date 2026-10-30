@@ -399,7 +399,10 @@
 .pt.is-open { padding-top: 28px; }
 /* Then and now: which gallery the demo shows, a toggle inside the stage, above the card (as the query builder case study's Code / Visual). */
 .sc-era { display: flex; width: max-content; margin: 0; padding: 3px; gap: 2px; border-radius: 99px; background: color-mix(in oklch, var(--foreground) 7%, transparent); }
-.sc-era button { display: flex; align-items: center; gap: 6px; min-height: 30px; padding: 0 16px; border-radius: 99px; color: var(--muted-foreground); font: 500 13px var(--font-sans); cursor: pointer; transition: background 200ms ease, color 200ms ease; }
-.sc-era button b { font-weight: 500; color: inherit; }
-.sc-era button[aria-pressed=true] { background: var(--background); color: var(--foreground); box-shadow: 0 1px 2px #0000001a; }
-.sc-era button[aria-pressed=true] b { font-weight: 600; }
+.sc-era button { position: relative; min-height: 30px; padding: 0 16px; border-radius: 99px; color: var(--muted-foreground); font: 500 13px var(--font-sans); cursor: pointer; transition: color 300ms cubic-bezier(.23, 1, .32, 1); }
+.sc-era button > span { position: relative; z-index: 1; display: flex; align-items: center; gap: 6px; height: 30px; }
+.sc-era button b { font-weight: 600; color: inherit; }
+.sc-era button[aria-pressed=true] { color: var(--foreground); }
+.sc-era button:not([aria-pressed=true]):hover { color: color-mix(in srgb, var(--foreground) 75%, transparent); }
+.sc-era-thumb { position: absolute; z-index: 0; inset: 0; border-radius: 99px; background: var(--background); box-shadow: 0 1px 2px #0000001a, 0 0 0 .5px #0000000d; }
+.sc-era button:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
