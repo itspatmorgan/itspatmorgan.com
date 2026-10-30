@@ -1,4 +1,4 @@
-import { ArrowDown01Icon, ArrowRight01Icon, CodeIcon, File01Icon, Folder01Icon, PresentationBarChart01Icon } from '@hugeicons/core-free-icons';
+import { ArrowDown01Icon, ArrowRight01Icon, CanvasIcon, CodeIcon, File01Icon, Folder01Icon } from '@hugeicons/core-free-icons';
 import { SceneFrame, useScene, useStage } from '../case-study/scene';
 import { icon } from './StudioUI';
 
@@ -68,7 +68,7 @@ function Tree({ step }: { step: number }) {
       const inside = row.depth >= 4 || row.name === 'ade-workflow';
       const lit = step === 0 ? inside : step === 2 && !!row.read;
       const glyph = row.kind === 'open' ? ArrowDown01Icon : row.kind === 'folder' ? ArrowRight01Icon : null;
-      const kind = row.kind === 'canvas' ? PresentationBarChart01Icon : row.kind === 'file' ? (row.name.endsWith('.jsx') ? CodeIcon : File01Icon) : Folder01Icon;
+      const kind = row.kind === 'canvas' ? CanvasIcon : row.kind === 'file' ? (row.name.endsWith('.jsx') ? CodeIcon : File01Icon) : Folder01Icon;
       return <li key={row.name + row.depth} className={`${lit ? 'is-lit' : ''} ${row.name === 'ade-workflow' && step >= 1 ? 'is-on' : ''}`} style={{ paddingLeft: 10 + row.depth * 14 }}>
         <span className="sc-tree-chev">{glyph && icon(glyph, 12)}</span>
         {icon(kind, 14)}
@@ -80,7 +80,7 @@ function Tree({ step }: { step: number }) {
 
 function Code({ step }: { step: number }) {
   return <div className="sc-code" aria-hidden="true">
-    <div className="sc-code-tab">{icon(PresentationBarChart01Icon, 13)}canvases/ade-workflow.json</div>
+    <div className="sc-code-tab">{icon(CanvasIcon, 13)}canvases/ade-workflow.json</div>
     <ol>{json.map(([line, note], i) => <li key={i} className={note && step !== 1 ? 'is-lit' : ''}><code>{line}</code></li>)}</ol>
   </div>;
 }

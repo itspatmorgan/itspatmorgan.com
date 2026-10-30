@@ -1,4 +1,4 @@
-import { ArrowDown01Icon, ArrowRight01Icon, CodeIcon, Menu01Icon, Presentation01Icon } from '@hugeicons/core-free-icons';
+import { ArrowDown01Icon, ArrowRight01Icon, CanvasIcon, CodeSquareIcon, Menu01Icon } from '@hugeicons/core-free-icons';
 import type { ReactNode } from 'react';
 import { SceneFrame, Screens, useScene, useStage } from '../case-study/scene';
 import { Accepted, HuntEntry, JobHeading, Page, Recommendation, TimelineItem, Triggered, Worked, job } from '../sublime/SublimeUI';
@@ -67,12 +67,12 @@ function Side({ open }: { open: boolean }) {
   return <aside className="sc-side" aria-hidden="true">
     <h4>ADÉ Workflow</h4>
     <h5>Context</h5>
-    <ul><li className={open ? '' : 'is-on'}>{icon(Presentation01Icon, 15)}ADÉ Workflow</li></ul>
+    <ul><li className={open ? '' : 'is-on'}>{icon(CanvasIcon, 15)}ADÉ Workflow</li></ul>
     <h5>Code</h5>
     <ul>
       <li className="is-group">{icon(ArrowRight01Icon, 13)}User Reports</li>
       <li className="is-group">{icon(ArrowDown01Icon, 13)}ADÉ</li>
-      {views.map(v => <li key={v} className={`is-child ${open && v === 'Job completed: review' ? 'is-on' : ''}`}>{icon(CodeIcon, 14)}{v}</li>)}
+      {views.map(v => <li key={v} className={`is-child ${open && v === 'Job completed: review' ? 'is-on' : ''}`}>{icon(CodeSquareIcon, 14)}{v}</li>)}
       <li className="is-group">{icon(ArrowRight01Icon, 13)}ADÉ Module</li>
       <li className="is-group">{icon(ArrowRight01Icon, 13)}Message Baselines</li>
     </ul>
