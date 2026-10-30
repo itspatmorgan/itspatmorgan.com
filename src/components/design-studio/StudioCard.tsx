@@ -9,7 +9,8 @@ import './studio-card.css';
 // names; behind, the artifact selected. It rests on the interactive prototype; hovering walks the list from the wireframe down and the
 // panel becomes each artifact in turn, so the hover shows what the list only names.
 // Drawn at 560 × 315 because the Open source card's visual column is wider than a Work card, which puts type at the Work cards' size.
-// Phones, where that column is a Work card's width, get the same composition drawn at the Work cards' 400 × 225.
+// Phones, where that column is a Work card's width, get the same composition drawn at the Work cards' 400 × 225, and so does the Work
+// page's card (`size="card"`), which is a Work card at every width.
 // Content is the Feedback Inbox sample project that ships with Design Studio (see the home-*.png captures). Liberties: the list's
 // icons are Hugeicons standing in for Studio's own; the wireframe keeps Studio's grays and outlines but not its sketch typeface; the
 // canvas shows the handoff canvas's screens as outlines; the inbox keeps three of its five filters and drops its description, and the
@@ -102,9 +103,9 @@ function useCompact() {
 }
 
 /** One idea in every shape: the artifact types in front, the one selected behind. */
-export default function StudioCard() {
+export default function StudioCard({ size = 'wide' }: { size?: 'wide' | 'card' }) {
   const loop = useDemoLoop(timings, timings.length - 1, false, true);
-  const compact = useCompact();
+  const compact = useCompact() || size === 'card';
   const current = order[loop.reduced ? order.length - 1 : loop.step];
   return <ProjectCardStage loop={loop} width={compact ? 400 : 560} height={compact ? 225 : 315} className={`dc ${compact ? 'is-compact' : ''}`} label="Design Studio's artifact types, interactive prototype, wireframe, diagram, canvas and document, each shown in turn">
     {/* Every artifact stays mounted, stacked, so the outgoing one fades away before the next fades in, with nothing remounting. */}

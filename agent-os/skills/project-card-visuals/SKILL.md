@@ -24,7 +24,8 @@ Reference implementations, one per case study:
   artifact types in front; behind, the artifact selected. Hover walks the list
   and the panel becomes each one, so the hover adds what the list only names.
   It sits in the homepage's wider Open source card, so it is drawn at 560 × 315
-  (`ProjectCardStage` takes `width` and `height`), and at 400 × 225 on phones.
+  (`ProjectCardStage` takes `width` and `height`), and at 400 × 225 on phones
+  and on its Work page card (`size="card"`).
 
 Shared plumbing:
 
