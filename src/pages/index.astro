@@ -85,7 +85,7 @@ const homeCommunityPhotos = [
 const homeShell = "mx-auto w-full max-w-[1296px] px-6 sm:px-8 lg:px-14";
 const homeSection = `${homeShell} py-12 sm:py-14 lg:py-16`;
 const homeFirstSection = `${homeShell} pt-5 pb-12 sm:pt-10 sm:pb-14 lg:pt-10 lg:pb-16`;
-const homeSectionHeader = "mb-7 flex items-center justify-between";
+const homeSectionHeader = "mb-6 flex items-baseline justify-between";
 const homeCardGrid = "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6";
 // Featured work runs two wide cards side by side, using the wide thumbnails, then Design Studio's case study across the full width.
 const homeWorkGrid = "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:gap-6";
@@ -197,8 +197,8 @@ const homeWorkGrid = "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:gap-6";
   {/* ── Work ─────────────────────────────────────────────── */}
   <section class={homeFirstSection}>
     <div class={homeSectionHeader} data-home-section-header>
-      <p class="font-mono text-xs uppercase tracking-widest text-muted-foreground">Work</p>
-      <a href="/work" class="text-xs text-muted-foreground transition-colors hover:text-foreground">View all →</a>
+      <h2 class="text-lg font-semibold tracking-tight sm:text-xl">Work</h2>
+      <a href="/work" class="text-sm text-muted-foreground transition-colors hover:text-foreground">View all →</a>
     </div>
     <div class={homeWorkGrid}>
       {professionalProjects.slice(0, 2).map((project, i) => (
@@ -229,8 +229,8 @@ const homeWorkGrid = "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:gap-6";
   {/* ── Writing ──────────────────────────────────────────── */}
   <section class={homeSection}>
     <div class={homeSectionHeader} data-home-section-header>
-      <p class="font-mono text-xs uppercase tracking-widest text-muted-foreground">Writing</p>
-      <a href="/writing" class="text-xs text-muted-foreground transition-colors hover:text-foreground">View all →</a>
+      <h2 class="text-lg font-semibold tracking-tight sm:text-xl">Writing</h2>
+      <a href="/writing" class="text-sm text-muted-foreground transition-colors hover:text-foreground">View all →</a>
     </div>
     <div class="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-6">
 
@@ -295,8 +295,8 @@ const homeWorkGrid = "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:gap-6";
   {/* ── Lab ──────────────────────────────────────────────── */}
   <section class={homeSection}>
     <div class={homeSectionHeader} data-home-section-header>
-      <p class="font-mono text-xs uppercase tracking-widest text-muted-foreground">Lab</p>
-      <a href="/lab" class="text-xs text-muted-foreground transition-colors hover:text-foreground">View all →</a>
+      <h2 class="text-lg font-semibold tracking-tight sm:text-xl">Lab</h2>
+      <a href="/lab" class="text-sm text-muted-foreground transition-colors hover:text-foreground">View all →</a>
     </div>
     <div class={homeCardGrid}>
       {labEntries.slice(0, 3).map((entry) => (
@@ -316,8 +316,8 @@ const homeWorkGrid = "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:gap-6";
   {/* ── Community ────────────────────────────────────────── */}
   <section class={`${homeSection} pb-20 sm:pb-24 lg:pb-28`}>
     <div class={homeSectionHeader} data-home-section-header>
-      <p class="font-mono text-xs uppercase tracking-widest text-muted-foreground">Community</p>
-      <a href="/community" class="text-xs text-muted-foreground transition-colors hover:text-foreground">View all →</a>
+      <h2 class="text-lg font-semibold tracking-tight sm:text-xl">Community</h2>
+      <a href="/community" class="text-sm text-muted-foreground transition-colors hover:text-foreground">View all →</a>
     </div>
     <div class="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-6">
       <div class="flex flex-col justify-center" data-project-card-item>
