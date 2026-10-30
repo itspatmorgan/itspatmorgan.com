@@ -10,8 +10,8 @@ import { Filters, PrototypeCard, Rail, icon, type Prototype } from './StudioUI';
 // Liberties: the first gallery's card is dated Jan 26, 2026; its meta.json reads 2025, a typo, since the initial commit names a model
 // released in late 2025. Descriptions end where the screenshot's two-line clamp does.
 const timings = [3000, 4200];
-const eras = [['First version', 'Jan 2026'], ['Today', 'Oct 2026']] as const;
-const captions = ['January 2026, the first version: one project in one folder', 'Nine months later: the whole product team publishes here'];
+const eras = [['Day one', 'Jan 2026'], ['Today', 'Oct 2026']] as const;
+const captions = ['January 2026, day one: one project in one folder', 'Nine months later: the whole product team publishes here'];
 
 const today: Prototype[] = [
   { who: 'Patrick', title: 'Mailbox Takeover Signals', desc: 'Patrick’s simplified iteration of AJ’s Mailbox Takeover Signals, private beta first. Scaffolded…', date: 'Updated Oct 29, 2026' },
