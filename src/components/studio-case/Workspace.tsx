@@ -1,4 +1,4 @@
-import { ArrowDown01Icon, ArrowRight01Icon, CanvasIcon, CodeSquareIcon, LockPasswordIcon, Menu01Icon, Note01Icon, SecurityWarningIcon, Shield01Icon, Tick02Icon } from '@hugeicons/core-free-icons';
+import { ArrowDown01Icon, CanvasIcon, CodeSquareIcon, LockPasswordIcon, Menu01Icon, Note01Icon, SecurityWarningIcon, Shield01Icon, Tick02Icon } from '@hugeicons/core-free-icons';
 import type { ReactNode } from 'react';
 import { SceneFrame, Screens, useScene, useStage } from '../case-study/scene';
 import { Rail, icon } from './StudioUI';
@@ -12,8 +12,9 @@ import { Rail, icon } from './StudioUI';
 // Liberties: the canvas stacks its sections; here "1. Start here" sits beside the other two so all three fit one screen. Each section
 // shows one row (Private beta), its label beside the section title, "1. Start here" its two documents (Sam's two source prototypes are left out), and the section notes
 // are shortened. Captions are drawn at reading size, not at the canvas's zoom. The prototype's views are light only;
-// here they follow the page's theme. Product icons stand in with the closest Hugeicons. The sidebar lists each group's private-beta
-// views by their meta.json descriptions, shortened, and leaves the public-beta views out.
+// here they follow the page's theme. Product icons stand in with the closest Hugeicons. The sidebar is simplified to tell the story in
+// order: the canvas, its two documents, then the lo-fi and hi-fi private-beta screens by their canvas labels (the real one also lists
+// the archive canvas, the public-beta groups and the archive, and names views by their meta.json descriptions).
 const timings = [4800, 3800, 3400, 4200];
 const captions = [
   'One canvas holds the brief, the lo-fi sketch and the hi-fi flow',
@@ -168,29 +169,26 @@ function Canvas() {
   </div>;
 }
 
-const lofiViews = ['Private beta flow', 'Notice with training', 'Warning-sign training', 'Training complete'];
-const hifiViews = ['Private beta flow', 'Notice with training', 'Learn ready to complete', 'Training complete'];
+const flow = ['Notice', 'Learn', 'Done'];
 
+/** Ordered as the scene tells it: the canvas, the documents behind it, then the lo-fi flow and the hi-fi flow. */
 function Side({ step }: { step: number }) {
-  const group = (name: string, views: string[], open: boolean, on: string | null) => <>
-    <li className="is-group">{icon(open ? ArrowDown01Icon : ArrowRight01Icon, 13)}{name}</li>
-    {open && views.map(v => <li key={v} className={`is-child ${v === on ? 'is-on' : ''}`}>{icon(CodeSquareIcon, 14)}{v}</li>)}
+  const group = (name: string, at: number) => <>
+    <li className="is-group">{icon(ArrowDown01Icon, 13)}{name}</li>
+    {flow.map(v => <li key={v} className={`is-child ${step === at && v === 'Learn' ? 'is-on' : ''}`}>{icon(CodeSquareIcon, 14)}{v}</li>)}
   </>;
   return <aside className="sc-side" aria-hidden="true">
     <h4>Phishing Training Beta</h4>
     <h5>Context</h5>
     <ul>
+      <li className={step === 0 ? 'is-on' : ''}>{icon(CanvasIcon, 15)}Landing page</li>
       <li>{icon(Note01Icon, 15)}Design handoff</li>
       <li className={step === 1 ? 'is-on' : ''}>{icon(Note01Icon, 15)}Design context</li>
-      <li className={step === 0 ? 'is-on' : ''}>{icon(CanvasIcon, 15)}Landing page</li>
-      <li>{icon(CanvasIcon, 15)}Archive - landing page</li>
     </ul>
     <h5>Code</h5>
     <ul>
-      {group('Landing Page (lo-fi)', lofiViews, step < 3, step === 2 ? 'Warning-sign training' : null)}
-      {group('Private Beta · Product', hifiViews, step === 3, 'Learn ready to complete')}
-      {group('Public Beta · Product', [], false, null)}
-      {group('Archive', [], false, null)}
+      {group('Lo-fi · Private beta', 2)}
+      {group('Hi-fi · Private beta', 3)}
     </ul>
   </aside>;
 }
