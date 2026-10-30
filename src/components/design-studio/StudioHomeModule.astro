@@ -1,11 +1,11 @@
 ---
-// The homepage's Open source card for Design Studio: title, description and talks beside a live visual on the project card system.
+// The homepage's Open source card for Design Studio: title, description and talks beside a live visual on the project card system
+// (StudioCard). Like a Work card, hovering the card replays the visual.
 import Icon from "@/components/icons/Icon.astro";
-import StudioCardSlot from "@/components/design-studio/StudioCardSlot.astro";
+import StudioCard from "@/components/design-studio/StudioCard";
+import "@/components/case-study/case-study.css";
 import { PlayCircleIcon } from "@hugeicons/core-free-icons";
 
-interface Props { concept?: import("@/components/design-studio/StudioCardSlot.astro").StudioConcept; }
-const { concept = "shapes" } = Astro.props;
 const designStudioLinks = [
   { label: "Dive Club interview", href: "https://www.youtube.com/watch?v=628c4YuxAEM", icon: PlayCircleIcon },
   { label: "Maven talk", href: "https://maven.com/p/0e87f2/build-your-own-ai-design-sandbox", icon: PlayCircleIcon },
@@ -33,10 +33,10 @@ const designStudioLinks = [
           </ul>
           </div>
         </div>
-        {/* The visual, on the project card system the Work cards use (StudioCard), 16:9 like theirs. The whole column links to the landing page. */}
+        {/* The visual, 16:9 like the Work cards' and in the same inert frame. The whole column links to the landing page. */}
         <div class="texture-bg relative order-1 flex items-center overflow-hidden border-b border-border lg:order-2 lg:border-b-0 lg:border-l">
           <a href="/design-studio" class="absolute inset-0 z-10" aria-label="Explore Design Studio" tabindex="-1"></a>
-          <div class="w-full"><StudioCardSlot concept={concept} /></div>
+          <div class="w-full" inert aria-hidden="true"><StudioCard client:visible /></div>
         </div>
       </article>
     </div>

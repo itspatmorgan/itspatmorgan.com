@@ -20,6 +20,11 @@ Reference implementations, one per case study:
   behind; the same query as code in front; each pair lights together.
 - `src/components/expansion/ExpansionCard.tsx`: a result. The product's stacked
   bar chart behind; its legend in front.
+- `src/components/design-studio/StudioCard.tsx`: a range. Design Studio's
+  artifact types in front; behind, the artifact selected. Hover walks the list
+  and the panel becomes each one, so the hover adds what the list only names.
+  It sits in the homepage's wider Open source card, so it is drawn at 560 × 315
+  (`ProjectCardStage` takes `width` and `height`), and at 400 × 225 on phones.
 
 Shared plumbing:
 
