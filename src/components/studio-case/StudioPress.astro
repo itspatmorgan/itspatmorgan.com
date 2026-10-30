@@ -1,58 +1,72 @@
 ---
 // Where Design Studio was seen outside Sublime, at Patrick's ask (2026-10-30): the Dive Club interview (aired August 2026), the Maven
 // Lightning Lesson with Xinran Ma that launched the open-source version (October 2026: 600+ registered, 100+ live), and the launch
-// post on X, whose opening lines are quoted as posted. The view count is Patrick's figure for the launch posts on X and LinkedIn.
-// Drawn as type rather than thumbnails: no cover art for these is in the repo or Drive, and stand-in art would not be the real thing.
+// post on X. Shown as the media itself, like the two video cards on the work page: the same YouTube and Maven covers
+// (src/data/experience.ts), and for the launch post the first frame of the demo video it carried (Drive open-source-demo.mp4).
+// A cover that can't load falls back to the source's name on a quiet fill, never a broken image.
+// Each launch post, on X and on LinkedIn, drew 10k to 20k views by Patrick's count, so together they passed 20k.
 import { HugeiconsIcon } from '@hugeicons/react';
-import { ArrowUpRight01Icon, Mic01Icon, Mortarboard01Icon, NewTwitterIcon } from '@hugeicons/core-free-icons';
+import { ArrowUpRight01Icon, PlayIcon } from '@hugeicons/core-free-icons';
 
 const items = [
   {
-    icon: Mic01Icon, kind: 'Podcast', when: 'Aug 2026', title: 'Dive Club',
-    body: 'A conversation about Design Studio. Designers outside Sublime asked for their own, which led to the open-source version.',
+    image: 'https://i.ytimg.com/vi/628c4YuxAEM/maxresdefault.jpg', alt: 'Dive Club episode cover: building an agent-agnostic prototyping platform',
+    kind: 'Dive Club podcast', fallback: 'Dive Club', when: 'Aug 2026', title: 'An AI-assisted prototyping environment',
     href: 'https://www.youtube.com/watch?v=628c4YuxAEM', cta: 'Watch the interview',
   },
   {
-    icon: Mortarboard01Icon, kind: 'Lightning Lesson', when: 'Oct 2026', title: 'Maven, with Xinran Ma',
-    stat: ['600+', 'registered, and more than 100 joined live'],
-    body: 'The open-source launch: how to build your own AI design sandbox.',
+    image: 'https://d2426xcxuh3ht5.cloudfront.net/f9OPHTgQSIKMI3CQ7KfX_Duo%20Instructor%20-%20theme%20a.jpg', alt: 'Maven lesson cover: Build your own AI design sandbox, with Patrick Morgan and Xinran Ma',
+    kind: 'Maven Lightning Lesson', fallback: 'Maven', when: 'Oct 2026', title: 'Build your own AI design sandbox',
+    stat: 'With Xinran Ma · 600+ registered, 100+ live',
     href: 'https://maven.com/p/0e87f2/build-your-own-ai-design-sandbox', cta: 'See the lesson',
   },
   {
-    icon: NewTwitterIcon, kind: 'Launch post', when: 'Oct 2026', title: '“I built my team an AI design sandbox. Now I’m open-sourcing a better version for everyone.”',
-    stat: ['10k–20k', 'views on X and LinkedIn'],
-    href: 'https://x.com/itspatmorgan/status/2114742504738443277', cta: 'Read on X', quote: true,
+    image: '/images/studio-case/launch-post.jpg', alt: 'The launch video: a coding agent beside the open-source Design Studio, with the Feedback Inbox handoff canvas open',
+    kind: 'Launch post', fallback: 'X', when: 'Oct 2026', title: 'I built my team an AI design sandbox. Now I’m open-sourcing a better version for everyone.',
+    stat: '20k+ views across X and LinkedIn', quote: true,
+    href: 'https://x.com/itspatmorgan/status/2114742504738443277', cta: 'Watch on X',
   },
 ];
 ---
 
 <ul class="sc-press">
   {items.map(item => (
-    <li class={item.quote ? 'is-quote' : ''}>
-      <p class="sc-press-kind"><HugeiconsIcon icon={item.icon} size={16} strokeWidth={1.7} />{item.kind}<span>{item.when}</span></p>
-      <h3>{item.title}</h3>
-      {item.stat && <p class="sc-press-stat"><b>{item.stat[0]}</b>{item.stat[1]}</p>}
-      {item.body && <p class="sc-press-body">{item.body}</p>}
-      <a href={item.href} target="_blank" rel="noopener noreferrer">{item.cta}<HugeiconsIcon icon={ArrowUpRight01Icon} size={15} strokeWidth={1.8} /></a>
+    <li>
+      <a href={item.href} target="_blank" rel="noopener noreferrer" aria-label={`${item.cta}: ${item.title}`}>
+        <span class="sc-press-media">
+          <span class="sc-press-fallback" aria-hidden="true">{item.fallback}</span>
+          <img src={item.image} alt={item.alt} loading="lazy" onerror="this.remove()" />
+          <span class="sc-press-play" aria-hidden="true"><HugeiconsIcon icon={PlayIcon} size={18} strokeWidth={1.8} /></span>
+        </span>
+        <span class="sc-press-text">
+          <span class="sc-press-kind">{item.kind}<span>{item.when}</span></span>
+          <span class={`sc-press-title${item.quote ? ' is-quote' : ''}`}>{item.quote ? `“${item.title}”` : item.title}</span>
+          {item.stat && <span class="sc-press-stat">{item.stat}</span>}
+          <span class="sc-press-cta">{item.cta}<HugeiconsIcon icon={ArrowUpRight01Icon} size={15} strokeWidth={1.8} /></span>
+        </span>
+      </a>
     </li>
   ))}
 </ul>
 
 <style>
   .sc-press { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; max-width: 1040px; margin: 48px auto 0; padding: 0; list-style: none; text-align: left; }
-  .sc-press li { display: flex; flex-direction: column; padding: 24px; border: 1px solid var(--border); border-radius: 16px; background: var(--card); }
-  .sc-press-kind { display: flex; align-items: center; gap: 7px; margin: 0; font-size: 14px; color: var(--muted-foreground); }
+  .sc-press a { display: flex; flex-direction: column; height: 100%; overflow: hidden; border: 1px solid var(--border); border-radius: 16px; background: var(--card); color: var(--foreground); text-decoration: none; transition: transform .3s, box-shadow .3s; }
+  .sc-press a:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgb(0 0 0 / .06); }
+  .sc-press-media { position: relative; display: block; aspect-ratio: 16 / 9; overflow: hidden; background: var(--muted); border-bottom: 1px solid var(--border); }
+  .sc-press-fallback { position: absolute; inset: 0; display: grid; place-items: center; font-size: 22px; font-weight: 500; letter-spacing: -.02em; color: var(--muted-foreground); }
+  .sc-press-media img { position: relative; display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .3s; }
+  .sc-press a:hover .sc-press-media img { transform: scale(1.02); }
+  .sc-press-play { position: absolute; left: 12px; bottom: 12px; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 999px; background: rgb(255 255 255 / .92); color: #111; box-shadow: 0 1px 4px rgb(0 0 0 / .18); }
+  .sc-press-text { display: flex; flex-direction: column; flex: 1; padding: 18px 20px 20px; }
+  .sc-press-kind { display: flex; gap: 8px; font-size: 13px; line-height: 18px; color: var(--muted-foreground); }
   .sc-press-kind span { margin-left: auto; font-variant-numeric: tabular-nums; }
-  .sc-press h3 { margin-top: 28px; font-size: 22px; line-height: 1.2; font-weight: 500; letter-spacing: -.025em; text-wrap: balance; }
-  .sc-press .is-quote h3 { font-size: 19px; line-height: 1.3; letter-spacing: -.015em; }
-  .sc-press-stat { display: flex; flex-direction: column; gap: 2px; margin-top: 20px; font-size: 14px; line-height: 20px; color: var(--muted-foreground); }
-  .sc-press-stat b { font-size: 32px; line-height: 1.1; font-weight: 500; letter-spacing: -.03em; color: var(--foreground); font-variant-numeric: tabular-nums; }
-  .sc-press-body { margin-top: 12px; font-size: 15px; line-height: 22px; color: var(--muted-foreground); text-wrap: pretty; }
-  .sc-press a { display: inline-flex; align-items: center; gap: 4px; margin-top: auto; padding-top: 24px; font-size: 14px; font-weight: 500; color: var(--foreground); text-decoration: none; }
-  .sc-press a:hover { text-decoration: underline; text-underline-offset: 3px; }
+  .sc-press-title { margin-top: 10px; font-size: 18px; line-height: 24px; font-weight: 500; letter-spacing: -.015em; text-wrap: balance; }
+  .sc-press-title.is-quote { font-size: 16px; line-height: 23px; letter-spacing: -.01em; }
+  .sc-press-stat { margin-top: 6px; font-size: 14px; line-height: 20px; color: var(--muted-foreground); font-variant-numeric: tabular-nums; }
+  .sc-press-cta { display: inline-flex; align-items: center; gap: 4px; margin-top: auto; padding-top: 18px; font-size: 14px; font-weight: 500; }
+  .sc-press a:hover .sc-press-cta { text-decoration: underline; text-underline-offset: 3px; }
   @media (max-width: 860px) {
     .sc-press { grid-template-columns: minmax(0, 1fr); max-width: 560px; margin-top: 28px; gap: 12px; }
-    .sc-press li { padding: 20px; }
-    .sc-press h3 { margin-top: 20px; }
   }
 </style>
