@@ -101,7 +101,8 @@ function Page({ lofi, open, children }: { lofi: boolean; open?: boolean; childre
 function Doc() {
   return <article className="pt-doc">
     <h1>Design context</h1>
-    <p className="pt-doc-desc">Why recipient training is a stepped flow: problem, source, direction, and open questions.</p>
+    {/* The doc's description, cut to its first clause so it sits on one line (Patrick, 2026-10-30). */}
+    <p className="pt-doc-desc">Why recipient training is a stepped flow.</p>
     <p>This prototype is the <strong>recipient</strong> experience after someone clicks a simulated phishing email. For what to build, start with <a>Design handoff</a>. Admin create and campaign detail live in <a>Phishing Training Campaign Integration</a>.</p>
     <h2>Problem</h2>
     <p>A click is a stressful “was this real?” moment. The page has to:</p>
