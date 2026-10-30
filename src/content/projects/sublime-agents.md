@@ -1,5 +1,5 @@
 ---
-title: "Giving a Security Agent the Right Amount of Control"
+title: "Giving a security agent the right amount of control"
 type: "professional"
 description: "At Sublime Security, I lead design for ADÉ, an AI agent that writes detection rules, and gives security teams control over its autonomy."
 skills: ["AI Agent Design", "Product Strategy", "Interaction Design"]

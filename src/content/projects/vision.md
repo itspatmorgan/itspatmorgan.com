@@ -1,5 +1,5 @@
 ---
-title: "Transforming Customer Feedback Into Product Vision"
+title: "Transforming customer feedback into product vision"
 type: "professional"
 description: "At Signal Sciences, we transformed customer advisory board feedback into a cohesive product vision through structured research and collaborative workshops. This unified teams around a user-centered growth strategy."
 skills: ["UX Strategy", "Workshop Facilitation", "Storyboarding"]
