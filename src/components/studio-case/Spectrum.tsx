@@ -14,7 +14,7 @@ export default function Spectrum() {
   const middle = step >= 1, links = step >= 2;
   const ends = middle ? 'is-dim' : '';
   return <DemoFrame scene={scene} caption={false} stage="sc-plain" title="where Design Studio sits"
-    label="Two usual ways to prototype with AI: one-off prototypes in Claude, v0 or Figma Make, which connect to nothing; or the production repo, too heavy to explore in. Design Studio sits between them: a codebase the team owns, with the speed to try many directions and the product's components and rules">
+    label="Two usual ways to prototype with AI: one-off prototypes in Claude, v0 or Figma Make, which connect to nothing; or the production repo, too heavy to explore in. Design Studio sits between them: fast to explore and true to the product, with the product's own components and rules in one repo the team shares, so work builds up">
     <div className="cs-demo">
       <NativeStage width={960} height={697}>
         <div className="sc-dia">
@@ -34,14 +34,14 @@ export default function Spectrum() {
           </div>
 
           <svg className="sc-line" viewBox="0 0 960 697" aria-hidden="true">
-            <path className={`is-accent is-dash ${links ? '' : 'is-off'}`} d="M191 328 C 191 230, 260 196, 346 196" />
-            <path className={`is-accent is-dash ${links ? '' : 'is-off'}`} d="M769 328 C 769 230, 700 196, 614 196" />
+            <path className={`is-accent is-dash ${links ? '' : 'is-off'}`} d="M191 328 C 191 230, 240 196, 316 196" />
+            <path className={`is-accent is-dash ${links ? '' : 'is-off'}`} d="M769 328 C 769 230, 720 196, 644 196" />
             <path className={`is-accent ${middle ? '' : 'is-off'}`} d="M480 296 L480 546" />
           </svg>
-          <div className={`sc-node is-accent ${middle ? '' : 'is-off'}`} style={{ left: 350, top: 96, width: 260, height: 200, transform: middle ? 'none' : 'translateY(12px)' }}>
+          <div className={`sc-node is-accent ${middle ? '' : 'is-off'}`} style={{ left: 320, top: 96, width: 320, height: 200, transform: middle ? 'none' : 'translateY(12px)' }}>
             <h3>Design Studio</h3>
-            <p>A codebase the team owns</p>
-            <p className={`sc-node-note ${links ? '' : 'is-off'}`}>Speed to try many directions, with the product’s components and rules</p>
+            <p>Fast to explore, true to the product</p>
+            <p className={`sc-node-note ${links ? '' : 'is-off'}`}>The product’s own components and rules, in one repo the team shares, so work builds up</p>
           </div>
           <span className={middle ? '' : 'is-off'} style={{ position: 'absolute', left: 480, top: 551, width: 18, height: 18, marginLeft: -9, borderRadius: 999, background: 'var(--sc-accent)', boxShadow: '0 0 0 5px var(--sc-accent-soft)' }} />
         </div>

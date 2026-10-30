@@ -9,7 +9,7 @@ import { Filters, PrototypeCard, Rail, icon, type Prototype } from './StudioUI';
 // Liberties: the first gallery's card is dated Jan 26, 2026; its meta.json reads 2025, a typo, since the initial commit names a model
 // released in late 2025. Descriptions end where the screenshot's two-line clamp does.
 const timings = [3000, 4200];
-const captions = ['Day one: one project in one folder', 'Today: the whole product team publishes here'];
+const captions = ['January 2026, the first version: one project in one folder', 'Nine months later: the whole product team publishes here'];
 
 const today: Prototype[] = [
   { who: 'Patrick', title: 'Mailbox Takeover Signals', desc: 'Patrick’s simplified iteration of AJ’s Mailbox Takeover Signals, private beta first. Scaffolded…', date: 'Updated Oct 29, 2026' },
@@ -69,13 +69,18 @@ export default function GalleryGrowth() {
   const stage = useStage({ wide: 1000, height: 760 });
   const step = scene.step;
   return <SceneFrame scene={scene} stage={stage} title="the gallery, then and now"
-    label="Sublime's Design Studio on day one: a list with one project, Agent Configuration, by Patrick, January 2026. Then today: a catalog of prototypes from Patrick, Joe, Ahry, AJ and Samantha across product design, product management and creative, newest first">
+    label="Sublime's Design Studio as first built, in January 2026: a list with one project, Agent Configuration, by Patrick, January 2026. Then nine months later, today: a catalog of prototypes from Patrick, Joe, Ahry, AJ and Samantha across product design, product management and creative, newest first">
     <div style={{ position: 'relative', height: stage.box.height }} aria-hidden="true">
       <Screens id={step === 0 ? 'first' : 'today'}>
         <div style={{ position: 'relative', height: stage.box.height, overflow: 'hidden' }}>
           {step === 0 ? <FirstGallery /> : <TodayGallery />}
         </div>
       </Screens>
+      <div className="sc-era" data-step={step}>
+        <span className={step === 0 ? 'is-on' : ''}><b>First version</b>Jan 2026</span>
+        <i />
+        <span className={step === 1 ? 'is-on' : ''}><b>Today</b>Oct 2026</span>
+      </div>
     </div>
   </SceneFrame>;
 }
