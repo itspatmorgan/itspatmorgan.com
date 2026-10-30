@@ -1,10 +1,10 @@
 ---
 import PageLayout from './PageLayout.astro';
 import Icon from '@/components/icons/Icon.astro';
-import { ArrowLeft01Icon, Share01Icon } from '@hugeicons/core-free-icons';
+import { ArrowLeft01Icon } from '@hugeicons/core-free-icons';
 
-// A case study: "← Work", then the hero (company, title, subline, brief, a note for phones, and the hero visual in the `hero` slot), then
-// one Slide per point in the default slot. The product's stylesheet and its namespace class (`product`) come from the page.
+// A case study: "← Work", then the hero (company, title, subline, brief, and the hero visual in the `hero` slot), then one Slide per
+// point in the default slot. The product's stylesheet and its namespace class (`product`) come from the page.
 interface Props {
   title: string;
   description: string;
@@ -32,30 +32,9 @@ const { title, description, image, product, company, heading, subline, brief } =
       <dl class="cs-brief">
         {brief.map(([label, value]) => <div><dt>{label}</dt><dd>{value}</dd></div>)}
       </dl>
-      {/* Phones only: the demos are desktop products, shown whole and small. Share hands the link on, to open somewhere larger. */}
-      <aside class="cs-phone-note">
-        <p>These are desktop products, shown here at desktop proportions, so they’re small on a phone. Open this page on a larger screen to see them at full size.</p>
-        <button type="button" class="cs-share" data-title={title}><Icon icon={Share01Icon} size={15} /><span>Share</span></button>
-      </aside>
       <slot name="hero" />
     </header>
 
     <slot />
   </article>
 </PageLayout>
-
-<script>
-  // The phone's share sheet where there is one; otherwise copy the link.
-  document.querySelectorAll<HTMLButtonElement>('.cs-share').forEach(button => {
-    const label = button.querySelector('span')!;
-    button.addEventListener('click', async () => {
-      const url = location.href.split('#')[0];
-      if (navigator.share) {
-        try { await navigator.share({ title: button.dataset.title, url }); } catch { /* dismissed */ }
-        return;
-      }
-      try { await navigator.clipboard.writeText(url); label.textContent = 'Link copied'; } catch { label.textContent = 'Copy failed'; }
-      window.setTimeout(() => { label.textContent = 'Share'; }, 2000);
-    });
-  });
-</script>

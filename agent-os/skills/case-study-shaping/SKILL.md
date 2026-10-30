@@ -249,9 +249,8 @@ Camera and pointer scenes (zooms, pans, a cursor that clicks):
 Phones (640px and below) show each demo's whole desktop frame at its desktop
 proportions, small. Patrick rejected crops that change the aspect ratio
 (2026-10-30): at rest, a phone must see everything. Never lay a screen out again
-for a phone, because that shows a product that never shipped. On phones the hero
-carries one note saying the demos are shown at desktop proportions, with a Share
-button.
+for a phone, because that shows a product that never shipped. No phone-only
+note or Share button: Patrick had one removed (2026-10-30).
 
 - Closer looks keep the frame's proportions and zoom in by `PHONE_ZOOM` (1.6).
 - Scene card (`SceneFrame`): step 0 and reduced motion always show the whole

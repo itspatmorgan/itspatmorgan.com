@@ -37,16 +37,6 @@
   .cs-brief dd { white-space: normal; text-wrap: balance; }
 }
 
-/* On phones only, under the brief: why the demos are small, and a way to send the page somewhere larger. */
-.cs-phone-note { display: none; }
-@media (max-width: 640px) {
-  .cs-phone-note { display: grid; justify-items: center; gap: 14px; max-width: 34em; margin: 36px auto 0; }
-  .cs-phone-note p { font-size: 14px; line-height: 1.5; letter-spacing: -.005em; color: var(--muted-foreground); text-wrap: pretty; }
-  .cs-share { display: inline-flex; align-items: center; gap: 7px; height: 32px; padding: 0 14px; border: 1px solid var(--border); border-radius: 999px; background: var(--background); color: var(--foreground); font: 500 13px/1 inherit; cursor: pointer; transition: transform 150ms cubic-bezier(.23, 1, .32, 1), background 150ms ease; }
-  .cs-share:active { transform: scale(.96); }
-  .cs-hero > .cs-phone-note + .cs-stage, .cs-hero > .cs-phone-note + * .cs-scene { margin-top: 40px; }
-}
-
 /* Stage: the site texture surface; the source UI floats on it as a product shot. Capped so the panel hugs its window on wide screens. */
 .cs-stage { position: relative; max-width: 960px; margin: 0 auto; text-align: left; padding: clamp(16px, 4.5vw, 64px); border-radius: 16px; }
 /* One window size across slides, so the sequence reads like a deck. */
@@ -100,11 +90,11 @@
 .cs-tour-play:hover { background: var(--muted, #f2f2f1); }
 .cs-tour-play:active { transform: scale(.94); }
 .cs-tour-play:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
-/* On a phone the caption takes the full width, with room for two lines so the stage doesn't jump as captions change, and the controls
-   sit under it as one group: play first, then the steps. */
+/* On a phone the controls sit right under the stage as one group (play first, then the steps), so they never move as captions change,
+   and the caption flows below them at full width. */
 @media (max-width: 640px) {
-  .cs-tour { flex-direction: column; align-items: stretch; gap: 8px; margin-top: 14px; }
-  .cs-tour-caption { min-height: 40px; font-size: 14px; line-height: 20px; }
+  .cs-tour { flex-direction: column-reverse; align-items: stretch; gap: 8px; margin-top: 12px; }
+  .cs-tour-caption { font-size: 14px; line-height: 20px; }
   .cs-tour-controls { flex-direction: row-reverse; justify-content: flex-end; gap: 12px; }
 }
 @media (prefers-reduced-motion: reduce) { .cs-beats button.is-current > i::after { animation: none; transform: scaleX(1); } }
