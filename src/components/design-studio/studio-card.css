@@ -17,26 +17,30 @@
 .dc .dc-panel { left: 140px; top: 22px; }
 .dc .dc-view { padding: 20px 20px 0 100px; }
 .dc .dc-h { font-size: 14px; line-height: 20px; font-weight: 600; }
-.dc-swap { animation: dc-in 260ms ease both; }
-@keyframes dc-in { from { opacity: .3; } }
+/* The artifacts are stacked: the outgoing one fades out quickly, then the next fades in, so two never sit on top of each other. */
+.dc-layer { position: absolute; inset: 0; opacity: 0; transition: opacity 240ms cubic-bezier(.4, 0, .2, 1); }
+.dc-layer.is-on { opacity: 1; transition: opacity 420ms cubic-bezier(.4, 0, .2, 1) 160ms; }
 
 /* In front: the artifact types, over the panel's left edge, on the shared front-card spec. */
 .dc .dc-list { left: 28px; top: 57px; width: 196px; padding: 16px 10px 10px; }
 .dc .dc-list .pc-title { padding-left: 8px; margin-bottom: 6px; }
-.dc-list ul { list-style: none; margin: 0; padding: 0; }
-.dc-list li { display: flex; align-items: center; gap: 9px; height: 30px; padding: 0 8px; border-radius: 6px; font-size: 13px; white-space: nowrap; color: var(--dc-weak); transition: background-color 200ms ease, color 200ms ease; }
+.dc-list ul { --dc-row: 30px; position: relative; list-style: none; margin: 0; padding: 0; }
+.dc-select { position: absolute; left: 0; right: 0; top: 0; height: var(--dc-row); border-radius: 6px; background: var(--dc-select); transform: translateY(calc(var(--dc-at) * var(--dc-row))); transition: transform 520ms cubic-bezier(.32, .72, 0, 1); }
+.dc-list li { position: relative; display: flex; align-items: center; gap: 9px; height: var(--dc-row); padding: 0 8px; font-size: 13px; white-space: nowrap; color: var(--dc-weak); transition: color 360ms ease; }
 .dc-list li svg { flex: none; }
-.dc-list li.is-on { color: var(--dc-strong); font-weight: 500; background: var(--dc-select); }
+/* Weight stays put so the label never reflows; the selection reads through the glide and the color. */
+.dc-list li.is-on { color: var(--dc-strong); }
 
 /* Interactive prototype. */
-.dc-head { display: grid; grid-template-columns: 1fr auto; column-gap: 12px; }
-.dc .dc-sub { grid-column: 1 / -1; font-size: 10.5px; line-height: 15px; color: var(--dc-weak); white-space: nowrap; }
-.dc-btn { grid-column: 2; grid-row: 1; display: inline-flex; align-items: center; gap: 4px; height: 22px; padding: 0 8px; border-radius: 4px; font-size: 10.5px; font-weight: 500; white-space: nowrap; color: #fff; background: var(--dc-primary); }
-.dc-tabs { display: flex; gap: 11px; margin: 12px 0 9px; font-size: 11px; line-height: 20px; color: var(--dc-weak); }
-.dc-tabs .is-on { padding: 0 6px; margin-left: -6px; border-radius: 4px; color: var(--dc-strong); background: var(--dc-select); font-weight: 500; }
+.dc-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.dc-btn { display: inline-flex; align-items: center; gap: 4px; height: 22px; padding: 0 8px; border-radius: 4px; font-size: 10.5px; font-weight: 500; white-space: nowrap; color: #fff; background: var(--dc-primary); }
+.dc-tabs { display: flex; gap: 4px; margin: 16px 0 12px; font-size: 11px; line-height: 22px; color: var(--dc-weak); }
+/* Each filter is padded the same, so the selected one's box lines up with the table's left edge below it. */
+.dc-tabs span { padding: 0 9px; border-radius: 4px; }
+.dc-tabs .is-on { color: var(--dc-strong); background: var(--dc-select); font-weight: 500; }
 .dc-table { border: 1px solid var(--dc-line); border-radius: 6px; overflow: hidden; }
-.dc-row { display: grid; grid-template-columns: 1fr 60px; align-items: center; column-gap: 10px; height: 27px; padding: 0 10px; font-size: 11.5px; border-top: 1px solid var(--dc-line); }
-.dc-th { border-top: 0; height: 25px; font-size: 10.5px; font-weight: 600; color: var(--dc-weak); background: var(--dc-subtle); }
+.dc-row { display: grid; grid-template-columns: 1fr 60px; align-items: center; column-gap: 10px; height: 30px; padding: 0 12px; font-size: 11.5px; border-top: 1px solid var(--dc-line); }
+.dc-th { border-top: 0; height: 27px; font-size: 10.5px; font-weight: 600; color: var(--dc-weak); background: var(--dc-subtle); }
 .dc-cell { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 .dc-badge { justify-self: start; padding: 0 6px; border-radius: 4px; font-size: 10px; line-height: 17px; font-weight: 500; }
 .dc-badge.is-new { color: var(--dc-new); background: var(--dc-new-bg); }
@@ -72,8 +76,9 @@
 
 /* Document. */
 .dc .dc-doc-h { font-size: 17px; line-height: 22px; font-weight: 600; letter-spacing: -.01em; }
-.dc .dc-doc-h2 { margin-top: 12px; font-size: 12px; line-height: 17px; font-weight: 600; }
-.dc .dc-doc-p { margin-top: 3px; max-width: 250px; font-size: 11px; line-height: 16px; color: var(--dc-weak); }
+.dc .dc-doc-h2 { margin-top: 16px; font-size: 12px; line-height: 16px; font-weight: 600; }
+.dc .dc-doc-p { margin-top: 4px; max-width: 256px; font-size: 11px; line-height: 16px; color: var(--dc-weak); }
+.dc .dc-doc-h + .dc-doc-p { margin-top: 6px; }
 .dc-doc-p b { font-weight: 600; color: var(--dc-strong); }
 
 /* Phones: the same composition at the Work cards' 400 × 225, the artifact drawn a little smaller to keep its proportions. */
@@ -81,7 +86,9 @@
 .dc.is-compact .dc-view { zoom: .74; padding-left: 116px; padding-top: 18px; }
 .dc.is-compact .dc-list { left: 18px; top: 32px; width: 164px; padding: 12px 8px 8px; }
 .dc.is-compact .dc-list .pc-title { padding-left: 6px; margin-bottom: 4px; font-size: 12px; line-height: 16px; }
-.dc.is-compact .dc-list li { height: 24px; gap: 7px; padding: 0 6px; font-size: 11.5px; border-radius: 5px; }
+.dc.is-compact .dc-list ul { --dc-row: 24px; }
+.dc.is-compact .dc-select { border-radius: 5px; }
+.dc.is-compact .dc-list li { gap: 7px; padding: 0 6px; font-size: 11.5px; }
 .dc.is-compact .dc-list li svg { width: 12px; height: 12px; }
 
-@media (prefers-reduced-motion: reduce) { .dc-list li { transition: none; } .dc-swap { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .dc-list li, .dc-select, .dc-layer, .dc-layer.is-on { transition: none; } }
