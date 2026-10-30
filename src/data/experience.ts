@@ -17,7 +17,7 @@ export const roles: Role[] = [
     logo: "/images/logos/career-sublime.svg",
     role: "Staff Product Designer",
     dateRange: "2025–Now",
-    summary: "Designed a multi-agent system for email threat detection, pairing analyst triage with detection engineering automation, and shipped high-stakes security features. Separately, I built an internal, AI-assisted prototyping platform now used daily by the design team.",
+    summary: "Sublime makes email security software. I design its AI agents, which investigate suspicious email and write the detection rules that catch new threats, along with features for high-stakes attacks like email bombing and vendor compromise. I also built Design Studio, where Sublime's whole product team now prototypes.",
     projects: ["sublime-agents", "design-studio"],
     descriptions: [
       "Designed a multi-agent system pairing an analyst agent with a detection engineering agent — automating threat triage and continuously generating new detection rules in Sublime's custom DSL.",
@@ -31,7 +31,7 @@ export const roles: Role[] = [
     logo: "/images/logos/career-jupiterone.svg",
     role: "Lead Product Designer",
     dateRange: "2022–2023",
-    summary: "Designed a query interface that reduced new user time-to-value from 21 days to 1, helped drive adoption of a new design system across the enterprise security platform, and shaped roadmap direction through cross-functional product leadership.",
+    summary: "JupiterOne helps security teams see and search everything in their company's cloud. As lead designer, I made its query language approachable, cutting the time for a new customer to get value from 21 days to 1, and helped roll out a new design system across the product.",
     projects: ["query-language"],
     descriptions: [
       "Designed a query interface that reduced new user time-to-value from 21 days to 1 day.",
@@ -45,7 +45,7 @@ export const roles: Role[] = [
     logo: "/images/logos/career-sigsci.svg",
     role: "Senior Product Designer",
     dateRange: "2019–2021",
-    summary: "Designed enterprise security workflows for firewall rules, rate limiting, and bot defense, while using workshops, systems diagrams, storyboards, prototypes, and presentations to align design, product, and engineering teams.",
+    summary: "Signal Sciences, bought by Fastly in 2020, protects websites and APIs from attacks. I designed how customers write firewall rules, set rate limits and stop bots, and ran the workshops, diagrams and prototypes that kept design, product and engineering on the same page.",
     projects: ["expansion", "vision"],
     descriptions: [
       "Designed features for enterprise firewall rules management, rate limiting, and bot defense.",
@@ -58,7 +58,7 @@ export const roles: Role[] = [
     logo: "/images/logos/career-tenable.svg",
     role: "Product Designer",
     dateRange: "2017–2018",
-    summary: "Designed enterprise SaaS workflows for Tenable's cyber risk platform, including dashboard creation and management, data visualization templates, and team credential management.",
+    summary: "Tenable helps companies measure their exposure to cyber attacks. I designed parts of its SaaS platform: building and managing dashboards, data visualization templates, and managing credentials across a team.",
     descriptions: [
       "Designed enterprise SaaS features to improve Tenable's cyber risk platform: dashboard creation & management, data visualization templates, & team credential management.",
     ],
@@ -69,7 +69,7 @@ export const roles: Role[] = [
     logo: "/images/logos/career-amex.svg",
     role: "Design Engineer",
     dateRange: "2013–2016",
-    summary: "Built UI for a multi-brand platform used by Amex, Walmart, and Target, and led code-based prototyping to make responsive interaction decisions more flexible, robust, and concrete.",
+    summary: "I joined American Express as a design engineer, building the interface for one platform that Amex, Walmart and Target each ran under their own brand. I also led prototyping in code, which let us settle responsive design decisions early and concretely.",
     descriptions: [
       "Built UI for a multi-brand platform used by Amex, Walmart, and Target.",
       "Led prototyping in code to design flexible and robust responsive web UX.",
@@ -81,7 +81,7 @@ export const roles: Role[] = [
     logo: "/images/logos/career-leoburnett.svg",
     role: "Brand Strategist",
     dateRange: "2012–2013",
-    summary: "Developed brand strategies for Allstate, MillerCoors, and Sprint, using consumer research and cultural insight to shape high-impact communications and build an early foundation in audience-centered strategy.",
+    summary: "At the ad agency Leo Burnett, I wrote brand strategy for Allstate, MillerCoors and Sprint, grounded in consumer research. It's where I learned to start from the audience.",
     descriptions: [
       "Developed brand strategies using consumer research and cultural insights, creating high impact communications for clients like Allstate, MillerCoors, and Sprint.",
     ],
