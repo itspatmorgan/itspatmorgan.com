@@ -1,0 +1,51 @@
+---
+// The lesson, drawn as what happened: a timeline from one folder to an open-source launch, with no pitch anywhere on it. The
+// milestones are a few of the many on the archive's History page (src/guide/_lib/guideData.js: genesis, renamed with contributor-scoping,
+// gimlet-connects, vault-library, canvas with end-to-end-workflow), told in short, plus the two public moments from Patrick's notes of 2026-10-30: the Dive Club
+// interview aired in August, and the open-source version launched with the Maven lesson in October. Dates are shown to the month.
+const moments = [
+  ['Jan 2026', 'One folder of screens', 'A place to try agent configuration ideas without building a new app each time.'],
+  ['Mar 2026', 'Opens to the team, and becomes Design Studio', 'Each person gets a folder of their own to prototype in, and the name grows past product design.'],
+  ['May 2026', 'Sublime’s own AI agent connects', 'Gimlet, the company’s internal agent, can search it and act in it from Slack.'],
+  ['Jun 2026', 'The real components arrive', 'An agent ported Sublime’s production components one by one, so prototypes look like the product.'],
+  ['Jul 2026', 'Canvases, and the first end-to-end workflow', 'A brief, flows in low fidelity, then high fidelity, side by side on a canvas, with comments right on the design.'],
+  ['Aug 2026', 'Dive Club interview', 'Designers outside Sublime ask for their own.', 'https://www.youtube.com/watch?v=628c4YuxAEM'],
+  ['Oct 2026', 'Open-source launch', 'More than 600 signed up for the Maven lesson.', 'https://maven.com/p/0e87f2/build-your-own-ai-design-sandbox'],
+];
+---
+
+<figure class="cs-stage texture-bg sc-lesson" aria-label="A timeline of Design Studio: January 2026, one folder of screens; March, it opens to the team and becomes Design Studio; May, Sublime's internal AI agent connects; June, the real product components arrive; July, canvases and the first end-to-end workflow; August, the Dive Club interview; October, the open-source launch">
+  <ol>
+    {moments.map(([when, what, note, href]) => (
+      <li>
+        <small>{when}</small>
+        <div>
+          {href ? <a href={href} target="_blank" rel="noopener noreferrer"><b>{what}</b></a> : <b>{what}</b>}
+          <p>{note}</p>
+        </div>
+      </li>
+    ))}
+  </ol>
+</figure>
+
+<style>
+  .sc-lesson { margin-top: 48px; padding: clamp(56px, 8vw, 104px) clamp(20px, 5vw, 64px); }
+  .sc-lesson ol { max-width: 680px; margin: 0 auto; padding: 0; list-style: none; text-align: left; }
+  .sc-lesson li { position: relative; display: grid; grid-template-columns: 88px minmax(0, 1fr); column-gap: 56px; padding-bottom: 40px; }
+  .sc-lesson li:last-child { padding-bottom: 0; }
+  .sc-lesson li::before { content: ''; position: absolute; z-index: 1; left: 115px; top: 6px; width: 13px; height: 13px; border-radius: 999px; background: var(--card); border: 1.5px solid color-mix(in srgb, var(--foreground) 45%, transparent); }
+  .sc-lesson li:not(:last-child)::after { content: ''; position: absolute; left: 121px; top: 13px; bottom: -13px; width: 1.5px; background: color-mix(in srgb, var(--foreground) 18%, transparent); }
+  .sc-lesson li:last-child::before { background: var(--foreground); border-color: var(--foreground); }
+  .sc-lesson small { font-size: 14px; line-height: 25px; color: var(--muted-foreground); font-variant-numeric: tabular-nums; text-align: right; }
+  .sc-lesson b { display: block; font-size: 18px; line-height: 25px; font-weight: 500; letter-spacing: -.015em; text-wrap: balance; }
+  .sc-lesson a { color: inherit; text-decoration: underline; text-underline-offset: 4px; text-decoration-color: color-mix(in srgb, var(--foreground) 25%, transparent); }
+  .sc-lesson p { margin-top: 4px; font-size: 15px; line-height: 22px; color: var(--muted-foreground); text-wrap: pretty; }
+  @media (max-width: 640px) {
+    .sc-lesson { margin-top: 28px; padding: 40px 20px; }
+    .sc-lesson li { grid-template-columns: minmax(0, 1fr); padding: 0 0 32px 32px; }
+    .sc-lesson li::before { left: 0; top: 3px; }
+    .sc-lesson li:not(:last-child)::after { left: 6px; top: 10px; bottom: -3px; }
+    .sc-lesson small { line-height: 19px; text-align: left; }
+    .sc-lesson b { margin-top: 4px; font-size: 17px; line-height: 23px; }
+  }
+</style>

@@ -14,12 +14,14 @@ interface Props {
   heading: string;
   subline: string;
   brief: [label: string, value: string][];
+  /** Keeps a draft out of search engines until it moves to its live slug. */
+  noindex?: boolean;
 }
 
-const { title, description, image, product, company, heading, subline, brief } = Astro.props;
+const { title, description, image, product, company, heading, subline, brief, noindex } = Astro.props;
 ---
 
-<PageLayout title={title} description={description} image={image}>
+<PageLayout title={title} description={description} image={image} noindex={noindex}>
   <article class:list={['cs-page', product]}>
     <nav class="cs-nav" aria-label="Case study navigation">
       <a href="/work"><Icon icon={ArrowLeft01Icon} size={16} />Work</a>
@@ -29,6 +31,7 @@ const { title, description, image, product, company, heading, subline, brief } =
       <p class="cs-company"><img src={company.logo} width="30" height="30" alt="" />{company.name}</p>
       <h1>{heading}</h1>
       <p>{subline}</p>
+      <slot name="actions" />
       <dl class="cs-brief">
         {brief.map(([label, value]) => <div><dt>{label}</dt><dd>{value}</dd></div>)}
       </dl>

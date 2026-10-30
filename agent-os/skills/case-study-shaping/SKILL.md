@@ -11,7 +11,7 @@ Turn an existing Work entry into a case study a hiring manager can read in two
 minutes: one point per slide, visuals carrying the argument, and every claim
 true to what Patrick actually did.
 
-Three reference implementations exist:
+Four reference implementations exist:
 
 - Query Builder: `src/pages/work/query-language.astro` with demos in
   `src/components/query-builder/`
@@ -20,6 +20,13 @@ Three reference implementations exist:
 - Sublime agents: `src/pages/work/sublime-agents.astro` with screens rebuilt
   from prototype code in `src/components/sublime/`. Its scenes are the most
   current pattern for animated demos.
+- Design Studio: `src/pages/work/design-studio.astro` with screens in `src/components/studio-case/`. It
+  shows a tool through real work made in it: the hero's canvas frames are the
+  Sublime case study's real screens, scaled (`Live` in `Workspace.tsx`), and
+  the handoff slide is a real handoff document from the archive and the view
+  it opens. Two products share one namespace (`sc` internal, `sc-os` open
+  source). Patrick rejected drawn stand-ins (gray-bar thumbnails, invented
+  documents) and link-card proof sections as looking cheap.
 - Page shell: `src/layouts/CaseStudyLayout.astro` (nav, hero, brief, and a
   `hero` slot for the hero visual) and `src/components/case-study/Slide.astro`
   (headline, one line, visual). A page is the layout plus one `Slide` per point.
@@ -47,8 +54,9 @@ Reuse these patterns before inventing new ones.
   rewrite, and say so when presenting it.
 - Outline before building. Get the headline sequence approved before touching
   layout.
-- Build on a preview route that is not linked or indexed. Swap it onto the live
-  slug only when Patrick says to.
+- Build on a preview route that is not linked or indexed: pass `noindex` to
+  `CaseStudyLayout` and keep the content entry `draft: true`. Swap it onto the
+  live slug only when Patrick says to.
 - Present one coherent pass at a time, not a menu of options.
 - Show only what the product really does. A scene may compress time or skip
   steps, but never invent behavior, dialogs, or states the product lacks.
@@ -367,6 +375,9 @@ On Patrick's go-ahead:
 - Every animated scene checked frame by frame (contact sheets about 250ms
   apart) at desktop and phone widths before each publish, not only its end
   state.
+  `node scripts/frame-check.mjs --url <page url> [--slides ids]` saves a contact
+  sheet per slide at 1300px and 390px (start `pnpm dev` or a static server on
+  `dist/` first).
 - The theme follows the viewer and the system, and works with browser storage
   blocked.
 - Every claim on the page maps to an answer from fact-finding or a source.

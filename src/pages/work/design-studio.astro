@@ -1,0 +1,76 @@
+---
+import { getEntry } from 'astro:content';
+import CaseStudyLayout from '@/layouts/CaseStudyLayout.astro';
+import Slide from '@/components/case-study/Slide.astro';
+import Workspace from '@/components/studio-case/Workspace';
+import Spectrum from '@/components/studio-case/Spectrum';
+import GalleryGrowth from '@/components/studio-case/GalleryGrowth';
+import RulesMap from '@/components/studio-case/RulesMap';
+import ScopeCheck from '@/components/studio-case/ScopeCheck';
+import Handoff from '@/components/studio-case/Handoff';
+import OpenStudio from '@/components/studio-case/OpenStudio';
+import StudioQuote from '@/components/studio-case/StudioQuote.astro';
+import StudioLesson from '@/components/studio-case/StudioLesson.astro';
+import StudioPress from '@/components/studio-case/StudioPress.astro';
+import '@/components/case-study/case-study.css';
+import '@/components/sublime/sublime.css';
+import '@/components/studio-case/studio-case.css';
+
+const project = await getEntry('projects', 'design-studio');
+if (!project) throw new Error('Design Studio case study is missing');
+---
+
+<CaseStudyLayout
+  title={project.data.title}
+  description={project.data.description}
+  product="sc"
+  company={{ name: 'Design Studio', logo: '/images/studio-case/design-studio-mark.svg' }}
+  heading="Building a design environment for people and agents"
+  subline="Design Studio is an AI prototype sandbox for designers and product managers who build. I built it on my own for Sublime’s product team, then rebuilt it as open source."
+  brief={[
+    ['When', '2026 to now'],
+    ['Role', 'Sole designer and builder'],
+    ['Team', 'About 12 at Sublime'],
+    ['Outcome', 'Adopted team-wide'],
+  ]}
+>
+  <nav slot="actions" class="sc-next sc-hero-links" aria-label="Design Studio">
+    <a class="is-primary" href="/design-studio">Explore Design Studio</a>
+    <a href="https://github.com/itspatmorgan/design-studio" target="_blank" rel="noopener noreferrer">Open source on GitHub</a>
+  </nav>
+  <Workspace slot="hero" client:load />
+
+  <Slide id="bet" title="AI prototypes were isolated, and product code too heavy" line="Design Studio is the middle ground. It uses the product’s real components and rules, so designs look real, but lives in its own repo, so trying ideas stays fast.">
+    <Spectrum client:visible />
+  </Slide>
+
+  <Slide id="adoption" title="The whole product team designs in one place" line="About a dozen people have made hundreds of prototypes, with several more each week.">
+    <GalleryGrowth client:visible />
+  </Slide>
+
+  <Slide id="agents" title="Agents work from context and skills designed for the team" line="People build by asking coding agents. A deliberate suite of rules, product context and skills shapes what each agent knows and does.">
+    <RulesMap client:visible />
+  </Slide>
+
+  <Slide id="scope" title="No one can break anyone else’s work" line="A deliberate scoping system knows who each contributor is and what they own. Changes in their scope approve themselves; anything shared gets a review.">
+    <ScopeCheck client:visible />
+  </Slide>
+
+  <StudioQuote />
+
+  <Slide id="handoff" title="Engineering builds from the prototype itself" line="The prototype’s folder is the handoff: its screens, its canvas and the notes that explain them.">
+    <Handoff client:visible />
+  </Slide>
+
+  <Slide id="press" title="Designers outside Sublime wanted one too" line="A podcast interview, a live lesson and a launch post brought Design Studio to a wider audience.">
+    <StudioPress />
+  </Slide>
+
+  <Slide id="rebuild" title="Open source, so anyone can make their own" line="I rebuilt Design Studio from scratch for the design community, so any team can run one of its own.">
+    <OpenStudio client:visible />
+  </Slide>
+
+  <Slide id="lesson" title="From one folder to the whole team, and beyond" line="I built Design Studio for myself first. Then others started asking for it, so I kept building.">
+    <StudioLesson />
+  </Slide>
+</CaseStudyLayout>

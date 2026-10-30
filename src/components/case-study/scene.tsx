@@ -101,11 +101,12 @@ export function onCard(r: { x: number; y: number; w?: number } | null, view: Vie
 
 /** A scene: the stage, with the product card bleeding off its bottom edge and fading out, then the chapter captions and progress. On a
  *  phone the first step shows the whole stage; later steps zoom to `focus` (see `phoneCrop`), and the view eases between them. Reduced
- *  motion keeps the whole stage. */
-export function SceneFrame({ scene, stage, label, title, size = 'wide', controls = true, focus = null, children }: { scene: Scene; stage: Stage; label: string; title: string; size?: 'wide' | 'normal'; controls?: boolean; focus?: Focus | null; children: ReactNode }) {
+ *  motion keeps the whole stage. A `bar` (a view toggle, say) sits inside the stage above the card, at its own size on every screen. */
+export function SceneFrame({ scene, stage, label, title, size = 'wide', controls = true, focus = null, bar, children }: { scene: Scene; stage: Stage; label: string; title: string; size?: 'wide' | 'normal'; controls?: boolean; focus?: Focus | null; bar?: ReactNode; children: ReactNode }) {
   const { g, card } = stage;
   return <figure className={`cs-scene ${scene.fade ? 'cs-loop-reset' : ''}`} ref={scene.ref as RefObject<HTMLElement>} aria-label={label}>
     <div className={`cs-stage texture-bg cs-frame is-${size}`}>
+      {bar && <div className="cs-stage-bar">{bar}</div>}
       <NativeStage width={g.width} height={g.height} crop={stage.phone ? phoneCrop(scene.step > 0 && !scene.reduced ? focus : null, stage) : undefined}>
         <div className={`cs-shell ${g.bottom ? 'is-contained' : ''}`} style={{ left: g.inset - g.ring, top: g.top - g.ring, bottom: g.bottom ? g.bottom - g.ring : 0, width: card + g.ring * 2, padding: g.bottom ? g.ring : `${g.ring}px ${g.ring}px 0` }}>
           <div className="cs-card">
