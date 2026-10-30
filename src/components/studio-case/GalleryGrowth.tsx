@@ -55,7 +55,6 @@ function TodayGallery() {
       <div>
         <div className="sc-gallery">
           <h2 className="sc-title">Prototypes</h2>
-          <p className="sc-desc">Every prototype in the gallery, newest first.</p>
           <Filters />
           <div className="sc-grid">{today.map(p => <PrototypeCard key={p.who + p.title} p={p} />)}</div>
         </div>
