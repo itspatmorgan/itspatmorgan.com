@@ -69,11 +69,10 @@ export default function GalleryGrowth() {
   const scene = useScene(timings, captions);
   const stage = useStage({ wide: 1000, height: 760 });
   const step = scene.step;
-  return <>
-    <div className="sc-era" role="group" aria-label="Which gallery">
-      {eras.map(([what, when], i) => <button type="button" key={what} aria-pressed={step === i} onClick={() => scene.choose(i)}><b>{what}</b>{when}</button>)}
-    </div>
-    <SceneFrame scene={scene} stage={stage} title="the gallery, then and now"
+  const bar = <div className="sc-era" role="group" aria-label="Which gallery">
+    {eras.map(([what, when], i) => <button type="button" key={what} aria-pressed={step === i} onClick={() => scene.choose(i)}><b>{what}</b>{when}</button>)}
+  </div>;
+  return <SceneFrame scene={scene} stage={stage} bar={bar} title="the gallery, then and now"
     label="Sublime's Design Studio as first built, in January 2026: a list with one project, Agent Configuration, by Patrick, January 2026. Then nine months later, today: a catalog of prototypes from Patrick, Joe, Ahry, AJ and Samantha across product design, product management and creative, newest first">
     <div style={{ position: 'relative', height: stage.box.height }} aria-hidden="true">
       <Screens id={step === 0 ? 'first' : 'today'}>
@@ -82,6 +81,5 @@ export default function GalleryGrowth() {
         </div>
       </Screens>
     </div>
-  </SceneFrame>
-  </>;
+  </SceneFrame>;
 }

@@ -64,6 +64,7 @@
    Wide stages run past the 960px text measure to the page's full width, so a product screen renders at about its true size. */
 .cs-page .cs-frame { padding: 0; overflow: hidden; }
 .cs-page .cs-frame.is-wide { max-width: 1184px; }
+.cs-stage-bar { position: relative; z-index: 1; display: flex; justify-content: center; padding: clamp(14px, 3vw, 36px) 16px 0; margin-bottom: clamp(-36px, -2.8vw, 0px); }
 /* The shell holds the card and its ring, and fades both out toward the stage's bottom edge, so a crop reads as a bleed. */
 .cs-shell { position: absolute; bottom: 0; -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 120px), transparent 100%); mask-image: linear-gradient(to bottom, #000 calc(100% - 120px), transparent 100%); }
 .cs-shell.is-contained { -webkit-mask-image: none; mask-image: none; }

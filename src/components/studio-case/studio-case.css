@@ -397,8 +397,8 @@
 .pt-attrib img.is-dark, .dark .pt-attrib img.is-light { display: none; }
 .dark .pt-attrib img.is-dark { display: block; }
 .pt.is-open { padding-top: 28px; }
-/* Then and now: which gallery the demo shows, a toggle above the stage (as the query builder case study's Code / Visual). */
-.sc-era { display: flex; width: max-content; margin: 36px auto 4px; padding: 3px; gap: 2px; border-radius: 99px; background: color-mix(in oklch, var(--foreground) 7%, transparent); }
+/* Then and now: which gallery the demo shows, a toggle inside the stage, above the card (as the query builder case study's Code / Visual). */
+.sc-era { display: flex; width: max-content; margin: 0; padding: 3px; gap: 2px; border-radius: 99px; background: color-mix(in oklch, var(--foreground) 7%, transparent); }
 .sc-era button { display: flex; align-items: center; gap: 6px; min-height: 30px; padding: 0 16px; border-radius: 99px; color: var(--muted-foreground); font: 500 13px var(--font-sans); cursor: pointer; transition: background 200ms ease, color 200ms ease; }
 .sc-era button b { font-weight: 500; color: inherit; }
 .sc-era button[aria-pressed=true] { background: var(--background); color: var(--foreground); box-shadow: 0 1px 2px #0000001a; }
