@@ -31,7 +31,7 @@ export const roles: Role[] = [
     logo: "/images/logos/career-jupiterone.svg",
     role: "Lead Product Designer",
     dateRange: "2022–2023",
-    summary: "JupiterOne helps security teams see and search everything in their company's cloud. As lead designer, I made its query language approachable, cutting the time it took new customers to write and save their first custom query from 21 days to 1, and helped roll out a new design system across the product.",
+    summary: "JupiterOne helps security teams search everything in their cloud. As lead designer, I made its query language approachable, cutting a new customer's time to their first saved query from 21 days to 1, and helped roll out a new design system.",
     projects: ["query-language"],
     descriptions: [
       "Designed a query interface that reduced new user time-to-value from 21 days to 1 day.",
