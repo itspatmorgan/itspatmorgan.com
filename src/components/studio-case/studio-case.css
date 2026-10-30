@@ -215,7 +215,10 @@
 .sc-next a.is-primary { background: var(--foreground); color: var(--background); border-color: var(--foreground); }
 .cs-hero > .sc-hero-links { margin-top: 32px; }
 @media (max-width: 640px) { .sc-hero-links { gap: 8px; } .sc-hero-links a { height: 36px; padding: 0 14px; font-size: 13px; } }
-.sc-next a:hover { border-color: color-mix(in srgb, var(--foreground) 40%, transparent); }
+.sc-next a { transition: background-color 200ms ease, border-color 200ms ease; }
+.sc-next a:hover { color: var(--foreground); background: color-mix(in srgb, var(--foreground) 5%, transparent); border-color: color-mix(in srgb, var(--foreground) 24%, transparent); }
+/* The primary keeps its inverted colors on hover in both themes, easing a step toward the page. */
+.sc-next a.is-primary:hover { color: var(--background); background: color-mix(in srgb, var(--foreground) 84%, var(--background)); border-color: transparent; }
 @media (max-width: 640px) { .sc-pr-log { margin-top: 32px; padding: 16px 18px; font-size: 13px; } .sc-pr-log::before { display: none; } }
 
 /* The agent rules map (RulesMap). */
