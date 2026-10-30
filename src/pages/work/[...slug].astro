@@ -4,8 +4,8 @@ import { render } from "astro:content";
 import ProjectLayout from "@/layouts/ProjectLayout.astro";
 
 export async function getStaticPaths() {
-  // Query Builder, Expansion and Sublime agents have dedicated pages at src/pages/work/query-language.astro, expansion.astro and sublime-agents.astro.
-  const projects = await getCollection("projects", ({ id, data }) => !data.draft && id !== "query-language" && id !== "expansion" && id !== "sublime-agents");
+  // Query Builder, Expansion, Sublime agents and Design Studio have dedicated pages at src/pages/work/query-language.astro, expansion.astro, sublime-agents.astro and design-studio.astro.
+  const projects = await getCollection("projects", ({ id, data }) => !data.draft && id !== "query-language" && id !== "expansion" && id !== "sublime-agents" && id !== "design-studio");
   return projects.map((project) => ({
     params: { slug: project.id },
     props: { project },

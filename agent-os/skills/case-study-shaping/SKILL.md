@@ -20,8 +20,7 @@ Four reference implementations exist:
 - Sublime agents: `src/pages/work/sublime-agents.astro` with screens rebuilt
   from prototype code in `src/components/sublime/`. Its scenes are the most
   current pattern for animated demos.
-- Design Studio: `src/pages/work/design-studio-preview.astro` (preview route
-  until Patrick ships it) with screens in `src/components/studio-case/`. It
+- Design Studio: `src/pages/work/design-studio.astro` with screens in `src/components/studio-case/`. It
   shows a tool through real work made in it: the hero's canvas frames are the
   Sublime case study's real screens, scaled (`Live` in `Workspace.tsx`), and
   the handoff slide is a real handoff document from the archive and the view

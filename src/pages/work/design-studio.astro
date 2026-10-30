@@ -1,6 +1,4 @@
 ---
-// Draft of the Design Studio case study, on a route nothing links to and search engines skip. It moves to /work/design-studio on
-// Patrick's go-ahead (case-study-shaping, step 9).
 import { getEntry } from 'astro:content';
 import CaseStudyLayout from '@/layouts/CaseStudyLayout.astro';
 import Slide from '@/components/case-study/Slide.astro';
@@ -26,7 +24,6 @@ if (!project) throw new Error('Design Studio case study is missing');
   title={project.data.title}
   description={project.data.description}
   product="sc"
-  noindex
   company={{ name: 'Design Studio', logo: '/images/studio-case/design-studio-mark.svg' }}
   heading="Building a design environment for people and agents"
   subline="Design Studio is an AI prototype sandbox for designers and product managers who build. I built it on my own for Sublime’s product team, then rebuilt it as open source."
