@@ -1,0 +1,13 @@
+---
+// Renders a StudioCard concept in an inert frame, as ProjectDemo does for the Work cards.
+import { StudioCardArtifacts, StudioCardFidelity } from "@/components/design-studio/StudioCard";
+import "@/components/case-study/case-study.css";
+
+interface Props { concept: "artifacts" | "fidelity"; }
+const { concept } = Astro.props;
+---
+
+<div inert aria-hidden="true">
+  {concept === "artifacts" && <StudioCardArtifacts client:visible />}
+  {concept === "fidelity" && <StudioCardFidelity client:visible />}
+</div>

@@ -1,0 +1,58 @@
+/* Design Studio's homepage visual (StudioCard). Tokens follow the Feedback Inbox sample project in light and dark. */
+.dc {
+  --dc-surface: #fff; --dc-subtle: #f6f6f4; --dc-line: #e6e5e1; --dc-strong: #1b1b19; --dc-weak: #6b6a65; --dc-select: #ededeb;
+  --dc-primary: #2e6b4a; --dc-new: #2f7d4f; --dc-new-bg: #eaf6ee; --dc-planned: #1f7442; --dc-planned-bg: #d8f1e0;
+  --dc-gray: #4a4945; --dc-gray-bg: #ececea; --dc-lofi: #6f6e69;
+  --pc-surface: var(--dc-surface); --pc-line: var(--dc-line);
+}
+.dark .dc {
+  --dc-surface: #232220; --dc-subtle: #2a2927; --dc-line: #3a3835; --dc-strong: #ecebe7; --dc-weak: #a3a19b; --dc-select: #35332f;
+  --dc-primary: #3b8660; --dc-new: #7fcf9c; --dc-new-bg: #24382b; --dc-planned: #9be0b2; --dc-planned-bg: #1f3d2a;
+  --dc-gray: #cfcdc8; --dc-gray-bg: #34322f; --dc-lofi: #6a6863;
+}
+.dc .cs-native { font-family: 'Geist Variable', ui-sans-serif, system-ui, sans-serif; color: var(--dc-strong); letter-spacing: 0; }
+
+/* The prototype. */
+.dc-inbox { padding: 18px 20px 0; }
+.dc-head { display: grid; grid-template-columns: 1fr auto; column-gap: 12px; }
+.dc-h { font-size: 14px; line-height: 20px; font-weight: 600; }
+.dc-sub { grid-column: 1 / -1; font-size: 10.5px; line-height: 15px; color: var(--dc-weak); white-space: nowrap; }
+.dc-btn { grid-column: 2; grid-row: 1; display: inline-flex; align-items: center; gap: 4px; height: 22px; padding: 0 8px; border-radius: 4px; font-size: 10.5px; font-weight: 500; white-space: nowrap; color: #fff; background: var(--dc-primary); transition: background-color 500ms ease; }
+.dc-tabs { display: flex; gap: 11px; margin: 12px 0 9px; font-size: 11px; line-height: 20px; color: var(--dc-weak); }
+.dc-tabs .is-on { padding: 0 6px; margin-left: -6px; border-radius: 4px; color: var(--dc-strong); background: var(--dc-select); font-weight: 500; }
+.dc-table { border: 1px solid var(--dc-line); border-radius: 6px; overflow: hidden; }
+.dc-row { display: grid; grid-template-columns: 1fr 64px; align-items: center; column-gap: 10px; height: 27px; padding: 0 10px; font-size: 11.5px; border-top: 1px solid var(--dc-line); }
+.dc-th { border-top: 0; height: 25px; font-size: 10.5px; font-weight: 600; color: var(--dc-weak); background: var(--dc-subtle); }
+.dc-cell { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.dc-badge { justify-self: start; padding: 0 6px; border-radius: 4px; font-size: 10px; line-height: 17px; font-weight: 500; transition: color 500ms ease, background-color 500ms ease; }
+.dc-badge.is-new { color: var(--dc-new); background: var(--dc-new-bg); }
+.dc-badge.is-planned { color: var(--dc-planned); background: var(--dc-planned-bg); }
+.dc-badge.is-triaged, .dc-badge.is-resolved { color: var(--dc-gray); background: var(--dc-gray-bg); }
+.dc-badge.is-resolved { color: var(--dc-weak); }
+/* Studio's lo-fi pass: the same screen in grays. */
+.dc-inbox.is-lofi .dc-btn { background: var(--dc-lofi); }
+.dc-inbox.is-lofi .dc-badge { color: var(--dc-weak); background: transparent; box-shadow: inset 0 0 0 1px var(--dc-line); }
+
+/* Concept A: the prototype behind, its artifact tree in front, over the panel's left edge. */
+.dc-a .dc-panel { left: 150px; top: 22px; }
+.dc-a .dc-panel .dc-inbox { padding-left: 94px; }
+.dc-tree { left: 28px; top: 34px; width: 196px; padding: 16px 12px 12px 12px; }
+.dc-tree .pc-title { padding-left: 0; }
+.dc-meta { padding-left: 6px; }
+.dc-meta { margin-bottom: 4px; font-size: 11px; line-height: 16px; color: var(--dc-weak); }
+.dc-group { display: flex; align-items: center; gap: 4px; margin: 10px 0 2px; padding-left: 2px; font-size: 11px; line-height: 18px; font-weight: 600; color: var(--dc-weak); }
+.dc-tree ul { list-style: none; margin: 0; padding: 0; }
+.dc-tree li { display: flex; align-items: center; gap: 7px; height: 22px; padding: 0 8px 0 20px; border-radius: 5px; font-size: 12px; color: var(--dc-strong); transition: background-color 300ms ease; }
+.dc-tree li svg { color: var(--dc-weak); flex: none; }
+.dc-tree li.is-on { background: var(--dc-select); font-weight: 500; }
+
+/* Concept B: the lo-fi inbox behind, the finished table in front. */
+.dc-b .dc-panel .dc-inbox { padding-right: 60px; }
+.dc-front { left: 36px; right: 40px; top: 118px; padding: 6px 8px; transform: translateY(26px); }
+.dc-front.is-up { transform: none; }
+[data-project-card]:hover .dc-front.is-up { transform: translateY(-3px); }
+.dc-front .dc-inbox { padding: 0; }
+.dc-front .dc-head, .dc-front .dc-tabs { display: none; }
+.dc-front .dc-table { border: 0; }
+.dc-front .dc-row:nth-child(n + 6) { display: none; }
+@media (prefers-reduced-motion: reduce) { .dc-btn, .dc-badge, .dc-tree li { transition: none; } }

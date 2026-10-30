@@ -1,0 +1,152 @@
+---
+import PageLayout from "@/layouts/PageLayout.astro";
+import ProjectCard from "@/components/ProjectCard.astro";
+import ProjectDemo from "@/components/ProjectDemo.astro";
+import { liveDemoSlugs } from "@/data/project-demos";
+import PixelWaveText from "@/components/PixelWaveText.astro";
+import LabCard from "@/components/lab/LabCard.astro";
+import StudioPreviewCarousel from "@/components/design-studio/StudioPreviewCarousel.astro";
+import Icon from "@/components/icons/Icon.astro";
+import { PlayCircleIcon } from "@hugeicons/core-free-icons";
+import { GenerativePatternSurface } from "@/lab/editorial-art/GenerativePatternSurface";
+import { UAMark } from "@/lab/editorial-art/UAMark";
+import { siteConfig } from "@/data/site-config";
+import { commendations } from "@/data/commendations";
+import { communityPhotos, communityStory, featuredCommunityCommendations } from "@/data/community";
+import { getCollection } from "astro:content";
+
+const allProjects = await getCollection("projects", ({ data }) => !data.draft);
+const preferredLabOrder = ["pattern-engine", "pixel-wave", "pixel-mark"];
+const labEntries = (await getCollection("lab", ({ data }) => !data.draft))
+  .sort((a, b) => {
+    const aIndex = preferredLabOrder.indexOf(a.data.slug);
+    const bIndex = preferredLabOrder.indexOf(b.data.slug);
+    if (aIndex !== -1 || bIndex !== -1) {
+      return (aIndex === -1 ? Number.MAX_SAFE_INTEGER : aIndex) - (bIndex === -1 ? Number.MAX_SAFE_INTEGER : bIndex);
+    }
+    return a.data.title.localeCompare(b.data.title);
+  });
+const writingPosts = (await getCollection("writing", ({ data }) => !data.draft))
+  .sort((a, b) => b.data.publishedDate.getTime() - a.data.publishedDate.getTime());
+const professionalProjects = allProjects
+  .filter((p) => p.data.type === "professional")
+  .sort((a, b) => a.data.sortOrder - b.data.sortOrder);
+const featuredProjectDescriptions: Record<string, string> = {
+  "sublime-agents": "Designed an AI agent that writes detection rules, and gives security teams control over its autonomy.",
+  "query-language": "Designed a visual query builder that taught a complex query language as customers used it.",
+  expansion: "Shaped how a new SKU came to market by extending the platform, not rebuilding it.",
+};
+
+const heroHeadline = "Patrick is a designer who builds.";
+const heroIntro = "I've been a strategist, developer, designer, and writer — sometimes all at once.";
+const heroIntroDetail = "The through line is my compulsion to turn ideas into useful, well-crafted things.";
+const heroCurrentWorkLead = "Right now, I'm designing agentic email security at";
+const heroCurrentWorkTail = "an open-source prototyping environment.";
+
+const newsletterPattern = {
+  type: "isoline",
+  seed: 211,
+  levels: 9,
+  scale: 340,
+  strokeWidth: 0.9,
+  opacity: 66,
+  color: "copper",
+} as const;
+
+const newsletterLightPattern = {
+  ...newsletterPattern,
+  opacity: 76,
+  strokeWidth: 1.05,
+  color: "bronze",
+} as const;
+
+const newsletterMotion = {
+  mode: "ambient",
+  speed: 20,
+  intensity: 28,
+} as const;
+
+const communityCommendations = featuredCommunityCommendations
+  .map((name) => commendations.find((commendation) => commendation.name === name))
+  .filter((commendation) => Boolean(commendation));
+const homeCommunityPhotos = [
+  {
+    ...communityPhotos[0],
+    className: "rotate-[-2deg]",
+    position: "object-[8%_50%]",
+  },
+  {
+    ...communityPhotos[3],
+    className: "rotate-[2deg]",
+    position: "object-[42%_50%]",
+  },
+] as const;
+
+// Design Studio's public repo, linked from the section header, and the two talks where Patrick walks through it, at the card's foot.
+const designStudioRepo = "https://github.com/itspatmorgan/design-studio";
+const designStudioLinks = [
+  { label: "Dive Club interview", href: "https://www.youtube.com/watch?v=628c4YuxAEM", icon: PlayCircleIcon },
+  { label: "Maven talk", href: "https://maven.com/p/0e87f2/build-your-own-ai-design-sandbox", icon: PlayCircleIcon },
+];
+
+// 1296 less 56 a side leaves 1184 of content, the case studies' widest stage, so the homepage and the work it links to share one measure.
+const homeShell = "mx-auto w-full max-w-[1296px] px-6 sm:px-8 lg:px-14";
+const homeSection = `${homeShell} py-12 sm:py-14 lg:py-16`;
+const homeFirstSection = `${homeShell} pt-5 pb-12 sm:pt-10 sm:pb-14 lg:pt-10 lg:pb-16`;
+const homeSectionHeader = "mb-7 flex items-center justify-between";
+const homeCardGrid = "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6";
+// Featured work runs two wide cards side by side, using the wide thumbnails.
+const homeWorkGrid = "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:gap-6";
+import StudioHomeModule from "@/components/design-studio/StudioHomeModule.astro";
+---
+
+<PageLayout>
+  {/* ── Work ─────────────────────────────────────────────── */}
+  <section class={homeFirstSection}>
+    <div class={homeSectionHeader} data-home-section-header>
+      <p class="font-mono text-xs uppercase tracking-widest text-muted-foreground">Work</p>
+      <a href="/work" class="text-xs text-muted-foreground transition-colors hover:text-foreground">View all →</a>
+    </div>
+    <div class={homeWorkGrid}>
+      {professionalProjects.slice(0, 2).map((project, i) => (
+        <div data-project-card-item>
+          <ProjectCard
+            title={project.data.title}
+            description={featuredProjectDescriptions[project.id] ?? project.data.description}
+            skills={project.data.skills}
+            thumbnail={project.data.thumbnail}
+            thumbnailDark={project.data.thumbnailDark}
+            thumbnailWide={project.data.thumbnailWide}
+            thumbnailWideDark={project.data.thumbnailWideDark}
+            slug={project.id}
+            index={i}
+            variant="compact"
+            showDescription
+          >
+            {liveDemoSlugs.has(project.id) && <ProjectDemo slot="visual" slug={project.id} />}
+          </ProjectCard>
+        </div>
+      ))}
+    </div>
+  </section>
+
+
+  <p class={`${homeShell} font-mono text-xs uppercase tracking-widest text-accent`}>Concept A (recommended): the prototype and its artifacts</p>
+  {/* ── Design Studio ────────────────────────────────────── */}
+  <section class={homeSection} aria-labelledby="home-design-studio-title">
+    <div class={homeSectionHeader} data-home-section-header>
+      <p class="font-mono text-xs uppercase tracking-widest text-muted-foreground">Open source</p>
+      <a href={designStudioRepo} target="_blank" rel="noopener noreferrer" class="text-xs text-muted-foreground transition-colors hover:text-foreground">View on GitHub →</a>
+    </div>
+    <StudioHomeModule concept="artifacts" />
+  </section>
+  <p class={`${homeShell} font-mono text-xs uppercase tracking-widest text-accent`}>Concept B: sketch to product</p>
+  {/* ── Design Studio ────────────────────────────────────── */}
+  <section class={homeSection} aria-labelledby="home-design-studio-title">
+    <div class={homeSectionHeader} data-home-section-header>
+      <p class="font-mono text-xs uppercase tracking-widest text-muted-foreground">Open source</p>
+      <a href={designStudioRepo} target="_blank" rel="noopener noreferrer" class="text-xs text-muted-foreground transition-colors hover:text-foreground">View on GitHub →</a>
+    </div>
+    <StudioHomeModule concept="fidelity" />
+  </section>
+</PageLayout>
