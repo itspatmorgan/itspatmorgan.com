@@ -1,0 +1,31 @@
+---
+// The lesson, drawn: one small working thing at the center, and the people it reached, each line arriving after the thing existed.
+// Lessons are ideas, not screens, so this is a quiet drawing on the site's texture backdrop (case-study-shaping, step 3).
+const people = [
+  [190, 150], [150, 330], [250, 500], [770, 140], [820, 320], [720, 500], [480, 90], [480, 560],
+];
+---
+
+<figure class="cs-stage texture-bg sc-lesson" aria-label="A drawing: one small working prototype at the center, with lines out to the people who asked for it">
+  <svg viewBox="0 0 960 640" aria-hidden="true">
+    <g class="sc-lesson-lines">
+      {people.map(([x, y]) => <path d={`M480 320 L${x} ${y}`} />)}
+    </g>
+    <rect x="390" y="262" width="180" height="116" rx="10" class="sc-lesson-frame" />
+    <path d="M390 288 H570" class="sc-lesson-rule" />
+    <circle cx="404" cy="275" r="3" class="sc-lesson-dot" /><circle cx="415" cy="275" r="3" class="sc-lesson-dot" /><circle cx="426" cy="275" r="3" class="sc-lesson-dot" />
+    <path d="M410 312 H520 M410 332 H490 M410 352 H540" class="sc-lesson-rule" />
+    {people.map(([x, y]) => <circle cx={x} cy={y} r="10" class="sc-lesson-person" />)}
+  </svg>
+</figure>
+
+<style>
+  .sc-lesson { margin-top: 48px; }
+  .sc-lesson svg { display: block; width: 100%; height: auto; color: var(--foreground); }
+  .sc-lesson-lines path { stroke: currentColor; stroke-opacity: .22; stroke-width: 1.5; stroke-dasharray: 3 6; fill: none; }
+  .sc-lesson-frame { fill: var(--card); stroke: currentColor; stroke-opacity: .55; stroke-width: 1.5; }
+  .sc-lesson-rule { stroke: currentColor; stroke-opacity: .35; stroke-width: 1.5; fill: none; stroke-linecap: round; }
+  .sc-lesson-dot { fill: currentColor; fill-opacity: .35; }
+  .sc-lesson-person { fill: var(--card); stroke: currentColor; stroke-opacity: .5; stroke-width: 1.5; }
+  @media (max-width: 640px) { .sc-lesson { margin-top: 28px; } }
+</style>
