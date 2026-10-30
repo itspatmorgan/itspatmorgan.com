@@ -65,7 +65,7 @@
 
 /* The first gallery (Jan 2026): a header bar, list view, one project. Its own blue links and Inter. */
 .sc-first { position: absolute; inset: 0; background: color-mix(in srgb, var(--sc-muted) 55%, var(--sc-bg)); }
-.sc-first-head { display: flex; align-items: center; gap: 16px; height: 54px; padding: 0 0 0 280px; background: var(--sc-bg); border-bottom: 1px solid var(--sc-line); font-size: 15px; font-weight: 500; color: var(--sc-weak); }
+.sc-first-head { display: flex; align-items: center; justify-content: center; gap: 16px; height: 54px; padding: 0; background: var(--sc-bg); border-bottom: 1px solid var(--sc-line); font-size: 15px; font-weight: 500; color: var(--sc-weak); }
 .sc-first-head img { height: 22px; }
 .sc-first-head i { width: 1px; height: 20px; background: var(--sc-line); }
 .sc-first-body { width: 800px; margin: 0 auto; padding: 32px 0; }
@@ -193,15 +193,22 @@
 .sc-file svg { color: var(--sc-ink-weak); flex: none; }
 
 /* ── Quote and next links ──────────────────────────────────────────────────────────────── */
-.sc-quote { max-width: 760px; margin: 40px auto 0; text-align: center; }
-.sc-quote blockquote { margin: 0; font-size: clamp(20px, 2.4vw, 26px); line-height: 1.35; letter-spacing: -.02em; text-wrap: balance; }
-.sc-quote figcaption { margin-top: 12px; font-size: 14px; color: var(--muted-foreground); }
+.sc-quote { max-width: 880px; margin: 0 auto; text-align: center; }
+.sc-quote blockquote { margin: 0; font-size: clamp(26px, 3vw, 38px); line-height: 1.2; font-weight: 500; letter-spacing: -.035em; text-wrap: balance; }
+.sc-quote figcaption { margin-top: 20px; font-size: 15px; color: var(--muted-foreground); }
 .sc-quote figcaption a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+.sc-pr-log { position: relative; display: inline-grid; gap: 16px; margin: 48px auto 0; padding: 20px 24px; list-style: none; border: 1px solid var(--border); border-radius: 12px; background: var(--card, var(--background)); text-align: left; font-size: 14px; line-height: 20px; color: var(--muted-foreground); }
+.sc-pr-log::before { content: ''; position: absolute; left: 36px; top: 40px; height: 22px; border-left: 1px solid var(--border); }
+.sc-pr-log li { position: relative; display: flex; align-items: center; gap: 12px; }
+.sc-pr-log b { font-weight: 600; color: var(--foreground); }
+.sc-pr-log i { margin: 0 2px; padding: 0 6px; border: 1px solid var(--border); border-radius: 999px; font-style: normal; font-size: 12px; line-height: 18px; }
+.sc-pr-dot { display: flex; align-items: center; justify-content: center; flex: none; width: 24px; height: 24px; border-radius: 999px; background: var(--muted); color: var(--muted-foreground); }
+.sc-pr-dot.is-ok { background: #1f883d; color: #fff; }
 .sc-next { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 32px; }
 .sc-next a { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px; border: 1px solid var(--border); border-radius: 999px; font-size: 14px; font-weight: 500; color: var(--foreground); text-decoration: none; transition: border-color 200ms ease; }
 .sc-next a.is-primary { background: var(--foreground); color: var(--background); border-color: var(--foreground); }
 .sc-next a:hover { border-color: color-mix(in srgb, var(--foreground) 40%, transparent); }
-@media (max-width: 640px) { .sc-quote { margin-top: 28px; } }
+@media (max-width: 640px) { .sc-pr-log { margin-top: 32px; padding: 16px 18px; font-size: 13px; } .sc-pr-log::before { display: none; } }
 
 /* The agent rules map (RulesMap). */
 .sc-rule { position: absolute; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; border: 1.5px solid var(--sc-node-line); border-radius: 10px; background: var(--sc-node); text-align: center; white-space: nowrap; transition: opacity 400ms ease; }
@@ -233,41 +240,12 @@
 .sc-menu div.is-hover { background: var(--os-muted); }
 .sc-menu hr { margin: 4px -4px; border: 0; border-top: 1px solid var(--os-line); }
 
-/* The engineering handoff (Handoff): the handoff document, then the Setup / enable gate it opens. */
-.sc-hand { max-width: 600px; margin: 0 auto; padding: 56px 0; font-size: 14.5px; line-height: 24px; color: var(--sc-side-fg); }
-.sc-hand h1 { font-size: 30px; line-height: 36px; font-weight: 600; letter-spacing: -.8px; color: var(--sc-fg); text-wrap: balance; }
-.sc-hand-lede { margin: 10px 0 0; font-size: 16px; line-height: 24px; color: var(--sc-weak); }
-.sc-hand h2 { margin: 34px 0 10px; font-size: 20px; line-height: 28px; font-weight: 600; letter-spacing: -.3px; color: var(--sc-fg); }
-.sc-hand h3 { margin: 22px 0 8px; font-size: 15.5px; font-weight: 600; color: var(--sc-fg); }
-.sc-hand p { margin: 10px 0 0; }
-.sc-hand b { font-weight: 600; color: var(--sc-fg); }
-.sc-hand ul { margin: 8px 0 0; padding-left: 20px; display: grid; gap: 6px; }
-.sc-hand li::marker { color: var(--sc-weak); }
-.sc-hand a { color: var(--sc-link); text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--sc-link) 30%, transparent); text-underline-offset: 3px; transition: text-decoration-color 200ms ease, background-color 200ms ease; border-radius: 3px; }
-.sc-hand a.is-hover { text-decoration-color: var(--sc-link); background: color-mix(in srgb, var(--sc-link) 8%, transparent); }
-.sc-hand code { padding: 1px 5px; border-radius: 4px; background: var(--sc-muted); font-family: 'Geist Mono Variable', ui-monospace, monospace; font-size: 12.5px; color: var(--sc-fg); }
-.sc-gate { position: absolute; inset: 0; display: flex; flex-direction: column; background: #fff; color: #1a1b16; }
-.sc-gate-crumb { flex: none; height: 48px; display: flex; align-items: center; padding: 0 24px; border-bottom: 1px solid #e8e8e6; font-size: 14px; font-weight: 500; }
-.sc-gate-body { flex: 1; display: flex; align-items: center; justify-content: center; gap: 44px; padding: 0 40px; overflow: hidden; }
-.sc-gate-copy { width: 290px; flex: none; }
-.sc-gate-copy h2 { font-size: 22px; line-height: 29px; font-weight: 600; letter-spacing: -.4px; text-wrap: balance; }
-.sc-gate-copy p { margin-top: 16px; font-size: 14px; line-height: 22px; color: #3d3d39; }
-.sc-gate-cta { display: inline-flex; align-items: center; height: 34px; margin-top: 26px; padding: 0 14px; border-radius: 6px; background: #4471d4; color: #fff; font-size: 14px; font-weight: 500; }
-.sc-gate-shot { position: relative; isolation: isolate; width: 300px; flex: none; }
-.sc-gate-glow { position: absolute; inset: -70px; z-index: -1; filter: blur(40px); opacity: .55; background: radial-gradient(ellipse 70% 64% at 50% 50%, #b3ffdd 0%, #dbfff3 30%, rgba(4, 230, 155, .25) 50%, transparent 72%); }
-.sc-vendors { overflow: hidden; border: 1px solid #e8e8e6; border-radius: 6px; background: #fff; box-shadow: 0 1px 2px rgba(0, 0, 0, .05); }
-.sc-vendors-head { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; border-bottom: 1px solid #e8e8e6; }
-.sc-vendors-head b { font-size: 14px; font-weight: 600; }
-.sc-vendors-head span { display: flex; gap: 6px; }
-.sc-vendors-head i { font-style: normal; padding: 2px 8px; border: 1px solid #d1d1cf; border-radius: 4px; font-size: 11.5px; color: #666560; }
-.sc-vendors-head i.is-dark { border-color: #1a1b16; background: #1a1b16; color: #fff; }
-.sc-vendor { display: flex; align-items: center; gap: 10px; height: 52px; padding: 0 12px; border-top: 1px solid #efefed; }
-.sc-vendor:first-of-type { border-top: 0; }
-.sc-vendor-logo { display: flex; align-items: center; justify-content: center; flex: none; width: 28px; height: 28px; border: 1px solid #e8e8e6; border-radius: 4px; background: #fafaf9; font-size: 11px; font-weight: 600; color: #666560; }
-.sc-vendor-name { display: flex; flex-direction: column; gap: 4px; min-width: 0; flex: 1; }
-.sc-vendor-name b { font-size: 12.5px; font-weight: 500; line-height: 1; }
-.sc-vendor-name small { font-size: 10px; line-height: 1; color: #666560; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.sc-vendor-status { display: flex; justify-content: flex-end; width: 72px; flex: none; }
-.sc-vendor-status i { font-style: normal; padding: 1px 7px; border: 1px solid #d1d1cf; border-radius: 999px; font-size: 10.5px; color: #3d3d39; }
-.sc-vendor-more { flex: none; color: #8a8985; opacity: .6; }
-.dark .sc-gate { filter: brightness(.9); }
+/* The engineering handoff (Handoff): the live page, and the dev handoff note pinned to the Studio's corner (mttc HandoffNote). */
+.sc-note { position: absolute; right: 16px; top: 388px; z-index: 3; display: flex; flex-direction: column; gap: 8px; width: 340px; padding: 16px; border: 1px solid #d4d4d8; border-radius: 8px; background: #fff; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, .1), 0 4px 6px -4px rgba(0, 0, 0, .1); color: #18181b; transition: opacity 300ms ease, transform 400ms cubic-bezier(.22, 1, .36, 1); }
+.sc-note.is-off { opacity: 0; transform: translateY(8px); }
+.sc-note-head { display: flex; align-items: center; gap: 8px; }
+.sc-note-tag { padding: 2px 8px; border: 1px solid rgba(245, 158, 11, .5); border-radius: 999px; background: #fffbeb; font-size: 11px; line-height: 16px; font-weight: 600; color: #92400e; }
+.sc-note-phase { font-size: 11px; line-height: 16px; font-weight: 500; color: #71717a; }
+.sc-note-hide { margin-left: auto; font-size: 12px; line-height: 16px; font-weight: 500; color: #71717a; }
+.sc-note-title { font-size: 13px; line-height: 20px; font-weight: 600; }
+.sc-note-body { font-size: 12px; line-height: 18px; font-weight: 500; color: #71717a; }

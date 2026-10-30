@@ -1,9 +1,19 @@
 ---
-// A teammate's words, from Joe's public quote of Patrick's launch post on X (2026-10). Patrick's own copy doesn't repeat the claim:
-// he still uses Figma for feedback and collaboration.
+// A teammate's words, as a slide of their own: Joe's public quote of Patrick's launch post on X (2026-10), then Joe's own pull request
+// going in, from the Studio repo's timeline (Drive: sublime-pull-request-joe.jpg): the scope check approves it and Joe sets it to merge
+// himself. The two events and their wording are the screenshot's; the time is left out, and the bot's comment is told by the scope slide.
+// Patrick's own copy doesn't repeat the Figma claim: he still uses Figma for feedback and collaboration.
+import { HugeiconsIcon } from '@hugeicons/react';
+import { GitMergeIcon, Tick02Icon } from '@hugeicons/core-free-icons';
 ---
 
-<figure class="sc-quote">
-  <blockquote>“This isn’t just some little side project y’all — we have essentially replaced Figma with this at Sublime.”</blockquote>
-  <figcaption>Joe Salowitz, Product Designer at Sublime, <a href="https://x.com/JoeSalowitz/status/2114915923283120187" target="_blank" rel="noopener noreferrer">on X</a></figcaption>
-</figure>
+<section class="cs-slide sc-quote-slide" aria-label="Joe Salowitz on Design Studio">
+  <figure class="sc-quote">
+    <blockquote>“This isn’t just some little side project y’all — we have essentially replaced Figma with this at Sublime.”</blockquote>
+    <figcaption>Joe Salowitz, Product Designer at Sublime, <a href="https://x.com/JoeSalowitz/status/2114915923283120187" target="_blank" rel="noopener noreferrer">on X</a></figcaption>
+  </figure>
+  <ol class="sc-pr-log" aria-label="Joe's pull request to Design Studio">
+    <li><span class="sc-pr-dot is-ok"><HugeiconsIcon icon={Tick02Icon} size={13} strokeWidth={2.4} /></span><span><b>github-actions</b> <i>Bot</i> approved these changes</span></li>
+    <li><span class="sc-pr-dot"><HugeiconsIcon icon={GitMergeIcon} size={14} strokeWidth={1.8} /></span><span><b>joesalowitz</b> enabled auto-merge (squash)</span></li>
+  </ol>
+</section>
