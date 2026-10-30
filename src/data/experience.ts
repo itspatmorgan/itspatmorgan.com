@@ -58,7 +58,7 @@ export const roles: Role[] = [
     logo: "/images/logos/career-tenable.svg",
     role: "Product Designer",
     dateRange: "2017–2018",
-    summary: "Tenable helps companies measure their exposure to cyber attacks. I led design for reporting and data visualization: the dashboards and reports customers used to understand their risk.",
+    summary: "Tenable helps companies measure their exposure to cyber attacks. I designed its reporting and data visualization: the dashboards and reports customers used to understand their risk.",
     descriptions: [
       "Designed enterprise SaaS features to improve Tenable's cyber risk platform: dashboard creation & management, data visualization templates, & team credential management.",
     ],
