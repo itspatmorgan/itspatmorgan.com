@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useState, type CSSProperties, type ReactNode } from 'react';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { CanvasIcon, CodeIcon, File01Icon, Flowchart01Icon, Layers01Icon, PlusSignIcon } from '@hugeicons/core-free-icons';
 import { ProjectCardStage } from '../case-study/ProjectCardStage';
@@ -12,7 +12,8 @@ import './studio-card.css';
 // Phones, where that column is a Work card's width, get the same composition drawn at the Work cards' 400 × 225.
 // Content is the Feedback Inbox sample project that ships with Design Studio (see the home-*.png captures). Liberties: the list's
 // icons are Hugeicons standing in for Studio's own; the wireframe keeps Studio's grays and outlines but not its sketch typeface; the
-// canvas shows the handoff canvas's screens as outlines; the diagram and document are trimmed to fit.
+// canvas shows the handoff canvas's screens as outlines; the inbox keeps three of its five filters and drops its description, and the
+// diagram and document are trimmed to fit.
 const icon = (i: typeof CodeIcon, size = 14) => <HugeiconsIcon icon={i} size={size} strokeWidth={1.6} />;
 
 const rows = [
@@ -29,9 +30,8 @@ function Prototype({ lofi = false }: { lofi?: boolean }) {
     <div className="dc-head">
       <p className="dc-h">Feedback inbox</p>
       <span className="dc-btn">{icon(PlusSignIcon, 12)}New feedback</span>
-      <p className="dc-sub">Everything customers have told us, newest first.</p>
     </div>
-    <div className="dc-tabs"><span className="is-on">All</span><span>New</span><span>Triaged</span><span>Planned</span><span>Resolved</span></div>
+    <div className="dc-tabs"><span className="is-on">All</span><span>New</span><span>Planned</span></div>
     <div className="dc-table">
       <div className="dc-row dc-th"><span>Feedback</span><span>Status</span></div>
       {rows.map(([text, status]) => <div className="dc-row" key={text}><span className="dc-cell">{text}</span><span className={`dc-badge is-${status.toLowerCase()}`}>{status}</span></div>)}
@@ -86,7 +86,7 @@ const artifacts: { name: string; icon: typeof CodeIcon; view: ReactNode }[] = [
   { name: 'Document', icon: File01Icon, view: <Doc /> },
 ];
 const order = [1, 2, 3, 4, 0];
-const timings = [1100, 1100, 1100, 1100, 2200];
+const timings = [1400, 1400, 1400, 1400, 2200];
 
 /** Phones draw the card at the Work cards' size. */
 function useCompact() {
@@ -107,10 +107,15 @@ export default function StudioCard() {
   const compact = useCompact();
   const current = order[loop.reduced ? order.length - 1 : loop.step];
   return <ProjectCardStage loop={loop} width={compact ? 400 : 560} height={compact ? 225 : 315} className={`dc ${compact ? 'is-compact' : ''}`} label="Design Studio's artifact types, interactive prototype, wireframe, diagram, canvas and document, each shown in turn">
-    <div className="pc-bg dc-panel"><div className="dc-swap" key={current}>{artifacts[current].view}</div></div>
+    {/* Every artifact stays mounted, stacked, so the outgoing one fades away before the next fades in, with nothing remounting. */}
+    <div className="pc-bg dc-panel">{artifacts.map((a, n) => <div key={a.name} className={`dc-layer ${n === current ? 'is-on' : ''}`}>{a.view}</div>)}</div>
     <div className="pc-fg dc-list">
       <p className="pc-title">Artifacts</p>
-      <ul>{artifacts.map((a, n) => <li key={a.name} className={n === current ? 'is-on' : ''}>{icon(a.icon)}<span>{a.name}</span></li>)}</ul>
+      {/* One selection that glides from row to row, rather than one row's highlight fading out as the next fades in. */}
+      <ul style={{ '--dc-at': current } as CSSProperties}>
+        <span className="dc-select" aria-hidden="true" />
+        {artifacts.map((a, n) => <li key={a.name} className={n === current ? 'is-on' : ''}>{icon(a.icon)}<span>{a.name}</span></li>)}
+      </ul>
     </div>
   </ProjectCardStage>;
 }
