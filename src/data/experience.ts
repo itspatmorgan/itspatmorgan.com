@@ -17,7 +17,7 @@ export const roles: Role[] = [
     logo: "/images/logos/career-sublime.svg",
     role: "Staff Product Designer",
     dateRange: "2025–Now",
-    summary: "Sublime makes agentic email security: a team of AI agents that stop targeted attacks. I joined as the first individual contributor product designer and work across the product, but my focus is the agents: one that triages emails users report, and one that writes new detections for emerging threats. I also built Design Studio, where Sublime's product team now prototypes.",
+    summary: "Sublime makes agentic email security. I joined as its first individual contributor product designer, and my focus is its AI agents, which triage threats and write new detections. I also built Design Studio, where the product team prototypes.",
     projects: ["sublime-agents", "design-studio"],
     descriptions: [
       "Designed a multi-agent system pairing an analyst agent with a detection engineering agent — automating threat triage and continuously generating new detection rules in Sublime's custom DSL.",
