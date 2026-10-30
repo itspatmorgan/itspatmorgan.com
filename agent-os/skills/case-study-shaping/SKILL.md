@@ -367,6 +367,9 @@ On Patrick's go-ahead:
 - Every animated scene checked frame by frame (contact sheets about 250ms
   apart) at desktop and phone widths before each publish, not only its end
   state.
+  `node scripts/frame-check.mjs --url <page url> [--slides ids]` saves a contact
+  sheet per slide at 1300px and 390px (start `pnpm dev` or a static server on
+  `dist/` first).
 - The theme follows the viewer and the system, and works with browser storage
   blocked.
 - Every claim on the page maps to an answer from fact-finding or a source.
