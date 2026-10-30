@@ -5,9 +5,20 @@ import ProjectDemo from "@/components/ProjectDemo.astro";
 import { liveDemoSlugs } from "@/data/project-demos";
 import { roles } from "@/data/experience";
 import { mediaFeatures } from "@/data/media";
+import { siteConfig } from "@/data/site-config";
 import { getCollection } from "astro:content";
 
 const allProjects = await getCollection("projects", ({ data }) => !data.draft);
+
+// Writing and talks: the newsletter first, Patrick's numbers as of 2026-10-30, then the talks and launch post.
+const writingAndTalks = [
+  {
+    image: "/images/unknown-arts/banner.webp", alt: "Unknown Arts collage: a figure on a mountain ridge pointing toward a bird in flight",
+    fallback: "Unknown Arts", title: "Unknown Arts newsletter", sub: "200+ essays · 7,700+ subscribers · 800k views",
+    href: siteConfig.social.newsletter,
+  },
+  ...mediaFeatures,
+];
 
 function getRoleProjects(slugs: string[] = []) {
   return slugs
@@ -92,11 +103,11 @@ function getRoleProjects(slugs: string[] = []) {
     </div>
   </section>
 
-  {/* Media: talks and posts about the work, kept apart from the case studies. A cover that can't load leaves the source's name. */}
+  {/* Writing and talks: the newsletter and talks, kept apart from the case studies. A cover that can't load leaves the source's name. */}
   <section class="mx-auto max-w-3xl px-6 pt-20" data-resume-media>
-    <h2 class="mb-8 text-2xl font-semibold tracking-tight">Media</h2>
+    <h2 class="mb-8 text-2xl font-semibold tracking-tight">Writing and talks</h2>
     <ul class="grid gap-3">
-      {mediaFeatures.map((item) => (
+      {writingAndTalks.map((item) => (
         <li>
           <a href={item.href} target="_blank" rel="noopener noreferrer" class="group/media flex items-center gap-4 rounded-xl border border-border bg-card p-3 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md hover:shadow-black/5 dark:hover:shadow-black/20 sm:gap-5">
             <span class="relative aspect-video w-28 shrink-0 overflow-hidden rounded-lg bg-muted sm:w-40">
@@ -114,16 +125,15 @@ function getRoleProjects(slugs: string[] = []) {
     </ul>
   </section>
 
-  {/* Skills */}
+  {/* Toolkit: how Patrick works, his design practice, the coding agents he uses, and the stacks behind this site and Design Studio. */}
   <section class="mx-auto max-w-3xl px-6 pt-20 pb-24" data-resume-skills>
-    <h2 class="mb-8 text-2xl font-semibold tracking-tight">Skills</h2>
+    <h2 class="mb-8 text-2xl font-semibold tracking-tight">Toolkit</h2>
     <div class="flex flex-col gap-5">
       {[
         { label: "Design", skills: ["Product design", "Interaction design", "Systems design", "Design systems", "Prototyping in code", "User research", "Figma"] },
         { label: "Coding agents", skills: ["Claude Code", "Codex", "Cursor"] },
         { label: "This site", skills: ["Astro", "React", "Tailwind CSS", "shadcn/ui", "GitHub Pages"] },
         { label: "Design Studio", skills: ["React", "Vite", "TanStack Router", "Tailwind CSS", "shadcn/ui and Base UI", "Excalidraw", "CodeMirror", "MDX"] },
-        { label: "Domains", skills: ["B2B & Enterprise SaaS", "Cybersecurity", "FinTech"] },
       ].map(({ label, skills }) => (
         <div>
           <h3 class="mb-1 text-base font-semibold tracking-tight">{label}</h3>
