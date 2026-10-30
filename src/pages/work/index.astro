@@ -10,14 +10,14 @@ import { getCollection } from "astro:content";
 
 const allProjects = await getCollection("projects", ({ data }) => !data.draft);
 
-// Writing and talks: the newsletter first, Patrick's numbers as of 2026-10-30, then the talks and launch post.
+// Writing and talks: the newsletter first, Patrick's numbers as of 2026-10-30, then the talks. The launch post stays in the Design Studio case study only.
 const writingAndTalks = [
   {
     image: "/images/unknown-arts/banner.webp", alt: "Unknown Arts collage: a figure on a mountain ridge pointing toward a bird in flight",
     fallback: "Unknown Arts", title: "Unknown Arts newsletter", sub: "200+ essays · 7,700+ subscribers · 800k views",
     href: siteConfig.social.newsletter,
   },
-  ...mediaFeatures,
+  ...mediaFeatures.filter((item) => item.title !== "Design Studio open-source launch"),
 ];
 
 function getRoleProjects(slugs: string[] = []) {
