@@ -253,6 +253,13 @@ for a phone, because that shows a product that never shipped. No phone-only
 note or Share button: Patrick had one removed (2026-10-30).
 
 - Closer looks keep the frame's proportions and zoom in by `PHONE_ZOOM` (1.6).
+  When the step's subject is wider than that (a button and the dialog it opens,
+  a row of fields with their labels), ease off with a focus `zoom` (1.2 to 1.3)
+  or `zoomCrop`'s `zoom` argument. Patrick's rule (2026-10-30): the gist matters
+  more than detail, and no zoom beats a wrong one. A crop must never cut the
+  step's key fact (a headline metric, a title, the field a value belongs to).
+- Hold one view per chapter rather than chasing the pointer step by step, and
+  end a scene on the whole frame when its last chapter sums up the page.
 - Scene card (`SceneFrame`): step 0 and reduced motion always show the whole
   stage. Pass a `focus` for the later steps, usually
   `onCard(t.rect(key), view)` with the alignment `'start'`, `'center'` (for a

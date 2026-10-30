@@ -78,12 +78,15 @@ export function useStage({ wide, height = 760, contained = false }: { wide: numb
 export type Stage = ReturnType<typeof useStage>;
 
 /** What a phone zooms to: a point or rect in source pixels as the card shows them, set at the zoomed frame's left edge, center or right
- *  edge (a little room either side). A rect's top sits near the frame's top; a centered point sits a little above its middle. */
-export type Focus = { x: number; y: number; w?: number; align?: 'start' | 'center' | 'end' };
-/** A phone's view of a stage: the whole stage at its desktop proportions, or with a `focus`, zoomed in by PHONE_ZOOM, same proportions. */
+ *  edge (a little room either side). A rect's top sits near the frame's top; a centered point sits a little above its middle. `zoom`
+ *  eases off PHONE_ZOOM when the step's subject is wider than a closer look allows. */
+export type Focus = { x: number; y: number; w?: number; align?: 'start' | 'center' | 'end'; zoom?: number };
+/** A phone's view of a stage: the whole stage at its desktop proportions, or with a `focus`, zoomed in (PHONE_ZOOM unless the focus
+ *  says otherwise), same proportions. */
 export function phoneCrop(focus: Focus | null, { g, card, W }: Stage) {
   if (!focus) return { x: 0, y: 0, width: g.width, height: g.height };
-  const k = card / W, width = g.width / PHONE_ZOOM, height = g.height / PHONE_ZOOM, span = width / k;
+  const zoom = focus.zoom ?? PHONE_ZOOM;
+  const k = card / W, width = g.width / zoom, height = g.height / zoom, span = width / k;
   const { x, y, w = 0, align = 'start' } = focus;
   const room = 24 / k;
   const left = align === 'start' ? x - room : align === 'end' ? x + w + room - span : x + w / 2 - span / 2;
@@ -92,8 +95,8 @@ export function phoneCrop(focus: Focus | null, { g, card, W }: Stage) {
   return { x: clamp(g.inset + left * k, g.width - width), y: clamp(g.top + top * k, g.height - height), width, height };
 }
 /** The focus for a measured rect (or point) once the camera is at `view`. */
-export function onCard(r: { x: number; y: number; w?: number } | null, view: View, align: Focus['align'] = 'start'): Focus | null {
-  return r && { x: (r.x - view.x) * view.s, y: (r.y - view.y) * view.s, w: (r.w ?? 0) * view.s, align };
+export function onCard(r: { x: number; y: number; w?: number } | null, view: View, align: Focus['align'] = 'start', zoom?: number): Focus | null {
+  return r && { x: (r.x - view.x) * view.s, y: (r.y - view.y) * view.s, w: (r.w ?? 0) * view.s, align, zoom };
 }
 
 /** A scene: the stage, with the product card bleeding off its bottom edge and fading out, then the chapter captions and progress. On a

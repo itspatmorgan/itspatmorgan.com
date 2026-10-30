@@ -31,9 +31,11 @@ export default function JobReview() {
   const t = useTargets(step);
   const accepted = step === 5;
   const modal = step === 3 || step === 4;
-  // The whole recommendation fits a laptop frame, so the camera stays put. A phone crops to the recommendation's header, then to its
-  // buttons, the confirmation, and the accepted rule at the top of the timeline.
-  const focus = step === 0 ? onCard(t.rect('rec-head'), HOME) : step < 3 ? onCard(t.rect('rec-head'), HOME, 'end') : modal ? onCard(t.rect('modal'), HOME, 'end') : onCard(t.rect('accepted'), HOME);
+  // The whole recommendation fits a laptop frame, so the camera stays put. A phone holds one gentler view from Accept through the
+  // confirmation, wide enough for both, so it doesn't pan between them; then the accepted rule at the top of the timeline.
+  const head = t.rect('rec-head'), box = t.rect('modal');
+  const review = head && box ? { x: box.x, y: Math.min(box.y, head.y), w: head.x + head.w - box.x } : null;
+  const focus = step === 0 ? null : step < 5 ? onCard(review, HOME, 'end', 1.2) : onCard(t.rect('accepted'), HOME);
   const pointer = step === 1 || step === 2 ? { key: 'accept', pressing: step === 2 } : modal ? { key: 'activate', pressing: step === 4 } : null;
   return <SceneFrame scene={scene} stage={stage} focus={focus} title="the rule review" label="An ADÉ job page: the recommendation shows the rule's name, severity, description, labels, action and MQL. Accept opens a confirmation, then the rule is accepted and activated">
     <Camera view={HOME} width={stage.W} height={stage.box.height} cameraRef={t.ref} reduced={scene.reduced}>

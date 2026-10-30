@@ -68,8 +68,9 @@ export default function AutomationConfig() {
   const set = new Set(steps.slice(0, step + 1).map(st => st.set));
   const [active, autoStart, alert, threshold] = [set.has('active'), set.has('autoStart'), set.has('alert'), set.has('threshold')];
   const pointer = now.at ? { key: now.at, pressing: !!now.press } : null;
-  // A phone opens on the page's header, follows the pointer from control to control, and ends on the first row's settings.
-  const focus = now.at ? onCard(t.at(now.at), HOME, 'center') : step === 0 ? onCard(t.rect('head'), HOME) : onCard(t.at('alerts'), HOME, 'center');
+  // A phone holds one view per chapter, on the control it starts with (the menu opens inside it), and ends on the whole page.
+  const lead = steps.find(st => st.caption === now.caption)?.at;
+  const focus = lead ? onCard(t.at(lead), HOME, 'center') : null;
   return <SceneFrame scene={scene} stage={stage} focus={focus} title="the automation settings" label="ADÉ Automation settings, everything off: the automation is set to Active; for malicious messages, Auto-start ADÉ job is switched on, a Send Slack alert is added, and the threshold changes from Require review to Recommended (99%); spam and graymail stay off">
     <Camera view={HOME} width={stage.W} height={stage.box.height} cameraRef={t.ref} reduced={scene.reduced}>
             <Page crumbs={['Agents', 'ADÉ', 'ADÉ Automation']} style={{ minHeight: stage.box.height - 48 }}>

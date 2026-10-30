@@ -2,7 +2,7 @@ import { motion } from 'motion/react';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { FilterHorizontalIcon } from '@hugeicons/core-free-icons';
 import { ART, CheckCircle, Icon, Page, StatusPill, VerdictLabel, type Status } from './SublimeUI';
-import { Camera, CountUp, HOME, SceneFrame, onCard, useScene, useStage, useTargets } from '../case-study/scene';
+import { Camera, CountUp, HOME, SceneFrame, useScene, useStage, useTargets } from '../case-study/scene';
 
 // The ADÉ page with data (patrick/mttc ade-states/active): the agent header and its jobs, most of them started and accepted by ADÉ.
 // Rows are sample data from the prototypes' job lists; one of the visible rows was started by a person, so the list shows people start
@@ -36,7 +36,6 @@ export default function AdeJobs() {
   const stage = useStage({ wide: 1000 });
   const step = scene.step;
   const t = useTargets(step);
-  const focus = onCard(t.rect(step === 0 ? 'tiles' : 'started-by'), HOME);
   const shown = scene.reduced || scene.seen;
   const row = (job: typeof jobs[number], i: number) => {
     return <motion.div key={job.subject} className="sb-row" style={{ gridTemplateColumns: cols }}
@@ -50,7 +49,7 @@ export default function AdeJobs() {
       <span>{job.status ? <StatusPill status={job.status} /> : '—'}</span>
     </motion.div>;
   };
-  return <SceneFrame scene={scene} stage={stage} focus={focus} title="the ADÉ page" label="The ADÉ page: Performance shows 1.6 hrs Time to Coverage, 240 Hours Saved and 1.2k Attacks Blocked; below it, the jobs list shows a job in progress and jobs whose rules were auto-accepted, accepted, rejected or are waiting for review">
+  return <SceneFrame scene={scene} stage={stage} title="the ADÉ page" label="The ADÉ page: Performance shows 1.6 hrs Time to Coverage, 240 Hours Saved and 1.2k Attacks Blocked; below it, the jobs list shows a job in progress and jobs whose rules were auto-accepted, accepted, rejected or are waiting for review">
     <Camera view={HOME} width={stage.W} height={stage.box.height} cameraRef={t.ref} reduced={scene.reduced}>
           <Page crumbs={['Agents', 'ADÉ']} style={{ padding: '28px 32px 0' }}>
             <div style={{ display: 'flex', alignItems: 'flex-start', gap: 20 }}>

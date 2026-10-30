@@ -8,11 +8,11 @@ import { Cursor01Icon } from '@hugeicons/core-free-icons';
 
 /** How far a phone zooms in for a closer look, keeping the frame's proportions. */
 export const PHONE_ZOOM = 1.6;
-/** A phone's view of a `width` × `height` frame: the whole frame, or PHONE_ZOOM closer with the same proportions, centered on `at`
+/** A phone's view of a `width` × `height` frame: the whole frame, or `zoom` closer with the same proportions, centered on `at`
  *  inside the frame. Passing the whole frame rather than no crop lets the view ease in and out of a closer look. */
-export function zoomCrop(width: number, height: number, at: readonly [number, number] | null) {
+export function zoomCrop(width: number, height: number, at: readonly [number, number] | null, zoom = PHONE_ZOOM) {
   if (!at) return { x: 0, y: 0, width, height };
-  const [x, y] = at, w = width / PHONE_ZOOM, h = height / PHONE_ZOOM;
+  const [x, y] = at, w = width / zoom, h = height / zoom;
   const clamp = (v: number, hi: number) => Math.round(Math.min(Math.max(0, v), hi));
   return { x: clamp(x - w / 2, width - w), y: clamp(y - h / 2, height - h), width: w, height: h };
 }

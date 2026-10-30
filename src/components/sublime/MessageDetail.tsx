@@ -197,9 +197,9 @@ export default function MessageDetail({ variant }: { variant: Variant }) {
   // Gap: scroll down to the sidebar's Other section before the pointer comes in. Handoff: scroll to the ADÉ card.
   const shot = gap ? (step >= 1 && step <= 3 ? 'other' : null) : !jobPage && step >= 1 ? 'ade-side' : null;
   const view = useShot(shot, shot ? frame(t.rect(shot), box, { scale: 1, pad: 24, y: 'center' }) : null);
-  // A phone crops to the email's header and verdict, then to the sidebar section the step works in. The editor and the job page have no camera: the crop
-  // sits at the editor's top left, and on the job page's working status.
-  const focus = editor ? { x: 0, y: 0 } : jobPage ? { x: 500, y: 120, align: 'center' as const } : onCard(shot ? t.rect(shot) : t.rect('head'), view);
+  // A phone crops to the sidebar section the step works in. The editor has no camera: the crop sits at its top left, where the rule is
+  // typed. The job page shows whole, as does the email before the pointer comes in.
+  const focus = editor ? { x: 0, y: 0 } : shot ? onCard(t.rect(shot), view) : null;
   let pointer: { key: string; pressing?: boolean } | null = null;
   if (gap && (step === 2 || step === 3)) pointer = { key: 'editor', pressing: step === 3 };
   if (!gap && (step === 2 || step === 3)) pointer = { key: 'trigger', pressing: step === 3 };
