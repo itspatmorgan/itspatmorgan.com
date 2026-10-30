@@ -14,7 +14,7 @@ import './project-card.css';
 export const CARD_W = 400;
 export const CARD_H = 225;
 
-export function ProjectCardStage({ loop, label, className = '', children }: { loop: DemoLoop; label: string; className?: string; children: ReactNode }) {
+export function ProjectCardStage({ loop, label, className = '', width = CARD_W, height = CARD_H, children }: { loop: DemoLoop; label: string; className?: string; width?: number; height?: number; children: ReactNode }) {
   // The hover listener is attached once and reads the loop through a ref, so it always sees the current step.
   const latest = useRef(loop);
   latest.current = loop;
@@ -29,6 +29,6 @@ export function ProjectCardStage({ loop, label, className = '', children }: { lo
     return () => card.removeEventListener('mouseenter', replay);
   }, []);
   return <figure className={`pc ${className}`} ref={loop.ref as RefObject<HTMLElement>} aria-label={label}>
-    <NativeStage width={CARD_W} height={CARD_H} interactive={false}>{children}</NativeStage>
+    <NativeStage width={width} height={height} interactive={false}>{children}</NativeStage>
   </figure>;
 }
