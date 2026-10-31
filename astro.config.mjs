@@ -43,6 +43,8 @@ function rehypeFigure() {
 export default defineConfig({
   site: 'https://itspatmorgan.com',
   output: 'static',
+  // Fetch a page while the pointer rests on its link, so the click only has to render it.
+  prefetch: { prefetchAll: true, defaultStrategy: 'hover' },
   // Preserve spaces between inline elements with Astro 7's new JSX default.
   compressHTML: true,
   devToolbar: {

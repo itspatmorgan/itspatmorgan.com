@@ -28,21 +28,23 @@ html:active-view-transition-type(page-navigation)::view-transition-new(site-side
 html:active-view-transition-type(page-navigation)::view-transition-new(site-header) {
   animation: none;
 }
-/* The old page fades out quickly, then the new one fades in with a slight
-   rise. Normal blending fades through the page background, so the change reads
-   as one soft beat instead of a near-instant swap. */
+/* A quick, overlapping fade: the old page leaves in 90ms while the new one
+   arrives over 180ms with a slight rise, so the new page settles about 200ms
+   after it is ready. Normal blending fades through the page background rather
+   than brightening the overlap. Keep the total under ~250ms; navigation is
+   frequent, and longer route motion reads as lag. */
 html:active-view-transition-type(page-navigation)::view-transition-old(root),
 html:active-view-transition-type(page-navigation)::view-transition-new(root) {
   mix-blend-mode: normal;
 }
 html:active-view-transition-type(page-navigation)::view-transition-old(root) {
-  animation: page-content-out 120ms ease-in both;
+  animation: page-content-out 90ms ease-out both;
 }
 html:active-view-transition-type(page-navigation)::view-transition-new(root) {
-  animation: page-content-in 260ms cubic-bezier(.22, 1, .36, 1) 60ms both;
+  animation: page-content-in 180ms cubic-bezier(.22, 1, .36, 1) both;
 }
 @keyframes page-content-out { to { opacity: 0; } }
-@keyframes page-content-in { from { opacity: 0; transform: translateY(6px); } }
+@keyframes page-content-in { from { opacity: 0; transform: translateY(4px); } }
 @media (prefers-reduced-motion: reduce) {
   html:active-view-transition-type(page-navigation)::view-transition-old(root),
   html:active-view-transition-type(page-navigation)::view-transition-new(root) {

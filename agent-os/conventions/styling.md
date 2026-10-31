@@ -25,8 +25,9 @@ restrained, content-first design over decorative complexity.
   `@tailwindcss/typography`.
 - Keep visual work readable and consistent with the current portfolio aesthetic.
 - Render primary content in its final visible position. All pages using the shared layout have a
-  native document fade (old page out in 120ms, new page in
-  over 260ms with a 6px rise), opted in by `BaseLayout.astro` and styled in
+  native document fade (old page out in 90ms, new page in over
+  180ms with a 4px rise; keep route motion under ~250ms). Links prefetch on
+  hover through Astro's `prefetch` config, opted in by `BaseLayout.astro` and styled in
   `global.css`. Do not layer page or scroll entrance animations onto it. Browsers
   without transition support use ordinary document navigation; reduced motion
   disables the route transition.

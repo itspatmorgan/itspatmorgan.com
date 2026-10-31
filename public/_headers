@@ -1,0 +1,4 @@
+# Astro's build output is content-hashed, so browsers can keep it for a year
+# and skip revalidating CSS and scripts on every page navigation.
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
