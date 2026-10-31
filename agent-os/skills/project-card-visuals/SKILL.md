@@ -107,6 +107,13 @@ nothing else.
 - When text changes between states, keep the layout still: fixed column widths
   and a second line that is always filled (the prototype's own in-progress
   copy, then the result).
+- Nothing pops. When a state changes (a status pill, a line of text, a
+  highlight), keep both states mounted, stacked in one cell, and cross-fade:
+  the outgoing one fades out in about 180ms, the next fades in over about
+  360ms after an 80ms delay, so two states never sit on top of each other.
+  This matters most at the seam, where a hover takes the card from its last
+  frame back to its first. Don't remount on a `key` with an entry animation:
+  it also plays on page load.
 - Reduced motion shows the last frame only.
 - Cards use `useDemoLoop(timings, timings.length - 1, false, true)`, which
   starts on the last step, and `ProjectCardStage`, which replays on hover.
@@ -148,6 +155,9 @@ Present ranked findings before changing anything, as with case studies.
   configuration on port 4322) before shipping, not only in `pnpm dev`.
 - The dev server often keeps serving old modules and styles after edits to
   these components. Restart it before judging a change.
+- Never pick a card's drawing size in a hook after hydration (a `matchMedia`
+  check): the server renders one layout and the card jumps to the other as it
+  loads. Switch in CSS, as StudioCard's `.dc-fit` frame and container query do.
 - Background browser tabs pause the card's timers. Test motion and hover in a
   tab that is in front.
 - Measure text and column widths with a DOM `Range` in canvas units before
@@ -160,5 +170,9 @@ Present ranked findings before changing anything, as with case studies.
   and dark: no overflow, no clipped text, no console errors.
 - Each card loads on its last frame without moving, and plays from its first
   frame on hover, checked in a visible tab.
+- Motion checked frame by frame: record the hover with a CDP screencast
+  (`Page.startScreencast`) and lay the frames out in a contact sheet, looking
+  hardest at the first frames after hover (the loop seam) and at each state
+  change. A blink shows as an element present in one frame and absent the next.
 - Margins and alignments measured, not eyeballed.
 - Every value on the card traces to the case study's source data.

@@ -1,4 +1,4 @@
-import { useEffect, useState, type CSSProperties, type ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { CanvasIcon, CodeIcon, File01Icon, Flowchart01Icon, Layers01Icon, PlusSignIcon } from '@hugeicons/core-free-icons';
 import { ProjectCardStage } from '../case-study/ProjectCardStage';
@@ -13,8 +13,8 @@ import './studio-card.css';
 // page's card (`size="card"`), which is a Work card at every width.
 // Content is the Feedback Inbox sample project that ships with Design Studio (see the home-*.png captures). Liberties: the list's
 // icons are Hugeicons standing in for Studio's own; the wireframe keeps Studio's grays and outlines but not its sketch typeface; the
-// canvas shows the handoff canvas's screens as outlines; the inbox keeps three of its five filters and drops its description, and the
-// diagram and document are trimmed to fit.
+// canvas shows the handoff canvas's screens as outlines; the inbox keeps three of its five filters and drops its description; the
+// diagram's labels are shortened and its last step ("Mark resolved") dropped; the canvas and document are trimmed, running off the panel.
 const icon = (i: typeof CodeIcon, size = 14) => <HugeiconsIcon icon={i} size={size} strokeWidth={1.6} />;
 
 const rows = [
@@ -43,26 +43,28 @@ function Prototype({ lofi = false }: { lofi?: boolean }) {
 function Diagram() {
   return <div className="dc-view">
     <p className="dc-h">Feedback Flow</p>
-    <svg viewBox="0 0 300 140" className="dc-flow" aria-hidden="true">
+    <svg viewBox="0 0 320 180" className="dc-flow" aria-hidden="true">
       <defs><marker id="dc-arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 8 4 0 8z" fill="currentColor" /></marker></defs>
-      <g className="dc-flow-lines"><path d="M76 86h14" /><path d="M166 74l18-30" /><path d="M166 98l18 22" /></g>
-      <text className="dc-flow-note" x="150" y="40">Act now</text><text className="dc-flow-note" x="150" y="132">Later</text>
-      <rect x="0" y="70" width="76" height="32" rx="2" /><text x="38" y="90">Record</text>
-      <path d="M128 52l36 34-36 34-36-34z" /><text x="128" y="90">Review</text>
-      <rect x="186" y="22" width="100" height="32" rx="2" /><text x="236" y="42">Address</text>
-      <rect x="186" y="110" width="100" height="32" rx="2" /><text x="236" y="130">Keep for review</text>
+      <g className="dc-flow-lines"><path d="M78 96h16" /><path d="M164 72q12-30 34-36" /><path d="M184 96q8 0 14 46" /><path d="M200 172q-36 10-56-26" /></g>
+      <text className="dc-flow-note" x="160" y="38">Act now</text><text className="dc-flow-note is-start" x="200" y="120">Later</text>
+      <rect x="0" y="78" width="78" height="36" rx="2" /><text x="39" y="100">Record</text>
+      <path d="M140 52l44 44-44 44-44-44z" /><text x="140" y="100">Review</text>
+      <rect x="200" y="16" width="104" height="36" rx="2" /><text x="252" y="38">Address</text>
+      <rect x="200" y="142" width="116" height="36" rx="2" /><text x="258" y="164">Keep for review</text>
     </svg>
   </div>;
 }
 
 function Canvas() {
-  const screen = (title: string, lines: number) => <div className="dc-screen"><p>{title}</p>{Array.from({ length: lines }, (_, i) => <span key={i} style={{ width: `${88 - i * 13}%` }} />)}</div>;
+  const screen = (title: string, lines: number) => <div className="dc-screen"><p>{title}</p>{Array.from({ length: lines }, (_, i) => <span key={i} style={{ width: `${88 - (i % 4) * 14}%` }} />)}</div>;
   return <div className="dc-view dc-canvas">
     <p className="dc-h">Eng Handoff</p>
     <div className="dc-board">
-      <div className="dc-step">{screen('Overview', 4)}<p className="dc-sticky">Land on the overview: open issues up top.</p></div>
+      <div className="dc-step">{screen('Overview', 6)}<p className="dc-sticky">Land on the overview: the key numbers are at the top.</p></div>
       <span className="dc-link">click a number</span>
-      <div className="dc-step">{screen('Open issues', 5)}<p className="dc-sticky">The inbox opens, already filtered.</p></div>
+      <div className="dc-step">{screen('Open issues', 7)}<p className="dc-sticky">The inbox opens, already filtered.</p></div>
+      <span className="dc-link">click a row</span>
+      <div className="dc-step">{screen('Feedback detail', 5)}<p className="dc-sticky">Status and priority save as they change.</p></div>
     </div>
   </div>;
 }
@@ -74,7 +76,13 @@ function Doc() {
     <p className="dc-doc-h2">The problem</p>
     <p className="dc-doc-p">Customer feedback is scattered across email, chat, interviews, surveys, and support tickets.</p>
     <p className="dc-doc-h2">Who it’s for</p>
-    <p className="dc-doc-p"><b>Priya, product manager:</b> triage new items and track planned work.</p>
+    <ul className="dc-doc-list">
+      <li><b>Luis, support lead:</b> capture feedback quickly.</li>
+      <li><b>Priya, product manager:</b> triage new items and track planned work.</li>
+      <li><b>Maya, product designer:</b> find patterns worth exploring.</li>
+    </ul>
+    <p className="dc-doc-h2">Working assumptions</p>
+    <p className="dc-doc-p">Items move through New, Triaged, Planned, and Resolved.</p>
   </div>;
 }
 
@@ -89,34 +97,24 @@ const artifacts: { name: string; icon: typeof CodeIcon; view: ReactNode }[] = [
 const order = [1, 2, 3, 4, 0];
 const timings = [1400, 1400, 1400, 1400, 2200];
 
-/** Phones draw the card at the Work cards' size. */
-function useCompact() {
-  const [compact, setCompact] = useState(false);
-  useEffect(() => {
-    const media = window.matchMedia('(max-width: 639px)');
-    const sync = () => setCompact(media.matches);
-    sync();
-    media.addEventListener('change', sync);
-    return () => media.removeEventListener('change', sync);
-  }, []);
-  return compact;
-}
-
 /** One idea in every shape: the artifact types in front, the one selected behind. */
 export default function StudioCard({ size = 'wide' }: { size?: 'wide' | 'card' }) {
   const loop = useDemoLoop(timings, timings.length - 1, false, true);
-  const compact = useCompact() || size === 'card';
   const current = order[loop.reduced ? order.length - 1 : loop.step];
-  return <ProjectCardStage loop={loop} width={compact ? 400 : 560} height={compact ? 225 : 315} className={`dc ${compact ? 'is-compact' : ''}`} label="Design Studio's artifact types, interactive prototype, wireframe, diagram, canvas and document, each shown in turn">
-    {/* Every artifact stays mounted, stacked, so the outgoing one fades away before the next fades in, with nothing remounting. */}
-    <div className="pc-bg dc-panel">{artifacts.map((a, n) => <div key={a.name} className={`dc-layer ${n === current ? 'is-on' : ''}`}>{a.view}</div>)}</div>
-    <div className="pc-fg dc-list">
-      <p className="pc-title">Artifacts</p>
-      {/* One selection that glides from row to row, rather than one row's highlight fading out as the next fades in. */}
-      <ul style={{ '--dc-at': current } as CSSProperties}>
-        <span className="dc-select" aria-hidden="true" />
-        {artifacts.map((a, n) => <li key={a.name} className={n === current ? 'is-on' : ''}>{icon(a.icon)}<span>{a.name}</span></li>)}
-      </ul>
+  const card = size === 'card';
+  // Phones switch to the compact drawing in CSS (studio-card.css), not after hydration, so the card never loads wide and then jumps.
+  return <ProjectCardStage loop={loop} width={card ? 400 : 560} height={card ? 225 : 315} className={`dc ${card ? 'is-card' : ''}`} label="Design Studio's artifact types, interactive prototype, wireframe, diagram, canvas and document, each shown in turn">
+    <div className="dc-fit">
+      {/* Every artifact stays mounted, stacked, so the outgoing one fades away before the next fades in, with nothing remounting. */}
+      <div className="pc-bg dc-panel">{artifacts.map((a, n) => <div key={a.name} className={`dc-layer ${n === current ? 'is-on' : ''}`}>{a.view}</div>)}</div>
+      <div className="pc-fg dc-list">
+        <p className="pc-title">Artifacts</p>
+        {/* One selection that glides from row to row, rather than one row's highlight fading out as the next fades in. */}
+        <ul style={{ '--dc-at': current } as CSSProperties}>
+          <span className="dc-select" aria-hidden="true" />
+          {artifacts.map((a, n) => <li key={a.name} className={n === current ? 'is-on' : ''}>{icon(a.icon)}<span>{a.name}</span></li>)}
+        </ul>
+      </div>
     </div>
   </ProjectCardStage>;
 }

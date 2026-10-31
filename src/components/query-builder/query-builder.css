@@ -250,15 +250,17 @@
 .qc-tree { display: grid; justify-items: start; gap: 8px; margin: 8px 0 0 3px; padding-left: 14px; border-left: 2px solid var(--q-teal); }
 .qc-tree .q-keyword { margin-top: 2px; }
 .qc-fields { display: flex; gap: 8px; }
-.qc-control { border-radius: 6px; }
+.qc-control { border-radius: 6px; box-shadow: 0 0 0 2px transparent; transition: box-shadow 180ms cubic-bezier(.4, 0, .2, 1); }
 .qc-builder .q-chip { height: 32px; font-size: 14px; }
 .qc-builder .q-field { height: 32px; padding: 0 6px 0 11px; gap: 6px; font-size: 14px; }
 .qc-builder .q-field:last-child { padding-right: 11px; }
-.qc-control.is-on { box-shadow: 0 0 0 2px var(--qc-cue); }
+.qc-control.is-on { box-shadow: 0 0 0 2px var(--qc-cue); transition: box-shadow 300ms cubic-bezier(.4, 0, .2, 1) 80ms; }
 .qc-code { left: 65px; top: 16px; padding-block: 12px; }
 .qc-code code { display: grid; gap: 2px; font: 400 14px/22px 'QB Ubuntu Mono', monospace; color: var(--q-text); white-space: nowrap; }
-.qc-part { display: inline-block; min-width: 1.4em; margin: 0 -3px; padding: 0 3px; border-radius: 3px; text-align: center; }
-.qc-part.is-on { background: color-mix(in srgb, var(--qc-cue) 20%, transparent); }
+.qc-part { display: inline-block; min-width: 1.4em; margin: 0 -3px; padding: 0 3px; border-radius: 3px; text-align: center; background: color-mix(in srgb, var(--qc-cue) 0%, transparent); transition: background-color 180ms cubic-bezier(.4, 0, .2, 1); }
+/* A pair fades in just after the one before it fades out, so the light passes from part to part without two lit at once or a blink. */
+.qc-part.is-on { background: color-mix(in srgb, var(--qc-cue) 20%, transparent); transition: background-color 300ms cubic-bezier(.4, 0, .2, 1) 80ms; }
+@media (prefers-reduced-motion: reduce) { .qc-control, .qc-part { transition: none; } }
 
 /* On the case-study page. */
 .cs-page { --qb-window-shadow: 0 1px 2px #0000000d, 0 12px 32px -12px #2a201426; }

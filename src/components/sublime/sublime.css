@@ -287,10 +287,16 @@
 /* Inset 14 from both sides of the agent card and over its bottom edge, 16 from the frame's bottom to match the 16 above the agent card. */
 .sb-pc-status { left: 42px; right: 42px; top: 142px; display: grid; grid-template-columns: 1fr auto; column-gap: 12px; row-gap: 3px; align-items: center; padding: 14px 14px 14px 16px; white-space: nowrap; }
 .sb-pc-status .pc-title, .sb-pc-proof { grid-column: 1; }
-.sb-pc-state { grid-column: 2; grid-row: 1 / span 2; display: flex; justify-content: flex-end; min-width: 112px; }
+.sb-pc-state { grid-column: 2; grid-row: 1 / span 2; min-width: 112px; justify-items: end; }
 .sb-pc-status .sb-pill { height: 26px; padding: 0 10px 0 8px; font-size: 12px; gap: 5px; }
 .sb-pc-running { color: var(--sb-weak); }
-.sb-pc-proof { font-size: 12.5px; line-height: 18px; color: var(--sb-weak); animation: sb-pc-in 360ms var(--sb-ease-out) both; }
-@keyframes sb-pc-in { from { opacity: 0; transform: translateY(2px); } }
+.sb-pc-proof { font-size: 12.5px; line-height: 18px; color: var(--sb-weak); }
+/* Two states stacked in one cell: the outgoing one fades out quickly, then the next fades and settles in, so they never sit on top of
+   each other and nothing pops. Accepting settles the green pill up from a touch smaller. */
+.sb-pc-swap { display: grid; align-items: center; }
+.sb-pc-swap > * { grid-area: 1 / 1; opacity: 0; transform: translateY(2px); transition: opacity 180ms cubic-bezier(.4, 0, .2, 1), transform 180ms cubic-bezier(.4, 0, .2, 1); }
+.sb-pc-swap > .is-on { opacity: 1; transform: none; transition: opacity 360ms cubic-bezier(.4, 0, .2, 1) 80ms, transform 520ms var(--sb-ease-out) 80ms; }
+.sb-pc-swap > .sb-pc-done { transform: scale(.94); }
+.sb-pc-swap > .sb-pc-done.is-on { transform: none; }
 .sb-pc-proof b { font-weight: 600; color: var(--sb-strong); }
-@media (prefers-reduced-motion: reduce) { .sb-pc-agent::before, .sb-pc-art { transition: none; } .sb-pc-proof { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .sb-pc-agent::before, .sb-pc-art { transition: none; } .sb-pc-swap > * { transition: none; } }

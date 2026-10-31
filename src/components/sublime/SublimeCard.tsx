@@ -22,9 +22,17 @@ export default function SublimeCard() {
     {/* Two columns: the rule's name and its match stacked on the left, its status centered against both on the right. */}
     <div className="pc-fg sb-pc-status">
       <p className="pc-title">Detection rule</p>
-      {/* The second line is always filled, so the card keeps its shape: the prototype's "ADÉ is working", then the match. */}
-      <p className="sb-pc-proof" key={step >= 2 ? 'done' : 'working'}>{step >= 2 ? <><b>99% match</b> · 14-day hunt</> : 'ADÉ is working'}</p>
-      <span className="sb-pc-state">{step >= 2 ? <StatusPill status="auto" /> : <span className="sb-pill is-outline sb-pc-running"><span className="sb-spin">{Icon.progress}</span>In Progress</span>}</span>
+      {/* The second line is always filled, so the card keeps its shape: the prototype's "ADÉ is working", then the match. Both lines and
+          both statuses stay mounted, stacked in one cell, and cross-fade, so nothing pops in when the rule is accepted or when a hover
+          takes the card back to its first frame. */}
+      <span className="sb-pc-swap sb-pc-proof">
+        <span className={step >= 2 ? '' : 'is-on'}>ADÉ is working</span>
+        <span className={step >= 2 ? 'is-on' : ''}><b>99% match</b> · 14-day hunt</span>
+      </span>
+      <span className="sb-pc-swap sb-pc-state">
+        <span className={step >= 2 ? '' : 'is-on'}><span className="sb-pill is-outline sb-pc-running"><span className="sb-spin">{Icon.progress}</span>In Progress</span></span>
+        <span className={`sb-pc-done ${step >= 2 ? 'is-on' : ''}`}><StatusPill status="auto" /></span>
+      </span>
     </div>
   </ProjectCardStage>;
 }
