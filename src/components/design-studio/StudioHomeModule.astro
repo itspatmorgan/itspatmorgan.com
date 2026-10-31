@@ -19,10 +19,18 @@ const caseStudy = "/work/design-studio";
     <div data-project-card-item class="group relative" data-project-card>
       <a href={caseStudy} class="absolute inset-0 z-10 rounded-xl" aria-label={project.data.title}></a>
       <article class="grid overflow-hidden rounded-xl border border-border bg-card transition-all duration-300 group-hover:-translate-y-0.5 group-hover:shadow-md group-hover:shadow-black/5 dark:group-hover:shadow-black/20 motion-reduce:translate-y-0 motion-reduce:transition-none lg:grid-cols-[1fr_2fr]">
-        {/* The case study's title and description, centered in the column, at the Work cards' sizes. */}
-        <div class="order-2 flex flex-col justify-center p-4 lg:order-1 lg:p-6">
-          <h3 class="mb-2 text-base font-semibold tracking-tight">{project.data.title}</h3>
-          <p class="max-w-md text-sm leading-relaxed text-muted-foreground">{description}</p>
+        {/* The case study's title and description at the top of the column, at the Work cards' sizes, and its proof at the bottom,
+            so the column is used from top to bottom on a wide screen. */}
+        <div class="order-2 flex flex-col justify-between gap-4 p-4 lg:order-1 lg:p-6">
+          <div>
+            <h3 class="mb-2 text-base font-semibold tracking-tight">{project.data.title}</h3>
+            <p class="max-w-md text-sm leading-relaxed text-muted-foreground">{description}</p>
+          </div>
+          <ul class="flex flex-col gap-1.5 text-sm text-muted-foreground">
+            <li><span class="font-medium text-foreground">Daily tool</span> for Sublime's product team</li>
+            <li><span class="font-medium text-foreground">Hundreds</span> of prototypes made in it</li>
+            <li><span class="font-medium text-foreground">600+</span> registered for the open-source launch</li>
+          </ul>
         </div>
         {/* The visual, 16:9 like the Work cards' and in the same inert frame. */}
         <div class="texture-bg relative order-1 flex items-center overflow-hidden border-b border-border lg:order-2 lg:border-b-0 lg:border-l">

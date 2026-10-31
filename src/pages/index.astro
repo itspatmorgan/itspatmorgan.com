@@ -152,7 +152,7 @@ const homeWorkGrid = "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:gap-6";
               aria-hidden="true"
             ></div>
             <div
-              class="builder-readout pointer-events-none absolute bottom-2 left-2 font-mono text-[10px] uppercase tracking-widest text-white/0 transition-colors duration-500 group-aria-pressed/builder:text-white/75"
+              class="builder-readout pointer-events-none absolute bottom-2 left-2 font-mono text-[11px] text-white/0 transition-colors duration-500 group-aria-pressed/builder:text-white/75"
               aria-hidden="true"
             >
               Developing...
@@ -195,6 +195,8 @@ const homeWorkGrid = "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:gap-6";
     <div class="mt-5 lg:mt-6">
       <StudioHomeModule description={featuredProjectDescriptions["design-studio"]} />
     </div>
+    {/* Said once, here rather than in each case study: the screens are code, not mockups. */}
+    <p class="mt-6 text-sm text-muted-foreground">The product screens on this site are working code, rebuilt from prototypes I made on the job.</p>
   </section>
 
   {/* ── Writing ──────────────────────────────────────────── */}
@@ -261,37 +263,13 @@ const homeWorkGrid = "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:gap-6";
     </div>
   </section>
 
-  {/* ── Lab ──────────────────────────────────────────────── */}
-  <section class={homeSection}>
-    <div class={homeSectionHeader} data-home-section-header>
-      <h2 class="text-lg font-semibold tracking-tight sm:text-xl">Lab</h2>
-      <a href="/lab" class="text-sm text-muted-foreground transition-colors hover:text-foreground">View all →</a>
-    </div>
-    <div class={homeCardGrid}>
-      {labEntries.slice(0, 3).map((entry) => (
-        <div class="flex" data-project-card-item>
-          <LabCard
-            title={entry.data.title}
-            description={entry.data.description}
-            href={`/lab/${entry.data.slug}`}
-            preview={entry.data.preview}
-            headingLevel="h3"
-          />
-        </div>
-      ))}
-    </div>
-  </section>
-
   {/* ── Community ────────────────────────────────────────── */}
-  <section class={`${homeSection} pb-20 sm:pb-24 lg:pb-28`}>
+  <section class={homeSection}>
     <div class={homeSectionHeader} data-home-section-header>
       <h2 class="text-lg font-semibold tracking-tight sm:text-xl">Community</h2>
       <a href="/community" class="text-sm text-muted-foreground transition-colors hover:text-foreground">View all →</a>
     </div>
-    {/* Social proof, shown rather than told: one line, the photos, then what people say. The full story lives on /community. */}
-    <p class="-mt-2 mb-8 max-w-2xl text-base text-pretty leading-relaxed text-muted-foreground" data-project-card-item>
-      I connect with designers and builders online through my writing, and in person.
-    </p>
+    {/* Social proof, shown rather than told: the photos, then what people say. The full story lives on /community. */}
     <div class="grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-4 lg:gap-6" data-project-card-item>
       {homeCommunityPhotos.map((photo) => (
         <figure class:list={[
@@ -328,6 +306,27 @@ const homeWorkGrid = "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:gap-6";
     </div>
   </section>
 
+  {/* ── Lab: small experiments, kept after the work and the people so the page leads with the work ── */}
+  <section class={`${homeSection} pb-20 sm:pb-24 lg:pb-28`}>
+    <div class={homeSectionHeader} data-home-section-header>
+      <h2 class="text-lg font-semibold tracking-tight sm:text-xl">Lab</h2>
+      <a href="/lab" class="text-sm text-muted-foreground transition-colors hover:text-foreground">View all →</a>
+    </div>
+    <div class={homeCardGrid}>
+      {labEntries.slice(0, 3).map((entry) => (
+        <div class="flex" data-project-card-item>
+          <LabCard
+            title={entry.data.title}
+            description={entry.data.description}
+            href={`/lab/${entry.data.slug}`}
+            preview={entry.data.preview}
+            headingLevel="h3"
+          />
+        </div>
+      ))}
+    </div>
+  </section>
+
   {/* ── Closing ──────────────────────────────────────────── */}
   <section class={`${homeShell} pb-20 pt-2 text-center sm:pb-24 lg:pb-28`} data-cta-section>
     <PixelWaveText
@@ -337,6 +336,17 @@ const homeWorkGrid = "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:gap-6";
       initialSans
       class="text-3xl font-medium tracking-tight sm:text-4xl"
     />
+    {/* The next step for anyone the page convinced: email first, then the two profiles. */}
+    <div class="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-sm">
+      <a
+        href={`mailto:${siteConfig.social.email}`}
+        class="rounded-full bg-foreground px-5 py-2.5 font-medium text-background transition-opacity hover:opacity-85"
+      >
+        {siteConfig.social.email}
+      </a>
+      <a href={siteConfig.social.linkedin} target="_blank" rel="noopener noreferrer" class="text-muted-foreground transition-colors hover:text-foreground">LinkedIn ↗</a>
+      <a href={siteConfig.social.x} target="_blank" rel="noopener noreferrer" class="text-muted-foreground transition-colors hover:text-foreground">X ↗</a>
+    </div>
   </section>
 
   <style>

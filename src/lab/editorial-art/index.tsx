@@ -377,7 +377,7 @@ function PanelSection({
   return (
     <section className={['border-b border-border px-6', compact ? 'py-3.5' : 'py-6'].join(' ')}>
       <div className={[compact ? 'mb-0' : 'mb-3', 'flex items-center justify-between gap-3'].join(' ')}>
-        <h2 className="font-mono text-[11px] font-semibold uppercase tracking-wide text-foreground">{title}</h2>
+        <h2 className="text-sm font-semibold tracking-tight text-foreground">{title}</h2>
         {action}
       </div>
       <div className="space-y-3">{children}</div>
@@ -1013,7 +1013,7 @@ export default function EditorialArtTool() {
       <div className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-background/95 px-6 py-2 shadow-[0_-8px_24px_rgba(0,0,0,0.08)] backdrop-blur md:hidden">
         <div className="flex items-center gap-2">
           <div className="min-w-0 flex-1">
-            <p className="truncate font-mono text-[11px] uppercase tracking-wide text-muted-foreground">
+            <p className="truncate text-xs text-muted-foreground">
               {GENERATOR_TYPES.find((f) => f.value === generator.type)?.label} · seed {generator.seed}
             </p>
           </div>

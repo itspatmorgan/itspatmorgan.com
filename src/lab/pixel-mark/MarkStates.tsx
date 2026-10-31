@@ -117,7 +117,7 @@ function StateCard({
         {children}
         {action && <div className="absolute bottom-3 right-3">{action}</div>}
       </div>
-      <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+      <p className="text-sm font-medium text-muted-foreground">
         {label}
       </p>
     </div>
@@ -323,7 +323,7 @@ export function ScaleStrip() {
       {sizes.map(({ size, label }) => (
         <div key={size} className="flex min-w-0 flex-col items-center gap-3">
           <BlockMark size={size} />
-          <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+          <span className="text-sm font-medium text-muted-foreground">
             {label}
           </span>
           <span className="font-mono text-xs text-muted-foreground/50">
@@ -371,7 +371,7 @@ export function MarkVariants() {
     <div className="grid grid-cols-4 items-center gap-x-8 gap-y-8">
       {COLOR_VARIANTS.map((v) => (
         <div key={`header-${v.label}`} className="flex justify-center">
-          <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground">{v.label}</span>
+          <span className="text-sm font-medium text-muted-foreground">{v.label}</span>
         </div>
       ))}
 
