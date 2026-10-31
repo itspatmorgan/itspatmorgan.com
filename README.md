@@ -1,45 +1,24 @@
-# itspatmorgan.github.io
+# itspatmorgan.com
 
-Personal portfolio site for Patrick Morgan, built with [Astro](https://astro.build), Tailwind CSS, and shadcn/ui.
+Source for [itspatmorgan.com](https://itspatmorgan.com), Patrick Morgan's portfolio. Built with [Astro](https://astro.build), Tailwind CSS and shadcn/ui.
 
-This repository contains the source for [itspatmorgan.com](https://itspatmorgan.com): a warm, minimal, editorial portfolio for product, design, technology, writing, and lab work.
+## Development
 
-## Start here
-
-- [System map](agent-os/system-map.md) explains how the project is structured, how content works, and how to verify changes.
-- [Agent instructions](AGENTS.md) are the shared working guide for Codex, Claude, and other coding agents.
-- [Agent OS](agent-os/README.md) contains strategy, conventions, and learnings for AI-assisted work on the project.
-- [Project board](https://github.com/users/itspatmorgan/projects/2) and [issues](https://github.com/itspatmorgan/itspatmorgan.github.io/issues) track planned and active work.
-
-## Local development
-
-Prerequisites:
-
-- Node.js 22.23.4+ (Node 24 is pinned in `.mise.toml` and `.nvmrc`, and used in CI)
-- pnpm 10+
-
-Recommended local location:
-
-```text
-~/Developer/itspatmorgan.github.io
-```
-
-This repo includes a `.mise.toml` for local tool versions. If you use
-[mise](https://mise.jdx.dev/), run:
-
-```bash
-mise trust
-mise install
-```
+Requires Node 24 and pnpm 10 (versions pinned in `.mise.toml`).
 
 ```bash
 pnpm install
-pnpm dev
+pnpm dev      # http://localhost:4321
+pnpm build    # static build in dist/
 ```
 
-The dev server runs at `http://localhost:4321`.
+To sync articles from Obsidian, copy `.env.example` to `.env.local`, set your vault path, and run `pnpm sync-writing`.
 
-For writing sync, copy `.env.example` to `.env.local` and configure your vault
-root or explicit published-articles folder. `.env.local` stays untracked.
+## Deployment
 
-For build, sync, deployment, content, and architecture details, use the [system map](agent-os/system-map.md).
+The site runs on Cloudflare Workers. GitHub Actions deploys `main` on every push, and each pull request gets a preview link posted as a comment.
+
+## Docs
+
+- [AGENTS.md](AGENTS.md): working guide for coding agents
+- [System map](agent-os/system-map.md): architecture, content, build and deployment details

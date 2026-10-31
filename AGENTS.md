@@ -75,7 +75,7 @@ or update `agent-os/system-map.md` because the system changed.
 Work can be tracked through GitHub Issues, the Personal Website project board,
 and the connected Notion Tasks database.
 
-- Issues: `https://github.com/itspatmorgan/itspatmorgan.github.io/issues`
+- Issues: `https://github.com/itspatmorgan/itspatmorgan.com/issues`
 - Project board: `https://github.com/users/itspatmorgan/projects/2`
 - Notion Tasks: available for cross-project orchestration and planning
 

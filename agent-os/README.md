@@ -20,7 +20,7 @@ calling it done, and capture reusable learnings after completion.
 Work can be tracked through:
 
 - [Personal Website project board](https://github.com/users/itspatmorgan/projects/2)
-- [GitHub Issues](https://github.com/itspatmorgan/itspatmorgan.github.io/issues)
+- [GitHub Issues](https://github.com/itspatmorgan/itspatmorgan.com/issues)
 - Notion Tasks for cross-project orchestration
 
 ## Workflow
