@@ -211,3 +211,14 @@
 .ss-mk-hero span.is-primary { background: var(--e-primary); color: var(--e-primary-fg); }
 .ss-mk-shot { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 16px; margin-top: 64px; }
 .ss-mk-shot i { height: 260px; border-radius: var(--e-radius); background: var(--e-card); box-shadow: 0 0 0 1px var(--e-line); }
+
+/* Where Design Studio sits: a two-axis chart (StudioRange). */
+.rg-dia .rg-axis { stroke: var(--sc-node-line); stroke-width: 2; }
+.rg-dia .rg-tick { stroke: var(--sc-node-line); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.rg-dia .sc-line path.is-draw { stroke-width: 2.5; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 700ms var(--motion-ease-out); }
+.rg-dia .sc-line path.is-draw.is-on { stroke-dashoffset: 0; }
+.rg-label { position: absolute; display: flex; flex-direction: column; gap: 2px; white-space: nowrap; }
+.rg-label.is-end { align-items: flex-end; text-align: right; }
+.rg-label b { font-size: 19px; line-height: 26px; font-weight: 600; color: var(--sc-ink); }
+.rg-label span { font-size: 15px; line-height: 22px; color: var(--sc-ink-weak); }
+.rg-label.is-accent b { color: var(--sc-accent); }
