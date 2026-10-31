@@ -39,7 +39,6 @@ for related details. This file owns system orientation, not editing rules.
 | `/design-studio` | Design Studio project landing page, artifact previews, and setup |
 | `/design-studio-demo/` | Interactive Studio build included by the website deployment |
 | `/design-studio/agent.txt` | Plain-text Design Studio brief and setup guide, shared with the landing page's Agent mode |
-| `/resume` | Retired; `public/_redirects` sends it to `/work` |
 
 The Design Studio landing page embeds actual artifacts from the `/design-studio-demo/` build
 included in this website’s deployment. Its presentation and public-reader
