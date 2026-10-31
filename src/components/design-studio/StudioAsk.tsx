@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
-import { ArrowUp02Icon, PauseIcon, PlayIcon, Tick02Icon } from '@hugeicons/core-free-icons';
+import { ArrowUp02Icon, Tick02Icon } from '@hugeicons/core-free-icons';
 import { icon } from '../studio-case/StudioUI';
 import { agentHarnesses } from '../../data/design-studio-setup';
 import { StudioWindow, useReduced, type Key } from './explore/StudioWindow';
+import StepBar from './StepBar';
 import './studio-hero.css';
 
 // How you work in Design Studio: in the coding agent you already use. On the left, a conversation in that agent; on the right, the
@@ -21,6 +22,8 @@ const turns: Turn[] = [
 // One turn: type the message (its length decides how long), send it, work, report, then hold on the result.
 const TYPE_MS = 26, WORK_MS = 1100, HOLD_MS = 2600;
 type Phase = 'typing' | 'working' | 'done';
+// Each message's segment fills over its whole turn: typing, the send pause, the work, and the hold (the last one holds a little longer).
+const steps = turns.map((t, i) => ({ label: t.ask, ms: Math.ceil(t.ask.length / 2) * TYPE_MS * 2 + 380 + WORK_MS + HOLD_MS + (i === turns.length - 1 ? 800 : 0) }));
 
 export default function StudioAsk() {
   const reduced = useReduced();
@@ -32,6 +35,8 @@ export default function StudioAsk() {
   const [phase, setPhase] = useState<Phase>('typing');
   const [typed, setTyped] = useState(0);
   const [fading, setFading] = useState(false);
+  const [cut, setCut] = useState(0);
+  const goTo = (i: number) => { setTurn(i); setTyped(0); setPhase('typing'); setFading(false); setCut(n => n + 1); };
 
   useEffect(() => {
     const el = ref.current;
@@ -54,12 +59,12 @@ export default function StudioAsk() {
     } else if (phase === 'working') {
       timer = window.setTimeout(() => setPhase('done'), WORK_MS);
     } else if (turn < turns.length - 1) {
-      timer = window.setTimeout(() => { setTurn(t => t + 1); setTyped(0); setPhase('typing'); }, HOLD_MS);
+      timer = window.setTimeout(() => goTo(turn + 1), HOLD_MS);
     } else {
       // The end: hold, fade the conversation out, and start it again from an empty thread.
       timer = window.setTimeout(() => {
         setFading(true);
-        window.setTimeout(() => { setTurn(0); setTyped(0); setPhase('typing'); setFading(false); }, 420);
+        window.setTimeout(() => goTo(0), 420);
       }, HOLD_MS + 800);
     }
     return () => window.clearTimeout(timer);
@@ -74,13 +79,11 @@ export default function StudioAsk() {
   const sent = turns.slice(0, phase === 'typing' ? turn : turn + 1);
   const draft = phase === 'typing' ? turns[turn].ask.slice(0, typed) : '';
 
-  return <div className={`hx-ask ${fading ? 'is-fading' : ''}`} ref={ref}>
+  return <div className="hx-ask-wrap" ref={ref}><div className={`hx-ask ${fading ? 'is-fading' : ''}`}>
     <div className="hx-chat">
       <header className="hx-chat-head">
         <span>Your coding agent</span>
-        <span className="hx-chat-agents">{agentHarnesses.map(h => <span key={h.title} className="dx-logo" title={h.title} style={{ ['--logo' as string]: `url(${h.logo})` }} />)}
-          <button type="button" className="hx-play" onClick={() => setPlaying(p => !p)} aria-label={playing ? 'Pause the conversation' : 'Play the conversation'}>{icon(playing ? PauseIcon : PlayIcon, 14)}</button>
-        </span>
+        <span className="hx-chat-agents">{agentHarnesses.map(h => <span key={h.title} className="dx-logo" title={h.title} style={{ ['--logo' as string]: `url(${h.logo})` }} />)}</span>
       </header>
       <div className="hx-thread" ref={thread} aria-live="polite">
         {sent.map((t, i) => <div key={i} className="hx-turn">
@@ -98,5 +101,8 @@ export default function StudioAsk() {
     <div className="hx-ask-stage">
       <StudioWindow shown={shown?.key ?? 'inbox'} fidelity={shown?.lofi ? 0 : 1} min={0.5} crop="pane" className={`hx-ask-window ${shown ? '' : 'is-empty'}`} />
     </div>
+  </div>
+  <StepBar title="the conversation" steps={steps} current={turn} done={false} playing={playing && visible && !reduced} cut={cut} reduced={reduced}
+    onJump={i => { goTo(i); setPlaying(true); }} onToggle={() => setPlaying(p => !p)} />
   </div>;
 }

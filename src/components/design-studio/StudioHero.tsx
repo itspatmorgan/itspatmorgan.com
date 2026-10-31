@@ -6,6 +6,7 @@ import {
 import { OsRail, icon } from '../studio-case/StudioUI';
 import { Canvas, Detail, Doc, Flow, Inbox, Overview } from './StudioShapes';
 import { Editor } from './StudioDocs';
+import StepBar from './StepBar';
 import { H, W, themeStyle, useDark, useFit, useReduced } from './explore/StudioWindow';
 import './studio-shapes.css';
 import './explore/explore.css';
@@ -39,13 +40,16 @@ const rows: Row[] = [
 
 const start = { view: 'inbox' as View, lofi: { overview: false, inbox: false, detail: false, lofi: true } as Record<Screen, boolean>, source: false };
 
-const captions = {
-  open: 'Open any artifact from the sidebar',
-  lofi: 'Make a screen lo-fi from its menu, and back again',
-  shapes: 'Flows, canvases and documents sit beside the screens',
-  source: 'Every document is Markdown your agent reads and writes',
-  yours: 'Your turn: click around',
-};
+// The tour's chapters, each with its caption and running time (the time is what its segment takes to fill: each pointer move is
+// 820ms of travel and a 140ms press, plus the hold after it).
+const MOVE = 960;
+const chapters = [
+  { label: 'Open any artifact from the sidebar', ms: 1600 },
+  { label: 'Make a screen lo-fi from its menu, and back again', ms: 4 * MOVE + 520 + 2300 + 520 + 1400 },
+  { label: 'Flows, canvases and documents sit beside the screens', ms: 2 * MOVE + 2200 + 2400 },
+  { label: 'Every document is Markdown your agent reads and writes', ms: 4 * MOVE + 1300 + 520 + 2800 + 900 },
+];
+const yours = 'Your turn: click around';
 
 function screenOf(view: Screen) {
   return view === 'overview' ? <Overview /> : view === 'detail' ? <Detail /> : <Inbox />;
@@ -68,8 +72,12 @@ export default function StudioHero() {
   const [source, setSource] = useState(start.source);
   const [menu, setMenu] = useState<Menu>(null);
   const [menuAt, setMenuAt] = useState({ left: 0, top: 0 });
-  const [caption, setCaption] = useState(captions.open);
+  const [chapter, setChapter] = useState(0);
   const [touring, setTouring] = useState(false);
+  const [done, setDone] = useState(false);
+  // The visitor clicked in the window: the tour stops and the caption hands over.
+  const [handed, setHanded] = useState(false);
+  const [cut, setCut] = useState(0);
   const [pointer, setPointer] = useState({ x: 700, y: 520, shown: false, pressing: false });
   const run = useRef(0);
 
@@ -91,8 +99,9 @@ export default function StudioHero() {
   const open = (v: View) => { setView(v); setSource(false); setMenu(null); };
   const toggleLofi = (v: Screen) => { setLofi(l => ({ ...l, [v]: !l[v] })); setMenu(null); };
 
-  // The tour: each step moves the pointer, presses, then does what the press does.
-  const tour = useCallback(async () => {
+  // The tour: each step moves the pointer, presses, then does what the press does. It runs chapter by chapter from `from`; jumping
+  // to a chapter (or resuming one) starts it from the Studio's opening state.
+  const tour = useCallback(async (from = 0) => {
     const id = ++run.current;
     const alive = () => run.current === id;
     const wait = (ms: number) => new Promise<void>(done => window.setTimeout(done, ms));
@@ -105,28 +114,31 @@ export default function StudioHero() {
       setPointer(p => ({ ...p, pressing: false })); act();
       await wait(hold); return alive();
     };
+    const steps: (() => Promise<boolean>)[] = [
+      async () => { await wait(chapters[0].ms); return alive(); },
+      async () => await go('more-inbox', 'center', () => openMenu({ kind: 'screen', view: 'inbox' }, 'row-inbox'), 520)
+        && await go('menu-lofi', 'start', () => toggleLofi('inbox'), 2300)
+        && await go('more-inbox', 'center', () => openMenu({ kind: 'screen', view: 'inbox' }, 'row-inbox'), 520)
+        && await go('menu-lofi', 'start', () => toggleLofi('inbox'), 1400),
+      async () => await go('row-flow', 'end', () => open('flow'), 2200)
+        && await go('row-handoff', 'end', () => open('handoff'), 2400),
+      async () => await go('row-context', 'end', () => open('context'), 1300)
+        && await go('more-context', 'center', () => openMenu({ kind: 'doc' }, 'row-context'), 520)
+        && await go('menu-source', 'start', () => { setSource(true); setMenu(null); }, 2800)
+        && await go('row-inbox', 'end', () => open('inbox'), 900),
+    ];
     setView(start.view); setLofi(start.lofi); setSource(false); setMenu(null);
-    setTouring(true); setCaption(captions.open);
-    await wait(1600); if (!alive()) return;
-    setCaption(captions.lofi);
-    if (!await go('more-inbox', 'center', () => openMenu({ kind: 'screen', view: 'inbox' }, 'row-inbox'), 520)) return;
-    if (!await go('menu-lofi', 'start', () => toggleLofi('inbox'), 2300)) return;
-    if (!await go('more-inbox', 'center', () => openMenu({ kind: 'screen', view: 'inbox' }, 'row-inbox'), 520)) return;
-    if (!await go('menu-lofi', 'start', () => toggleLofi('inbox'), 1400)) return;
-    setCaption(captions.shapes);
-    if (!await go('row-flow', 'end', () => open('flow'), 2200)) return;
-    if (!await go('row-handoff', 'end', () => open('handoff'), 2400)) return;
-    setCaption(captions.source);
-    if (!await go('row-context', 'end', () => open('context'), 1300)) return;
-    if (!await go('more-context', 'center', () => openMenu({ kind: 'doc' }, 'row-context'), 520)) return;
-    if (!await go('menu-source', 'start', () => { setSource(true); setMenu(null); }, 2800)) return;
-    if (!await go('row-inbox', 'end', () => open('inbox'), 900)) return;
+    setTouring(true); setDone(false); setHanded(false);
+    for (let i = from; i < steps.length; i++) {
+      setChapter(i); setCut(n => n + 1);
+      if (!await steps[i]()) return;
+    }
     setPointer(p => ({ ...p, shown: false }));
-    setTouring(false); setCaption(captions.yours);
+    setTouring(false); setDone(true);
   }, [place, openMenu]);
 
   useEffect(() => {
-    if (reduced) { setCaption(captions.yours); return; }
+    if (reduced) { setDone(true); return; }
     const el = box.current;
     if (!el) return;
     // Starts once the window is mostly in view.
@@ -135,12 +147,14 @@ export default function StudioHero() {
     return () => { io.disconnect(); run.current++; };
   }, [reduced, tour, box]);
 
-  // Any touch hands the window over: the tour stops where it is.
+  const stop = () => { run.current++; setTouring(false); setPointer(p => ({ ...p, shown: false, pressing: false })); };
+  // Any touch hands the window over: the tour stops where it is, and Play picks it up again.
   const takeOver = () => {
     if (!touring) return;
-    run.current++;
-    setTouring(false); setPointer(p => ({ ...p, shown: false, pressing: false })); setCaption(captions.yours);
+    stop(); setHanded(true);
   };
+  const toggle = () => { if (touring) stop(); else void tour(done ? 0 : chapter); };
+  const jump = (i: number) => { void tour(i); };
 
   // A menu sits under the row or header that owns it; any other click in the window closes it.
   const more = (hx: string, next: Menu, anchor: string) => <span className="hx-more" data-hx={hx} role="button" aria-label="More actions"
@@ -186,9 +200,7 @@ export default function StudioHero() {
         </div>
       </div>
     </div>
-    <div className="hx-caption">
-      <p aria-live="polite">{caption}</p>
-      <button type="button" onClick={() => { if (touring) takeOver(); else void tour(); }}>{touring ? 'Skip tour' : 'Replay tour'}</button>
-    </div>
+    <StepBar title="the Studio tour" caption={done || handed ? yours : chapters[chapter].label} steps={chapters} current={chapter} done={done}
+      playing={touring} cut={cut} reduced={reduced} onJump={jump} onToggle={toggle} />
   </div>;
 }
