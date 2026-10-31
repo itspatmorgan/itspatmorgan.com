@@ -11,8 +11,6 @@ import './studio-hero.css';
 // (src/prototypes/parker/feedback-inbox), and the Studio opens it. The chat is a neutral harness, not any one product's interface.
 
 type Turn = { ask: string; did: string; file: string; key: Key; lofi?: boolean };
-// Where the agent's browser points for each artifact: the sample prototype's page in the Studio running locally.
-const slugs: Record<string, string> = { inbox: 'feedback-inbox', flow: 'feedback-flow', handoff: 'eng-handoff', context: 'project-context' };
 const MIN = 0.5;
 const turns: Turn[] = [
   { ask: 'Write up the problem and open questions for a feedback inbox for Echo', did: 'Created', file: 'discovery/project-context.md', key: 'context' },
@@ -93,7 +91,6 @@ export default function StudioAsk() {
   const sent = turns.slice(0, phase === 'typing' ? turn : turn + 1);
   const draft = phase === 'typing' ? turns[turn].ask.slice(0, typed) : '';
 
-  const url = `localhost:5173/prototypes/parker/feedback-inbox/${slugs[shown?.key ?? 'inbox'] ?? 'feedback-inbox'}`;
   return <div className="hx-ask-wrap" ref={ref}>
   <div className={`hx-agent ${fading ? 'is-fading' : ''}`}>
     <header className="hx-agent-bar">
@@ -119,7 +116,7 @@ export default function StudioAsk() {
       <div className="hx-browser">
         <div className="hx-browser-bar" aria-hidden="true">
           <span className="hx-browser-nav">{icon(ArrowLeft01Icon, 15)}{icon(ArrowRight01Icon, 15)}{icon(Refresh01Icon, 14)}</span>
-          <span className="hx-url">{url}</span>
+          <span className="hx-url"><i /></span>
         </div>
         <div className="hx-browser-view" ref={view}>
           <StudioWindow shown={shown?.key ?? 'inbox'} fidelity={shown?.lofi ? 0 : 1} min={MIN} side={false} height={size.h / scale} className={`hx-ask-window ${shown ? '' : 'is-empty'}`} />
