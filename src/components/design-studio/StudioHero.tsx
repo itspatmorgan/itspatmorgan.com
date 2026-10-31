@@ -63,7 +63,7 @@ function Item({ hx, i, children, on, checked }: { hx: string; i: typeof CodeIcon
 }
 
 export default function StudioHero() {
-  const { ref: box, s, x } = useFit(0.62, 1, 'start');
+  const { ref: box, s, x, ready } = useFit(0.62, 1, 'start', W, 1024);
   const dark = useDark();
   const reduced = useReduced();
   const os = useRef<HTMLDivElement>(null);
@@ -168,8 +168,8 @@ export default function StudioHero() {
     </div>;
 
   return <div className="hx">
-    <div ref={box} className="dx-window hx-window" style={{ height: H * s }} onPointerDownCapture={takeOver}>
-      <div className="sc cs-native dx-native" style={{ width: W, height: H, transform: `translateX(${x}px) scale(${s})` }}>
+    <div ref={box} className={`dx-window hx-window ${ready ? 'is-fit' : ''}`} style={ready ? { height: H * s } : undefined} onPointerDownCapture={takeOver}>
+      <div className="sc cs-native dx-native" style={{ width: W, height: H, transform: `translateX(${x}px) scale(${s})`, opacity: ready ? 1 : 0 }}>
         <div ref={os} className="sc-os ss-os dx-os hx-os" style={themeStyle('green', dark)} onClick={() => setMenu(null)}>
           <OsRail on="prototypes" />
           <aside className="sc-side ss-side">

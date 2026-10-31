@@ -43,7 +43,7 @@ export default function StudioRange() {
           </div>
           <div className="rg-cell is-ghost" style={cell(0, 1)} />
           <div className={`rg-cell ${state(0)}`} style={cell(1, 1)}>
-            <b>One-off prototypes</b><span>Claude, v0, Figma Make: flexible, but connected to nothing</span>
+            <b>One-off prototypes</b><span>Flexible to explore, quick to make, connected to nothing</span>
           </div>
         </div>
       </NativeStage>

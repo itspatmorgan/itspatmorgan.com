@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type CSSProperties } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from 'react';
 import { OsRail } from '../../studio-case/StudioUI';
 import { Canvas, Doc, Flow, Inbox, Nav, type Key } from '../StudioShapes';
 import '../studio-shapes.css';
@@ -101,15 +101,21 @@ export function useAutoplay(count: number, ms: number, start = 0) {
 }
 
 export const W = 1120, H = 700, SIDE = 276;
+const useIsoLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect;
 
 /** Fits a native W-wide surface to its box: scales down to fit, holding `min` scale on narrow screens and cropping instead, from
  *  the left edge or, when `crop` is 'pane' and the whole sidebar would leave the view, from the start of the content pane. */
-export function useFit(min: number, max: number, crop: 'start' | 'pane', base = W) {
+export function useFit(min: number, max: number, crop: 'start' | 'pane', base = W, guess = W) {
   const ref = useRef<HTMLDivElement>(null);
-  const [width, setWidth] = useState(W);
-  useEffect(() => {
+  // `guess` is the box's width on a desktop screen, so the server-rendered window already has its final size there; the layout
+  // effect measures the real box before the first paint after hydration, so the window never jumps from full size while scrolling.
+  const [width, setWidth] = useState(guess);
+  const [ready, setReady] = useState(false);
+  useIsoLayoutEffect(() => {
     const el = ref.current;
     if (!el) return;
+    setWidth(el.getBoundingClientRect().width);
+    setReady(true);
     const ro = new ResizeObserver(([e]) => setWidth(e.contentRect.width));
     ro.observe(el);
     return () => ro.disconnect();
@@ -119,7 +125,7 @@ export function useFit(min: number, max: number, crop: 'start' | 'pane', base = 
   const cropped = fit < min;
   // Skip the sidebar only when the whole of it would leave the view; a partial skip would cut its labels mid-word.
   const x = cropped && crop === 'pane' && base === W && W - width / s >= SIDE ? -SIDE * s : 0;
-  return { ref, s, x, cropped };
+  return { ref, s, x, cropped, ready };
 }
 
 /** Echo's tokens for a theme, light or dark, plus its corner radius. */

@@ -1,6 +1,10 @@
 /* The landing page hero (StudioHero.tsx): the Studio window, its menus and the tour pointer. Menus follow the Studio's own
    (shadcn) context menu: a small raised panel with icon rows. */
 .hx-window { user-select: none; -webkit-user-select: none; }
+/* Before the island measures its box, CSS holds the same size it will settle on (the window scales with the width, never below
+   0.62), so nothing jumps while the page scrolls; the scaled content fades in once it fits. */
+.hx-window:not(.is-fit) { aspect-ratio: 1120 / 700; min-height: 434px; max-height: 700px; }
+.hx-window .dx-native { transition: opacity 200ms ease; }
 .hx-os .ss-side h4 { gap: 8px; }
 .hx-title { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 .hx-os .ss-side li { display: flex; align-items: center; gap: 8px; padding-right: 4px; }
