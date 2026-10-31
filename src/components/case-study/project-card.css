@@ -9,9 +9,9 @@
 :where(.pc-bg) { position: absolute; left: 28px; top: 20px; right: -28px; bottom: -28px; overflow: hidden; border-radius: 12px; background: var(--pc-surface); box-shadow: 0 0 0 1px var(--pc-line), 0 1px 2px rgba(0, 0, 0, .03); -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 92px), transparent calc(100% - 28px)), linear-gradient(to bottom, #000 calc(100% - 84px), transparent calc(100% - 28px)); -webkit-mask-composite: source-in; mask-image: linear-gradient(to right, #000 calc(100% - 92px), transparent calc(100% - 28px)), linear-gradient(to bottom, #000 calc(100% - 84px), transparent calc(100% - 28px)); mask-composite: intersect; }
 /* In front: one small, crisp card with the thing to read, lifted clear of the panel behind. Every card's front card shares this spec:
    16 × 18 padding, a 10 px radius, the shadow, and a 13 px semibold title. */
-:where(.pc-fg) { position: absolute; padding: 16px 18px; border-radius: 10px; transition: transform 320ms cubic-bezier(.23, 1, .32, 1), box-shadow 320ms ease; background: var(--pc-surface); box-shadow: 0 0 0 1px var(--pc-line), 0 2px 4px rgba(0, 0, 0, .04), 0 20px 40px -16px rgba(0, 0, 0, .3); }
+:where(.pc-fg) { position: absolute; padding: 16px 18px; border-radius: 10px; transition: transform 320ms var(--motion-ease-out-quick), box-shadow 320ms ease; background: var(--pc-surface); box-shadow: 0 0 0 1px var(--pc-line), 0 2px 4px rgba(0, 0, 0, .04), 0 20px 40px -16px rgba(0, 0, 0, .3); }
 /* Hovering the card lifts the front card a touch, so the visual answers the pointer before the click. */
 [data-project-card]:hover .pc-fg { transform: translateY(-3px); box-shadow: 0 0 0 1px var(--pc-line), 0 2px 4px rgba(0, 0, 0, .04), 0 26px 46px -16px rgba(0, 0, 0, .34); }
 :where(.pc-title) { display: flex; align-items: center; gap: 7px; font-size: 13px; line-height: 18px; font-weight: 600; letter-spacing: -.005em; }
-:where(.pc-cue) { transition: box-shadow 280ms cubic-bezier(.23, 1, .32, 1), background-color 280ms ease, color 280ms ease; }
+:where(.pc-cue) { transition: box-shadow 280ms var(--motion-ease-out-quick), background-color 280ms ease, color 280ms ease; }
 @media (prefers-reduced-motion: reduce) { .pc-cue, .pc-fg { transition: none; } [data-project-card]:hover .pc-fg { transform: none; } }

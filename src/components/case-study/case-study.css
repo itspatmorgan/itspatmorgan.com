@@ -51,7 +51,7 @@
 .cs-canvas { position: absolute; top: 0; left: 0; transform-origin: top left; }
 /* On a phone, a stage zoomed in for a closer look eases between views, and fades at its edges, where the frame goes on. On desktop, a crop only trims a frame's margins. */
 @media (max-width: 640px) {
-  .cs-native-stage.is-panning .cs-canvas { transition: transform 900ms cubic-bezier(.65, 0, .35, 1); }
+  .cs-native-stage.is-panning .cs-canvas { transition: transform 900ms var(--motion-ease-in-out); }
   .cs-native-stage.is-cropped { --fade: linear-gradient(to right, transparent, #000 24px, #000 calc(100% - 32px), transparent), linear-gradient(to bottom, #000 calc(100% - 48px), transparent); -webkit-mask-image: var(--fade); -webkit-mask-composite: source-in; mask-image: var(--fade); mask-composite: intersect; }
 }
 .cs-native button, .cs-native input { font: inherit; letter-spacing: inherit; color: inherit; }
@@ -86,7 +86,7 @@
 .cs-beats button.is-current > i::after { animation: cs-fill linear forwards; animation-duration: inherit; animation-play-state: inherit; }
 .cs-beats button:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; border-radius: 2px; }
 @keyframes cs-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
-.cs-tour-play { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--border); background: var(--background); color: var(--foreground); cursor: pointer; transition: transform 150ms cubic-bezier(.23, 1, .32, 1), background 150ms ease; }
+.cs-tour-play { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--border); background: var(--background); color: var(--foreground); cursor: pointer; transition: transform 150ms var(--motion-ease-out-quick), background 150ms ease; }
 .cs-tour-play:hover { background: var(--muted, #f2f2f1); }
 .cs-tour-play:active { transform: scale(.94); }
 .cs-tour-play:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }

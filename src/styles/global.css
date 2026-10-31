@@ -38,10 +38,10 @@ html:active-view-transition-type(page-navigation)::view-transition-new(root) {
   mix-blend-mode: normal;
 }
 html:active-view-transition-type(page-navigation)::view-transition-old(root) {
-  animation: page-content-out 90ms ease-out both;
+  animation: page-content-out var(--motion-route-out) ease-out both;
 }
 html:active-view-transition-type(page-navigation)::view-transition-new(root) {
-  animation: page-content-in 180ms cubic-bezier(.22, 1, .36, 1) both;
+  animation: page-content-in var(--motion-route-in) var(--motion-ease-out) both;
 }
 @keyframes page-content-out { to { opacity: 0; } }
 @keyframes page-content-in { from { opacity: 0; transform: translateY(4px); } }
@@ -83,6 +83,15 @@ html.pw-intro :is([data-pixel-wave="hero"], [data-pixel-wave="headline"]) [data-
     --input: oklch(0.90 0.008 80);
     --ring: oklch(0.72 0.10 75);
     --radius: 0.5rem;
+
+    /* Motion. Easing curves shared by the site, cards and demos; see /style-guide.
+       Route transitions stay under ~250ms in total. */
+    --motion-ease-out: cubic-bezier(.22, 1, .36, 1);       /* entrances and settles */
+    --motion-ease-out-quick: cubic-bezier(.23, 1, .32, 1); /* quick UI responses, gliding highlights */
+    --motion-ease-in-out: cubic-bezier(.65, 0, .35, 1);    /* things moving across the stage */
+    --motion-ease-standard: cubic-bezier(.4, 0, .2, 1);    /* small state changes */
+    --motion-route-out: 90ms;
+    --motion-route-in: 180ms;
 }
 
 .dark {

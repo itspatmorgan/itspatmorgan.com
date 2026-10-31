@@ -67,7 +67,7 @@
 /* Dashboard cards. */
 .xp-dash { background: var(--x-card); box-shadow: 0 0 13.69px var(--x-inner-shadow); }
 .xp-dash > * { position: absolute; }
-.xp-bar { position: absolute; transform-origin: bottom; transition: transform 700ms cubic-bezier(.22, 1, .36, 1); }
+.xp-bar { position: absolute; transform-origin: bottom; transition: transform 700ms var(--motion-ease-out); }
 .xp-bar > i { position: absolute; left: 0; right: 0; }
 @media (prefers-reduced-motion: reduce) { .xp-bar, .xp-dash polyline { transition: none !important; } }
 .xp-plot { position: absolute; }
@@ -125,9 +125,9 @@
 .xp-head.is-up { clip-path: polygon(50% 0, 100% 100%, 0 100%); }
 .xp-head.is-down { clip-path: polygon(0 0, 100% 0, 50% 100%); }
 .xp-live :is(.xp-seg, .xp-head, .xp-box, .xp-phase, .xp-chip, .xp-label, .xp-script, .xp-collector, .xp-pop, .xp-container > span) {
-  transition: left 700ms cubic-bezier(.65, 0, .35, 1), top 700ms cubic-bezier(.65, 0, .35, 1), width 700ms cubic-bezier(.65, 0, .35, 1), height 700ms cubic-bezier(.65, 0, .35, 1), opacity 450ms ease, transform 600ms cubic-bezier(.22, 1, .36, 1);
+  transition: left 700ms var(--motion-ease-in-out), top 700ms var(--motion-ease-in-out), width 700ms var(--motion-ease-in-out), height 700ms var(--motion-ease-in-out), opacity 450ms ease, transform 600ms var(--motion-ease-out);
 }
-.xp-live .xp-draw { transition: stroke-dashoffset 800ms cubic-bezier(.65, 0, .35, 1), opacity 300ms ease; }
+.xp-live .xp-draw { transition: stroke-dashoffset 800ms var(--motion-ease-in-out), opacity 300ms ease; }
 .xp-live.is-jump, .xp-live.is-jump * { transition: none !important; }
 
 /* Deck diagrams lay out in flow and center as a group, so their balance holds whatever the text measures. */
@@ -148,7 +148,7 @@
 .xc .cs-native { color: var(--x-ink); }
 .xc-chart { left: 112px; }
 .xc-bars { position: absolute; left: 18px; right: 0; bottom: 28px; height: 150px; display: flex; align-items: flex-end; gap: 4px; }
-.xc-bars span { display: flex; flex-direction: column; flex: 1; min-width: 0; overflow: hidden; border-radius: 2px 2px 0 0; transform: scaleY(.15); transform-origin: bottom; transition: transform 700ms cubic-bezier(.23, 1, .32, 1); }
+.xc-bars span { display: flex; flex-direction: column; flex: 1; min-width: 0; overflow: hidden; border-radius: 2px 2px 0 0; transform: scaleY(.15); transform-origin: bottom; transition: transform 700ms var(--motion-ease-out-quick); }
 .xc-bars.is-up span { transform: none; }
 .xc-bars i { flex-basis: 0; }
 .xc-signals { left: 28px; top: 56px; width: 220px; padding-bottom: 8px; }
