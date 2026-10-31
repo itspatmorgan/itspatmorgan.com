@@ -19,10 +19,10 @@ const caseStudy = "/work/design-studio";
     <div data-project-card-item class="group relative" data-project-card>
       <a href={caseStudy} class="absolute inset-0 z-10 rounded-xl" aria-label={project.data.title}></a>
       <article class="grid overflow-hidden rounded-xl border border-border bg-card transition-all duration-300 group-hover:-translate-y-0.5 group-hover:shadow-md group-hover:shadow-black/5 dark:group-hover:shadow-black/20 motion-reduce:translate-y-0 motion-reduce:transition-none lg:grid-cols-[1fr_2fr]">
-        {/* Set like the newsletter card: Design Studio's mark at the top of the column, the case study's title and description at
-            the bottom, at the Work cards' sizes. The mark is the case study's own (design-studio-mark.svg), drawn in the theme's
-            colors so it reads in light and dark. */}
-        <div class="order-2 flex flex-col justify-between gap-6 p-4 lg:order-1 lg:p-6">
+        {/* One block, centered in the column: Design Studio's mark sits right above the case study's title and description (at the
+            Work cards' sizes), so the eye lands once and reads across into the visual. The mark is the case study's own
+            (design-studio-mark.svg), drawn in the theme's colors so it reads in light and dark. */}
+        <div class="order-2 flex flex-col justify-center gap-4 p-4 lg:order-1 lg:p-8">
           <svg viewBox="0 0 30 30" class="h-7 w-7 text-foreground" aria-hidden="true">
             <rect width="30" height="30" rx="7" fill="currentColor" />
             <g transform="translate(8.3 8) scale(.6)" fill="var(--card)">
