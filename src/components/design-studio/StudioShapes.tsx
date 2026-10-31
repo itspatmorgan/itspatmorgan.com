@@ -12,8 +12,8 @@ import './studio-shapes.css';
 // section nav, the selected one beside it. A pointer walks the nav: the inbox itself, the same screen in lo-fi (discovery/lofi-inbox.tsx,
 // grayscale with handwritten type), the review flow (discovery/feedback-flow.mermaid), the engineering handoff canvas
 // (eng-handoff.excalidraw, at the 46% the Studio opens it at) and the project context document (discovery/project-context.md).
-// Copy, sample data and layout are the product's (store.ts, AppShell.tsx, feedback-inbox.tsx, overview.tsx, feedback-detail.tsx and the
-// home-*.png captures). Liberties: type is the site's Geist rather than the Product system's Space Grotesk, as on every demo; the canvas
+// Copy, sample data and layout are the product's (store.ts, AppShell.tsx, feedback-inbox.tsx, overview.tsx and feedback-detail.tsx).
+// Liberties: type is the site's Geist rather than the Product system's Space Grotesk, as on every demo; the canvas
 // shows its first two sections, as the Studio's viewport does.
 
 type Status = 'new' | 'triaged' | 'planned' | 'resolved';
@@ -184,28 +184,28 @@ function Canvas() {
   </div>;
 }
 
-/** The project context (discovery/project-context.md) as the Studio renders a Markdown document, with its table of contents. */
-function Doc() {
+/** The project context (discovery/project-context.md) as the Studio renders a Markdown document (DocLayout). Its table of contents
+ *  shows only on screens 1280 px and wider, so at this size it is hidden, as in the product. */
+export function Doc() {
   return <div className="ss-pane ss-doc">
     <article>
       <h1>Project Context</h1>
       <p className="ss-doc-lead">The problem, working assumptions, and explorations behind the feedback tracker.</p>
       <h2>The problem</h2>
       <p>Customer feedback is scattered across email, chat, interviews, surveys, and support tickets. The team needs one place to capture it, review recurring problems, and track what happens next.</p>
-      <h2>Who it’s for</h2>
+      <h2>Who it's for</h2>
       <ul><li><b>Luis, support lead:</b> capture feedback quickly.</li><li><b>Priya, product manager:</b> triage new items and track planned work.</li><li><b>Maya, product designer:</b> find patterns worth exploring.</li></ul>
       <h2>Working assumptions</h2>
       <ul><li>Items move through <b>New, Triaged, Planned, and Resolved</b>.</li><li>Status and priority help the team decide what to address.</li><li>Notes stay with the feedback item so its history stays together.</li></ul>
       <h2>Open questions</h2>
       <ul><li>Where should filtering live?</li><li>When should customers hear back?</li><li>How long should resolved feedback remain visible?</li></ul>
     </article>
-    <nav><b>On this page</b>{['The problem', 'Who it’s for', 'Working assumptions', 'Open questions', 'Explore the idea'].map((t, i) => <span key={t} className={i === 0 ? 'is-on' : ''}>{t}</span>)}</nav>
   </div>;
 }
 
-type Key = 'inbox' | 'lofi' | 'flow' | 'handoff' | 'context';
+export type Key = 'inbox' | 'lofi' | 'flow' | 'handoff' | 'context';
 /** The prototype's section nav (the Studio's artifact tree), States folded, as the prototype opens. */
-function Nav({ on }: { on: Key }) {
+export function Nav({ on }: { on: Key }) {
   const li = (i: typeof CodeIcon, t: string, key?: Key, child = true) => <li key={t} data-target={key} className={`${child ? 'is-child' : ''} ${key && key === on ? 'is-on' : ''}`}>{icon(i, 15)}{t}</li>;
   const group = (t: string, open = true) => <li className="is-group">{icon(open ? ArrowDown01Icon : ArrowRight01Icon, 14)}{t}</li>;
   return <aside className="sc-side ss-side">
