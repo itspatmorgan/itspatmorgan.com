@@ -72,12 +72,6 @@ const learnMore = mediaFeatures.filter((item) => item.title !== "Design Studio o
         <blockquote>“We have essentially replaced Figma with this at Sublime.”</blockquote>
         <figcaption>Joe Salowitz, Product Designer at Sublime, <a href="https://x.com/JoeSalowitz/status/2114915923283120187" target="_blank" rel="noopener noreferrer">on X</a></figcaption>
       </figure>
-      <dl class="cs-brief ds-stats">
-        <div><dt>At Sublime</dt><dd>About a dozen people</dd></div>
-        <div><dt>Prototypes</dt><dd>Hundreds, more each week</dd></div>
-        <div><dt>Launch lesson</dt><dd>600+ signed up</dd></div>
-        <div><dt>Launch posts</dt><dd>30k+ views</dd></div>
-      </dl>
       <a class="ds-case-link" href="/work/design-studio">How Sublime’s product team uses it <Icon icon={ArrowRight01Icon} size={14} class="shrink-0" /></a>
     </section>
 
@@ -114,7 +108,7 @@ const learnMore = mediaFeatures.filter((item) => item.title !== "Design Studio o
       <p>Paste a prompt into your coding agent. It installs Design Studio and opens the preview, then helps you publish when you’re ready to share.</p>
       <div class="ds-start-grid">
         <section id="install" class="ds-step" data-prompt-card aria-labelledby="install-title">
-          <h3 id="install-title"><span class="ds-step-n" aria-hidden="true">1</span>Install and run locally</h3>
+          <h3 id="install-title">Install and run locally</h3>
           <p class="ds-step-line">Use the agent harness you already use.</p>
           <p class="ds-prompt texture-bg" data-setup-prompt>{installationPrompt.split(/(https:\/\/\S+?)(?=[.,]?(?:\s|$))/).map((part, i) => i % 2 ? <span class="ds-url">{part}</span> : part)}</p>
           <div class="ds-step-tools" aria-label="Example agent harnesses for Design Studio">
@@ -129,7 +123,7 @@ const learnMore = mediaFeatures.filter((item) => item.title !== "Design Studio o
           </div>
         </section>
         <section id="publish" class="ds-step" data-prompt-card aria-labelledby="publish-title">
-          <h3 id="publish-title"><span class="ds-step-n" aria-hidden="true">2</span>Publish and share</h3>
+          <h3 id="publish-title">Publish and share</h3>
           <p class="ds-step-line">Publish a static website on the host you choose.</p>
           <p class="ds-prompt texture-bg" data-setup-prompt>{publishingPrompt}</p>
           <div class="ds-step-tools" aria-label="Example hosting services for Design Studio">
@@ -210,8 +204,7 @@ const learnMore = mediaFeatures.filter((item) => item.title !== "Design Studio o
   .ds-works a:hover { text-decoration-color: currentColor; }
   .ds-hero > :global(.cs-scene) { margin-top: 64px; }
   .ds-proof { padding-top: 128px; }
-  .ds-stats { margin-top: 48px; }
-  .ds-case-link { display: inline-flex; align-items: center; gap: 6px; margin-top: 40px; font-size: 15px; font-weight: 500; text-decoration: underline; text-underline-offset: 4px; text-decoration-color: color-mix(in srgb, currentColor 35%, transparent); }
+  .ds-case-link { display: inline-flex; align-items: center; gap: 6px; margin-top: 32px; font-size: 15px; font-weight: 500; text-decoration: underline; text-underline-offset: 4px; text-decoration-color: color-mix(in srgb, currentColor 35%, transparent); }
   .ds-case-link:hover { text-decoration-color: currentColor; }
   .ds-share-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; max-width: 1024px; margin: 48px auto 0; text-align: left; }
   .ds-share-grid > div { display: flex; flex-direction: column; padding: 24px; border: 1px solid var(--border); border-radius: 16px; background: var(--card); }
@@ -223,9 +216,8 @@ const learnMore = mediaFeatures.filter((item) => item.title !== "Design Studio o
   /* Get started: two prompt cards in the share cards' language, so the section reads as one centered composition. */
   .ds-start-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; max-width: 1024px; margin: 48px auto 0; text-align: left; }
   .ds-step { display: flex; flex-direction: column; min-width: 0; padding: 24px; border: 1px solid var(--border); border-radius: 16px; background: var(--card); scroll-margin-top: 2rem; }
-  .ds-step h3 { display: flex; align-items: center; gap: 10px; font-size: 17px; line-height: 24px; font-weight: 500; letter-spacing: -.01em; }
-  .ds-step-n { display: inline-grid; place-items: center; flex: none; width: 24px; height: 24px; border-radius: 999px; background: var(--muted); font-size: 13px; font-weight: 500; font-variant-numeric: tabular-nums; color: var(--muted-foreground); }
-  .ds-step-line { margin-top: 8px; padding-left: 34px; font-size: 15px; line-height: 23px; color: var(--muted-foreground); }
+  .ds-step h3 { font-size: 17px; line-height: 24px; font-weight: 500; letter-spacing: -.01em; }
+  .ds-step-line { margin-top: 6px; font-size: 15px; line-height: 23px; color: var(--muted-foreground); }
   .ds-prompt { flex: 1; margin-top: 20px; padding: 16px 18px; border: 1px solid var(--border); border-radius: 10px; font-size: 14.5px; line-height: 23px; overflow-wrap: anywhere; }
   .ds-step-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 16px; margin-top: 16px; font-size: 13px; color: var(--muted-foreground); }
   .ds-step-tools > span { display: inline-flex; align-items: center; gap: 6px; }
