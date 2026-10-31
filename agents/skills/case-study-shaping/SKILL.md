@@ -70,9 +70,10 @@ Reuse these patterns before inventing new ones.
 
 ## Inputs
 
-- The current entry in `src/content/projects/<slug>.{md,mdx}` and its images
+- The current entry in `src/content/projects/<slug>.md` and its images
 - Any linked deck, Figma file, or video the entry embeds
-- `agent-os/conventions/content.md` and `agent-os/conventions/styling.md`
+- `agents/audience.md` and `agents/principles/design.md`, which set the bar
+- `agents/conventions/content.md` and `agents/conventions/styling.md`
 - The roles Patrick is targeting, if he names them
 - Patrick's answers to the fact-finding questions below
 

@@ -45,7 +45,7 @@ Commands or checks that prove related work is correct.
 
 ## Promotion Rule
 
-Promote a learning to `agent-os/conventions/` when it becomes a current project
+Promote a learning to `agents/conventions/` when it becomes a current project
 rule. Promote it to `AGENTS.md` when every agent needs the rule in the starting
-context. Promote it to `agent-os/system-map.md` when it changes how the site
+context. Promote it to `agents/system-map.md` when it changes how the site
 operates.

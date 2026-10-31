@@ -1,6 +1,6 @@
 ---
 name: refactor-radar
-description: Use when asked to review this repository for targeted refactors, maintenance opportunities, or compounding improvements before implementation. Produces ranked findings for approval and can route approved work into an Agent OS plan, GitHub Issue, Notion Task, or tiny direct fix.
+description: Use when asked to review this repository for targeted refactors, maintenance opportunities, or compounding improvements before implementation. Produces ranked findings for approval and can route approved work into a plan in the conversation, GitHub Issue, Notion Task, or tiny direct fix.
 ---
 
 # Refactor Radar
@@ -25,14 +25,15 @@ manually now and scheduled through automation later.
 - Load only the context needed for the focused review area.
 - Produce small, ranked recommendations before implementation.
 - Ask for approval before making broad changes.
-- Prefer links to canonical Agent OS files over repeating their contents.
+- Prefer links to canonical files in `agents/` over repeating their contents.
 - Keep findings verifiable with narrow commands or browser checks.
 
 ## Inputs
 
-- `agent-os/strategy.md`
-- `agent-os/system-map.md`
-- Relevant files in `agent-os/conventions/`
+- `agents/principles/engineering.md`, the standard findings are judged against
+- `agents/strategy.md`
+- `agents/system-map.md`
+- Relevant files in `agents/conventions/`
 - Existing open GitHub Issues, project board items, or Notion Tasks when
   available
 
@@ -46,7 +47,7 @@ Rotate through focused slices rather than auditing the whole repo every time:
 - Publishing scripts: `scripts/`
 - Lab experiences: `src/lab/`, `src/content/lab/`, `/lab` routes
 - Shared UI and layouts: `src/components/`, `src/layouts/`
-- Agent OS and operating context: `AGENTS.md`, `agent-os/`, `CLAUDE.md`
+- Agent context: `AGENTS.md`, `agents/`, `CLAUDE.md`
 - Deployment and infrastructure: `.github/workflows/`, package scripts
 
 ## Evaluation Criteria
@@ -100,7 +101,7 @@ Use these as prompts during early runs. They are not a static backlog.
 - Should `src/content/projects` stay as the internal name or eventually become
   `work`?
 - Is `README.md` still concise as the public home base?
-- Are task-tracking pointers centralized in Agent OS, GitHub Issues, the project
+- Are task-tracking pointers centralized in `agents/`, GitHub Issues, the project
   board, and Notion Tasks?
 - Is the writing sync flow still boring, deterministic, and documented in the
   right canonical places?

@@ -4,7 +4,7 @@ This is the operating map for Patrick Morgan's personal website. It explains how
 the site fits together, which system owns which kind of content or behavior, and
 where to look before changing something.
 
-Agent OS uses single-responsibility documentation: each file owns one kind of
+The agents folder uses single-responsibility documentation: each file owns one kind of
 context, avoids repeating neighboring files, and links to the canonical source
 for related details. This file owns system orientation, not editing rules.
 
@@ -19,7 +19,7 @@ for related details. This file owns system orientation, not editing rules.
 | Lab | Hosted experiments, tools, and interaction demos | `src/content/lab/`, `src/pages/lab/`, `src/lab/` |
 | Community | Community narrative, photos, and Kind Words | `src/pages/community.astro`, `src/data/community.ts`, `src/data/commendations.ts` |
 | Deployment | Static build published to Cloudflare Workers, with PR previews | `.github/workflows/deploy.yml`, `.github/workflows/preview.yml`, `wrangler.jsonc` |
-| Work orchestration | Strategy, conventions, learnings, issues, project board, and cross-project tasks | `agent-os/`, GitHub Issues, Personal Website project, Notion Tasks |
+| Work orchestration | Strategy, conventions, learnings, issues, project board, and cross-project tasks | `agents/`, GitHub Issues, Personal Website project, Notion Tasks |
 
 ## Public Routes
 
@@ -43,7 +43,7 @@ for related details. This file owns system orientation, not editing rules.
 The Design Studio landing page embeds actual artifacts from the `/design-studio-demo/` build
 included in this website’s deployment. Its presentation and public-reader
 adapter live in `StudioLiveDemo.astro` and `src/scripts/studio-live-demo.ts`.
-See `agent-os/learnings/design-studio-live-demo.md` for the shared-origin
+See `agents/learnings/design-studio-live-demo.md` for the shared-origin
 requirement, deployment dependency, and sample-data boundaries.
 
 ## Commands
@@ -132,15 +132,15 @@ This system is strategic because it makes writing visuals repeatable and website
 
 Use these files for adjacent context:
 
-- `agent-os/conventions/architecture.md`: Astro, layout, content collection, and
+- `agents/conventions/architecture.md`: Astro, layout, content collection, and
   React usage conventions
-- `agent-os/conventions/content.md`: public terminology and frontmatter
+- `agents/conventions/content.md`: public terminology and frontmatter
   conventions
-- `agent-os/conventions/styling.md`: visual design, Tailwind, prose, and
+- `agents/conventions/styling.md`: visual design, Tailwind, prose, and
   interaction conventions
-- `agent-os/conventions/assets.md`: image and embed conventions
-- `agent-os/learnings/writing-sync.md`: reusable writing sync gotchas
-- `agent-os/learnings/editorial-art.md`: reusable editorial art gotchas
+- `agents/conventions/assets.md`: image and embed conventions
+- `agents/learnings/writing-sync.md`: reusable writing sync gotchas
+- `agents/learnings/editorial-art.md`: reusable editorial art gotchas
 
 ## Deployment
 
@@ -198,5 +198,5 @@ For visual or interactive changes, also run `pnpm dev` and check the affected ro
 
 ## Maintenance
 
-Use `agent-os/skills/refactor-radar/SKILL.md` for recurring refactor discovery,
+Use `agents/skills/refactor-radar/SKILL.md` for recurring refactor discovery,
 maintenance review, and approval-based cleanup work.
