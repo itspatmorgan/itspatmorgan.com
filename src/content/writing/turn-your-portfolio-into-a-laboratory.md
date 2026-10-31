@@ -27,6 +27,7 @@ visual:
     strokeWidth: 1.5
   texture: 0
   grain: 24
+image: /images/writing/turn-your-portfolio-into-a-laboratory/feature.jpg
 canonicalUrl: "https://www.unknownarts.com/p/turn-your-portfolio-into-a-laboratory"
 draft: false
 ---

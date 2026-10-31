@@ -4,6 +4,9 @@ export const siteConfig = {
   description:
     "Software designer building AI-powered tools at Sublime Security and writing Unknown Arts — a newsletter for creative builders in the age of AI.",
   url: "https://itspatmorgan.com",
+  xHandle: "@itspatmorgan",
+  // Cloudflare Web Analytics site token, from the dashboard's JS snippet. It is public by design: it ships in every page.
+  analyticsToken: "",
   nav: [
     { label: "Home", href: "/" },
     { label: "About", href: "/about" },
