@@ -68,6 +68,10 @@ const communityTools = [
     <header class="cs-slide cs-hero ds-hero" aria-labelledby="studio-title">
       <span class="lw-dots" aria-hidden="true"></span>
       <h1 id="studio-title"><PixelWaveText text="Design with intent." wave="studio-headline" initialSans /><br /><PixelWaveText text="Build with an agent." wave="studio-headline" initialSans /></h1>
+      {/* Like the home hero: start in pixel type before the first paint on the first visit of a session, so the dissolve below never flashes sans first. */}
+      <script is:inline>
+        (() => { try { if (!sessionStorage.getItem("studioWaveSeen") && !matchMedia("(prefers-reduced-motion: reduce)").matches) { document.documentElement.classList.add("pw-intro"); setTimeout(() => document.documentElement.classList.remove("pw-intro"), 3000); } } catch {} })();
+      </script>
       <p>An open-source prototype sandbox for designers and product managers who build with agents.</p>
       <div class="sc-next ds-actions">
         <a href="#get-started" class="is-primary" data-copy-text={installationPrompt} data-copy-label="Copy setup prompt" data-copy-done="Copied. Paste it into your agent"><Icon icon={Copy01Icon} size={16} class="shrink-0" /><span data-copy-face>Copy setup prompt</span></a>
@@ -360,13 +364,24 @@ const communityTools = [
 </style>
 
 <script>
-  import { enablePixelHover } from "@/scripts/pixel-wave";
+  import { dissolvePixelWave, enablePixelHover } from "@/scripts/pixel-wave";
 
   function initStudioPage() {
+    // The headline opens in pixel type and dissolves to sans on the first visit of a session, line by line, as the home hero does.
     const headline = document.querySelector<HTMLElement>("#studio-title");
     if (headline && !headline.dataset.waveInitialized) {
       headline.dataset.waveInitialized = "true";
-      headline.querySelectorAll<HTMLElement>("[data-pixel-wave]").forEach(enablePixelHover);
+      const lines = Array.from(headline.querySelectorAll<HTMLElement>("[data-pixel-wave]"));
+      let seen = true;
+      try { seen = !!sessionStorage.getItem("studioWaveSeen"); sessionStorage.setItem("studioWaveSeen", "1"); } catch {}
+      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (seen || reduced) lines.forEach(enablePixelHover);
+      else {
+        // One continuous sweep across both lines, like the home headline: each line starts where the one above it ends.
+        let before = 0;
+        lines.forEach((line) => { dissolvePixelWave(line, before / 8); before += line.querySelectorAll("[data-pw-char]").length; });
+      }
+      document.documentElement.classList.remove("pw-intro");
     }
     const modeList = document.querySelector<HTMLElement>("[data-studio-modes]");
     if (modeList && !modeList.dataset.initialized) {
