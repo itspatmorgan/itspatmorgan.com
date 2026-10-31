@@ -86,3 +86,24 @@
 /* The browse tour sits under a slide's copy with the same gap as the case-study stages. */
 .cs-slide .hx { margin-top: 48px; }
 @media (max-width: 760px) { .cs-slide .hx { margin-top: 28px; } }
+
+/* Share (StudioShare.tsx): a published Studio in a browser, at the team's own link. */
+.sh { max-width: 1024px; margin: 48px auto 0; text-align: left; }
+.sh-window { overflow: hidden; border-radius: 14px; background: var(--card); box-shadow: 0 0 0 1px color-mix(in oklch, var(--foreground) 10%, transparent), 0 24px 48px -24px rgb(0 0 0 / .22); }
+.dark .sh-window { box-shadow: 0 0 0 1px color-mix(in oklch, var(--foreground) 12%, transparent), 0 24px 48px -24px rgb(0 0 0 / .6); }
+.sh-bar { height: 48px; gap: 14px; padding: 0 14px; }
+.sh-url { flex: 1; min-width: 0; display: flex; align-items: center; gap: 8px; height: 30px; padding: 0 12px; border-radius: 8px; background: var(--muted); font-size: 13.5px; color: var(--foreground); }
+.sh-url > span { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.sh-url svg { flex: none; color: var(--muted-foreground); }
+.sh-path { color: var(--muted-foreground); }
+.sh-viewers { display: flex; flex: none; }
+.sh-viewers .sc-avatar { width: 24px; height: 24px; background: var(--muted); color: var(--muted-foreground); font-size: 10px; box-shadow: 0 0 0 2px var(--card); }
+.sh-viewers .sc-avatar + .sc-avatar { margin-left: -6px; }
+.sh-copy { display: inline-flex; flex: none; align-items: center; gap: 6px; height: 30px; padding: 0 12px; border-radius: 8px; background: var(--foreground); color: var(--background); font-size: 13px; font-weight: 500; transition: background-color 240ms ease; }
+.sh-copy.is-done { background: oklch(0.55 0.12 160); color: #fff; }
+.sh-view { position: relative; }
+.sh .dx-window { border-radius: 0; box-shadow: none; }
+@media (max-width: 640px) {
+  .sh { margin-top: 28px; }
+  .sh-bar .hx-agent-dots, .sh-path, .sh-viewers { display: none; }
+}

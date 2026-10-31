@@ -11,7 +11,8 @@ import Slide from "@/components/case-study/Slide.astro";
 import StudioHero from "@/components/design-studio/StudioHero";
 import StudioAsk from "@/components/design-studio/StudioAsk";
 import Spectrum from "@/components/studio-case/Spectrum";
-import StudioSystem from "@/components/design-studio/StudioSystem";
+import StudioSystems from "@/components/design-studio/StudioSystems";
+import StudioShare from "@/components/design-studio/StudioShare";
 import StudioDocs from "@/components/design-studio/StudioDocs";
 import "@/components/case-study/case-study.css";
 import "@/components/studio-case/studio-case.css";
@@ -101,8 +102,8 @@ const communityTools = [
       <Spectrum client:visible />
     </Slide>
 
-    <Slide id="systems-title" title="Your design system, ready for your agent" line="Bring your theme, components, context and skills. Every component is documented with live examples, so your agent builds with the real thing.">
-      <StudioSystem client:visible />
+    <Slide id="systems-title" title="Define a system, then build with it" line="A system holds your theme, components and rules. Keep as many as you need, like Product and Marketing. Each prototype builds with the one it names, so they never conflict.">
+      <StudioSystems client:visible />
     </Slide>
 
     <Slide id="context-title" title="Keep the thinking with the work" line="Briefs, decisions and open questions live beside the prototype as Markdown. Your team reads the page, and your agent reads and writes the same file.">
@@ -111,12 +112,13 @@ const communityTools = [
 
     <section class="cs-slide ds-share" aria-labelledby="share-title">
       <h2 id="share-title">Share a lasting link with your team</h2>
-      <p>Publish Design Studio as a static website on Vercel, Netlify, Cloudflare or another host. Keep editing locally, and publish updates to the same link.</p>
-      <div class="ds-share-grid">
-        <div><h3>Publish a website</h3><p>Your team explores the prototypes and the thinking behind them in the browser, with nothing to install.</p><a href={liveDemo}>Explore a published Studio <Icon icon={ArrowUpRight01Icon} size={14} class="shrink-0" /></a></div>
-        <div><h3>Start in Personal mode</h3><p>Explore on your own, with full control of your prototypes, systems and settings.</p></div>
-        <div><h3>Grow into Team mode</h3><p>Contributors edit their own prototypes. Admins manage access and assign maintainers for shared systems.</p></div>
-      </div>
+      <p>Publish the Studio as a website on your own host. Your team opens the prototypes and the thinking behind them in the browser, and every update you publish lands at the same link.</p>
+      <StudioShare client:visible />
+      <dl class="ds-share-facts">
+        <div><dt>Any static host</dt><dd>{publishingHosts.map((item) => <span class="ds-share-host"><span class="hero-vendor-logo setup-compatibility-logo" style={"--vendor-logo: url(" + item.logo + ")"} aria-hidden="true"></span>{item.title}</span>)}</dd></div>
+        <div><dt>Personal or Team mode</dt><dd>Start on your own. In Team mode, contributors edit their own prototypes and admins assign maintainers for shared systems.</dd></div>
+        <div><dt>See one live</dt><dd><a href={liveDemo}>Explore a published Studio <Icon icon={ArrowUpRight01Icon} size={14} class="shrink-0" /></a></dd></div>
+      </dl>
     </section>
 
     <section class="cs-slide ds-tools" aria-labelledby="tools-title">
@@ -136,11 +138,6 @@ const communityTools = [
       </ul>
     </section>
 
-    <section class="cs-slide ds-learn" aria-labelledby="learn-title">
-      <h2 id="learn-title">Go deeper</h2>
-      <p>An interview, a live lesson and an article on why Design Studio exists and how teams work in it.</p>
-      <StudioPress items={learnMore} />
-    </section>
 
     <section id="get-started" class="cs-slide ds-start" aria-labelledby="setup-title">
       <h2 id="setup-title">Get started with your agent</h2>
@@ -216,6 +213,12 @@ const communityTools = [
         </div>
       </div>
     </section>
+
+    <section class="cs-slide ds-learn" aria-labelledby="learn-title">
+      <h2 id="learn-title">Go deeper</h2>
+      <p>An interview, a live lesson and an article on why Design Studio exists and how teams work in it.</p>
+      <StudioPress items={learnMore} />
+    </section>
     </div>
     <section id="studio-agent" data-studio-panel="agent" hidden class="pt-16 pb-20 sm:pt-20 sm:pb-24">
       <h1 class="text-3xl font-medium tracking-tight sm:text-4xl">Design Studio</h1>
@@ -267,10 +270,14 @@ const communityTools = [
     .ds-proof-card figcaption { padding: 20px 24px 24px; }
     .ds-proof-foot { padding: 14px 24px; }
   }
-  .ds-share-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; max-width: 1024px; margin: 48px auto 0; text-align: left; }
-  .ds-share-grid > div { display: flex; flex-direction: column; padding: 24px; border: 1px solid var(--border); border-radius: 16px; background: var(--card); }
-  .ds-share-grid h3 { font-size: 17px; line-height: 24px; font-weight: 500; letter-spacing: -.01em; }
-  .ds-share-grid p { margin-top: 8px; font-size: 15px; line-height: 23px; color: var(--muted-foreground); }
+  /* Share: the published Studio, then three short facts in a quiet row (no cards, so it doesn't echo the tools grid below). */
+  .ds-share-facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; max-width: 1024px; margin: 32px auto 0; text-align: left; }
+  .ds-share-facts dt { font-size: 15px; line-height: 22px; font-weight: 500; }
+  .ds-share-facts dd { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 6px 0 0; font-size: 14px; line-height: 22px; color: var(--muted-foreground); }
+  .ds-share-host { display: inline-flex; align-items: center; gap: 6px; }
+  .ds-share-facts a { display: inline-flex; align-items: center; gap: 6px; font-weight: 500; color: var(--foreground); text-decoration: underline; text-underline-offset: 4px; text-decoration-color: color-mix(in srgb, currentColor 35%, transparent); }
+  .ds-share-facts a:hover { text-decoration-color: currentColor; }
+  @media (max-width: 760px) { .ds-share-facts { grid-template-columns: minmax(0, 1fr); gap: 20px; margin-top: 24px; } }
   .ds-tools-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; max-width: 1024px; margin: 48px auto 0; padding: 0; list-style: none; text-align: left; }
   .ds-tool { display: flex; flex-direction: column; height: 100%; overflow: hidden; border: 1px solid var(--border); border-radius: 16px; background: var(--card); transition: transform 200ms var(--motion-ease-out-quick, ease), box-shadow 200ms ease; }
   .ds-tool:hover { transform: translateY(-2px); box-shadow: 0 12px 28px -18px rgb(0 0 0 / .3); }
@@ -284,9 +291,8 @@ const communityTools = [
   .ds-tool-does { margin-top: 10px; font-size: 15px; line-height: 23px; color: var(--muted-foreground); }
   @media (prefers-reduced-motion: reduce) { .ds-tool, .ds-tool:hover { transition: none; transform: none; } }
   @media (max-width: 860px) { .ds-tools-grid { grid-template-columns: minmax(0, 1fr); max-width: 560px; margin-top: 28px; gap: 12px; } }
-  .ds-share-grid a, .ds-community a { text-decoration: underline; text-underline-offset: 4px; text-decoration-color: color-mix(in srgb, currentColor 35%, transparent); }
-  .ds-share-grid a { display: inline-flex; align-items: center; gap: 6px; margin-top: auto; padding-top: 20px; font-size: 14px; font-weight: 500; }
-  .ds-share-grid a:hover, .ds-community a:hover { text-decoration-color: currentColor; }
+  .ds-community a { text-decoration: underline; text-underline-offset: 4px; text-decoration-color: color-mix(in srgb, currentColor 35%, transparent); }
+  .ds-community a:hover { text-decoration-color: currentColor; }
   /* Get started: two prompt cards in the share cards' language, so the section reads as one centered composition. */
   .ds-start-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; max-width: 1024px; margin: 48px auto 0; padding: 0; list-style: none; text-align: left; }
   .ds-step { display: flex; flex-direction: column; min-width: 0; padding: 24px; border: 1px solid var(--border); border-radius: 16px; background: var(--card); scroll-margin-top: 2rem; container-type: inline-size; }
@@ -307,7 +313,8 @@ const communityTools = [
   .ds-start > .ds-community { margin-top: 48px; font-size: 16px; }
   .ds-community a { color: var(--foreground); }
   .ds-note { padding: 144px 0 96px; }
-  @media (max-width: 860px) { .ds-start-grid { grid-template-columns: minmax(0, 1fr); max-width: 560px; gap: 12px; } .ds-share-grid { grid-template-columns: minmax(0, 1fr); max-width: 560px; margin-top: 28px; gap: 12px; } }
+  .ds-note + .ds-learn { padding-top: 48px; }
+  @media (max-width: 860px) { .ds-start-grid { grid-template-columns: minmax(0, 1fr); max-width: 560px; gap: 12px; } }
   @media (max-width: 760px) { .ds-note { padding-top: 88px; } .ds-start-grid { margin-top: 28px; } }
   @media (max-width: 640px) {
     .ds-actions { flex-wrap: nowrap; gap: 8px; margin-top: 28px; }

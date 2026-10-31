@@ -174,41 +174,40 @@
 .md-mark { color: var(--os-weak); }
 .ss-editor b { font-weight: 700; }
 
-/* A system's component page (ComponentDocPage) and its live examples in the Product theme. */
-.ss-sysnav li.ss-branch { height: 28px; margin-top: 4px; font-size: 12px; font-weight: 500; color: var(--os-fg); }
-.ss-sysnav li.ss-branch svg { color: var(--os-weak); }
-.ss-sys { background: var(--os-bg); color: var(--os-fg); }
-.ss-sys-page { max-width: 768px; margin: 0 auto; padding: 40px 32px; }
-.ss-sys h1 { margin-bottom: 8px; font-size: 26px; line-height: 36px; font-weight: 600; letter-spacing: -.01em; }
-.ss-sys .ss-sys-page .ss-sys-desc { margin: 0 0 32px; font-size: 14px; line-height: 22px; color: var(--os-weak); }
-.ss-sys h2 { margin: 40px 0 16px; font-size: 18px; line-height: 28px; font-weight: 600; letter-spacing: -.025em; }
-.ss-sys .ss-sys-desc + h2 { margin-top: 0; }
-.ss-sys-page > p:not(.ss-sys-desc) { margin-bottom: 14px; font-size: 14px; line-height: 24px; color: color-mix(in srgb, var(--os-fg) 85%, var(--os-bg)); }
-.ss-sys section + section { margin-top: 20px; }
-.ss-sys h3 { margin-bottom: 8px; font-size: 12px; font-weight: 500; color: var(--os-weak); }
-.ss-sys-frame { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 24px; border: 1px solid var(--os-line); border-radius: 8px; background: var(--e-bg); color: var(--e-fg); }
-.ss-sbtn { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 10px; border: 1px solid transparent; font-size: 14px; font-weight: 500; white-space: nowrap; }
-.ss-sbtn.is-default { background: var(--e-primary); color: var(--e-primary-fg); }
-.ss-sbtn.is-secondary { background: var(--e-secondary); color: var(--e-secondary-fg); }
-.ss-sbtn.is-outline { border-color: var(--e-line); background: var(--e-bg); }
-.ss-sbtn.is-destructive { background: color-mix(in oklch, var(--e-destructive) 10%, transparent); color: var(--e-destructive); }
-.ss-sbtn.is-link { color: var(--e-primary); }
-.ss-sbtn.is-size-xs { height: 24px; gap: 4px; padding: 0 8px; font-size: 12px; }
-.ss-sbtn.is-size-sm { height: 28px; padding: 0 10px; font-size: 12.8px; }
-.ss-sbtn.is-size-lg { height: 36px; }
-.ss-sbtn.is-off { opacity: .5; }
-.ss-sbtn svg { margin-left: -2px; }
-/* Card (card.tsx): w-xs, a 1px ring at 10% foreground, 16px spacing, a muted footer with a top border. */
-.ss-scard { display: flex; flex-direction: column; gap: 16px; width: 320px; padding-top: 16px; background: var(--e-card); box-shadow: 0 0 0 1px color-mix(in oklch, var(--e-fg) 10%, transparent); font-size: 14px; line-height: 20px; }
-.ss-scard:not(.has-footer) { padding-bottom: 16px; }
-.ss-scard-head { display: grid; gap: 4px; padding: 0 16px; }
-.ss-scard-head.has-action { grid-template-columns: 1fr auto; }
-.ss-scard-head b { font-size: 16px; line-height: 22px; font-weight: 500; }
-.ss-scard-head span { color: var(--e-weak); }
-.ss-scard-head i { grid-column: 2; grid-row: 1 / span 2; align-self: start; font-style: normal; }
-.ss-scard-body { padding: 0 16px; }
-.ss-scard-foot { display: flex; align-items: center; padding: 16px; border-top: 1px solid var(--e-line); background: color-mix(in oklch, var(--e-muted) 50%, transparent); }
-.dark .ss-sbtn.is-destructive { background: color-mix(in oklch, var(--e-destructive) 20%, transparent); }
-.dark .ss-sbtn.is-outline { border-color: var(--e-line); background: oklch(1 0 0 / 5%); }
 /* .sc-os sets Geist on every descendant; the editor's source and path are mono. */
 .sc .sc-os .ss-editor ol, .sc .sc-os .ss-editor ol *, .sc .sc-os .ss-editor header code { font-family: 'Geist Mono Variable', ui-monospace, monospace; }
+
+/* Systems (StudioSystems.tsx): two system cards wired to the prototypes that build with them. */
+.sy-dia .sc-node { transition: opacity 420ms ease, border-color 420ms ease, box-shadow 420ms ease; }
+.sy-dia .is-dim { opacity: .4; }
+.sy-dia .sc-line path.is-draw { stroke-width: 2.5; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 700ms var(--motion-ease-out); }
+.sy-dia .sc-line path.is-draw.is-on { stroke-dashoffset: 0; }
+.sy-system { justify-content: flex-start; gap: 0; }
+.sy-system .sy-path { margin-top: 2px; font: 13px/20px 'Geist Mono Variable', ui-monospace, monospace; }
+.sy-tokens { display: flex; align-items: center; gap: 8px; margin-top: 18px; padding: 0; background: none; }
+.sy-tokens i { width: 26px; height: 26px; box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--sc-ink) 14%, transparent); }
+.sy-btn { margin-left: auto; padding: 4px 12px; background: var(--e-primary); color: var(--e-primary-fg); font-size: 13px; font-weight: 500; line-height: 20px; }
+.sc-node p.sy-note { margin-top: 14px; font-size: 14px; line-height: 20px; }
+.sy-proto { position: absolute; margin: 0; width: 272px; transition: opacity 420ms ease; }
+.sy-thumb { overflow: hidden; border: 1.5px solid var(--sc-node-line); border-radius: 10px; background: var(--sc-node); transition: border-color 420ms ease, box-shadow 420ms ease; }
+.sy-proto.is-wired .sy-thumb { border-color: var(--sc-accent); box-shadow: 0 0 0 4px var(--sc-accent-soft); }
+.sy-thumb .ss-os { pointer-events: none; }
+.sy-proto figcaption { display: flex; justify-content: space-between; gap: 8px; margin-top: 12px; font-size: 15px; line-height: 22px; }
+.sy-proto figcaption b { font-weight: 600; }
+.sy-proto figcaption span { color: var(--sc-ink-weak); }
+
+/* The Marketing system's launch page: warm paper, near-black brand, 8px corners, large type. */
+.ss-mk { padding: 0 72px; }
+.ss-mk-top { display: flex; align-items: center; gap: 28px; height: 72px; font-weight: 500; color: var(--e-weak); }
+.ss-mk-top b { display: flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 600; color: var(--e-fg); }
+.ss-mk-top b i { width: 22px; height: 22px; border-radius: var(--e-radius); background: var(--e-primary); }
+.ss-mk-top b + span { margin-left: 24px; }
+.ss-mk-top em { margin-left: auto; padding: 8px 16px; border-radius: var(--e-radius); background: var(--e-primary); color: var(--e-primary-fg); font-style: normal; }
+.ss-mk-hero { max-width: 640px; margin: 72px auto 0; text-align: center; }
+.ss-mk-hero h1 { font-size: 60px; line-height: 64px; font-weight: 600; letter-spacing: -.035em; color: var(--e-fg); }
+.ss-mk-hero p { margin: 22px auto 0; max-width: 560px; font-size: 19px; line-height: 28px; color: var(--e-weak); }
+.ss-mk-hero div { display: flex; justify-content: center; gap: 12px; margin-top: 32px; }
+.ss-mk-hero span { padding: 12px 22px; border-radius: var(--e-radius); background: var(--e-secondary); color: var(--e-secondary-fg); font-size: 16px; font-weight: 500; }
+.ss-mk-hero span.is-primary { background: var(--e-primary); color: var(--e-primary-fg); }
+.ss-mk-shot { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 16px; margin-top: 64px; }
+.ss-mk-shot i { height: 260px; border-radius: var(--e-radius); background: var(--e-card); box-shadow: 0 0 0 1px var(--e-line); }
