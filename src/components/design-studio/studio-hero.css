@@ -82,3 +82,7 @@
    the same line as the sidebar title and the app's top bar (28px down), and the rail's icons center on the column beside its hairline. */
 .dx-os .ss-pane > .ss-app { height: 100%; }
 .dx-os .sc-rail { box-sizing: content-box; padding-top: 16px; }
+
+/* The browse tour sits under a slide's copy with the same gap as the case-study stages. */
+.cs-slide .hx { margin-top: 48px; }
+@media (max-width: 760px) { .cs-slide .hx { margin-top: 28px; } }
