@@ -169,6 +169,10 @@ production untouched and comments a stable `pr-<number>-itspatmorgan.<subdomain>
 link on the PR. Both workflows use the `CLOUDFLARE_API_TOKEN` and
 `CLOUDFLARE_ACCOUNT_ID` repository secrets. Dependabot and fork PRs skip previews.
 
+Cloudflare Web Analytics runs with automatic setup on the itspatmorgan.com zone:
+Cloudflare injects its cookieless beacon at the edge, so the site has no analytics
+code. Don't add a manual beacon snippet, which would count visits twice.
+
 Disable the Studio repository's old Pages site when switching deployments so it
 cannot claim the product page's `/design-studio/` path after the source rename.
 The root `404.html` supports direct demo URLs without redirecting their path and

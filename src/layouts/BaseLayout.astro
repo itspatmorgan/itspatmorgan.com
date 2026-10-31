@@ -74,20 +74,6 @@ const ogImage = new URL(image ?? "/images/share/home.jpg", siteConfig.url).toStr
     <meta name="twitter:image" content={ogImage} />
     <meta name="twitter:image:alt" content={pageTitle} />
 
-    {/* Cloudflare Web Analytics: cookieless, so no consent banner. It loads only on the live domain, so previews and
-        local builds stay out of the numbers. */}
-    {siteConfig.analyticsToken && (
-      <script is:inline define:vars={{ token: siteConfig.analyticsToken, host: new URL(siteConfig.url).hostname }}>
-        if (location.hostname === host) {
-          const beacon = document.createElement("script");
-          beacon.defer = true;
-          beacon.src = "https://static.cloudflareinsights.com/beacon.min.js";
-          beacon.dataset.cfBeacon = JSON.stringify({ token });
-          document.head.append(beacon);
-        }
-      </script>
-    )}
-
     {/* Prevent flash of wrong theme */}
     <script is:inline>
       (() => {
