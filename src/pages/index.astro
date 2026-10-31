@@ -87,11 +87,16 @@ const homeWorkGrid = "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:gap-6";
       <div class="hero-mobile-photo-field mb-8" data-hero-photo>
         <div class="hero-mobile-photo inline-block rotate-2 bg-white p-2 pb-5 shadow-xl shadow-black/15 transition-transform duration-300 hover:rotate-0 hover:scale-[1.02] dark:bg-[#20201e] dark:shadow-black/40">
           <div class="h-36 w-36 overflow-hidden">
-            <img
-              src="/images/brand/profile-living-room-avatar.jpg"
-              alt="Patrick Morgan"
-              class="block h-full w-full object-cover"
-            />
+            {/* Each hero photo names the other breakpoint's file for its hidden size, so a visitor downloads only one portrait. */}
+            <picture>
+              <source media="(min-width: 768px)" srcset="/images/brand/profile-living-room.jpg" />
+              <img
+                src="/images/brand/profile-living-room-avatar.jpg"
+                alt="Patrick Morgan"
+                fetchpriority="high"
+                class="block h-full w-full object-cover"
+              />
+            </picture>
           </div>
         </div>
       </div>
@@ -145,11 +150,15 @@ const homeWorkGrid = "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:gap-6";
           aria-label="Run builder mode portrait animation"
         >
           <div class="relative h-52 w-52 overflow-hidden lg:h-64 lg:w-64 xl:h-72 xl:w-72">
-            <img
-              src="/images/brand/profile-living-room.jpg"
-              alt="Patrick Morgan"
-              class="block h-full w-full scale-[1.55] object-cover object-[43%_54%] transition duration-500 group-aria-pressed/builder:scale-[1.62] group-aria-pressed/builder:grayscale group-aria-pressed/builder:contrast-125 group-aria-pressed/builder:brightness-75 group-aria-pressed/builder:saturate-0 group-aria-pressed/builder:[image-rendering:pixelated]"
-            />
+            <picture>
+              <source media="(max-width: 767px)" srcset="/images/brand/profile-living-room-avatar.jpg" />
+              <img
+                src="/images/brand/profile-living-room.jpg"
+                alt="Patrick Morgan"
+                fetchpriority="high"
+                class="block h-full w-full scale-[1.55] object-cover object-[43%_54%] transition duration-500 group-aria-pressed/builder:scale-[1.62] group-aria-pressed/builder:grayscale group-aria-pressed/builder:contrast-125 group-aria-pressed/builder:brightness-75 group-aria-pressed/builder:saturate-0 group-aria-pressed/builder:[image-rendering:pixelated]"
+              />
+            </picture>
             <div
               class="builder-grid pointer-events-none absolute inset-0 opacity-0 mix-blend-screen transition-opacity duration-500 group-aria-pressed/builder:opacity-80"
               aria-hidden="true"

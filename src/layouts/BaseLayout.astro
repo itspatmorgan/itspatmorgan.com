@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import { siteConfig } from "@/data/site-config";
+import geistLatin from "@fontsource-variable/geist/files/geist-latin-wght-normal.woff2?url";
 
 interface Props {
   title?: string;
@@ -32,6 +33,7 @@ const ogImage = new URL(image ?? "/images/brand/profile-picture.jpg", siteConfig
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="preload" href="/fonts/GeistPixel-Square.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={geistLatin} as="font" type="font/woff2" crossorigin />
     <link rel="canonical" href={canonicalURL} />
     <title>{pageTitle}</title>
 
@@ -78,6 +80,14 @@ const ogImage = new URL(image ?? "/images/brand/profile-picture.jpg", siteConfig
       new MutationObserver(() => { if (host()) applyTheme(host() === "dark"); })
         .observe(root, { attributes: true, attributeFilter: ["data-theme"] });
       system.addEventListener("change", (event) => { if (!host() && !stored("theme")) applyTheme(event.matches); });
+
+      // The home hero opens in pixel type and dissolves to sans on the first visit of a session. Start it in pixel type before the
+      // first paint, so the sans headline never flashes and then jumps. home-interactions.ts removes the class as the dissolve begins.
+      const session = (key) => { try { return sessionStorage.getItem(key); } catch { return null; } };
+      if (location.pathname === "/" && !session("pixelWaveSeen") && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        root.classList.add("pw-intro");
+        setTimeout(() => root.classList.remove("pw-intro"), 3000);
+      }
 
       const sidebarPreference = stored("sidebar-collapsed");
       if (sidebarPreference === null || sidebarPreference === "true") {
