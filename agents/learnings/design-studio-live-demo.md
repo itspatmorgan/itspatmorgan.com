@@ -44,7 +44,7 @@ serve the published demo under localhost. The website's production deployment
 checks out a passing Studio source commit from its GitHub repository, builds it
 with `/design-studio-demo/` as its base, and includes it in the combined Pages
 artifact. Local `pnpm build` still builds Astro alone; see the deployment section
-in `agent-os/system-map.md` for assembling a local combined preview. The root
+in `agents/system-map.md` for assembling a local combined preview. The root
 404 page loads Studio only for demo application routes and redirects the former
 `/design-studio-starter/` path. Check accessible control labels and rendering
 markers when Studio is updated.

@@ -51,6 +51,9 @@ Shared plumbing:
 
 ## Workflow
 
+Read `agents/audience.md` and `agents/principles/design.md` first; this skill
+applies them to one card.
+
 ### 1. Find the one idea
 
 Name, in a few words, what makes this case study different from the others,

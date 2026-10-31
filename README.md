@@ -21,4 +21,4 @@ The site runs on Cloudflare Workers. GitHub Actions deploys `main` on every push
 ## Docs
 
 - [AGENTS.md](AGENTS.md): working guide for coding agents
-- [System map](agent-os/system-map.md): architecture, content, build and deployment details
+- [System map](agents/system-map.md): architecture, content, build and deployment details

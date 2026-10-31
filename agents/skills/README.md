@@ -34,7 +34,7 @@ resources when a skill needs them.
 
 - Skills should produce small, reviewable outputs.
 - Skills should not make broad changes without approval.
-- Skills should link to canonical Agent OS files instead of duplicating them.
+- Skills should link to canonical files in `agents/` instead of duplicating them.
 - Skills can be run manually now and scheduled through automation later.
 
 | Skill | Purpose |

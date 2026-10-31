@@ -6,20 +6,11 @@ This site is Patrick Morgan's personal portfolio and publishing home. It should
 help product, design, and technology leaders understand the shape of the work,
 the judgment behind it, and the systems that support it.
 
-## Audience
+## Audience and Principles
 
-- Product, design, and technology leaders evaluating collaboration or hiring.
-- Peers interested in product strategy, AI, design systems, and creative tooling.
-- Future maintainers and agents working on the site.
-
-## Experience Principles
-
-- Warm, minimal, editorial, and professional.
-- Content-first over decorative complexity.
-- Clear public terminology: Work, Writing, Lab, Kind Words.
-- Polished public artifacts over broad unfinished surfaces.
-- Deterministic systems where repeatability matters, especially publishing and
-  generated writing visuals.
+Who the site is for lives in `audience.md`. How to decide what good looks
+like lives in `principles/`. Public terminology: Work, Writing, Lab, Kind
+Words (see `conventions/content.md`).
 
 ## Active Tracks
 
@@ -38,7 +29,8 @@ the judgment behind it, and the systems that support it.
 - Do not publish half-finished Lab experiments as public proof-of-work.
 - Do not add broad abstractions or libraries unless they clearly reduce future
   maintenance cost.
-- Do not let tool-specific folders own durable project memory.
+- Do not let tool-specific folders own durable project memory. They link to
+  `agents/` instead.
 
 ## Current Operating Focus
 

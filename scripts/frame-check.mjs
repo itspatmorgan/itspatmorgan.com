@@ -1,6 +1,6 @@
 // Frame check for case-study demos: plays each slide's scene in a real browser and saves a contact sheet of frames taken every
 // few hundred milliseconds, at desktop and phone widths, so a camera move or transition can be checked frame by frame, not only its
-// end state (see agent-os/skills/case-study-shaping).
+// end state (see agents/skills/case-study-shaping).
 //
 //   node scripts/frame-check.mjs --url http://localhost:4321/work/sublime-agents [--slides hero,bet] [--widths 1300,390]
 //                                [--every 250] [--duration 12000] [--theme light|dark] [--out frame-check]
