@@ -6,7 +6,6 @@ import { liveDemoSlugs } from "@/data/project-demos";
 import PixelWaveText from "@/components/PixelWaveText.astro";
 import LabCard from "@/components/lab/LabCard.astro";
 import StudioHomeModule from "@/components/design-studio/StudioHomeModule.astro";
-import { GenerativePatternSurface } from "@/lab/editorial-art/GenerativePatternSurface";
 import { UAMark } from "@/lab/editorial-art/UAMark";
 import { siteConfig } from "@/data/site-config";
 import { commendations } from "@/data/commendations";
@@ -43,29 +42,6 @@ const heroIntro = "I've been a strategist, developer, designer, and writer — s
 const heroIntroDetail = "The through line is my compulsion to turn ideas into useful, well-crafted things.";
 const heroCurrentWorkLead = "Right now, I'm designing agentic email security at";
 const heroCurrentWorkTail = "an open-source prototyping environment.";
-
-const newsletterPattern = {
-  type: "isoline",
-  seed: 211,
-  levels: 9,
-  scale: 340,
-  strokeWidth: 0.9,
-  opacity: 66,
-  color: "copper",
-} as const;
-
-const newsletterLightPattern = {
-  ...newsletterPattern,
-  opacity: 76,
-  strokeWidth: 1.05,
-  color: "bronze",
-} as const;
-
-const newsletterMotion = {
-  mode: "ambient",
-  speed: 20,
-  intensity: 28,
-} as const;
 
 const communityCommendations = featuredCommunityCommendations
   .map((name) => commendations.find((commendation) => commendation.name === name))
@@ -247,18 +223,15 @@ const homeWorkGrid = "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:gap-6";
         >
           <article class="h-full overflow-hidden rounded-xl border border-border bg-card transition-all duration-300 group-hover:-translate-y-0.5 group-hover:shadow-md group-hover:shadow-black/5 dark:group-hover:shadow-black/20">
             <div class="relative h-full min-h-[260px] w-full overflow-hidden bg-card">
-              <GenerativePatternSurface
-                name="unknown-arts-newsletter"
-                config={newsletterPattern}
-                lightConfig={newsletterLightPattern}
-                motion={newsletterMotion}
-                duration={2800}
-                className="absolute inset-0 opacity-95 transition-all duration-300 group-hover:scale-[1.03] group-hover:opacity-100"
-                client:only="react"
+              {/* The newsletter's own cover collage, cut out from its paper so the card shows through in either theme. */}
+              <img
+                src="/images/unknown-arts/collage-cutout.webp"
+                alt=""
+                loading="lazy"
+                class="newsletter-collage pointer-events-none absolute max-w-none transition-transform duration-300 group-hover:scale-[1.03]"
               />
-              <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#171716]/92 via-[#171716]/12 to-transparent opacity-0 dark:opacity-100"></div>
-              <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/68 via-background/0 to-transparent dark:hidden"></div>
-              <div class="pointer-events-none absolute bottom-6 left-6 right-6">
+              <div class="newsletter-fade pointer-events-none absolute inset-0"></div>
+              <div class="pointer-events-none absolute bottom-6 left-6 right-6 sm:right-auto sm:max-w-[46%]">
                 <div class="mb-3 text-[#b38b6d] dark:text-[#f7ccab]">
                   <UAMark color="currentColor" height={24} />
                 </div>
@@ -541,6 +514,34 @@ const homeWorkGrid = "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:gap-6";
         animation: none;
       }
     }
+
+  /* Newsletter card: on phones the collage sits up and to the right above the full-width text; from sm up it fills the right
+     side and the text keeps the left. The fade is the card's own color, so it blends in both themes. */
+  .newsletter-collage {
+    top: -10%;
+    right: -18%;
+    height: 76%;
+    width: auto;
+    transform-origin: right center;
+  }
+  .newsletter-fade {
+    background: linear-gradient(0deg, var(--card) 0%, color-mix(in oklab, var(--card) 85%, transparent) 38%, transparent 70%);
+  }
+  @media (min-width: 40rem) {
+    .newsletter-collage {
+      top: -10%;
+      right: -12%;
+      height: 124%;
+    }
+    .newsletter-fade {
+      background:
+        linear-gradient(90deg, var(--card) 0%, color-mix(in oklab, var(--card) 70%, transparent) 38%, transparent 60%),
+        linear-gradient(0deg, color-mix(in oklab, var(--card) 80%, transparent) 0%, transparent 45%);
+    }
+  }
+  :global(.dark) .newsletter-collage {
+    filter: brightness(0.92);
+  }
   </style>
 
   <script>
