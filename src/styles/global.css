@@ -51,6 +51,9 @@ html:active-view-transition-type(page-navigation)::view-transition-new(root) {
     animation: none;
   }
 }
+/* First home visit of a session: the hero starts in pixel type (see BaseLayout.astro). */
+html.pw-intro :is([data-pixel-wave="hero"], [data-pixel-wave="headline"]) [data-pw-pixel] { opacity: 1 !important; }
+html.pw-intro :is([data-pixel-wave="hero"], [data-pixel-wave="headline"]) [data-pw-sans] { opacity: 0 !important; }
 @font-face {
   font-family: 'Geist Pixel Square';
   src: url('/fonts/GeistPixel-Square.woff2') format('woff2');

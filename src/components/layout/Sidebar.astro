@@ -459,6 +459,24 @@ const elsewhere = [
       if (event.key === "Escape") setRollupOpen(false);
     });
 
+    // Mark the clicked page as current straight away, so the click registers before the next page arrives.
+    const ACTIVE = ["bg-secondary", "text-secondary-foreground", "font-medium"];
+    const INACTIVE = ["text-muted-foreground", "hover:text-foreground"];
+    const current = sidebar.querySelector<HTMLAnchorElement>("a.nav-item.bg-secondary");
+    const markActive = (link: HTMLAnchorElement | null) => {
+      sidebar.querySelectorAll<HTMLAnchorElement>("a.nav-item").forEach((item) => {
+        const active = item === link;
+        item.classList.remove(...(active ? INACTIVE : ACTIVE));
+        item.classList.add(...(active ? ACTIVE : INACTIVE));
+      });
+    };
+    sidebar.addEventListener("click", (event) => {
+      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      const link = (event.target as Element).closest<HTMLAnchorElement>("a.nav-item");
+      if (link) markActive(link);
+    });
+    // Coming back through the back button restores this page as it was left, so put the highlight back on it.
+    window.addEventListener("pageshow", (event) => { if (event.persisted) markActive(current); });
   }
 
   function initSidebarTooltips() {

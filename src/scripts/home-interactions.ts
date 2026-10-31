@@ -13,9 +13,12 @@ function initHomeInteractions() {
   const inactiveWave = document.querySelector<HTMLElement>(isMd ? ".hero-mobile [data-pixel-wave]" : ".hero-desktop [data-pixel-wave]");
   const ctaWave = document.querySelector<HTMLElement>('[data-pixel-wave="cta"]');
 
+  // The head script may have started the hero in pixel type; every branch below sets the final styles inline first.
+  const releaseIntro = () => document.documentElement.classList.remove("pw-intro");
   if (inactiveWave) enablePixelHover(inactiveWave);
   if (reducedMotion) {
     [heroWave, ctaWave].forEach((wave) => wave && enablePixelHover(wave));
+    releaseIntro();
     return;
   }
 
@@ -24,6 +27,7 @@ function initHomeInteractions() {
     if (seen) enablePixelHover(heroWave);
     else dissolvePixelWave(heroWave);
   }
+  releaseIntro();
 
   if (ctaWave) {
     const observer = new IntersectionObserver((entries) => {
