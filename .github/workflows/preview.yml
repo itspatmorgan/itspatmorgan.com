@@ -12,10 +12,13 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # The one build for a pull request. Every pull request is built and checked;
+  # only ones that can read the Cloudflare secrets get a preview link.
   preview:
-    # Secrets are not available to Dependabot or fork pull requests.
-    if: github.event.pull_request.head.repo.full_name == github.repository && github.actor != 'dependabot[bot]'
     runs-on: ubuntu-24.04
+    env:
+      # Secrets are not available to Dependabot or fork pull requests.
+      CAN_PREVIEW: ${{ github.event.pull_request.head.repo.full_name == github.repository && github.actor != 'dependabot[bot]' }}
     permissions:
       contents: read
       pull-requests: write
@@ -26,6 +29,7 @@ jobs:
       - uses: ./.github/actions/build-site
 
       - name: Upload a preview version
+        if: env.CAN_PREVIEW == 'true'
         id: upload
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -56,6 +60,7 @@ jobs:
           echo "version_url=$version_url" >> "$GITHUB_OUTPUT"
 
       - name: Comment the preview link
+        if: env.CAN_PREVIEW == 'true'
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         env:
           ALIAS_URL: ${{ steps.upload.outputs.alias_url }}

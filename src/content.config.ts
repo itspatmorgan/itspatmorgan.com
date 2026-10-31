@@ -1,6 +1,7 @@
 import { defineCollection } from "astro:content";
 import { z } from "astro/zod";
 import { glob } from "astro/loaders";
+import { LAYER_COLORS } from "./lab/editorial-art/themes";
 
 const projects = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/projects" }),
@@ -20,6 +21,8 @@ const projects = defineCollection({
   }),
 });
 
+const layerColor = z.enum(LAYER_COLORS);
+
 const visualGenerator = z.discriminatedUnion("type", [
   z.object({
     type: z.literal("flow-field"),
@@ -30,7 +33,7 @@ const visualGenerator = z.discriminatedUnion("type", [
     curl: z.number(),
     strokeWidth: z.number(),
     opacity: z.number(),
-    color: z.string(),
+    color: layerColor,
   }),
   z.object({
     type: z.literal("dot-grid"),
@@ -39,7 +42,7 @@ const visualGenerator = z.discriminatedUnion("type", [
     scale: z.number(),
     dotSize: z.number(),
     opacity: z.number(),
-    color: z.string(),
+    color: layerColor,
   }),
   z.object({
     type: z.literal("isoline"),
@@ -48,7 +51,7 @@ const visualGenerator = z.discriminatedUnion("type", [
     scale: z.number(),
     strokeWidth: z.number(),
     opacity: z.number(),
-    color: z.string(),
+    color: layerColor,
   }),
   z.object({
     type: z.literal("voronoi"),
@@ -57,18 +60,18 @@ const visualGenerator = z.discriminatedUnion("type", [
     jitter: z.number(),
     strokeWidth: z.number(),
     opacity: z.number(),
-    color: z.string(),
+    color: layerColor,
   }),
   z.object({
     type: z.literal("strange-attractor"),
     seed: z.number(),
     opacity: z.number(),
-    color: z.string(),
+    color: layerColor,
   }),
 ]);
 
 const visualLightMode = z.object({
-  color: z.string(),
+  color: layerColor,
   opacity: z.number(),
   strokeWidth: z.number().optional(),
 });

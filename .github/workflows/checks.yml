@@ -26,5 +26,5 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm audit --audit-level=high
-      - run: node --test scripts/studio-deployment.test.mjs
-      - run: pnpm build
+      - run: pnpm test
+      - run: pnpm check

@@ -166,7 +166,11 @@ Pull requests from this repository run `.github/workflows/preview.yml`: the same
 build, then `wrangler versions upload --preview-alias pr-<number>`, which leaves
 production untouched and comments a stable `pr-<number>-itspatmorgan.<subdomain>.workers.dev`
 link on the PR. Both workflows use the `CLOUDFLARE_API_TOKEN` and
-`CLOUDFLARE_ACCOUNT_ID` repository secrets. Dependabot and fork PRs skip previews.
+`CLOUDFLARE_ACCOUNT_ID` repository secrets. Dependabot and fork PRs are built
+and checked but get no preview link. The preview build is a pull request's only
+build: `.github/workflows/checks.yml` runs the audit, script tests and type check
+without building. Every build ends with `pnpm check:site`, which fails on broken
+local links and pages missing a title, description or share image.
 
 Cloudflare Web Analytics runs with automatic setup on the itspatmorgan.com zone:
 Cloudflare injects its cookieless beacon at the edge, so the site has no analytics
