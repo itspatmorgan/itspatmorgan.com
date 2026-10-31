@@ -8,7 +8,8 @@ import { buttonVariants } from "@/components/ui/button";
 import { siteConfig } from "@/data/site-config";
 import { GithubIcon, UserIcon, Robot01Icon, ArrowUpRight01Icon, ArrowDown01Icon, ArrowRight01Icon, Copy01Icon } from "@hugeicons/core-free-icons";
 import Slide from "@/components/case-study/Slide.astro";
-import StudioShapes from "@/components/design-studio/StudioShapes";
+import StudioHero from "@/components/design-studio/StudioHero";
+import StudioAsk from "@/components/design-studio/StudioAsk";
 import Spectrum from "@/components/studio-case/Spectrum";
 import StudioSystem from "@/components/design-studio/StudioSystem";
 import StudioDocs from "@/components/design-studio/StudioDocs";
@@ -32,7 +33,7 @@ const learnMore = mediaFeatures.filter((item) => item.title !== "Design Studio o
         <svg width="27" height="26" viewBox="12.48 12 25.03 24" fill="currentColor" aria-hidden="true"><path d="M21.3943 12H12.48V36H21.3943V12Z" /><path d="M23.7944 12H25.5087C28.6913 12 31.7436 13.2643 33.994 15.5147C36.2444 17.7652 37.5087 20.8174 37.5087 24C37.5087 27.1826 36.2444 30.2348 33.994 32.4853C31.7436 34.7357 28.6913 36 25.5087 36H23.7944V12Z" /></svg>
         <span class="studio-brand-label flex items-center gap-2">
           <span class="studio-brand-name text-lg">Design Studio</span>
-          <span class="rounded-full border border-border bg-muted px-2 py-0.5 font-mono text-xs leading-tight tracking-wide text-muted-foreground" title="Public beta · Under active development">Beta</span>
+          <span class="studio-beta rounded-full border border-border bg-muted px-2 py-0.5 font-mono text-xs leading-tight tracking-wide text-muted-foreground" title="Public beta · Under active development">Beta</span>
         </span>
       </a>
       <div class="studio-header-controls ml-auto flex shrink-0 items-center gap-4 sm:gap-6">
@@ -51,21 +52,22 @@ const learnMore = mediaFeatures.filter((item) => item.title !== "Design Studio o
     <div id="studio-human" data-studio-panel="human" class="cs-page sc ds-landing">
     <header class="cs-slide cs-hero ds-hero" aria-labelledby="studio-title">
       <h1 id="studio-title"><PixelWaveText text="Design with intent." wave="studio-headline" initialSans /><br /><PixelWaveText text="Build with an agent." wave="studio-headline" initialSans /></h1>
-      <p>Design Studio is an open source, AI prototype sandbox for designers and product managers who build.</p>
+      <p>An open-source prototype sandbox for designers and product managers who build with agents.</p>
       <div class="sc-next ds-actions">
         <a href="#get-started" class="is-primary" data-copy-text={installationPrompt} data-copy-label="Copy setup prompt" data-copy-done="Copied. Paste it into your agent"><Icon icon={Copy01Icon} size={16} class="shrink-0" /><span data-copy-face>Copy setup prompt</span></a>
-        <a href={liveDemo}>Try the live demo <Icon icon={ArrowUpRight01Icon} size={14} class="shrink-0" /></a>
+        <a href={liveDemo}><span class="ds-try">Try the live demo</span><span class="ds-try-short">Live demo</span> <Icon icon={ArrowUpRight01Icon} size={14} class="shrink-0" /></a>
       </div>
-      <div class="ds-works">
-        <span class="ds-works-row">Paste it into
-          {agentHarnesses.map((harness) => (
-            <span class="ds-harness"><span class="hero-vendor-logo ds-logo" style={"--vendor-logo: url(" + harness.logo + ")"} aria-hidden="true"></span>{harness.title}</span>
-          ))}
-        </span>
-        <span class="ds-works-line">Or point your agent at <a href="/design-studio/agent.txt">itspatmorgan.com/design-studio/agent.txt</a></span>
-      </div>
-      <StudioShapes client:load />
+      <p class="ds-works">Works with
+        {agentHarnesses.map((harness) => (
+          <span class="ds-harness"><span class="hero-vendor-logo ds-logo" style={"--vendor-logo: url(" + harness.logo + ")"} aria-hidden="true"></span>{harness.title}</span>
+        ))}
+      </p>
+      <div class="ds-hero-studio"><StudioHero client:load /></div>
     </header>
+
+    <Slide id="ask-title" title="Then just ask your agent" line="Every artifact starts as a request. Your agent writes it into the prototype as a file, and the Studio shows it beside the rest.">
+      <StudioAsk client:visible />
+    </Slide>
 
     <section class="cs-slide ds-proof" aria-label="Who uses Design Studio">
       <figure class="sc-quote">
@@ -195,14 +197,11 @@ const learnMore = mediaFeatures.filter((item) => item.title !== "Design Studio o
   .ds-actions { margin-top: 36px; }
   .ds-actions a { height: 44px; padding: 0 20px; font-size: 15px; }
   .ds-actions a [data-copy-face] { transition: opacity 160ms ease; }
-  .ds-works { display: flex; flex-direction: column; align-items: center; gap: 8px; margin-top: 24px; font-size: 14px; line-height: 20px; color: var(--muted-foreground); }
-  .ds-works-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 4px 14px; }
-  .ds-works-line { text-align: center; text-wrap: balance; }
+  .ds-hero > .ds-works { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 4px 14px; max-width: none; margin-top: 24px; font-size: 14px; line-height: 20px; color: var(--muted-foreground); }
   .ds-harness { display: inline-flex; align-items: center; gap: 6px; color: var(--foreground); }
   .ds-works .ds-logo { width: 16px; height: 16px; }
-  .ds-works a { color: var(--foreground); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: color-mix(in srgb, currentColor 35%, transparent); }
-  .ds-works a:hover { text-decoration-color: currentColor; }
-  .ds-hero > :global(.cs-scene) { margin-top: 64px; }
+  .ds-hero-studio { margin-top: 56px; }
+  .ds-try-short { display: none; }
   .ds-proof { padding-top: 128px; }
   .ds-case-link { display: inline-flex; align-items: center; gap: 6px; margin-top: 32px; font-size: 15px; font-weight: 500; text-decoration: underline; text-underline-offset: 4px; text-decoration-color: color-mix(in srgb, currentColor 35%, transparent); }
   .ds-case-link:hover { text-decoration-color: currentColor; }
@@ -235,9 +234,14 @@ const learnMore = mediaFeatures.filter((item) => item.title !== "Design Studio o
   @media (max-width: 860px) { .ds-start-grid { grid-template-columns: minmax(0, 1fr); max-width: 560px; gap: 12px; } .ds-share-grid { grid-template-columns: minmax(0, 1fr); max-width: 560px; margin-top: 28px; gap: 12px; } }
   @media (max-width: 760px) { .ds-note { padding-top: 88px; } .ds-start-grid { margin-top: 28px; } }
   @media (max-width: 640px) {
-    .ds-actions a { height: 40px; padding: 0 16px; font-size: 14px; }
-    .ds-works { font-size: 13px; }
-    .ds-works-row { gap: 4px 10px; }
+    .ds-actions { flex-wrap: nowrap; gap: 8px; margin-top: 28px; }
+    .ds-actions a { height: 40px; padding: 0 14px; font-size: 14px; white-space: nowrap; }
+    .ds-try { display: none; }
+    .ds-try-short { display: inline; }
+    .ds-hero > h1 { font-size: clamp(32px, 9.4vw, 40px); }
+    .ds-hero > p { margin-top: 18px; }
+    .ds-hero-studio { margin-top: 36px; }
+    .ds-hero > .ds-works { gap: 4px 10px; font-size: 13px; }
   }
   .studio-text-link { display: inline-flex; min-height: 2.75rem; align-items: center; gap: 0.5rem; font-size: 0.875rem; font-weight: 500; text-decoration: underline; text-underline-offset: 4px; transition: color 150ms; }
   .studio-text-link:hover { color: var(--accent); }
@@ -247,7 +251,7 @@ const learnMore = mediaFeatures.filter((item) => item.title !== "Design Studio o
     .studio-header { gap: 0.5rem; }
     .studio-brand { gap: 0.5rem; }
     .studio-brand > svg { width: 1.5rem; height: auto; }
-    .studio-brand-label { flex-direction: column; align-items: flex-start; gap: 0.25rem; }
+    .studio-beta { display: none; }
     .studio-brand-name { font-size: clamp(0.875rem, 4.5cqi, 1.125rem); white-space: nowrap; }
     .studio-header-controls { gap: 0.25rem; }
     .studio-github { width: 2.75rem; justify-content: center; }

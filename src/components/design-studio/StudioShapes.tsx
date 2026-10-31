@@ -83,7 +83,7 @@ export function Inbox({ open = false, panel }: { open?: boolean; panel?: 'new' |
 }
 
 /** The overview (overview.tsx): four numbers, two breakdowns and the newest feedback, computed from the sample data. */
-function Overview() {
+export function Overview() {
   const bars = (rows: [string, number][]) => <ul className="ss-bars">{rows.map(([l, n]) => <li key={l}><span>{l}</span><i><b style={{ width: `${(n / 3) * 100}%` }} /></i><span>{n}</span></li>)}</ul>;
   return <Echo on="overview">
     <div className="ss-head"><div><h1>Overview</h1><p>Where the feedback stands. Click a number to see the feedback behind it.</p></div></div>
@@ -102,7 +102,7 @@ function Overview() {
 }
 
 /** One piece of feedback (feedback-detail.tsx), opened directly, so it shows the newest item. */
-function Detail() {
+export function Detail() {
   return <Echo on="inbox">
     <span className="ss-back">{icon(ArrowLeft01Icon, 15)}Feedback inbox</span>
     <div className="ss-head">

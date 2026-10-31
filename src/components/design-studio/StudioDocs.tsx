@@ -34,9 +34,9 @@ function Line({ text, front }: { text: string; front: boolean }) {
   return <>{parts}</>;
 }
 
-function Editor() {
+export function Editor({ onDone }: { onDone?: () => void } = {}) {
   return <div className="ss-pane ss-editor">
-    <header><code>src/prototypes/parker/feedback-inbox/discovery/project-context.md</code><span className="ss-ed-btn is-disabled">Save</span><span className="ss-ed-btn">Done</span></header>
+    <header><code>src/prototypes/parker/feedback-inbox/discovery/project-context.md</code><span className="ss-ed-btn is-disabled">Save</span><span className={`ss-ed-btn ${onDone ? 'is-pickable' : ''}`} onClick={onDone} data-hx="done">Done</span></header>
     <ol>{source.map((text, i) => <li key={i} className={i === 0 ? 'is-current' : ''}><span><Line text={text} front={i <= 5} /></span></li>)}</ol>
   </div>;
 }
