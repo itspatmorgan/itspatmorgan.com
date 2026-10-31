@@ -32,13 +32,8 @@ const writingPosts = (await getCollection("writing", ({ data }) => !data.draft))
 const professionalProjects = allProjects
   .filter((p) => p.data.type === "professional")
   .sort((a, b) => a.data.sortOrder - b.data.sortOrder);
-const featuredProjectDescriptions: Record<string, string> = {
-  "sublime-agents": "Designed an AI agent that writes detection rules, and gives security teams control over its autonomy.",
-  "query-language": "Designed a visual query builder that taught a complex query language as customers used it.",
-  expansion: "Shaped how a new SKU came to market by extending the platform, not rebuilding it.",
-  "design-studio": "Designed and built the environment where Sublime's product team and their agents prototype together, then open-sourced it.",
-};
-
+const studioSummary = allProjects.find((p) => p.id === "design-studio")?.data.summary;
+if (!studioSummary) throw new Error("The Design Studio card needs a summary in src/content/projects/design-studio.md");
 const heroHeadline = "Patrick is a designer who builds.";
 const heroIntro = "I've been a strategist, developer, designer, and writer — sometimes all at once.";
 const heroIntroDetail = "The through line is my compulsion to turn ideas into useful, well-crafted things.";
@@ -200,7 +195,7 @@ const homeWorkGrid = "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:gap-6";
         <div data-project-card-item>
           <ProjectCard
             title={project.data.title}
-            description={featuredProjectDescriptions[project.id] ?? project.data.description}
+            description={project.data.summary ?? project.data.description}
             skills={project.data.skills}
             thumbnail={project.data.thumbnail}
             thumbnailDark={project.data.thumbnailDark}
@@ -217,7 +212,7 @@ const homeWorkGrid = "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:gap-6";
       ))}
     </div>
     <div class="mt-5 lg:mt-6">
-      <StudioHomeModule description={featuredProjectDescriptions["design-studio"]} />
+      <StudioHomeModule description={studioSummary} />
     </div>
   </section>
 

@@ -30,6 +30,11 @@ Four reference implementations exist:
 - Page shell: `src/layouts/CaseStudyLayout.astro` (nav, hero, brief, and a
   `hero` slot for the hero visual) and `src/components/case-study/Slide.astro`
   (headline, one line, visual). A page is the layout plus one `Slide` per point.
+- Words live in the entry's `caseStudy` block (`src/content/projects/<slug>.md`):
+  company, subline, share description and image, brief, and each slide's title
+  and line by id. The page only places visuals: `getCaseStudy('<slug>')` from
+  `src/lib/case-study.ts`, then `<Slide {...slide('<id>')}>`. Copy edits never
+  touch the page.
 - Shared layout, rhythm, demo and scene styles:
   `src/components/case-study/case-study.css`, under `cs-` class names.
 - Shared demo plumbing in `src/components/case-study/`: `NativeStage` and
@@ -178,7 +183,7 @@ still don't land after a round or two, cut it; the story can take it back later.
   (example inputs, sample counts) to Patrick.
 - Use non-breaking hyphens (`‑`) in compound words that break badly on phones.
 - Update the entry's `title` and `description` to match the new framing. The
-  homepage card line (`featuredProjectDescriptions`) and the entry description
+  homepage card line (the entry's `summary`) and the entry description
   say the same thing in two clauses: what Patrick designed, then the design
   move ("…writes detection rules, and gives security teams control over its
   autonomy"). Offer several options for these; they are Patrick's to pick.
@@ -324,8 +329,8 @@ The repo has no deploy previews, so Patrick reviews a published preview:
 On Patrick's go-ahead:
 
 1. Move the page onto the live slug and remove `noindex` and draft comments.
-2. Update the homepage card summary in `featuredProjectDescriptions`
-   (`src/pages/index.astro`), which is separate from the entry description.
+2. Update the homepage card line in the entry's `summary`, which is separate
+   from the entry description.
 3. Give the project card a live visual instead of a thumbnail, with the
    `project-card-visuals` skill. It doesn't need to match the case study's hero.
 4. Build, open a PR, merge on his say-so, and confirm the deploy and live page.

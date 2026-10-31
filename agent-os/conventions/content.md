@@ -26,27 +26,36 @@ rename it casually.
 
 ## Work
 
-Work entries live in `src/content/projects/*.{md,mdx}` and render publicly under
-`/work/<slug>`.
+Work entries live in `src/content/projects/*.md`. Each live case study has its
+own page, `src/pages/work/<slug>.astro`, which places the visuals; the entry
+holds the words. An entry with no page is a draft and does not render.
 
 Common frontmatter:
 
 ```yaml
-title: "Project Title"
+title: "Project Title"          # also the case study headline
 type: "professional"
-description: "Short description"
+description: "Short description" # the Work page card
 skills: ["Skill 1", "Skill 2"]
-thumbnail: "/images/projects/slug/thumbnail-image.jpg"
-thumbnailDark: "/images/projects/slug/thumbnail-image-dark.jpg"
-thumbnailWide: "/images/projects/slug/thumbnail-wide.jpg"
-thumbnailWideDark: "/images/projects/slug/thumbnail-wide-dark.jpg"
-heroImage: "/images/projects/slug/feature-image.jpg"
 sortOrder: 1
 draft: false
+summary: "Homepage card line"    # optional; falls back to description
+caseStudy:
+  company: { name: "Company", logo: "/images/logos/square-company.svg" }
+  subline: "One line under the headline"
+  shareDescription: "Search and share text, when it differs from the subline"
+  shareImage: "/images/share/work-slug.jpg"
+  brief: { when: "2024", role: "Role", team: "Team", outcome: "Outcome" }
+  slides:
+    problem:
+      title: "Slide headline"
+      line: "Optional one line under it"
 ```
 
-Dark, wide, and hero images are optional. Work entries that need embeds can use
-MDX.
+The page renders a slide with `<Slide {...slide('problem')}>`; a slide id the
+entry lacks fails the build. Thumbnails (`thumbnail`, `thumbnailDark`,
+`thumbnailWide`, `thumbnailWideDark`) are optional, for a card without a live
+visual. Drafts that need embeds can use MDX.
 
 ## Writing
 
