@@ -1,5 +1,5 @@
 /* One point per section: a headline, at most one line of copy, then the visual. Source UI keeps its original palette. */
-.cs-page { max-width: 1280px; margin: auto; padding: 0 48px 160px; }
+.cs-page { max-width: 1120px; margin: auto; padding: 0 48px 160px; }
 .cs-page *, .cs-page *::before, .cs-page *::after { box-sizing: border-box; }
 .cs-page a { text-underline-offset: 4px; }
 .cs-page a:hover { color: var(--foreground); }
@@ -10,7 +10,7 @@
 /* Slides: a short headline, one line of context, then the visual, all within one viewport.
    Spacing roughly doubles at each level: 24 within a group, 48 to its visual, 72 from the hero brief, 144 between sections. */
 .cs-slide { padding-top: 144px; text-align: center; scroll-margin-top: 24px; }
-/* One content measure: titles, copy and stages all sit within 960px, so nothing outruns the visual below it. */
+/* One page width: stages sit at the site's 1024px, and titles and copy keep narrower reading measures inside it. */
 /* Only the slide's own headings: a demo's headings inside the stage keep their product's type. */
 .cs-slide > h1, .cs-slide > h2 { max-width: 960px; margin-inline: auto; font-weight: 500; text-wrap: balance; }
 .cs-slide > h1 { max-width: 15em; font-size: clamp(42px, 5.2vw, 76px); line-height: 1.02; letter-spacing: -.05em; }
@@ -39,7 +39,7 @@
 }
 
 /* Stage: the site texture surface; the source UI floats on it as a product shot. Capped so the panel hugs its window on wide screens. */
-.cs-stage { position: relative; max-width: 960px; margin: 0 auto; text-align: left; padding: clamp(16px, 4.5vw, 64px); border-radius: 16px; }
+.cs-stage { position: relative; max-width: 1024px; margin: 0 auto; text-align: left; padding: clamp(16px, 4.5vw, 64px); border-radius: 16px; }
 /* One window size across slides, so the sequence reads like a deck. */
 .cs-stage .cs-demo { max-width: 880px; margin-inline: auto; }
 
@@ -62,9 +62,8 @@
 .cs-cursor svg { fill: white; }
 
 /* Scenes (scene.tsx): the screen carries its own margins, so the stage drops its padding and the card bleeds off the bottom.
-   Wide stages run past the 960px text measure to the page's full width, so a product screen renders at about its true size. */
+   Every stage shares the 1024px page width, so wide and normal scenes line up with the rest of the site. */
 .cs-page .cs-frame { padding: 0; overflow: hidden; }
-.cs-page .cs-frame.is-wide { max-width: 1184px; }
 .cs-stage-bar { position: relative; z-index: 1; display: flex; justify-content: center; padding: clamp(14px, 3vw, 36px) 16px 0; margin-bottom: clamp(-36px, -2.8vw, 0px); }
 /* The shell holds the card and its ring, and fades both out toward the stage's bottom edge, so a crop reads as a bleed. */
 .cs-shell { position: absolute; bottom: 0; -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 120px), transparent 100%); mask-image: linear-gradient(to bottom, #000 calc(100% - 120px), transparent 100%); }
@@ -73,8 +72,7 @@
 .cs-card { position: relative; height: 100%; overflow: hidden; background: var(--cs-card); border-radius: 24px 24px 0 0; box-shadow: 0 0 0 16px var(--cs-ring), var(--cs-drop); }
 
 /* Under each stage: the chapter's caption on the left, a segment per chapter and the play button on the right. */
-.cs-tour { display: flex; align-items: flex-start; justify-content: space-between; gap: 32px; max-width: 1184px; margin: 18px auto 0; padding: 0 4px; text-align: left; }
-.cs-stage:not(.is-wide) + .cs-tour { max-width: 960px; }
+.cs-tour { display: flex; align-items: flex-start; justify-content: space-between; gap: 32px; max-width: 1024px; margin: 18px auto 0; padding: 0 4px; text-align: left; }
 .cs-tour-caption { position: relative; flex: 1; min-width: 0; min-height: 24px; font-size: 15px; line-height: 24px; letter-spacing: -.01em; color: var(--foreground); }
 .cs-tour-caption > span { display: block; text-wrap: pretty; }
 .cs-tour.is-quiet { justify-content: flex-end; }
