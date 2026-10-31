@@ -212,13 +212,14 @@
 .ss-mk-shot { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 16px; margin-top: 64px; }
 .ss-mk-shot i { height: 260px; border-radius: var(--e-radius); background: var(--e-card); box-shadow: 0 0 0 1px var(--e-line); }
 
-/* Where Design Studio sits: a two-axis chart (StudioRange). */
+/* Where Design Studio sits: a two-by-two (StudioRange). */
 .rg-dia .rg-axis { stroke: var(--sc-node-line); stroke-width: 2; }
 .rg-dia .rg-tick { stroke: var(--sc-node-line); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.rg-dia .sc-line path.is-draw { stroke-width: 2.5; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 700ms var(--motion-ease-out); }
-.rg-dia .sc-line path.is-draw.is-on { stroke-dashoffset: 0; }
-.rg-label { position: absolute; display: flex; flex-direction: column; gap: 2px; white-space: nowrap; }
-.rg-label.is-end { align-items: flex-end; text-align: right; }
-.rg-label b { font-size: 19px; line-height: 26px; font-weight: 600; color: var(--sc-ink); }
-.rg-label span { font-size: 15px; line-height: 22px; color: var(--sc-ink-weak); }
-.rg-label.is-accent b { color: var(--sc-accent); }
+.rg-cell { position: absolute; display: flex; flex-direction: column; justify-content: flex-end; gap: 6px; padding: 24px 26px; border-radius: 14px; background: var(--sc-node); box-shadow: inset 0 0 0 1.5px var(--sc-node-line); transition: opacity 420ms ease, box-shadow 420ms ease, background-color 420ms ease; }
+.rg-cell b { font-size: 21px; line-height: 28px; font-weight: 600; color: var(--sc-ink); }
+.rg-cell span { max-width: 300px; font-size: 15px; line-height: 22px; color: var(--sc-ink-weak); }
+.rg-cell.is-ghost { background: transparent; box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--sc-node-line) 70%, transparent); opacity: 1; }
+.rg-cell.rg-ds.is-ghost b { color: var(--sc-ink-weak); opacity: .5; }
+.rg-cell.is-lit { box-shadow: inset 0 0 0 1.5px var(--sc-ink); }
+.rg-cell.is-accent { box-shadow: inset 0 0 0 2px var(--sc-accent), 0 0 0 5px var(--sc-accent-soft); }
+.rg-cell.is-accent b { color: var(--sc-accent); }
