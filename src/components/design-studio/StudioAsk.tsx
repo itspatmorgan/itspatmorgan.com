@@ -1,32 +1,102 @@
-import { StudioWindow, useAutoplay, type Key } from './explore/StudioWindow';
+import { useEffect, useRef, useState } from 'react';
+import { ArrowUp02Icon, PauseIcon, PlayIcon, Tick02Icon } from '@hugeicons/core-free-icons';
+import { icon } from '../studio-case/StudioUI';
+import { agentHarnesses } from '../../data/design-studio-setup';
+import { StudioWindow, useReduced, type Key } from './explore/StudioWindow';
 import './studio-hero.css';
 
-// How you work in Design Studio: you ask your agent, and it writes the artifact into the prototype. One request per kind of artifact,
-// each with the file it becomes in the Feedback Inbox sample (src/prototypes/parker/feedback-inbox), and that file opened beside it.
-// The requests teach the move; they aren't prompts to copy.
+// How you work in Design Studio: in the coding agent you already use. On the left, a conversation in that agent; on the right, the
+// Studio rendering what each message makes. Each request writes or changes a file in the Feedback Inbox sample
+// (src/prototypes/parker/feedback-inbox), and the Studio opens it. The chat is a neutral harness, not any one product's interface.
 
-const asks: { key: Key; kind: string; ask: string; file: string }[] = [
-  { key: 'inbox', kind: 'A screen', ask: 'Prototype a feedback inbox with our Product system: a table with status and priority, filters, and a panel to add feedback.', file: 'app/feedback-inbox.tsx' },
-  { key: 'lofi', kind: 'A lo-fi version', ask: 'Make a lo-fi copy of the inbox so we can settle the layout before the polish.', file: 'discovery/lofi-inbox.tsx' },
-  { key: 'flow', kind: 'A diagram', ask: 'Map how feedback moves from recorded to resolved.', file: 'discovery/feedback-flow.mermaid' },
-  { key: 'handoff', kind: 'A canvas', ask: 'Lay out every screen and state of the inbox on a canvas for engineering.', file: 'eng-handoff.excalidraw' },
-  { key: 'context', kind: 'A document', ask: 'Write up the problem, who it’s for, our assumptions and the open questions.', file: 'discovery/project-context.md' },
+type Turn = { ask: string; did: string; file: string; key: Key; lofi?: boolean };
+const turns: Turn[] = [
+  { ask: 'Prototype a feedback inbox for Echo with our Product system', did: 'Created', file: 'app/feedback-inbox.tsx', key: 'inbox' },
+  { ask: 'Make it lo-fi so we can settle the layout first', did: 'Marked lo-fi', file: 'app/feedback-inbox.tsx', key: 'inbox', lofi: true },
+  { ask: 'Map how feedback moves from recorded to resolved', did: 'Created', file: 'discovery/feedback-flow.mermaid', key: 'flow' },
+  { ask: 'Lay out every screen and state for engineering', did: 'Created', file: 'eng-handoff.excalidraw', key: 'handoff' },
+  { ask: 'Write up the problem and our open questions', did: 'Created', file: 'discovery/project-context.md', key: 'context' },
 ];
 
+// One turn: type the message (its length decides how long), send it, work, report, then hold on the result.
+const TYPE_MS = 26, WORK_MS = 1100, HOLD_MS = 2600;
+type Phase = 'typing' | 'working' | 'done';
+
 export default function StudioAsk() {
-  const play = useAutoplay(asks.length, 4800);
-  const on = asks[play.index];
-  return <div className="hx-ask" ref={play.ref}>
-    <ol className="hx-asks" role="tablist" aria-label="Ask for an artifact">
-      {asks.map((a, i) => <li key={a.key}>
-        <button type="button" role="tab" aria-selected={i === play.index} className={i === play.index ? 'is-on' : ''} onClick={() => play.pick(i)}>
-          <span className="hx-kind">{a.kind}</span>
-          <span className="hx-bubble">{a.ask}</span>
-          <code className="hx-file">{a.file}</code>
-          <i className="hx-progress">{i === play.index && play.playing && <b key={play.index} />}</i>
-        </button>
-      </li>)}
-    </ol>
-    <StudioWindow shown={on.key} min={0.5} crop="pane" className="hx-ask-window" />
+  const reduced = useReduced();
+  const ref = useRef<HTMLDivElement>(null);
+  const thread = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+  const [playing, setPlaying] = useState(true);
+  const [turn, setTurn] = useState(0);
+  const [phase, setPhase] = useState<Phase>('typing');
+  const [typed, setTyped] = useState(0);
+  const [fading, setFading] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([e]) => setVisible(e.intersectionRatio > 0.3), { threshold: [0, 0.3, 0.6] });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  // Reduced motion: the whole conversation, with its last result.
+  useEffect(() => { if (reduced) { setTurn(turns.length - 1); setPhase('done'); } }, [reduced]);
+
+  useEffect(() => {
+    if (reduced || !visible || !playing) return;
+    const ask = turns[turn].ask;
+    let timer = 0;
+    if (phase === 'typing') {
+      if (typed < ask.length) timer = window.setTimeout(() => setTyped(n => Math.min(ask.length, n + 2)), TYPE_MS * 2);
+      else timer = window.setTimeout(() => setPhase('working'), 380);
+    } else if (phase === 'working') {
+      timer = window.setTimeout(() => setPhase('done'), WORK_MS);
+    } else if (turn < turns.length - 1) {
+      timer = window.setTimeout(() => { setTurn(t => t + 1); setTyped(0); setPhase('typing'); }, HOLD_MS);
+    } else {
+      // The end: hold, fade the conversation out, and start it again from an empty thread.
+      timer = window.setTimeout(() => {
+        setFading(true);
+        window.setTimeout(() => { setTurn(0); setTyped(0); setPhase('typing'); setFading(false); }, 420);
+      }, HOLD_MS + 800);
+    }
+    return () => window.clearTimeout(timer);
+  }, [reduced, visible, playing, turn, phase, typed]);
+
+  // The newest message stays in view, as in any chat.
+  useEffect(() => { const t = thread.current; if (t) t.scrollTo({ top: t.scrollHeight, behavior: reduced ? 'auto' : 'smooth' }); }, [turn, phase, reduced]);
+
+  // What the Studio shows: the last finished turn's file (before the first one finishes, the Studio's empty prototype).
+  const shownTurn = phase === 'done' ? turn : turn - 1;
+  const shown = shownTurn >= 0 ? turns[shownTurn] : null;
+  const sent = turns.slice(0, phase === 'typing' ? turn : turn + 1);
+  const draft = phase === 'typing' ? turns[turn].ask.slice(0, typed) : '';
+
+  return <div className={`hx-ask ${fading ? 'is-fading' : ''}`} ref={ref}>
+    <div className="hx-chat">
+      <header className="hx-chat-head">
+        <span>Your coding agent</span>
+        <span className="hx-chat-agents">{agentHarnesses.map(h => <span key={h.title} className="dx-logo" title={h.title} style={{ ['--logo' as string]: `url(${h.logo})` }} />)}
+          <button type="button" className="hx-play" onClick={() => setPlaying(p => !p)} aria-label={playing ? 'Pause the conversation' : 'Play the conversation'}>{icon(playing ? PauseIcon : PlayIcon, 14)}</button>
+        </span>
+      </header>
+      <div className="hx-thread" ref={thread} aria-live="polite">
+        {sent.map((t, i) => <div key={i} className="hx-turn">
+          <p className="hx-msg">{t.ask}</p>
+          {i < turn || phase === 'done'
+            ? <p className="hx-reply">{icon(Tick02Icon, 14)}<span>{t.did} <code>{t.file}</code></span></p>
+            : <p className="hx-reply is-working"><i /><span>Working in <code>{t.file.split('/')[0]}</code></span></p>}
+        </div>)}
+      </div>
+      <div className="hx-composer">
+        <p className={draft ? '' : 'is-empty'}>{draft || 'Ask for a screen, a flow, a doc…'}{draft && <span className="dx-caret" aria-hidden="true" />}</p>
+        <span className={`hx-send ${draft ? 'is-ready' : ''}`} aria-hidden="true">{icon(ArrowUp02Icon, 16)}</span>
+      </div>
+    </div>
+    <div className="hx-ask-stage">
+      <StudioWindow shown={shown?.key ?? 'inbox'} fidelity={shown?.lofi ? 0 : 1} min={0.5} crop="pane" className={`hx-ask-window ${shown ? '' : 'is-empty'}`} />
+    </div>
   </div>;
 }

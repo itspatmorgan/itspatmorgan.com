@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 import {
-  ArrowDown01Icon, ArrowRight01Icon, CodeIcon, Copy01Icon, File01Icon, Flowchart01Icon, MoreHorizontalIcon, PaintBoardIcon, Presentation01Icon,
+  ArrowDown01Icon, ArrowRight01Icon, CodeIcon, File01Icon, Flowchart01Icon, MoreHorizontalIcon, PaintBoardIcon, Presentation01Icon,
   Search01Icon, SourceCodeIcon, Tick02Icon, UnfoldMoreIcon,
 } from '@hugeicons/core-free-icons';
 import { OsRail, icon } from '../studio-case/StudioUI';
@@ -13,14 +13,11 @@ import './studio-hero.css';
 
 // The landing page's hero: the open-source Studio's prototype view with the Feedback Inbox sample, worked the way the Studio is
 // worked. Artifacts open from the sidebar. A screen's menu makes it lo-fi or hi-fi (the file's `/** @lofi */` marker, FileTree's
-// "Make lo-fi"). The prototype's menu duplicates it with another system, as a rebuild request does (prototypes README, "Duplication
-// and system rebuilds"); here the Marketing copy appears at once, styled with the Marketing system's tokens. A document's menu opens
-// its source. A short tour shows each move once, and hands over the moment the visitor touches the window.
+// "Make lo-fi"). A document's menu opens its source. A short tour shows each move once, and hands over the moment the visitor touches the window.
 
 type Screen = 'overview' | 'inbox' | 'detail' | 'lofi';
 type View = Screen | 'handoff' | 'flow' | 'context';
-type System = 'product' | 'marketing';
-type Menu = { kind: 'screen'; view: Screen } | { kind: 'doc' } | { kind: 'proto' } | null;
+type Menu = { kind: 'screen'; view: Screen } | { kind: 'doc' } | null;
 const screens: Screen[] = ['overview', 'inbox', 'detail', 'lofi'];
 const isScreen = (v: View): v is Screen => (screens as string[]).includes(v);
 
@@ -40,12 +37,11 @@ const rows: Row[] = [
   { label: 'Project Context', i: File01Icon, view: 'context', child: true },
 ];
 
-const start = { view: 'inbox' as View, system: 'product' as System, lofi: { overview: false, inbox: false, detail: false, lofi: true } as Record<Screen, boolean>, source: false };
+const start = { view: 'inbox' as View, lofi: { overview: false, inbox: false, detail: false, lofi: true } as Record<Screen, boolean>, source: false };
 
 const captions = {
   open: 'Open any artifact from the sidebar',
   lofi: 'Make a screen lo-fi from its menu, and back again',
-  system: 'Duplicate the prototype with another design system',
   shapes: 'Flows, canvases and documents sit beside the screens',
   source: 'Every document is Markdown your agent reads and writes',
   yours: 'Your turn: click around',
@@ -68,7 +64,6 @@ export default function StudioHero() {
   const reduced = useReduced();
   const os = useRef<HTMLDivElement>(null);
   const [view, setView] = useState<View>(start.view);
-  const [system, setSystem] = useState<System>(start.system);
   const [lofi, setLofi] = useState(start.lofi);
   const [source, setSource] = useState(start.source);
   const [menu, setMenu] = useState<Menu>(null);
@@ -95,7 +90,6 @@ export default function StudioHero() {
   }, [place]);
   const open = (v: View) => { setView(v); setSource(false); setMenu(null); };
   const toggleLofi = (v: Screen) => { setLofi(l => ({ ...l, [v]: !l[v] })); setMenu(null); };
-  const duplicate = (next: System) => { setSystem(next); setMenu(null); };
 
   // The tour: each step moves the pointer, presses, then does what the press does.
   const tour = useCallback(async () => {
@@ -111,7 +105,7 @@ export default function StudioHero() {
       setPointer(p => ({ ...p, pressing: false })); act();
       await wait(hold); return alive();
     };
-    setView(start.view); setSystem(start.system); setLofi(start.lofi); setSource(false); setMenu(null);
+    setView(start.view); setLofi(start.lofi); setSource(false); setMenu(null);
     setTouring(true); setCaption(captions.open);
     await wait(1600); if (!alive()) return;
     setCaption(captions.lofi);
@@ -119,9 +113,6 @@ export default function StudioHero() {
     if (!await go('menu-lofi', 'start', () => toggleLofi('inbox'), 2300)) return;
     if (!await go('more-inbox', 'center', () => openMenu({ kind: 'screen', view: 'inbox' }, 'row-inbox'), 520)) return;
     if (!await go('menu-lofi', 'start', () => toggleLofi('inbox'), 1400)) return;
-    setCaption(captions.system);
-    if (!await go('more-proto', 'center', () => openMenu({ kind: 'proto' }, 'proto-head'), 520)) return;
-    if (!await go('menu-marketing', 'start', () => duplicate('marketing'), 2600)) return;
     setCaption(captions.shapes);
     if (!await go('row-flow', 'end', () => open('flow'), 2200)) return;
     if (!await go('row-handoff', 'end', () => open('handoff'), 2400)) return;
@@ -155,7 +146,6 @@ export default function StudioHero() {
   const more = (hx: string, next: Menu, anchor: string) => <span className="hx-more" data-hx={hx} role="button" aria-label="More actions"
     onClick={e => { e.stopPropagation(); if (menu && JSON.stringify(menu) === JSON.stringify(next)) setMenu(null); else openMenu(next, anchor); }}>{icon(MoreHorizontalIcon, 15)}</span>;
 
-  const title = 'Feedback Inbox';
   const pane = view === 'context'
     ? (source ? <Editor onDone={() => setSource(false)} /> : <Doc />)
     : view === 'flow' ? <Flow /> : view === 'handoff' ? <Canvas /> : <div className="ss-pane">
@@ -166,11 +156,11 @@ export default function StudioHero() {
   return <div className="hx">
     <div ref={box} className="dx-window hx-window" style={{ height: H * s }} onPointerDownCapture={takeOver}>
       <div className="sc cs-native dx-native" style={{ width: W, height: H, transform: `translateX(${x}px) scale(${s})` }}>
-        <div ref={os} className="sc-os ss-os dx-os hx-os" style={themeStyle(system === 'marketing' ? 'marketing' : 'green', dark)} onClick={() => setMenu(null)}>
+        <div ref={os} className="sc-os ss-os dx-os hx-os" style={themeStyle('green', dark)} onClick={() => setMenu(null)}>
           <OsRail on="prototypes" />
           <aside className="sc-side ss-side">
-            <h4 data-hx="proto-head"><span className="hx-title">{title}</span>{more('more-proto', { kind: 'proto' }, 'proto-head')}</h4>
-            <p className="ss-side-system">System · {system === 'marketing' ? 'Marketing' : 'Product'} ↗</p>
+            <h4><span className="hx-title">Feedback Inbox</span><span>{icon(MoreHorizontalIcon, 16)}</span></h4>
+            <p className="ss-side-system">System · Product ↗</p>
             <h5>Artifacts <span>{icon(Search01Icon, 15)}{icon(UnfoldMoreIcon, 15)}</span></h5>
             <ul>
               {rows.map(r => 'group' in r
@@ -189,11 +179,6 @@ export default function StudioHero() {
           {menu && <MenuBox at={menuAt}>
             {menu.kind === 'screen' && <Item hx="menu-lofi" i={PaintBoardIcon} on={() => toggleLofi(menu.view)}>{lofi[menu.view] ? 'Make hi-fi' : 'Make lo-fi'}</Item>}
             {menu.kind === 'doc' && <Item hx="menu-source" i={SourceCodeIcon} on={() => { open('context'); setSource(s => !s); }}>{source && view === 'context' ? 'View page' : 'Edit source'}</Item>}
-            {menu.kind === 'proto' && <>
-              <p className="hx-menu-head">Duplicate with a system</p>
-              <Item hx="menu-product" i={Copy01Icon} on={() => duplicate('product')} checked={system === 'product'}>Product</Item>
-              <Item hx="menu-marketing" i={Copy01Icon} on={() => duplicate('marketing')} checked={system === 'marketing'}>Marketing</Item>
-            </>}
           </MenuBox>}
           <svg className={`hx-pointer ${pointer.shown ? 'is-shown' : ''} ${pointer.pressing ? 'is-pressing' : ''}`} style={{ transform: `translate(${pointer.x}px, ${pointer.y}px)` }} width="22" height="26" viewBox="0 0 22 26" aria-hidden="true">
             <path d="M2 1.5v19.2l5.1-4.6 3.3 7.6 3.5-1.5-3.2-7.4 6.9-.4L2 1.5z" />
