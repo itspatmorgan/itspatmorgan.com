@@ -65,9 +65,12 @@
 
 /* The first gallery (Jan 2026): a header bar, list view, one project. Its own blue links and Inter. */
 .sc-first { position: absolute; inset: 0; background: color-mix(in srgb, var(--sc-muted) 55%, var(--sc-bg)); }
-.sc-first-head { display: flex; align-items: center; justify-content: center; gap: 16px; height: 54px; padding: 0; background: var(--sc-bg); border-bottom: 1px solid var(--sc-line); font-size: 15px; font-weight: 500; color: var(--sc-weak); }
-.sc-first-head img { height: 22px; }
-.sc-first-head i { width: 1px; height: 20px; background: var(--sc-line); }
+/* The header is centered as a group: the logo (its theme's version) and the title share a cap height, split by a short rule. */
+.sc-first-head { display: flex; align-items: center; justify-content: center; gap: 14px; height: 56px; padding: 0; background: var(--sc-bg); border-bottom: 1px solid var(--sc-line); font-size: 15px; font-weight: 500; letter-spacing: -.01em; color: var(--sc-fg); }
+.sc-first-head img { display: block; height: 19px; margin-top: 1px; }
+.sc-first-head img.is-dark, .dark .sc-first-head img.is-light { display: none; }
+.dark .sc-first-head img.is-dark { display: block; }
+.sc-first-head i { width: 1px; height: 18px; background: var(--sc-line); }
 .sc-first-body { width: 800px; margin: 0 auto; padding: 32px 0; }
 .sc-first-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 24px; font-size: 14px; color: var(--sc-weak); }
 .sc-first-bar b { display: inline-flex; align-items: center; gap: 10px; height: 32px; padding: 0 12px; border: 1px solid var(--sc-line); border-radius: 6px; background: var(--sc-bg); font-weight: 500; color: var(--sc-fg); }
@@ -77,7 +80,7 @@
 .sc-first-card p { margin-top: 6px; font-size: 13px; line-height: 20px; color: var(--sc-weak); }
 .sc-first-card small { display: block; margin-top: 8px; font-size: 11px; color: var(--sc-weak); }
 .sc-first-card hr { margin: 14px 0 12px; border: 0; border-top: 1px solid var(--sc-line); }
-.sc-first-card .sc-pages { font-size: 11px; font-weight: 500; letter-spacing: .02em; color: var(--sc-weak); }
+.sc-first-card .sc-pages { font-size: 12px; font-weight: 500; color: var(--sc-weak); }
 .sc-first-card ul { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 7px; }
 .sc-first-card li { display: flex; align-items: center; gap: 9px; font-size: 13.5px; color: var(--sc-link); }
 .sc-first-card li svg { color: var(--sc-weak); }
@@ -414,10 +417,12 @@
 .sc-era button:not([aria-pressed=true]):hover { color: color-mix(in srgb, var(--foreground) 75%, transparent); }
 .sc-era-thumb { position: absolute; z-index: 0; inset: 0; border-radius: 99px; background: var(--background); box-shadow: 0 1px 2px #0000001a, 0 0 0 .5px #0000000d; }
 .sc-era button:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+/* The toggle gets the same air below it, down to the card's ring, as above it. The ring's top sits 48 of the stage's 1240 px down, and a
+   margin's percentage is of the stage's width, so 3.871% is that offset at any size. */
+.cs-stage-bar:has(.sc-era) { --air: clamp(14px, 3vw, 32px); padding-top: var(--air); margin-bottom: calc(var(--air) - 3.871%); }
 
 /* On a phone the then-and-now toggle steps down a size and keeps clear air above the card. */
 @media (max-width: 640px) {
   .sc-era button { min-height: 26px; padding: 0 12px; font-size: 12px; }
   .sc-era button > span { height: 26px; gap: 5px; }
-  .cs-stage-bar:has(.sc-era) { padding-top: 14px; margin-bottom: -6px; }
 }
