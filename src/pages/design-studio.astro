@@ -58,7 +58,7 @@ const liveDemo = "https://itspatmorgan.com/design-studio-demo/";
             <span class="ds-harness"><span class="hero-vendor-logo ds-logo" style={"--vendor-logo: url(" + harness.logo + ")"} aria-hidden="true"></span>{harness.title}</span>
           ))}
         </span>
-        <span class="ds-works-row">Or point your agent at <a href="/design-studio/agent.txt">itspatmorgan.com/design-studio/agent.txt</a></span>
+        <span class="ds-works-line">Or point your agent at <a href="/design-studio/agent.txt">itspatmorgan.com/design-studio/agent.txt</a></span>
       </div>
       <StudioShapes client:load />
     </header>
@@ -77,7 +77,7 @@ const liveDemo = "https://itspatmorgan.com/design-studio-demo/";
       <a class="ds-case-link" href="/work/design-studio">How Sublime’s product team uses it <Icon icon={ArrowRight01Icon} size={14} class="shrink-0" /></a>
     </section>
 
-    <Slide id="why-title" title="Between a one-off prototype and the production repo" line="Design Studio uses your product’s components and rules, so designs look real, and lives in its own repo, so trying ideas stays fast.">
+    <Slide id="why-title" title="Between a one‑off prototype and the production repo" line="Design Studio uses your product’s components and rules, so designs look real, and lives in its own repo, so trying ideas stays fast.">
       <Spectrum client:visible />
     </Slide>
 
@@ -108,7 +108,7 @@ const liveDemo = "https://itspatmorgan.com/design-studio-demo/";
           <p class="mt-3 text-base leading-relaxed text-muted-foreground">Use the agent harness you already use.</p>
 
           <div class="setup-prompt texture-bg mt-6 flex flex-1 flex-col rounded-xl border border-border p-5 sm:p-7">
-            <p class="mb-4 text-base leading-relaxed" data-setup-prompt>{installationPrompt}</p>
+            <p class="mb-4 text-base leading-relaxed" data-setup-prompt>{installationPrompt.split(/(https:\/\/\S+?)(?=[.,]?(?:\s|$))/).map((part, i) => i % 2 ? <span class="ds-url">{part}</span> : part)}</p>
             <button type="button" hidden data-copy-prompt class={buttonVariants({ className: "mt-auto h-10 self-start px-4" })} aria-label="Copy Design Studio installation prompt">Copy installation prompt</button>
           </div>
           <div class="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 text-muted-foreground" aria-label="Example agent harnesses for Design Studio">
@@ -201,6 +201,7 @@ const liveDemo = "https://itspatmorgan.com/design-studio-demo/";
   .ds-actions a [data-copy-face] { transition: opacity 160ms ease; }
   .ds-works { display: flex; flex-direction: column; align-items: center; gap: 8px; margin-top: 24px; font-size: 14px; line-height: 20px; color: var(--muted-foreground); }
   .ds-works-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 4px 14px; }
+  .ds-works-line { text-align: center; text-wrap: balance; }
   .ds-harness { display: inline-flex; align-items: center; gap: 6px; color: var(--foreground); }
   .ds-works .ds-logo { width: 16px; height: 16px; }
   .ds-works a { color: var(--foreground); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: color-mix(in srgb, currentColor 35%, transparent); }
@@ -247,6 +248,8 @@ const liveDemo = "https://itspatmorgan.com/design-studio-demo/";
   .hero-vendor-logo { display: block; width: 1.75rem; height: 1.75rem; flex-shrink: 0; background: currentColor; mask: var(--vendor-logo) center / contain no-repeat; }
   .setup-compatibility-logo { width: 1.25rem; height: 1.25rem; }
   .setup-prompt { overflow-wrap: anywhere; }
+  /* A long URL breaks evenly across lines instead of leaving its hyphen alone on one. */
+  .ds-url { word-break: break-all; }
   .studio-action-grid { display: grid; gap: 2rem; }
   .studio-action-grid > div { min-width: 0; }
   @container studio-page (min-width: 40rem) { .studio-story-split { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }

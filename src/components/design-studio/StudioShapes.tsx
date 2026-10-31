@@ -1,7 +1,7 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import {
   ArrowDown01Icon, ArrowLeft01Icon, ArrowRight01Icon, CodeIcon, Delete02Icon, File01Icon, Flowchart01Icon, Menu01Icon, Message01Icon,
-  MinusSignIcon, MoreHorizontalIcon, PencilEdit01Icon, PlusSignIcon, Presentation01Icon, Search01Icon, SquareArrowUpRightIcon, UnfoldMoreIcon,
+  MoreHorizontalIcon, PencilEdit01Icon, PlusSignIcon, Presentation01Icon, Search01Icon, SquareArrowUpRightIcon, UnfoldMoreIcon,
 } from '@hugeicons/core-free-icons';
 import { Pointer, SceneFrame, Screens, useScene, useStage, useTargets } from '../case-study/scene';
 import { OsRail, icon } from '../studio-case/StudioUI';
@@ -180,7 +180,6 @@ function Canvas() {
       <Note x={110} y={1225}>+ New feedback opens a panel. Title is required.</Note>
       <Note x={808} y={1225}>Add with no title shows the error and stays open. With a title, the new item appears at the top.</Note>
     </div>
-    <span className="ss-zoom">{icon(MinusSignIcon, 16)}<b>46%</b>{icon(PlusSignIcon, 16)}</span>
   </div>;
 }
 
@@ -206,7 +205,8 @@ export function Doc() {
 export type Key = 'inbox' | 'lofi' | 'flow' | 'handoff' | 'context';
 /** The prototype's section nav (the Studio's artifact tree), States folded, as the prototype opens. */
 export function Nav({ on }: { on: Key }) {
-  const li = (i: typeof CodeIcon, t: string, key?: Key, child = true) => <li key={t} data-target={key} className={`${child ? 'is-child' : ''} ${key && key === on ? 'is-on' : ''}`}>{icon(i, 15)}{t}</li>;
+  // The pointer aims at the row's empty end (`.ss-aim`), so it never covers the label it clicks.
+  const li = (i: typeof CodeIcon, t: string, key?: Key, child = true) => <li key={t} className={`${child ? 'is-child' : ''} ${key && key === on ? 'is-on' : ''}`}>{icon(i, 15)}{t}{key && <i className="ss-aim" data-target={key} />}</li>;
   const group = (t: string, open = true) => <li className="is-group">{icon(open ? ArrowDown01Icon : ArrowRight01Icon, 14)}{t}</li>;
   return <aside className="sc-side ss-side">
     <h4>Feedback Inbox <span>{icon(MoreHorizontalIcon, 16)}</span></h4>
@@ -231,7 +231,7 @@ export function Nav({ on }: { on: Key }) {
 
 // Each artifact holds, then the pointer moves to the next one in the nav (its own step), then the click opens it.
 const stops: Key[] = ['inbox', 'lofi', 'flow', 'handoff', 'context'];
-const timings = [2800, 900, 2600, 900, 2600, 900, 3200, 900, 3000];
+const timings = [2800, 900, 2600, 900, 2600, 900, 3000, 900, 3000];
 const lines = [
   'A working prototype, built by your agent with your design system',
   'The same screen in lo-fi, to settle the layout first',
@@ -239,14 +239,15 @@ const lines = [
   'A canvas that walks engineering through every state',
   'A Markdown document for the brief and open questions',
 ];
-const captions = timings.map((_, i) => lines[Math.ceil(i / 2)]);
+// A move belongs to the artifact it leaves: the caption and the selection change on the click.
+const captions = timings.map((_, i) => lines[Math.floor(i / 2)]);
 
 /** One prototype in every shape: a working screen, its wireframe, a diagram, a canvas and a document. */
 export default function StudioShapes() {
   const scene = useScene(timings, captions);
   const stage = useStage({ wide: 1120, height: 760 });
   const step = scene.reduced ? 0 : scene.step;
-  const shown = stops[Math.floor((step + 1) / 2)];
+  const shown = stops[Math.floor(step / 2)];
   const aim = step > 0 ? stops[Math.ceil(step / 2)] : null;
   const t = useTargets(step);
   // The click: a short press as the pointer lands on its target, then the artifact opens.
@@ -257,8 +258,9 @@ export default function StudioShapes() {
     const timer = window.setTimeout(() => setPressing(false), 160);
     return () => window.clearTimeout(timer);
   }, [step, scene.take]);
+  // The lo-fi screen is the same layout restyled, so it fades in over the working screen instead of loading as a new page.
   const view = shown === 'inbox' || shown === 'lofi'
-    ? <div className={`ss-pane ss-app ${shown === 'lofi' ? 'is-lofi' : ''}`}><Inbox /></div>
+    ? <div className="ss-pane"><div className="ss-app"><Inbox /></div><div className={`ss-app is-lofi ss-lofi-layer ${shown === 'lofi' ? 'is-shown' : ''}`}><Inbox /></div></div>
     : shown === 'flow' ? <Flow /> : shown === 'handoff' ? <Canvas /> : <Doc />;
   return <SceneFrame scene={scene} stage={stage} title="one prototype in every shape" focus={null}
     label="Design Studio's prototype view with the Feedback Inbox sample: its artifacts listed in a sidebar, and beside it, in turn, the working inbox screen, the same screen in lo-fi, a diagram of the review flow, a handoff canvas with every screen and state, and a Markdown document with the project context">
@@ -266,7 +268,6 @@ export default function StudioShapes() {
       <div className="sc-os ss-os">
         <OsRail on="prototypes" />
         <Nav on={shown} />
-        {/* The lo-fi screen is the same component restyled, so it changes in place rather than loading as a new page. */}
         <div className="ss-panes"><Screens id={shown === 'lofi' ? 'inbox' : shown}>{view}</Screens></div>
       </div>
       <Pointer at={aim ? t.at(aim) : null} visible={!!aim} pressing={pressing} reduced={scene.reduced} />

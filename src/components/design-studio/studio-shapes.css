@@ -19,9 +19,11 @@
 .ss-os .ss-side { width: 220px; padding: 18px 12px; font-size: 13px; }
 .ss-side h4 { display: flex; align-items: center; justify-content: space-between; padding: 0 8px; }
 .ss-side h4 span, .ss-side h5 span { display: flex; gap: 10px; color: var(--os-weak); }
-.ss-side-system { padding: 6px 8px 0; font-size: 12.5px; color: var(--os-weak); }
+.ss-os .ss-side-system { padding: 6px 8px 0; font-size: 12.5px; color: var(--os-weak); }
 .ss-side h5 { margin-top: 26px; margin-bottom: 6px; }
-.ss-os .ss-side li { height: 25px; }
+.ss-os .ss-side li { position: relative; height: 25px; }
+/* Where the pointer clicks a nav row: its empty end, clear of the label. */
+.ss-aim { position: absolute; right: 18px; top: 0; bottom: 0; width: 1px; pointer-events: none; }
 .ss-os .ss-side li.is-group { margin-top: 6px; }
 .ss-os .ss-side li.is-child { padding-left: 24px; }
 .ss-panes { position: relative; flex: 1; min-width: 0; }
@@ -42,7 +44,7 @@
 .ss-echo-page { max-width: 1024px; margin: 0 auto; padding: 32px; }
 .ss-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 24px; }
 .ss-head h1 { font-size: 20px; line-height: 28px; font-weight: 600; letter-spacing: -.025em; }
-.ss-head p { margin-top: 4px; color: var(--e-weak); }
+.ss-os .ss-head p { margin-top: 4px; color: var(--e-weak); }
 .ss-btn { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border: 1px solid var(--e-line); background: var(--e-bg); font-size: 14px; font-weight: 500; white-space: nowrap; }
 .ss-btn.is-primary { border-color: var(--e-primary); background: var(--e-primary); color: var(--e-primary-fg); }
 .ss-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
@@ -100,14 +102,15 @@
 .ss-scrim { position: absolute; inset: 0; background: rgb(0 0 0 / .1); }
 .ss-sheet { position: absolute; top: 0; right: 0; bottom: 0; width: 448px; padding: 16px; border-left: 1px solid var(--e-line); background: var(--e-bg); box-shadow: 0 10px 15px -3px rgb(0 0 0 / .1); }
 .ss-sheet h2 { font-weight: 600; }
-.ss-sheet > p { margin: 4px 0 8px; color: var(--e-weak); }
+.ss-os .ss-sheet > p { margin: 4px 0 8px; color: var(--e-weak); }
 .ss-sheet .ss-error { display: block; margin-top: 6px; font-size: 12px; color: var(--e-destructive); }
 .ss-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .ss-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; }
 
 /* Lo-fi (modules/view/lofi.css): the same screen in grayscale with handwritten type. */
-.ss-app { transition: filter 420ms ease; }
 .ss-app.is-lofi { filter: grayscale(1); }
+.ss-lofi-layer { position: absolute; inset: 0; opacity: 0; background: var(--e-bg); transition: opacity 450ms cubic-bezier(.25, .8, .25, 1); }
+.ss-lofi-layer.is-shown { opacity: 1; }
 .ss-app.is-lofi, .ss-app.is-lofi * { font-family: 'Comic Neue', 'Comic Sans MS', cursive !important; }
 
 /* The Mermaid diagram, centered in the pane as the Studio fits it. */
@@ -137,10 +140,8 @@
 .ss-arrow i { position: absolute; left: 0; right: 0; top: -1.5px; height: 3px; background: var(--e-ink); border-radius: 2px; }
 .ss-arrow i::after { content: ''; position: absolute; right: -2px; top: -8px; width: 14px; height: 14px; border-top: 3px solid var(--e-ink); border-right: 3px solid var(--e-ink); transform: rotate(45deg); border-radius: 2px; }
 .ss-arrow span { position: absolute; left: 50%; top: -13px; padding: 0 10px; transform: translateX(-50%); background: var(--e-canvas); font-size: 20px; line-height: 25px; white-space: nowrap; }
-.ss-canvas-menu, .ss-zoom { position: absolute; z-index: 1; display: flex; align-items: center; border: 1px solid var(--os-line); border-radius: 8px; background: var(--os-bg); color: var(--os-fg); box-shadow: 0 1px 3px rgb(0 0 0 / .06); }
+.ss-canvas-menu { position: absolute; z-index: 1; display: flex; align-items: center; border: 1px solid var(--os-line); border-radius: 8px; background: var(--os-bg); color: var(--os-fg); box-shadow: 0 1px 3px rgb(0 0 0 / .06); }
 .ss-canvas-menu { left: 16px; top: 16px; justify-content: center; width: 40px; height: 40px; }
-.ss-zoom { left: 16px; bottom: 16px; gap: 22px; height: 40px; padding: 0 14px; }
-.ss-zoom b { font-size: 14px; font-weight: 500; }
 
 /* A Markdown document (docs/DocLayout, Prose). */
 .ss-doc { padding: 48px 32px 0; background: var(--os-bg); color: var(--os-fg); }
@@ -197,13 +198,17 @@
 .ss-sbtn.is-size-lg { height: 36px; }
 .ss-sbtn.is-off { opacity: .5; }
 .ss-sbtn svg { margin-left: -2px; }
-.ss-sbadge { display: inline-flex; align-items: center; height: 20px; padding: 0 8px; border: 1px solid transparent; font-size: 12px; font-weight: 500; white-space: nowrap; }
-.ss-sbadge.is-default { background: var(--e-primary); color: var(--e-primary-fg); }
-.ss-sbadge.is-secondary { background: var(--e-secondary); color: var(--e-secondary-fg); }
-.ss-sbadge.is-destructive { background: color-mix(in oklch, var(--e-destructive) 10%, transparent); color: var(--e-destructive); }
-.ss-sbadge.is-outline { border-color: var(--e-line); }
-.ss-sbadge.is-link { color: var(--e-primary); }
-.dark .ss-sbtn.is-destructive, .dark .ss-sbadge.is-destructive { background: color-mix(in oklch, var(--e-destructive) 20%, transparent); }
+/* Card (card.tsx): w-xs, a 1px ring at 10% foreground, 16px spacing, a muted footer with a top border. */
+.ss-scard { display: flex; flex-direction: column; gap: 16px; width: 320px; padding-top: 16px; background: var(--e-card); box-shadow: 0 0 0 1px color-mix(in oklch, var(--e-fg) 10%, transparent); font-size: 14px; line-height: 20px; }
+.ss-scard:not(.has-footer) { padding-bottom: 16px; }
+.ss-scard-head { display: grid; gap: 4px; padding: 0 16px; }
+.ss-scard-head.has-action { grid-template-columns: 1fr auto; }
+.ss-scard-head b { font-size: 16px; line-height: 22px; font-weight: 500; }
+.ss-scard-head span { color: var(--e-weak); }
+.ss-scard-head i { grid-column: 2; grid-row: 1 / span 2; align-self: start; font-style: normal; }
+.ss-scard-body { padding: 0 16px; }
+.ss-scard-foot { display: flex; align-items: center; padding: 16px; border-top: 1px solid var(--e-line); background: color-mix(in oklch, var(--e-muted) 50%, transparent); }
+.dark .ss-sbtn.is-destructive { background: color-mix(in oklch, var(--e-destructive) 20%, transparent); }
 .dark .ss-sbtn.is-outline { border-color: var(--e-line); background: oklch(1 0 0 / 5%); }
 /* .sc-os sets Geist on every descendant; the editor's source and path are mono. */
 .sc .sc-os .ss-editor ol, .sc .sc-os .ss-editor ol *, .sc .sc-os .ss-editor header code { font-family: 'Geist Mono Variable', ui-monospace, monospace; }
