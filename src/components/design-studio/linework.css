@@ -38,8 +38,8 @@
   height: 14px; border-top: 1px solid var(--lw); border-bottom: 1px solid var(--lw);
   background: repeating-linear-gradient(135deg, var(--lw) 0 1px, transparent 1px 7px); }
 
-/* The hero has the site's own paper texture from rail to rail, fading in and out, so the first screen has some grain behind it
-   without a hard edge under the page header. */
+/* A soft patch of dots behind the hero headline, fading out in every direction, to draw the eye to the first line. */
 #studio-human > header.ds-hero { isolation: isolate; }
-.ds-hero > .lw-paper { position: absolute; z-index: -1; inset: 0 calc(-1 * var(--rail)); pointer-events: none; opacity: .7;
-  -webkit-mask-image: linear-gradient(transparent, #000 30%, #000 60%, transparent); mask-image: linear-gradient(transparent, #000 30%, #000 60%, transparent); }
+.ds-hero > .lw-dots { position: absolute; z-index: -1; left: 50%; top: 0; width: min(100%, 860px); height: 520px; transform: translateX(-50%); pointer-events: none;
+  background-image: radial-gradient(circle at 1px 1px, color-mix(in oklch, var(--foreground) 24%, transparent) 1px, transparent 1.4px); background-size: 14px 14px;
+  -webkit-mask-image: radial-gradient(ellipse 50% 45% at 50% 48%, #000 10%, transparent 100%); mask-image: radial-gradient(ellipse 50% 45% at 50% 48%, #000 10%, transparent 100%); }
