@@ -7,13 +7,14 @@ import './studio-shapes.css';
 // Systems in the open-source Studio: each lives in its own folder (src/systems/<name>) with its theme, components and rules, and
 // each prototype names the one it builds with. The Studio ships two, Product and Marketing. The drawing lights each system with the
 // prototypes that use it, then both at once, since they sit side by side without touching. The thumbnails are the real sample
-// screens (Echo's inbox and overview) in the Product system, and a launch page drawn in the Marketing system's tokens.
+// screens (Echo's inbox and overview) in the Product system, and a launch page in Echo's Marketing system: the same brand green as
+// Product, tuned for a different audience, as two systems at one company would be.
 const timings = [2400, 2800, 2800, 3600];
 const captions = [
   'Each system holds its own theme, components and rules',
   'Product prototypes build with the Product system',
   'Marketing pages build with the Marketing system',
-  'Many systems, side by side, and none of them conflict',
+  'One brand, two systems for two jobs, and none of them conflict',
 ];
 
 const TW = 272, TH = 170, SCALE = TW / 1120, TOP = 316;
@@ -23,8 +24,8 @@ const protos: { x: number; title: string; system: 'product' | 'marketing'; scree
   { x: 648, title: 'Launch page', system: 'marketing', screen: 'launch' },
 ];
 const systems = {
-  product: { x: 148, w: 300, name: 'Product', path: 'src/systems/product', theme: 'green' as Theme, radius: 0, note: 'Square corners, green primary' },
-  marketing: { x: 512, w: 300, name: 'Marketing', path: 'src/systems/marketing', theme: 'marketing' as Theme, radius: 8, note: 'Warm paper, 8px corners' },
+  product: { x: 148, w: 300, name: 'Product', path: 'src/systems/product', theme: 'green' as Theme, radius: 0, note: 'Echo green, dense UI, square corners' },
+  marketing: { x: 512, w: 300, name: 'Marketing', path: 'src/systems/marketing', theme: 'echo-marketing' as Theme, radius: 12, note: 'Echo green, warm paper, round corners' },
 };
 
 /** A launch page in the Marketing system's tokens, at the Studio's native prototype size. */

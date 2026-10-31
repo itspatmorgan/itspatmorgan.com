@@ -17,7 +17,7 @@ export const artifacts: { key: Key; label: string }[] = [
 ];
 
 // Themes for Echo, the sample product, as a design system would set them: primary, accent and corner radius.
-export type Theme = 'green' | 'indigo' | 'clay' | 'marketing';
+export type Theme = 'green' | 'indigo' | 'clay' | 'marketing' | 'echo-marketing';
 export const themes: { key: Theme; label: string; swatch: string }[] = [
   { key: 'green', label: 'Green', swatch: 'oklch(0.508 0.118 165.612)' },
   { key: 'indigo', label: 'Indigo', swatch: 'oklch(0.511 0.262 276.966)' },
@@ -40,6 +40,13 @@ const themeVars: Record<Theme, { light: Record<string, string>; dark: Record<str
     light: { '--e-bg': '#f6f5f2', '--e-fg': '#0f0f0f', '--e-card': '#ffffff', '--e-primary': '#0f0f0f', '--e-primary-fg': '#f6f5f2', '--e-secondary': '#e8e7e2', '--e-secondary-fg': '#2a2a2a', '--e-muted': '#ecebe7', '--e-weak': '#5e5d59', '--e-accent': '#e8e7e2', '--e-accent-fg': '#2a2a2a', '--e-line': '#d7d6d1' },
     dark: { '--e-bg': '#0f0f0f', '--e-fg': '#f6f5f2', '--e-card': '#1c1c1c', '--e-primary': '#f6f5f2', '--e-primary-fg': '#0f0f0f', '--e-secondary': '#2a2a2a', '--e-secondary-fg': '#f6f5f2', '--e-muted': '#1c1c1c', '--e-weak': '#a3a29d', '--e-accent': '#2a2a2a', '--e-accent-fg': '#d7d6d1', '--e-line': '#454545' },
     radius: '8px',
+  },
+  // Echo's marketing system on the landing page's systems drawing: the same brand green as Product, on warm paper, with a deep
+  // green ink, a soft lime accent and rounder corners, so the two read as one company with two jobs.
+  'echo-marketing': {
+    light: { '--e-bg': 'oklch(0.972 0.012 90)', '--e-fg': 'oklch(0.24 0.04 165)', '--e-card': 'oklch(0.99 0.006 90)', '--e-secondary': 'oklch(0.93 0.02 120)', '--e-secondary-fg': 'oklch(0.24 0.04 165)', '--e-muted': 'oklch(0.95 0.014 100)', '--e-weak': 'oklch(0.45 0.03 160)', '--e-accent': 'oklch(0.9 0.09 125)', '--e-accent-fg': 'oklch(0.3 0.06 150)', '--e-line': 'oklch(0.88 0.02 110)' },
+    dark: { '--e-bg': 'oklch(0.19 0.02 165)', '--e-fg': 'oklch(0.96 0.015 100)', '--e-card': 'oklch(0.23 0.025 165)', '--e-secondary': 'oklch(0.28 0.03 160)', '--e-secondary-fg': 'oklch(0.96 0.015 100)', '--e-muted': 'oklch(0.25 0.025 165)', '--e-weak': 'oklch(0.75 0.03 140)', '--e-accent': 'oklch(0.42 0.09 130)', '--e-accent-fg': 'oklch(0.94 0.08 125)', '--e-line': 'oklch(1 0 0 / 14%)' },
+    radius: '12px',
   },
 };
 
