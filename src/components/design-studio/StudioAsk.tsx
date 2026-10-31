@@ -110,7 +110,7 @@ export default function StudioAsk() {
         </div>
         <div className="hx-composer">
           <p className={draft ? '' : 'is-empty'}>{draft || 'Ask for a screen, a flow, a doc…'}{draft && <span className="dx-caret" aria-hidden="true" />}</p>
-          <span className={`hx-send ${draft ? 'is-ready' : ''}`} aria-hidden="true">{icon(ArrowUp02Icon, 16)}</span>
+          <span className={`hx-send ${draft ? 'is-ready' : ''}`} aria-hidden="true">{icon(ArrowUp02Icon, 14)}</span>
         </div>
       </div>
       <div className="hx-browser">
