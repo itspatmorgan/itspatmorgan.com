@@ -1,0 +1,80 @@
+name: Preview
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: preview-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  preview:
+    # Secrets are not available to Dependabot or fork pull requests.
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.actor != 'dependabot[bot]'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/build-site
+
+      - name: Upload a preview version
+        id: upload
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          WRANGLER_OUTPUT_FILE_PATH: ${{ runner.temp }}/wrangler-output.json
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set -o pipefail
+          upload() {
+            pnpm exec wrangler versions upload --preview-alias "pr-$PR_NUMBER" \
+              --message "PR #$PR_NUMBER ${GITHUB_SHA::7}" 2>&1 | tee "$RUNNER_TEMP/wrangler.log"
+          }
+          if ! upload; then
+            # Versions need an existing Worker. Create it once on workers.dev;
+            # the custom domain is attached separately, so visitors are unaffected.
+            grep -q "does not yet exist" "$RUNNER_TEMP/wrangler.log" || exit 1
+            pnpm exec wrangler deploy
+            upload
+          fi
+          alias_url=$(jq -r 'select(.type == "version-upload") | .preview_alias_url // empty' "$WRANGLER_OUTPUT_FILE_PATH" | tail -n 1)
+          version_url=$(jq -r 'select(.type == "version-upload") | .preview_url // empty' "$WRANGLER_OUTPUT_FILE_PATH" | tail -n 1)
+          [ -n "$alias_url" ] || alias_url=$(grep -o "https://pr-$PR_NUMBER-[^ ]*workers\.dev" "$RUNNER_TEMP/wrangler.log" | tail -n 1)
+          if [ -z "$alias_url$version_url" ]; then
+            echo "::error::Wrangler did not report a preview URL."
+            exit 1
+          fi
+          echo "alias_url=$alias_url" >> "$GITHUB_OUTPUT"
+          echo "version_url=$version_url" >> "$GITHUB_OUTPUT"
+
+      - name: Comment the preview link
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        env:
+          ALIAS_URL: ${{ steps.upload.outputs.alias_url }}
+          VERSION_URL: ${{ steps.upload.outputs.version_url }}
+        with:
+          script: |
+            const marker = '<!-- cloudflare-preview -->';
+            const { ALIAS_URL, VERSION_URL } = process.env;
+            const sha = context.payload.pull_request.head.sha.slice(0, 7);
+            const lines = [marker, '### Preview'];
+            if (ALIAS_URL) lines.push(`${ALIAS_URL}`, '', 'This link stays the same for the whole pull request.');
+            if (VERSION_URL) lines.push('', `This commit (${sha}) only: ${VERSION_URL}`);
+            const body = lines.join('\n');
+            const { owner, repo } = context.repo;
+            const issue_number = context.payload.pull_request.number;
+            const comments = await github.paginate(github.rest.issues.listComments, { owner, repo, issue_number });
+            const existing = comments.find(c => c.user.type === 'Bot' && c.body.includes(marker));
+            if (existing) {
+              await github.rest.issues.updateComment({ owner, repo, comment_id: existing.id, body });
+            } else {
+              await github.rest.issues.createComment({ owner, repo, issue_number, body });
+            }

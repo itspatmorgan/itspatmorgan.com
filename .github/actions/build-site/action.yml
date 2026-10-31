@@ -1,0 +1,55 @@
+name: Build site
+description: Build the Astro website and include the latest passing Design Studio demo in dist/.
+
+runs:
+  using: composite
+  steps:
+    - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+      with:
+        version: 10.31.0
+    - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+      with:
+        node-version: 24
+        cache: pnpm
+    - shell: bash
+      run: pnpm install --frozen-lockfile
+    - shell: bash
+      run: pnpm audit --audit-level=high
+    - shell: bash
+      run: node --test scripts/studio-deployment.test.mjs
+    - shell: bash
+      run: pnpm build
+
+    - name: Select the latest passing Design Studio source
+      id: studio
+      uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+      with:
+        script: |
+          const selectSource = require('./scripts/select-studio-source.cjs');
+          await selectSource({ github, core });
+    - name: Checkout Design Studio at the tested commit
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      with:
+        repository: ${{ steps.studio.outputs.repository }}
+        ref: ${{ steps.studio.outputs.sha }}
+        path: studio-source
+        fetch-depth: 0
+        persist-credentials: false
+    - uses: jdx/mise-action@8418fedb1110381a0d3ba51a7a415d7c1b884550 # v5
+      with:
+        working_directory: studio-source
+    - name: Install Studio dependencies
+      shell: bash
+      working-directory: studio-source
+      run: mise exec -- pnpm install --frozen-lockfile
+    - name: Build the demo for its public path
+      shell: bash
+      working-directory: studio-source
+      env:
+        STUDIO_BASE_PATH: /design-studio-demo/
+      run: |
+        mise exec -- pnpm build
+        mise exec -- pnpm build:inspect
+    - name: Include the demo in the website output
+      shell: bash
+      run: node scripts/include-studio-demo.mjs studio-source/dist
