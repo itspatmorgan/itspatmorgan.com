@@ -19,6 +19,10 @@ const repository = "https://github.com/itspatmorgan/design-studio";
 const liveDemo = "https://itspatmorgan.com/design-studio-demo/";
 
 
+import StudioPress from "@/components/studio-case/StudioPress.astro";
+import { mediaFeatures } from "@/data/media";
+// Go deeper: the Dive Club interview, the Maven lesson and Xinran Ma's article, as the case study shows its press.
+const learnMore = mediaFeatures.filter((item) => item.title !== "Design Studio open-source launch");
 ---
 
 <PageLayout template="showcase" title="Design Studio: Design with intent. Build with an agent." description="Design Studio is an open source, AI prototype sandbox for designers and product managers who build." image="/images/share/design-studio.jpg">
@@ -99,47 +103,45 @@ const liveDemo = "https://itspatmorgan.com/design-studio-demo/";
       </div>
     </section>
 
+    <section class="cs-slide ds-learn" aria-labelledby="learn-title">
+      <h2 id="learn-title">Go deeper</h2>
+      <p>An interview, a live lesson and an article on why Design Studio exists and how teams work in it.</p>
+      <StudioPress items={learnMore} />
+    </section>
+
     <section id="get-started" class="cs-slide ds-start" aria-labelledby="setup-title">
       <h2 id="setup-title">Get started with your agent</h2>
       <p>Paste a prompt into your coding agent. It installs Design Studio and opens the preview, then helps you publish when you’re ready to share.</p>
-      <div class="studio-story-split studio-action-grid ds-start-grid">
-        <section class="flex min-w-0 flex-col" aria-labelledby="install-title">
-          <h3 id="install-title" class="text-xl font-medium tracking-tight sm:text-2xl">1. Install and run locally</h3>
-          <p class="mt-3 text-base leading-relaxed text-muted-foreground">Use the agent harness you already use.</p>
-
-          <div class="setup-prompt texture-bg mt-6 flex flex-1 flex-col rounded-xl border border-border p-5 sm:p-7">
-            <p class="mb-4 text-base leading-relaxed" data-setup-prompt>{installationPrompt.split(/(https:\/\/\S+?)(?=[.,]?(?:\s|$))/).map((part, i) => i % 2 ? <span class="ds-url">{part}</span> : part)}</p>
-            <button type="button" hidden data-copy-prompt class={buttonVariants({ className: "mt-auto h-10 self-start px-4" })} aria-label="Copy Design Studio installation prompt">Copy installation prompt</button>
-          </div>
-          <div class="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 text-muted-foreground" aria-label="Example agent harnesses for Design Studio">
-            {agentHarnesses.map((harness) => (
-              <span class="inline-flex items-center gap-2 text-sm">
-                <span class="hero-vendor-logo setup-compatibility-logo" style={"--vendor-logo: url(" + harness.logo + ")"} aria-hidden="true"></span>
-                <span>{harness.title}</span>
-              </span>
+      <div class="ds-start-grid">
+        <section id="install" class="ds-step" data-prompt-card aria-labelledby="install-title">
+          <h3 id="install-title"><span class="ds-step-n" aria-hidden="true">1</span>Install and run locally</h3>
+          <p class="ds-step-line">Use the agent harness you already use.</p>
+          <p class="ds-prompt texture-bg" data-setup-prompt>{installationPrompt.split(/(https:\/\/\S+?)(?=[.,]?(?:\s|$))/).map((part, i) => i % 2 ? <span class="ds-url">{part}</span> : part)}</p>
+          <div class="ds-step-tools" aria-label="Example agent harnesses for Design Studio">
+            {agentHarnesses.map((item) => (
+              <span><span class="hero-vendor-logo setup-compatibility-logo" style={"--vendor-logo: url(" + item.logo + ")"} aria-hidden="true"></span>{item.title}</span>
             ))}
-            <span class="whitespace-nowrap text-sm">and more</span>
+            <span>and more</span>
           </div>
-          <a href={setupGuide} class="mt-4 inline-flex items-center gap-2 self-start text-sm font-medium underline underline-offset-4 transition-colors hover:text-accent">Full installation guide <Icon icon={ArrowUpRight01Icon} size={14} class="shrink-0" /></a>
+          <div class="ds-step-foot">
+            <button type="button" hidden data-copy-prompt class={buttonVariants({ className: "h-9 px-4" })} aria-label="Copy Design Studio installation prompt">Copy installation prompt</button>
+            <a href={setupGuide}>Full installation guide <Icon icon={ArrowUpRight01Icon} size={14} class="shrink-0" /></a>
+          </div>
         </section>
-        <section id="publish" class="flex min-w-0 scroll-mt-8 flex-col" aria-labelledby="publish-title">
-          <h3 id="publish-title" class="text-xl font-medium tracking-tight sm:text-2xl">2. Publish and share</h3>
-          <p class="mt-3 text-base leading-relaxed text-muted-foreground">Publish a static website on the host you choose.</p>
-
-          <div class="setup-prompt texture-bg mt-6 flex flex-1 flex-col rounded-xl border border-border p-5 sm:p-7">
-            <p class="mb-4 text-base leading-relaxed" data-setup-prompt>{publishingPrompt}</p>
-            <button type="button" hidden data-copy-prompt class={buttonVariants({ className: "mt-auto h-10 self-start px-4" })} aria-label="Copy Design Studio publishing prompt">Copy publishing prompt</button>
-          </div>
-          <div class="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 text-muted-foreground" aria-label="Example hosting services for Design Studio">
-            {publishingHosts.map((host) => (
-              <span class="inline-flex items-center gap-2 text-sm">
-                <span class="hero-vendor-logo setup-compatibility-logo" style={"--vendor-logo: url(" + host.logo + ")"} aria-hidden="true"></span>
-                <span>{host.title}</span>
-              </span>
+        <section id="publish" class="ds-step" data-prompt-card aria-labelledby="publish-title">
+          <h3 id="publish-title"><span class="ds-step-n" aria-hidden="true">2</span>Publish and share</h3>
+          <p class="ds-step-line">Publish a static website on the host you choose.</p>
+          <p class="ds-prompt texture-bg" data-setup-prompt>{publishingPrompt}</p>
+          <div class="ds-step-tools" aria-label="Example hosting services for Design Studio">
+            {publishingHosts.map((item) => (
+              <span><span class="hero-vendor-logo setup-compatibility-logo" style={"--vendor-logo: url(" + item.logo + ")"} aria-hidden="true"></span>{item.title}</span>
             ))}
-            <span class="whitespace-nowrap text-sm">and more</span>
+            <span>and more</span>
           </div>
-          <a href={publishingGuide} class="mt-4 inline-flex items-center gap-2 self-start text-sm font-medium underline underline-offset-4 transition-colors hover:text-accent">Full publishing guide <Icon icon={ArrowUpRight01Icon} size={14} class="shrink-0" /></a>
+          <div class="ds-step-foot">
+            <button type="button" hidden data-copy-prompt class={buttonVariants({ className: "h-9 px-4" })} aria-label="Copy Design Studio publishing prompt">Copy publishing prompt</button>
+            <a href={publishingGuide}>Full publishing guide <Icon icon={ArrowUpRight01Icon} size={14} class="shrink-0" /></a>
+          </div>
         </section>
       </div>
       <p class="ds-community">Built something? <a href="https://github.com/itspatmorgan/design-studio/discussions">Share it with the community on GitHub</a>, or tag <a href={siteConfig.social.x}>@itspatmorgan</a> on X.</p>
@@ -218,11 +220,23 @@ const liveDemo = "https://itspatmorgan.com/design-studio-demo/";
   .ds-share-grid a, .ds-community a { text-decoration: underline; text-underline-offset: 4px; text-decoration-color: color-mix(in srgb, currentColor 35%, transparent); }
   .ds-share-grid a { display: inline-flex; align-items: center; gap: 6px; margin-top: auto; padding-top: 20px; font-size: 14px; font-weight: 500; }
   .ds-share-grid a:hover, .ds-community a:hover { text-decoration-color: currentColor; }
-  .ds-start-grid { max-width: 1024px; margin: 48px auto 0; text-align: left; }
+  /* Get started: two prompt cards in the share cards' language, so the section reads as one centered composition. */
+  .ds-start-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; max-width: 1024px; margin: 48px auto 0; text-align: left; }
+  .ds-step { display: flex; flex-direction: column; min-width: 0; padding: 24px; border: 1px solid var(--border); border-radius: 16px; background: var(--card); scroll-margin-top: 2rem; }
+  .ds-step h3 { display: flex; align-items: center; gap: 10px; font-size: 17px; line-height: 24px; font-weight: 500; letter-spacing: -.01em; }
+  .ds-step-n { display: inline-grid; place-items: center; flex: none; width: 24px; height: 24px; border-radius: 999px; background: var(--muted); font-size: 13px; font-weight: 500; font-variant-numeric: tabular-nums; color: var(--muted-foreground); }
+  .ds-step-line { margin-top: 8px; padding-left: 34px; font-size: 15px; line-height: 23px; color: var(--muted-foreground); }
+  .ds-prompt { flex: 1; margin-top: 20px; padding: 16px 18px; border: 1px solid var(--border); border-radius: 10px; font-size: 14.5px; line-height: 23px; overflow-wrap: anywhere; }
+  .ds-step-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 16px; margin-top: 16px; font-size: 13px; color: var(--muted-foreground); }
+  .ds-step-tools > span { display: inline-flex; align-items: center; gap: 6px; }
+  .ds-step-tools .setup-compatibility-logo { width: 16px; height: 16px; }
+  .ds-step-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 16px; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border); }
+  .ds-step-foot a { display: inline-flex; align-items: center; gap: 6px; margin-left: auto; font-size: 14px; font-weight: 500; text-decoration: underline; text-underline-offset: 4px; text-decoration-color: color-mix(in srgb, currentColor 35%, transparent); }
+  .ds-step-foot a:hover { text-decoration-color: currentColor; }
   .ds-start > .ds-community { margin-top: 48px; font-size: 16px; }
   .ds-community a { color: var(--foreground); }
   .ds-note { padding: 144px 0 96px; }
-  @media (max-width: 860px) { .ds-share-grid { grid-template-columns: minmax(0, 1fr); max-width: 560px; margin-top: 28px; gap: 12px; } }
+  @media (max-width: 860px) { .ds-start-grid { grid-template-columns: minmax(0, 1fr); max-width: 560px; gap: 12px; } .ds-share-grid { grid-template-columns: minmax(0, 1fr); max-width: 560px; margin-top: 28px; gap: 12px; } }
   @media (max-width: 760px) { .ds-note { padding-top: 88px; } .ds-start-grid { margin-top: 28px; } }
   @media (max-width: 640px) {
     .ds-actions a { height: 40px; padding: 0 16px; font-size: 14px; }
@@ -247,12 +261,15 @@ const liveDemo = "https://itspatmorgan.com/design-studio-demo/";
   }
   .hero-vendor-logo { display: block; width: 1.75rem; height: 1.75rem; flex-shrink: 0; background: currentColor; mask: var(--vendor-logo) center / contain no-repeat; }
   .setup-compatibility-logo { width: 1.25rem; height: 1.25rem; }
-  .setup-prompt { overflow-wrap: anywhere; }
   /* A long URL breaks evenly across lines instead of leaving its hyphen alone on one. */
-  .ds-url { word-break: break-all; }
-  .studio-action-grid { display: grid; gap: 2rem; }
-  .studio-action-grid > div { min-width: 0; }
-  @container studio-page (min-width: 40rem) { .studio-story-split { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
+  @media (max-width: 640px) { .ds-url { word-break: break-all; } }
+  @media (max-width: 640px) {
+    .ds-step { padding: 20px; }
+    .ds-prompt { padding: 14px 16px; }
+    .ds-step-tools { gap: 6px 12px; }
+    .ds-step-foot { flex-direction: column; align-items: flex-start; }
+    .ds-step-foot a { margin-left: 0; }
+  }
   .creator-portrait-field::before {
     content: "";
     position: absolute;
@@ -380,7 +397,7 @@ const liveDemo = "https://itspatmorgan.com/design-studio-demo/";
       button.dataset.initialized = "true";
       const label = button.textContent ?? "";
       button.addEventListener("click", async () => {
-        const code = button.parentElement?.querySelector("[data-setup-prompt]")?.textContent;
+        const code = button.closest("[data-prompt-card]")?.querySelector("[data-setup-prompt]")?.textContent;
         const status = document.querySelector<HTMLElement>("[data-copy-status]");
         if (!code) return;
         try { await navigator.clipboard.writeText(code); button.textContent = "Copied"; if (status) status.textContent = "Prompt copied to clipboard."; }
