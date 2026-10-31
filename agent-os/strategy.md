@@ -43,5 +43,5 @@ the judgment behind it, and the systems that support it.
 ## Current Operating Focus
 
 Make each meaningful change leave behind better context for the next one through
-tool-neutral plans, focused review, and reusable learning notes.
+focused review and reusable learning notes.
 

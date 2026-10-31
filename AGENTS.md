@@ -57,10 +57,9 @@ re-syncing all website-ready Obsidian newsletters.
 Use a strategy -> plan -> track -> build -> review -> learn workflow for
 non-trivial work.
 
-Keep implementation plans in the conversation or agent planning tools. Do not
-create or commit agent plan files in this repository unless the user explicitly
-requests a saved plan. Existing files in `agent-os/plans/` are historical records,
-not a requirement to add new plans.
+Keep implementation plans, QA notes, and scratch files in the conversation or
+agent planning tools. Do not commit them to this repository; treat it as a
+production codebase.
 
 Use `agent-os/skills/` when the task is a repeatable agent capability rather
 than a known implementation change. Skills should propose targeted work for
@@ -92,8 +91,7 @@ when appropriate.
 
 | Path | Purpose |
 | --- | --- |
-| `agent-os/` | Shared strategy, system map, plans, conventions, learnings, and skills |
-| `.reference/` | User-provided briefs, screenshots, design tokens, outlines, and URLs |
+| `agent-os/` | Shared strategy, system map, conventions, learnings, and skills |
 | `.github/workflows/deploy.yml` | Production deployment to Cloudflare |
 | `.github/workflows/preview.yml` | Cloudflare preview link for each pull request |
 | `.github/actions/build-site/` | Shared build of the website plus the Design Studio demo |

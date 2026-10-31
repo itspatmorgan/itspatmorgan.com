@@ -11,7 +11,6 @@ calling it done, and capture reusable learnings after completion.
 | --- | --- |
 | `strategy.md` | Durable direction, audience, priorities, tracks, and non-goals |
 | `system-map.md` | Operating map for routes, ownership, workflows, deployment, and maintenance |
-| `plans/` | Work artifacts for non-trivial changes |
 | `conventions/` | Current architecture, content, styling, and asset conventions |
 | `learnings/` | Reusable lessons from completed work |
 | `skills/` | Repeatable, self-contained agent capabilities for recurring review and improvement |
@@ -30,13 +29,13 @@ Work can be tracked through:
 strategy -> plan -> implementation -> review -> learning
 ```
 
-Small fixes can skip the plan. Non-trivial changes should start with a plan,
-consult the system map and relevant conventions, and finish by deciding whether
-they produced a reusable learning.
+Plans live in the conversation or agent planning tools, not in this folder.
+Non-trivial changes should consult the system map and relevant conventions, and
+finish by deciding whether they produced a reusable learning.
 
 Recurring improvement work should use skills. A skill reviews part of the
-project, proposes targeted work for approval, and turns approved work into plans,
-tasks, or implementation. Skills can be run manually now and scheduled through
+project, proposes targeted work for approval, and turns approved work into
+tasks or implementation. Skills can be run manually now and scheduled through
 automation later.
 
 ## Documentation Principle

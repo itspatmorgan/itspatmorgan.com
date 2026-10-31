@@ -12,7 +12,7 @@ work easier, safer, or clearer.
 
 This skill is part of the compounding workflow: the agent reviews a focused
 slice of the codebase, identifies small improvements, asks for approval, then
-turns approved items into plans, tasks, or implementation.
+turns approved items into tasks or implementation.
 
 ## Cadence
 
@@ -33,7 +33,6 @@ manually now and scheduled through automation later.
 - `agent-os/strategy.md`
 - `agent-os/system-map.md`
 - Relevant files in `agent-os/conventions/`
-- Recent plans in `agent-os/plans/`
 - Existing open GitHub Issues, project board items, or Notion Tasks when
   available
 
@@ -90,7 +89,6 @@ Return a short ranked list:
 Do not implement radar findings automatically unless the user explicitly asks.
 After approval, create or update the smallest useful artifact:
 
-- `agent-os/plans/` for repo-local implementation work,
 - GitHub Issues for tracked website work,
 - Notion Tasks for cross-project orchestration, or
 - direct implementation for a tiny approved fix.
