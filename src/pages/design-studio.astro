@@ -24,6 +24,13 @@ import StudioPress from "@/components/studio-case/StudioPress.astro";
 import { mediaFeatures } from "@/data/media";
 // Go deeper: the Dive Club interview, the Maven lesson and Xinran Ma's article, as the case study shows its press.
 const learnMore = mediaFeatures.filter((item) => item.title !== "Design Studio open-source launch");
+
+// Community tools that pair with Design Studio (checked against each project's own page, 2026-10-31).
+const communityTools = [
+  { name: "DialKit", by: "Josh Puckett", does: "Live controls beside your interface for springs, easing, color and layout, so you tune a screen by feel and keep the values.", install: "npm install dialkit motion", href: "https://www.dialkit.dev/", linkLabel: "dialkit.dev" },
+  { name: "Stageshow", by: "Benji Taylor", does: "A skill that has your agent build product UI demos, cursor walkthroughs and feature cards, then film them to check its work.", install: "npx skills add benjitaylor/skills --skill stageshow", href: "https://benji.org/stageshow", linkLabel: "benji.org/stageshow" },
+  { name: "Design engineering skills", by: "Emil Kowalski", does: "Skills to build, review and tune animation, test a UI with worst-case data, and make a web app feel native on a phone.", install: "npx skills@latest add emilkowalski/skills", href: "https://github.com/emilkowalski/skills", linkLabel: "emilkowalski/skills" },
+];
 ---
 
 <PageLayout template="showcase" title="Design Studio: Design with intent. Build with an agent." description="Design Studio is an open source, AI prototype sandbox for designers and product managers who build." image="/images/share/design-studio.jpg">
@@ -102,6 +109,20 @@ const learnMore = mediaFeatures.filter((item) => item.title !== "Design Studio o
         <div><h3>Publish a website</h3><p>Your team explores the prototypes and the thinking behind them in the browser, with nothing to install.</p><a href={liveDemo}>Explore a published Studio <Icon icon={ArrowUpRight01Icon} size={14} class="shrink-0" /></a></div>
         <div><h3>Start in Personal mode</h3><p>Explore on your own, with full control of your prototypes, systems and settings.</p></div>
         <div><h3>Grow into Team mode</h3><p>Contributors edit their own prototypes. Admins manage access and assign maintainers for shared systems.</p></div>
+      </div>
+    </section>
+
+    <section class="cs-slide ds-tools" aria-labelledby="tools-title">
+      <h2 id="tools-title">Extend it with tools from the design community</h2>
+      <p>Design Studio is a regular repo your agent works in, so the libraries and skills designers share work there too. A few that pair well with it:</p>
+      <div class="ds-share-grid">
+        {communityTools.map(tool => <div>
+          <h3>{tool.name}</h3>
+          <p class="ds-tool-by">{tool.by}</p>
+          <p>{tool.does}</p>
+          <code class="ds-tool-cmd">{tool.install}</code>
+          <a href={tool.href}>{tool.linkLabel} <Icon icon={ArrowUpRight01Icon} size={14} class="shrink-0" /></a>
+        </div>)}
       </div>
     </section>
 
@@ -215,6 +236,8 @@ const learnMore = mediaFeatures.filter((item) => item.title !== "Design Studio o
   .ds-share-grid > div { display: flex; flex-direction: column; padding: 24px; border: 1px solid var(--border); border-radius: 16px; background: var(--card); }
   .ds-share-grid h3 { font-size: 17px; line-height: 24px; font-weight: 500; letter-spacing: -.01em; }
   .ds-share-grid p { margin-top: 8px; font-size: 15px; line-height: 23px; color: var(--muted-foreground); }
+  .ds-share-grid .ds-tool-by { margin-top: 2px; font-size: 14px; line-height: 20px; }
+  .ds-tool-cmd { display: block; margin-top: 16px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--background); font-family: var(--font-mono, ui-monospace, monospace); font-size: 12.5px; line-height: 18px; overflow-wrap: anywhere; }
   .ds-share-grid a, .ds-community a { text-decoration: underline; text-underline-offset: 4px; text-decoration-color: color-mix(in srgb, currentColor 35%, transparent); }
   .ds-share-grid a { display: inline-flex; align-items: center; gap: 6px; margin-top: auto; padding-top: 20px; font-size: 14px; font-weight: 500; }
   .ds-share-grid a:hover, .ds-community a:hover { text-decoration-color: currentColor; }
