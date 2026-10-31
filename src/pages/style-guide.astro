@@ -1,80 +1,233 @@
 ---
 import PageLayout from "@/layouts/PageLayout.astro";
+import PageHeader from "@/components/layout/PageHeader.astro";
+import { Badge } from "@/components/ui/badge";
+import { buttonVariants } from "@/components/ui/button";
+
+// The design system reference: what the site is built from, rendered with the real tokens so it follows the theme toggle.
+// Values live in src/styles/global.css; the principles behind them in agents/principles/design.md.
+const colors = [
+  ["background", "Page"],
+  ["foreground", "Text and primary"],
+  ["card", "Cards and stages"],
+  ["muted", "Quiet surfaces"],
+  ["muted-foreground", "Secondary text"],
+  ["accent", "Links, focus and highlights"],
+  ["border", "Dividers and outlines"],
+  ["destructive", "Errors"],
+];
+const type = [
+  ["text-4xl sm:text-5xl font-medium tracking-tight", "Page title", "Designer who builds"],
+  ["text-2xl font-semibold tracking-tight", "Slide headline", "One point per slide"],
+  ["text-lg font-semibold tracking-tight", "Section heading", "Writing"],
+  ["text-lg leading-relaxed text-muted-foreground", "Lead", "A line that sets up the page."],
+  ["text-base", "Body", "Plain, specific and true. Every word earns its place."],
+  ["text-sm text-muted-foreground", "Meta", "Published October 31, 2026"],
+];
+const radii = [["sm", "rounded-sm"], ["md", "rounded-md"], ["lg", "rounded-lg"], ["xl", "rounded-xl"], ["2xl", "rounded-2xl"]];
+const curves = [
+  ["--motion-ease-out", "cubic-bezier(.22, 1, .36, 1)", "Entrances and settles, including the page fade"],
+  ["--motion-ease-out-quick", "cubic-bezier(.23, 1, .32, 1)", "Quick UI responses and gliding highlights"],
+  ["--motion-ease-in-out", "cubic-bezier(.65, 0, .35, 1)", "Things moving across a stage"],
+  ["--motion-ease-standard", "cubic-bezier(.4, 0, .2, 1)", "Small state changes"],
+];
+const timings = [
+  ["Page leaves", "90ms", "--motion-route-out"],
+  ["Page arrives, with a 4px rise", "180ms", "--motion-route-in"],
+  ["Card state cross-fade", "out 180ms, in 360ms after 80ms", "project cards"],
+  ["Hover and press feedback", "150 to 200ms", "controls"],
+];
+const section = "mx-auto max-w-3xl px-6 py-12 border-t border-border";
+const heading = "mb-2 text-lg font-semibold tracking-tight sm:text-xl";
+const note = "mb-8 text-muted-foreground";
 ---
 
-<PageLayout title="Style Guide" description="Markdown element reference for styling">
-  <article class="mx-auto max-w-3xl px-6 py-16">
-    <h1 class="mb-6 text-4xl font-medium tracking-tight sm:text-5xl">
-      Markdown Style Guide
-    </h1>
-    <p class="mb-12 text-lg text-muted-foreground">
-      A kitchen sink of all prose elements to verify typography and styling.
-    </p>
+<PageLayout title="Design System" description="The color, type, layout, motion and components itspatmorgan.com is built from." noindex>
+  <PageHeader>
+    <Fragment slot="title">Design system</Fragment>
+    <Fragment slot="lead">The color, type, layout, motion and pieces this site is built from. Values live in <code class="font-mono text-base">src/styles/global.css</code>, and the principles behind them in <code class="font-mono text-base">agents/principles/design.md</code>.</Fragment>
+  </PageHeader>
 
-    <div class="prose">
-      <h2>Heading 2 — Section Title</h2>
-      <p>This is a standard paragraph. Body text should be comfortable to read at length, with good line-height and a muted color that provides contrast without harshness. Here's some <strong>bold text</strong> and some <em>italic text</em> and a <a href="#">link to somewhere</a>.</p>
-
-      <h3>Heading 3 — Subsection Title</h3>
-      <p>Subsection headings should be clearly smaller than H2s but still stand out from body text. They create hierarchy within a section.</p>
-
-      <h2>Blockquotes</h2>
-      <p>Used for challenge statements, callouts, and highlighted quotes:</p>
-      <blockquote>
-        <p>How might we help new users understand and leverage complex capabilities without compromising power and flexibility?</p>
-      </blockquote>
-
-      <h2>Lists</h2>
-      <h3>Unordered List</h3>
-      <ul>
-        <li>Making the data model intuitively browsable through clear categories</li>
-        <li>Providing structured ways to build queries that taught the language</li>
-        <li>Creating a natural progression from guided to advanced usage</li>
-      </ul>
-
-      <h3>Ordered List</h3>
-      <ol>
-        <li>A pre-sales discovery experience</li>
-        <li>An enhanced setup process with our sales team</li>
-        <li>A post-onboarding feedback loop</li>
-      </ol>
-
-      <h3>List with Bold Labels</h3>
-      <ul>
-        <li><strong>Who:</strong> Product team pod (designer, product manager, tech lead, 3-4 engineers)</li>
-        <li><strong>How Long:</strong> ~3 months (initial discovery to production)</li>
-        <li><strong>What Tools:</strong> Figma for UI design. Code-based prototyping.</li>
-      </ul>
-
-      <h2>Images</h2>
-      <p>Images should have rounded corners, a subtle border, and vertical spacing:</p>
-      <img src="/images/projects/query/feature-query.jpg" alt="Example project thumbnail" />
-
-      <h2>Inline Code and Code Blocks</h2>
-      <p>Use inline <code>code</code> for referencing variables, filenames like <code>CLAUDE.md</code>, or short technical terms.</p>
-      <pre><code set:html={`// Code block example\nconst theme = localStorage.getItem("theme");\nif (theme === "dark") {\n  document.documentElement.classList.add("dark");\n}`} /></pre>
-
-      <h2>Horizontal Rules</h2>
-      <p>Used to separate major sections:</p>
-      <hr />
-      <p>Content continues after the rule.</p>
-
-      <h2>Bold and Emphasis Combinations</h2>
-      <ul>
-        <li><strong>Detection Templates:</strong> Pre-configured detections identified common bot patterns like web scrapers, vulnerability scanners, and aggressive crawlers.</li>
-        <li><strong>Automated Response System:</strong> Flexible rules & alerts engine enabled teams to block suspicious traffic, rate limit aggressive bots, and trigger incident response workflows.</li>
-        <li><strong>Monitoring Dashboards:</strong> Ready-to-use views helped teams track bot activity patterns and measure <em>mitigation effectiveness</em> over time.</li>
-      </ul>
-
-      <h2>Links</h2>
-      <p>Links should use the accent color with an underline offset: <a href="#">Presentation Slides</a>, <a href="#">Prototype</a>, <a href="#">UI Screens</a>, and <a href="#">Design System</a>.</p>
-
-      <h2>Nested Content</h2>
-      <p>A paragraph before the blockquote.</p>
-      <blockquote>
-        <p>Impact: Unified product teams around a shared vision driven by customer insights</p>
-      </blockquote>
-      <p>A paragraph after the blockquote, continuing the narrative with additional context and detail about what happened next.</p>
+  <section class={section} aria-labelledby="color">
+    <h2 id="color" class={heading}>Color</h2>
+    <p class={note}>Warm and quiet. Neutrals carry the page, the copper accent marks what's interactive, and nothing else competes with the work. Switch the theme to see dark mode.</p>
+    <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
+      {colors.map(([token, use]) => (
+        <div>
+          <div class="aspect-[4/3] rounded-lg border border-border" style={`background: var(--${token})`}></div>
+          <p class="mt-2 font-mono text-xs">{token}</p>
+          <p class="text-sm text-muted-foreground">{use}</p>
+        </div>
+      ))}
     </div>
-  </article>
+  </section>
+
+  <section class={section} aria-labelledby="type">
+    <h2 id="type" class={heading}>Type</h2>
+    <p class={note}>Geist for everything people read, Geist Mono for code and metadata, and Geist Pixel only for the hero's dissolve. Headings are sentence case in the body font; no all-caps labels.</p>
+    <dl class="space-y-6">
+      {type.map(([classes, role, sample]) => (
+        <div class="grid gap-1 sm:grid-cols-[9rem_1fr] sm:items-baseline sm:gap-6">
+          <dt class="text-sm text-muted-foreground">{role}</dt>
+          <dd class={classes}>{sample}</dd>
+        </div>
+      ))}
+      <div class="grid gap-1 sm:grid-cols-[9rem_1fr] sm:items-baseline sm:gap-6">
+        <dt class="text-sm text-muted-foreground">Mono</dt>
+        <dd class="font-mono text-sm">pnpm build</dd>
+      </div>
+      <div class="grid gap-1 sm:grid-cols-[9rem_1fr] sm:items-baseline sm:gap-6">
+        <dt class="text-sm text-muted-foreground">Pixel</dt>
+        <dd class="font-pixel text-3xl">Unknown Arts</dd>
+      </div>
+    </dl>
+  </section>
+
+  <section class={section} aria-labelledby="layout">
+    <h2 id="layout" class={heading}>Layout</h2>
+    <p class={note}>Two page templates, set by PageLayout's <code class="font-mono text-sm">template</code> prop. Don't add a third width.</p>
+    <div class="space-y-5">
+      <div>
+        <div class="h-3 rounded-full bg-muted"><div class="h-3 rounded-full bg-accent" style="width: 90.1%"></div></div>
+        <p class="mt-2 text-sm"><span class="font-medium">Showcase.</span> <span class="text-muted-foreground">1024px of content in an 1136px shell: the homepage, case study stages and Design Studio.</span></p>
+      </div>
+      <div>
+        <div class="h-3 rounded-full bg-muted"><div class="h-3 rounded-full bg-accent" style="width: 63.4%"></div></div>
+        <p class="mt-2 text-sm"><span class="font-medium">Reading.</span> <span class="text-muted-foreground">A 720px column with the shared page header: About, Work, Community, Lab, Writing, articles and this page.</span></p>
+      </div>
+      <p class="text-sm text-muted-foreground">Photo rows on reading pages break out to the wider max-w-5xl. The footer follows the template above it.</p>
+    </div>
+  </section>
+
+  <section class={section} aria-labelledby="shape">
+    <h2 id="shape" class={heading}>Shape</h2>
+    <p class={note}>One radius scale from <code class="font-mono text-sm">--radius</code>. Borders are a single quiet line; shadows only lift a product screen off its stage.</p>
+    <div class="flex flex-wrap gap-4">
+      {radii.map(([size, rounded]) => (
+        <div class="text-center">
+          <div class={`size-16 border border-border bg-card ${rounded}`}></div>
+          <p class="mt-2 font-mono text-xs">{size}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class={section} aria-labelledby="motion">
+    <h2 id="motion" class={heading}>Motion</h2>
+    <p class={note}>Short and quiet. Route motion stays under about 250ms, state changes cross-fade rather than blink in, and reduced motion turns movement off. Hover a curve to see it.</p>
+    <ul class="space-y-4">
+      {curves.map(([token, value, use]) => (
+        <li class="sg-curve group rounded-lg border border-border p-4" tabindex="0">
+          <div class="relative h-2 rounded-full bg-muted">
+            <span class="sg-dot absolute top-1/2 left-0 size-3 -translate-y-1/2 rounded-full bg-accent" style={`transition-timing-function: var(${token})`}></span>
+          </div>
+          <p class="mt-3 font-mono text-xs">{token}</p>
+          <p class="text-sm text-muted-foreground">{use}. <span class="font-mono text-xs">{value}</span></p>
+        </li>
+      ))}
+    </ul>
+    <dl class="mt-8 divide-y divide-border border-y border-border text-sm">
+      {timings.map(([moment, value, where]) => (
+        <div class="grid gap-1 py-3 sm:grid-cols-[1fr_auto] sm:gap-6">
+          <dt>{moment} <span class="font-mono text-xs text-muted-foreground">{where}</span></dt>
+          <dd class="text-muted-foreground">{value}</dd>
+        </div>
+      ))}
+    </dl>
+    <p class="mt-6 text-sm text-muted-foreground">Case study demos use the shared scene player: a step tracker and play and pause under the stage, with a caption only when it adds something.</p>
+  </section>
+
+  <section class={section} aria-labelledby="components">
+    <h2 id="components" class={heading}>Components</h2>
+    <p class={note}>A small set, shared everywhere. Reuse these before making something new.</p>
+    <div class="space-y-6">
+      <div class="flex flex-wrap items-center gap-3">
+        <a href="#components" class={buttonVariants()}>Primary</a>
+        <a href="#components" class={buttonVariants({ variant: "outline" })}>Outline</a>
+        <a href="#components" class={buttonVariants({ variant: "ghost" })}>Ghost</a>
+        <a href="#components" class={buttonVariants({ variant: "link" })}>Link</a>
+      </div>
+      <div class="flex flex-wrap items-center gap-3">
+        <Badge>Default</Badge>
+        <Badge variant="secondary">AI</Badge>
+        <Badge variant="outline">Outline</Badge>
+      </div>
+    </div>
+  </section>
+
+  <section class={section} aria-labelledby="prose">
+    <h2 id="prose" class={heading}>Prose</h2>
+    <p class={note}>Articles and long text use the custom <code class="font-mono text-sm">.prose</code> styles in global.css.</p>
+    <div class="prose">
+          <h2>Heading 2 — Section Title</h2>
+          <p>This is a standard paragraph. Body text should be comfortable to read at length, with good line-height and a muted color that provides contrast without harshness. Here's some <strong>bold text</strong> and some <em>italic text</em> and a <a href="#">link to somewhere</a>.</p>
+    
+          <h3>Heading 3 — Subsection Title</h3>
+          <p>Subsection headings should be clearly smaller than H2s but still stand out from body text. They create hierarchy within a section.</p>
+    
+          <h2>Blockquotes</h2>
+          <p>Used for challenge statements, callouts, and highlighted quotes:</p>
+          <blockquote>
+            <p>How might we help new users understand and leverage complex capabilities without compromising power and flexibility?</p>
+          </blockquote>
+    
+          <h2>Lists</h2>
+          <h3>Unordered List</h3>
+          <ul>
+            <li>Making the data model intuitively browsable through clear categories</li>
+            <li>Providing structured ways to build queries that taught the language</li>
+            <li>Creating a natural progression from guided to advanced usage</li>
+          </ul>
+    
+          <h3>Ordered List</h3>
+          <ol>
+            <li>A pre-sales discovery experience</li>
+            <li>An enhanced setup process with our sales team</li>
+            <li>A post-onboarding feedback loop</li>
+          </ol>
+    
+          <h3>List with Bold Labels</h3>
+          <ul>
+            <li><strong>Who:</strong> Product team pod (designer, product manager, tech lead, 3-4 engineers)</li>
+            <li><strong>How Long:</strong> ~3 months (initial discovery to production)</li>
+            <li><strong>What Tools:</strong> Figma for UI design. Code-based prototyping.</li>
+          </ul>
+    
+          <h2>Images</h2>
+          <p>Images should have rounded corners, a subtle border, and vertical spacing:</p>
+          <img src="/images/projects/query/feature-query.jpg" alt="Example project thumbnail" />
+    
+          <h2>Inline Code and Code Blocks</h2>
+          <p>Use inline <code>code</code> for referencing variables, filenames like <code>CLAUDE.md</code>, or short technical terms.</p>
+          <pre><code set:html={`// Code block example\nconst theme = localStorage.getItem("theme");\nif (theme === "dark") {\n  document.documentElement.classList.add("dark");\n}`} /></pre>
+    
+          <h2>Horizontal Rules</h2>
+          <p>Used to separate major sections:</p>
+          <hr />
+          <p>Content continues after the rule.</p>
+    
+          <h2>Bold and Emphasis Combinations</h2>
+          <ul>
+            <li><strong>Detection Templates:</strong> Pre-configured detections identified common bot patterns like web scrapers, vulnerability scanners, and aggressive crawlers.</li>
+            <li><strong>Automated Response System:</strong> Flexible rules & alerts engine enabled teams to block suspicious traffic, rate limit aggressive bots, and trigger incident response workflows.</li>
+            <li><strong>Monitoring Dashboards:</strong> Ready-to-use views helped teams track bot activity patterns and measure <em>mitigation effectiveness</em> over time.</li>
+          </ul>
+    
+          <h2>Links</h2>
+          <p>Links should use the accent color with an underline offset: <a href="#">Presentation Slides</a>, <a href="#">Prototype</a>, <a href="#">UI Screens</a>, and <a href="#">Design System</a>.</p>
+    
+          <h2>Nested Content</h2>
+          <p>A paragraph before the blockquote.</p>
+          <blockquote>
+            <p>Impact: Unified product teams around a shared vision driven by customer insights</p>
+          </blockquote>
+          <p>A paragraph after the blockquote, continuing the narrative with additional context and detail about what happened next.</p>
+        </div>
+  </section>
 </PageLayout>
+
+<style>
+  .sg-dot { transition-property: left; transition-duration: 900ms; }
+  .sg-curve:hover .sg-dot, .sg-curve:focus-visible .sg-dot { left: calc(100% - 0.75rem); }
+  @media (prefers-reduced-motion: reduce) { .sg-dot { transition: none; } }
+</style>

@@ -18,8 +18,8 @@
 .dc .dc-view { padding: 20px 20px 0 100px; }
 .dc .dc-h { font-size: 14px; line-height: 20px; font-weight: 600; }
 /* The artifacts are stacked: the outgoing one fades out quickly, then the next fades in, so two never sit on top of each other. */
-.dc-layer { position: absolute; inset: 0; opacity: 0; transition: opacity 240ms cubic-bezier(.4, 0, .2, 1); }
-.dc-layer.is-on { opacity: 1; transition: opacity 420ms cubic-bezier(.4, 0, .2, 1) 160ms; }
+.dc-layer { position: absolute; inset: 0; opacity: 0; transition: opacity 240ms var(--motion-ease-standard); }
+.dc-layer.is-on { opacity: 1; transition: opacity 420ms var(--motion-ease-standard) 160ms; }
 
 /* In front: the artifact types, over the panel's left edge, on the shared front-card spec. */
 .dc .dc-list { left: 28px; top: 57px; width: 196px; padding: 16px 10px 10px; }

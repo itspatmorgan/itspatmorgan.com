@@ -5,6 +5,25 @@
 The site should feel warm, minimal, editorial, and professional. Favor
 restrained, content-first design over decorative complexity.
 
+## Design System
+
+`/style-guide` (`src/pages/style-guide.astro`, not indexed) is the visual
+reference: color, type, layout, shape, motion, shared components and prose,
+rendered with the real tokens. Keep it current when a token or shared piece
+changes. The values live in `src/styles/global.css`:
+
+- Color: semantic OKLCH tokens (`--background`, `--foreground`, `--card`,
+  `--muted`, `--muted-foreground`, `--accent`, `--border`, `--destructive`),
+  redefined under `.dark`.
+- Type: `font-sans` (Geist), `font-mono` (Geist Mono), `font-pixel` (Geist
+  Pixel, the hero dissolve only).
+- Shape: one radius scale from `--radius`.
+- Motion: easing curves `--motion-ease-out`, `--motion-ease-out-quick`,
+  `--motion-ease-in-out` and `--motion-ease-standard`, and route timings
+  `--motion-route-out` (90ms) and `--motion-route-in` (180ms). Use a token
+  instead of writing a curve by hand; add a new one only when none fits.
+- Layout: the showcase and reading templates (see `PageLayout.astro`).
+
 ## Rules
 
 - Tailwind CSS v4 is configured through the Vite plugin, not PostCSS.

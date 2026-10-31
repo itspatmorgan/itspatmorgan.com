@@ -26,7 +26,7 @@
 .sc .sc-plain { padding: 0; overflow: hidden; }
 .sc .cs-native { font-family: 'Geist Variable', sans-serif; color: var(--sc-fg); letter-spacing: 0; font-feature-settings: 'cv11'; }
 .sc .sc-os, .sc .sc-os * { font-family: 'Geist Variable', ui-sans-serif, system-ui, sans-serif; }
-.sc-fade { transition: opacity 380ms ease, transform 480ms cubic-bezier(.22, 1, .36, 1); }
+.sc-fade { transition: opacity 380ms ease, transform 480ms var(--motion-ease-out); }
 .sc-fade.is-out { opacity: 0; transform: translateY(8px); }
 .sc-swap { transition: opacity 300ms ease 180ms, visibility 0s linear 0s; }
 .sc-swap.is-out { opacity: 0; visibility: hidden; transition: opacity 180ms ease, visibility 0s linear 180ms; }
@@ -40,7 +40,7 @@
 .sc-rail .sc-rail-item.is-on { background: var(--sc-select); color: var(--sc-fg); }
 .sc-rail .sc-rail-end { margin-top: auto; }
 .sc-main { position: relative; flex: 1; min-width: 0; overflow: hidden; }
-.sc-scroll { transition: transform 1100ms cubic-bezier(.65, 0, .35, 1); }
+.sc-scroll { transition: transform 1100ms var(--motion-ease-in-out); }
 
 /* Gallery (Index + CatalogFilterBar + CatalogPrototypeCard): max-w-5xl px-6 pt-12. */
 .sc-gallery { width: 880px; margin: 0 auto; padding: 44px 0 32px; }
@@ -177,7 +177,7 @@
 
 /* ── Diagrams ────────────────────────────────────────────────────────────────────────────── */
 .sc-dia { position: absolute; inset: 0; color: var(--sc-ink); font-family: 'Geist Variable', ui-sans-serif, system-ui, sans-serif; letter-spacing: -.01em; }
-.sc-dia * { transition: opacity 420ms ease, transform 560ms cubic-bezier(.22, 1, .36, 1); }
+.sc-dia * { transition: opacity 420ms ease, transform 560ms var(--motion-ease-out); }
 .sc-dia .is-off { opacity: 0; }
 .sc-dia .is-dim { opacity: .38; }
 .sc-node { position: absolute; display: flex; flex-direction: column; justify-content: center; gap: 6px; padding: 18px 22px; border: 1.5px solid var(--sc-node-line); border-radius: 12px; background: var(--sc-node); box-shadow: 0 1px 2px rgba(0, 0, 0, .05); }
@@ -247,7 +247,7 @@
 .sc-node .sc-check { align-self: flex-start; margin-bottom: 10px; }
 
 /* The file tree's context menu (FileTree: Make lo-fi). */
-.sc-menu { position: absolute; z-index: 4; width: 196px; padding: 4px; border: 1px solid var(--os-line); border-radius: 8px; background: var(--os-bg); box-shadow: 0 8px 24px rgba(0, 0, 0, .12); font-size: 13px; transform-origin: 0 0; transition: opacity 160ms ease, transform 200ms cubic-bezier(.22, 1, .36, 1); }
+.sc-menu { position: absolute; z-index: 4; width: 196px; padding: 4px; border: 1px solid var(--os-line); border-radius: 8px; background: var(--os-bg); box-shadow: 0 8px 24px rgba(0, 0, 0, .12); font-size: 13px; transform-origin: 0 0; transition: opacity 160ms ease, transform 200ms var(--motion-ease-out); }
 .sc-menu.is-off { opacity: 0; transform: scale(.96); pointer-events: none; }
 .sc-menu div { display: flex; align-items: center; gap: 8px; height: 30px; padding: 0 8px; border-radius: 5px; color: var(--os-fg); }
 .sc-menu div svg { color: var(--os-weak); }
@@ -278,7 +278,7 @@
 .sc-term { flex: 1; min-width: 0; display: flex; flex-direction: column; background: var(--sc-bg); color: var(--sc-fg); }
 .sc-term-tabs { flex: none; display: flex; align-items: center; height: 36px; padding: 0 20px; border-bottom: 1px solid var(--sc-line); background: var(--sc-side); font-size: 12.5px; font-weight: 500; color: var(--sc-fg); }
 .sc-term-body { padding: 14px 20px; display: grid; align-content: start; gap: 8px; font-family: 'Geist Mono Variable', ui-monospace, monospace; font-size: 13px; line-height: 20px; }
-.sc-term-body p { transition: opacity 350ms ease, transform 450ms cubic-bezier(.22, 1, .36, 1); }
+.sc-term-body p { transition: opacity 350ms ease, transform 450ms var(--motion-ease-out); }
 .sc-term-body p.is-off { opacity: 0; transform: translateY(4px); }
 .sc-term-body i { font-style: normal; color: var(--sc-weak); margin-right: 6px; }
 .sc-term-body b { font-weight: 500; color: var(--sc-weak); margin-right: 8px; }
@@ -409,7 +409,7 @@
 .pt.is-open { padding-top: 28px; }
 /* Then and now: which gallery the demo shows, a toggle inside the stage, above the card (as the query builder case study's Code / Visual). */
 .sc-era { display: flex; width: max-content; margin: 0; padding: 3px; gap: 2px; border-radius: 99px; background: color-mix(in oklch, var(--foreground) 7%, transparent); }
-.sc-era button { position: relative; min-height: 30px; padding: 0 16px; border-radius: 99px; color: var(--muted-foreground); font: 500 13px var(--font-sans); cursor: pointer; transition: color 300ms cubic-bezier(.23, 1, .32, 1); }
+.sc-era button { position: relative; min-height: 30px; padding: 0 16px; border-radius: 99px; color: var(--muted-foreground); font: 500 13px var(--font-sans); cursor: pointer; transition: color 300ms var(--motion-ease-out-quick); }
 .sc-era button > span { position: relative; z-index: 1; display: flex; align-items: center; gap: 6px; height: 30px; }
 .sc-era button b { font-weight: 600; color: inherit; }
 .sc-era button[aria-pressed=true] { color: var(--foreground); }
