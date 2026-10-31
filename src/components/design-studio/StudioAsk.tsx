@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { ArrowUp02Icon, ArrowLeft01Icon, ArrowRight01Icon, Refresh01Icon, Tick02Icon } from '@hugeicons/core-free-icons';
+import { ArrowUp02Icon, ArrowLeft01Icon, ArrowRight01Icon, Comment01Icon, CursorMagicSelection02Icon, Refresh01Icon, Tick02Icon } from '@hugeicons/core-free-icons';
 import { icon } from '../studio-case/StudioUI';
 import { agentHarnesses } from '../../data/design-studio-setup';
 import { SIDE, StudioWindow, W, useReduced, type Key } from './explore/StudioWindow';
@@ -117,6 +117,8 @@ export default function StudioAsk() {
         <div className="hx-browser-bar" aria-hidden="true">
           <span className="hx-browser-nav">{icon(ArrowLeft01Icon, 15)}{icon(ArrowRight01Icon, 15)}{icon(Refresh01Icon, 14)}</span>
           <span className="hx-url"><i /></span>
+          {/* The agent browser's own review tools: pick an element to give design feedback on, and leave comments. */}
+          <span className="hx-browser-tools">{icon(CursorMagicSelection02Icon, 15)}{icon(Comment01Icon, 15)}</span>
         </div>
         <div className="hx-browser-view" ref={view}>
           <StudioWindow shown={shown?.key ?? 'inbox'} fidelity={shown?.lofi ? 0 : 1} min={MIN} side={false} height={size.h / scale} className={`hx-ask-window ${shown ? '' : 'is-empty'}`} />

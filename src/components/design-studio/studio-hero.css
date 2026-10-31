@@ -64,6 +64,7 @@
 .hx-browser { display: flex; flex-direction: column; min-width: 0; min-height: 0; background: var(--background); }
 .hx-browser-bar { display: flex; align-items: center; gap: 12px; flex: none; height: 40px; padding: 0 12px; border-bottom: 1px solid var(--border); color: var(--muted-foreground); }
 .hx-browser-nav { display: flex; gap: 8px; flex: none; }
+.hx-browser-tools { display: flex; gap: 10px; flex: none; }
 .hx-url { flex: 1; min-width: 0; display: flex; align-items: center; height: 24px; padding: 0 10px; border-radius: 6px; background: var(--muted); }
 .hx-url i { width: 38%; max-width: 220px; height: 6px; border-radius: 3px; background: color-mix(in oklch, var(--foreground) 14%, transparent); }
 .hx-browser-view { position: relative; flex: 1; min-height: 0; overflow: hidden; }
