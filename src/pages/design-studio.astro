@@ -30,8 +30,14 @@ const learnMore = mediaFeatures.filter((item) => item.title !== "Design Studio o
   <div class="studio-page mx-auto w-full max-w-[1136px] px-6 sm:px-8 lg:px-14">
     <header class="studio-header flex items-center justify-between gap-6 pt-9 sm:pt-12">
       <a href="/design-studio" class="studio-brand flex shrink-0 items-center gap-3 font-medium tracking-tight" aria-label="Design Studio home — public beta, under active development">
-        <svg width="27" height="26" viewBox="12.48 12 25.03 24" fill="currentColor" aria-hidden="true"><path d="M21.3943 12H12.48V36H21.3943V12Z" /><path d="M23.7944 12H25.5087C28.6913 12 31.7436 13.2643 33.994 15.5147C36.2444 17.7652 37.5087 20.8174 37.5087 24C37.5087 27.1826 36.2444 30.2348 33.994 32.4853C31.7436 34.7357 28.6913 36 25.5087 36H23.7944V12Z" /></svg>
-        <span class="studio-brand-label flex items-center gap-2">
+        <svg viewBox="0 0 30 30" class="studio-mark text-foreground" aria-hidden="true">
+          <rect x=".5" y=".5" width="29" height="29" rx="7" fill="var(--background)" stroke="var(--border)" />
+          <g transform="translate(8.3 8) scale(.6)" fill="currentColor">
+            <path d="M8.914 0H0V24H8.914V0Z" />
+            <path d="M11.314 0H13.029C16.211 0 19.264 1.264 21.514 3.515C23.764 5.765 25.029 8.817 25.029 12C25.029 15.183 23.764 18.235 21.514 20.485C19.264 22.736 16.211 24 13.029 24H11.314V0Z" />
+          </g>
+        </svg>
+        <span class="studio-brand-label flex items-center gap-2 whitespace-nowrap">
           <span class="studio-brand-name text-lg">Design Studio</span>
           <span class="studio-beta rounded-full border border-border bg-muted px-2 py-0.5 font-mono text-xs leading-tight tracking-wide text-muted-foreground" title="Public beta · Under active development">Beta</span>
         </span>
@@ -247,11 +253,13 @@ const learnMore = mediaFeatures.filter((item) => item.title !== "Design Studio o
   .studio-text-link:hover { color: var(--accent); }
   .studio-text-link:focus-visible { outline: 2px solid var(--ring); outline-offset: 4px; }
   .studio-mode-icon { display: none; }
+  .studio-mark { display: block; width: 2rem; height: 2rem; flex-shrink: 0; }
   @container studio-page (max-width: 39.999rem) {
     .studio-header { gap: 0.5rem; }
     .studio-brand { gap: 0.5rem; }
-    .studio-brand > svg { width: 1.5rem; height: auto; }
-    .studio-beta { display: none; }
+    .studio-brand .studio-mark { width: 1.75rem; height: 1.75rem; }
+    .studio-brand-label { gap: 0.375rem; }
+    .studio-beta { padding: 0.0625rem 0.375rem; font-size: 0.6875rem; }
     .studio-brand-name { font-size: clamp(0.875rem, 4.5cqi, 1.125rem); white-space: nowrap; }
     .studio-header-controls { gap: 0.25rem; }
     .studio-github { width: 2.75rem; justify-content: center; }
@@ -259,6 +267,8 @@ const learnMore = mediaFeatures.filter((item) => item.title !== "Design Studio o
     .studio-mode-icon { display: flex; }
     .studio-header .mode-tab { display: flex; align-items: center; justify-content: center; width: 2.25rem; height: 2.25rem; padding: 0; }
   }
+  /* Below about 340px wide the header has no room for the badge; the brand stays on one line without it. */
+  @container studio-page (max-width: 18rem) { .studio-beta { display: none; } }
   .hero-vendor-logo { display: block; width: 1.75rem; height: 1.75rem; flex-shrink: 0; background: currentColor; mask: var(--vendor-logo) center / contain no-repeat; }
   .setup-compatibility-logo { width: 1.25rem; height: 1.25rem; }
   /* A long URL breaks evenly across lines instead of leaving its hyphen alone on one. */
