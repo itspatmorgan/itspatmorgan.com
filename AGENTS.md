@@ -92,7 +92,6 @@ when appropriate.
 | Path | Purpose |
 | --- | --- |
 | `agent-os/` | Shared strategy, system map, conventions, learnings, and skills |
-| `.reference/` | User-provided briefs, screenshots, design tokens, outlines, and URLs |
 | `.github/workflows/deploy.yml` | Production deployment to Cloudflare |
 | `.github/workflows/preview.yml` | Cloudflare preview link for each pull request |
 | `.github/actions/build-site/` | Shared build of the website plus the Design Studio demo |

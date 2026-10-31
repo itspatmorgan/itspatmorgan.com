@@ -73,13 +73,13 @@ So before I sent Claude a single prompt, I spent significant time prepping asset
 Here’s what I assembled:
 
 - **Screenshots of the existing Framer site** — so Claude could see what “match this” meant visually, not just in words
-- **[A design brief](https://github.com/itspatmorgan/itspatmorgan.github.io/blob/main/.reference/website-brief.md)** — my own doc of requirements, tech ideas, and inspiration. Honestly kind of rambly, but specific enough to do the job.
-- **[The project markdown files](https://github.com/itspatmorgan/itspatmorgan.github.io/tree/main/.reference/projects)** — already written, just needing some frontmatter cleanup before migrating
-- **[Page templates](https://github.com/itspatmorgan/itspatmorgan.github.io/blob/main/.reference/references/Outline%20-%20Professional%20Project.md)** — outlines for different project types (professional case study vs. experiment)
-- **[Image assets from Figma](https://github.com/itspatmorgan/itspatmorgan.github.io/tree/main/.reference/assets)** — clean source files for the new environment
-- **[A website outline](https://github.com/itspatmorgan/itspatmorgan.github.io/blob/main/.reference/references/Outline%20-%20Existing%20Website.md)** and **[relevant URLs](https://github.com/itspatmorgan/itspatmorgan.github.io/blob/main/.reference/references/urls.md)**
+- **[A design brief](https://github.com/itspatmorgan/itspatmorgan.github.io/blob/1dc37aabd051be36c1ba3c2084b344b3bc893325/.reference/website-brief.md)** — my own doc of requirements, tech ideas, and inspiration. Honestly kind of rambly, but specific enough to do the job.
+- **[The project markdown files](https://github.com/itspatmorgan/itspatmorgan.github.io/tree/1dc37aabd051be36c1ba3c2084b344b3bc893325/.reference/projects)** — already written, just needing some frontmatter cleanup before migrating
+- **[Page templates](https://github.com/itspatmorgan/itspatmorgan.github.io/blob/1dc37aabd051be36c1ba3c2084b344b3bc893325/.reference/references/Outline%20-%20Professional%20Project.md)** — outlines for different project types (professional case study vs. experiment)
+- **[Image assets from Figma](https://github.com/itspatmorgan/itspatmorgan.github.io/tree/1dc37aabd051be36c1ba3c2084b344b3bc893325/.reference/assets)** — clean source files for the new environment
+- **[A website outline](https://github.com/itspatmorgan/itspatmorgan.github.io/blob/1dc37aabd051be36c1ba3c2084b344b3bc893325/.reference/references/Outline%20-%20Existing%20Website.md)** and **[relevant URLs](https://github.com/itspatmorgan/itspatmorgan.github.io/blob/1dc37aabd051be36c1ba3c2084b344b3bc893325/.reference/references/urls.md)**
 
-*All of this lives in a [directory in my repo](https://github.com/itspatmorgan/itspatmorgan.github.io/tree/main/.reference) if you want to browse it. It’s not necessary for building the site anymore, but I’m preserving it as context to share with you!*
+*All of this lives in a [directory in my repo](https://github.com/itspatmorgan/itspatmorgan.github.io/tree/1dc37aabd051be36c1ba3c2084b344b3bc893325/.reference) if you want to browse it. It’s not necessary for building the site anymore, but I’m preserving it as context to share with you!*
 
 This most important thing to remember in this phase: **curation is the skill, not prompting.** The quality of what Claude produced for me was directly proportional to the quality and specificity of what I staged for it. You can’t shortcut the prep and expect the build to go smoothly.
 
