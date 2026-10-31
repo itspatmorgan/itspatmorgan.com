@@ -45,7 +45,7 @@
 .hx-agent-dots i { width: 10px; height: 10px; border-radius: 50%; background: color-mix(in oklch, var(--foreground) 14%, transparent); }
 .hx-agent-name { flex: 1; min-width: 0; }
 .hx-chat-agents { display: flex; align-items: center; gap: 10px; color: var(--muted-foreground); }
-.hx-agent-body { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); flex: 1; min-height: 0; }
+.hx-agent-body { display: grid; grid-template-columns: minmax(0, 320px) minmax(0, 1fr); flex: 1; min-height: 0; }
 .hx-chat { display: flex; flex-direction: column; min-height: 0; border-right: 1px solid var(--border); }
 .hx-thread { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 18px; padding: 18px 16px; overflow-y: auto; scrollbar-width: none; transition: opacity 400ms; }
 .hx-thread::-webkit-scrollbar { display: none; }

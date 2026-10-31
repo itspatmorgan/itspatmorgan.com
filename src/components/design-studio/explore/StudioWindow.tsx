@@ -97,7 +97,7 @@ export const W = 1120, H = 700, SIDE = 276;
 
 /** Fits a native W-wide surface to its box: scales down to fit, holding `min` scale on narrow screens and cropping instead, from
  *  the left edge or, when `crop` is 'pane' and the whole sidebar would leave the view, from the start of the content pane. */
-export function useFit(min: number, max: number, crop: 'start' | 'pane') {
+export function useFit(min: number, max: number, crop: 'start' | 'pane', base = W) {
   const ref = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState(W);
   useEffect(() => {
@@ -107,11 +107,11 @@ export function useFit(min: number, max: number, crop: 'start' | 'pane') {
     ro.observe(el);
     return () => ro.disconnect();
   }, []);
-  const fit = width / W;
+  const fit = width / base;
   const s = Math.min(max, Math.max(min, fit));
   const cropped = fit < min;
   // Skip the sidebar only when the whole of it would leave the view; a partial skip would cut its labels mid-word.
-  const x = cropped && crop === 'pane' && W - width / s >= SIDE ? -SIDE * s : 0;
+  const x = cropped && crop === 'pane' && base === W && W - width / s >= SIDE ? -SIDE * s : 0;
   return { ref, s, x, cropped };
 }
 
@@ -122,20 +122,23 @@ export function themeStyle(theme: Theme, dark: boolean) {
 }
 
 /** The Studio window at its desktop layout, showing one artifact. */
-export function StudioWindow({ shown, onPick, fidelity = 1, theme = 'green', min = 0.62, max = 1, crop = 'start', height = H, className = '', instant = false }: {
+export function StudioWindow({ shown, onPick, fidelity = 1, theme = 'green', min = 0.62, max = 1, crop = 'start', height = H, className = '', instant = false, side = true }: {
   shown: Key; onPick?: (key: Key) => void; fidelity?: number; theme?: Theme; min?: number; max?: number; crop?: 'start' | 'pane'; height?: number; className?: string; instant?: boolean;
+  /** false: the Studio with its artifact list collapsed (the rail's panel button), so the artifact gets the room. */
+  side?: boolean;
 }) {
-  const { ref, s, x, cropped } = useFit(min, max, crop);
+  const base = side ? W : W - SIDE;
+  const { ref, s, x, cropped } = useFit(min, max, crop, base);
   const dark = useDark();
   const lofi = shown === 'lofi' ? 1 : shown === 'inbox' ? 1 - fidelity : 0;
   const pane = shown === 'inbox' || shown === 'lofi'
     ? <div className="ss-pane"><div className="ss-app"><Inbox /></div><div className={`ss-app is-lofi ss-lofi-layer ${instant ? 'is-instant' : ''}`} style={{ opacity: lofi }}><Inbox /></div></div>
     : shown === 'flow' ? <Flow /> : shown === 'handoff' ? <Canvas /> : <Doc />;
   return <div ref={ref} className={`dx-window ${cropped ? 'is-cropped' : ''} ${className}`} style={{ height: height * s }}>
-    <div className="sc cs-native dx-native" style={{ width: W, height, transform: `translateX(${x}px) scale(${s})` }}>
+    <div className="sc cs-native dx-native" style={{ width: base, height, transform: `translateX(${x}px) scale(${s})` }}>
       <div className="sc-os ss-os dx-os" style={themeStyle(theme, dark)}>
         <OsRail on="prototypes" />
-        <Nav on={shown} onPick={onPick} />
+        {side && <Nav on={shown} onPick={onPick} />}
         <div className="ss-panes"><div key={shown === 'lofi' ? 'inbox' : shown} className="dx-pane">{pane}</div></div>
       </div>
     </div>

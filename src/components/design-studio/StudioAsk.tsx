@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { ArrowUp02Icon, ArrowLeft01Icon, ArrowRight01Icon, Refresh01Icon, Tick02Icon } from '@hugeicons/core-free-icons';
 import { icon } from '../studio-case/StudioUI';
 import { agentHarnesses } from '../../data/design-studio-setup';
-import { StudioWindow, W, useReduced, type Key } from './explore/StudioWindow';
+import { SIDE, StudioWindow, W, useReduced, type Key } from './explore/StudioWindow';
 import StepBar from './StepBar';
 import './studio-hero.css';
 
@@ -15,11 +15,11 @@ type Turn = { ask: string; did: string; file: string; key: Key; lofi?: boolean }
 const slugs: Record<string, string> = { inbox: 'feedback-inbox', flow: 'feedback-flow', handoff: 'eng-handoff', context: 'project-context' };
 const MIN = 0.5;
 const turns: Turn[] = [
-  { ask: 'Prototype a feedback inbox for Echo with our Product system', did: 'Created', file: 'app/feedback-inbox.tsx', key: 'inbox' },
-  { ask: 'Make it lo-fi so we can settle the layout first', did: 'Marked lo-fi', file: 'app/feedback-inbox.tsx', key: 'inbox', lofi: true },
+  { ask: 'Write up the problem and open questions for a feedback inbox for Echo', did: 'Created', file: 'discovery/project-context.md', key: 'context' },
   { ask: 'Map how feedback moves from recorded to resolved', did: 'Created', file: 'discovery/feedback-flow.mermaid', key: 'flow' },
-  { ask: 'Lay out every screen and state for engineering', did: 'Created', file: 'eng-handoff.excalidraw', key: 'handoff' },
-  { ask: 'Write up the problem and our open questions', did: 'Created', file: 'discovery/project-context.md', key: 'context' },
+  { ask: 'Sketch the inbox as a lo-fi screen so we can settle the layout', did: 'Created', file: 'app/feedback-inbox.tsx', key: 'inbox', lofi: true },
+  { ask: 'Make it hi-fi with our Product system', did: 'Marked hi-fi', file: 'app/feedback-inbox.tsx', key: 'inbox' },
+  { ask: 'Lay out every screen and state on a canvas for engineering', did: 'Created', file: 'eng-handoff.excalidraw', key: 'handoff' },
 ];
 
 // One turn: type the message (its length decides how long), send it, work, report, then hold on the result.
@@ -49,7 +49,7 @@ export default function StudioAsk() {
     ro.observe(el);
     return () => ro.disconnect();
   }, []);
-  const scale = Math.min(1, Math.max(MIN, size.w / W));
+  const scale = Math.min(1, Math.max(MIN, size.w / (W - SIDE)));
   const goTo = (i: number) => { setTurn(i); setTyped(0); setPhase('typing'); setFading(false); setCut(n => n + 1); };
 
   useEffect(() => {
@@ -122,7 +122,7 @@ export default function StudioAsk() {
           <span className="hx-url">{url}</span>
         </div>
         <div className="hx-browser-view" ref={view}>
-          <StudioWindow shown={shown?.key ?? 'inbox'} fidelity={shown?.lofi ? 0 : 1} min={MIN} crop="pane" height={size.h / scale} className={`hx-ask-window ${shown ? '' : 'is-empty'}`} />
+          <StudioWindow shown={shown?.key ?? 'inbox'} fidelity={shown?.lofi ? 0 : 1} min={MIN} side={false} height={size.h / scale} className={`hx-ask-window ${shown ? '' : 'is-empty'}`} />
         </div>
       </div>
     </div>
