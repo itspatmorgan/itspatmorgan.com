@@ -1,27 +1,27 @@
 ---
+import type { CollectionEntry } from 'astro:content';
 import PageLayout from './PageLayout.astro';
 import Icon from '@/components/icons/Icon.astro';
 import { ArrowLeft01Icon } from '@hugeicons/core-free-icons';
 
 // A case study: "← Work", then the hero (company, title, subline, brief, and the hero visual in the `hero` slot), then one Slide per
-// point in the default slot. The product's stylesheet and its namespace class (`product`) come from the page.
+// point in the default slot. The words come from the project's `caseStudy` block (src/content/projects/<id>.md). The product's
+// stylesheet and its namespace class (`product`) come from the page.
 interface Props {
-  title: string;
-  description: string;
-  image?: string;
+  project: CollectionEntry<'projects'>;
   product?: string;
-  company: { name: string; logo: string };
-  heading: string;
-  subline: string;
-  brief: [label: string, value: string][];
   /** Keeps a draft out of search engines until it moves to its live slug. */
   noindex?: boolean;
 }
 
-const { title, description, image, product, company, heading, subline, brief, noindex } = Astro.props;
+const { project, product, noindex } = Astro.props;
+const { title, caseStudy } = project.data;
+if (!caseStudy) throw new Error(`The ${project.id} case study needs a caseStudy block in its content file`);
+const { company, subline, shareDescription, shareImage, brief } = caseStudy;
+const briefRows = [['When', brief.when], ['Role', brief.role], ['Team', brief.team], ['Outcome', brief.outcome]];
 ---
 
-<PageLayout template="showcase" title={title} description={description} image={image} noindex={noindex}>
+<PageLayout template="showcase" title={title} description={shareDescription ?? subline} image={shareImage} noindex={noindex}>
   <article class:list={['cs-page', product]}>
     <nav class="cs-nav" aria-label="Case study navigation">
       <a href="/work"><Icon icon={ArrowLeft01Icon} size={16} />Work</a>
@@ -29,11 +29,11 @@ const { title, description, image, product, company, heading, subline, brief, no
 
     <header class="cs-slide cs-hero">
       <p class="cs-company"><img src={company.logo} width="30" height="30" alt="" />{company.name}</p>
-      <h1>{heading}</h1>
+      <h1>{title}</h1>
       <p>{subline}</p>
       <slot name="actions" />
       <dl class="cs-brief">
-        {brief.map(([label, value]) => <div><dt>{label}</dt><dd>{value}</dd></div>)}
+        {briefRows.map(([label, value]) => <div><dt>{label}</dt><dd>{value}</dd></div>)}
       </dl>
       <slot name="hero" />
     </header>

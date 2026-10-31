@@ -1,7 +1,7 @@
 ---
-import { getEntry } from 'astro:content';
 import CaseStudyLayout from '@/layouts/CaseStudyLayout.astro';
 import Slide from '@/components/case-study/Slide.astro';
+import { getCaseStudy } from '@/lib/case-study';
 import HeroRule from '@/components/sublime/HeroRule';
 import MessageDetail from '@/components/sublime/MessageDetail';
 import JobReview from '@/components/sublime/JobReview';
@@ -11,48 +11,33 @@ import AdeJobs from '@/components/sublime/AdeJobs';
 import '@/components/case-study/case-study.css';
 import '@/components/sublime/sublime.css';
 
-const project = await getEntry('projects', 'sublime-agents');
-if (!project) throw new Error('Sublime agents case study is missing');
+const { project, slide } = await getCaseStudy('sublime-agents');
 ---
 
-<CaseStudyLayout
-  title={project.data.title}
-  description="I lead design for ADÉ, Sublime’s agent that writes detection rules to address missed threats."
-  image="/images/share/work-sublime-agents.jpg"
-  product="sb"
-  company={{ name: 'Sublime Security', logo: '/images/logos/square-sublime.svg' }}
-  heading="Giving a security agent the right amount of control"
-  subline="I lead design for ADÉ, Sublime’s agent that writes detection rules to address missed threats."
-  brief={[
-    ['When', '2025 to now'],
-    ['Role', 'Staff Product Designer'],
-    ['Team', '1 PM, engineers, 2 designers'],
-    ['Outcome', 'New rule in under 2 hours, not days'],
-  ]}
->
+<CaseStudyLayout project={project} product="sb">
   <HeroRule slot="hero" client:load />
 
-  <Slide id="problem" title="Each missed threat needed a new rule" line="An engineer wrote and tested each rule by hand, so a fix took days or weeks.">
+  <Slide {...slide('problem')}>
     <MessageDetail variant="gap" client:visible />
   </Slide>
 
-  <Slide id="bet" title="The agent writes rules that people can read and change" line="Other vendors update a central model. ADÉ writes a rule each team can read, edit and turn off.">
+  <Slide {...slide('bet')}>
     <JobReview client:visible />
   </Slide>
 
-  <Slide id="handoff" title="The agent starts where the team finds the threat" line="One click beside the verdict starts a job, and the job page shows each step ADÉ does.">
+  <Slide {...slide('handoff')}>
     <MessageDetail variant="handoff" client:visible />
   </Slide>
 
-  <Slide id="evidence" title="Each rule shows what it would catch before it goes live" line="ADÉ runs each rule on the last 14 days of email and shows what it catches and wrongly blocks.">
+  <Slide {...slide('evidence')}>
     <AutoAccepted client:visible />
   </Slide>
 
-  <Slide id="limits" title="Each team decides how much the agent does alone" line="A team sets when ADÉ starts a job and the test score a rule needs to go live.">
+  <Slide {...slide('limits')}>
     <AutomationConfig client:visible />
   </Slide>
 
-  <Slide id="outcome" title="Missed threats now get a rule in under 2 hours" line="A fix that took an engineer days or weeks now arrives as a rule ready to accept.">
+  <Slide {...slide('outcome')}>
     <AdeJobs client:visible />
   </Slide>
 </CaseStudyLayout>

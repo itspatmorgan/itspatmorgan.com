@@ -1,7 +1,7 @@
 ---
-import { getEntry } from 'astro:content';
 import CaseStudyLayout from '@/layouts/CaseStudyLayout.astro';
 import Slide from '@/components/case-study/Slide.astro';
+import { getCaseStudy } from '@/lib/case-study';
 import HeroBotSignals from '@/components/expansion/HeroBotSignals';
 import RuleEditor from '@/components/expansion/RuleEditor';
 import ThreePieces from '@/components/expansion/ThreePieces';
@@ -12,48 +12,33 @@ import Kits from '@/components/expansion/Kits';
 import '@/components/case-study/case-study.css';
 import '@/components/expansion/expansion.css';
 
-const project = await getEntry('projects', 'expansion');
-if (!project) throw new Error('Expansion case study is missing');
+const { project, slide } = await getCaseStudy('expansion');
 ---
 
-<CaseStudyLayout
-  title={project.data.title}
-  description="At Signal Sciences, I shaped how we brought a new SKU to market: better for customers and simpler to deliver."
-  image="/images/share/work-expansion.jpg"
-  product="xp"
-  company={{ name: 'Signal Sciences', logo: '/images/logos/square-sigsci.svg' }}
-  heading="Expanding a security platform for a new use case"
-  subline="I shaped how we brought a new SKU to market: better for customers and simpler to deliver."
-  brief={[
-    ['When', '2019'],
-    ['Role', 'Senior Product Designer'],
-    ['Team', 'Product pod, about 3 months'],
-    ['Outcome', 'A repeatable kit pattern'],
-  ]}
->
+<CaseStudyLayout project={project} product="xp">
   <HeroBotSignals slot="hero" client:load />
 
-  <Slide id="problem" title="Customers were bending the firewall to fight bots" line="They wrote their own Signals to tag bot traffic, stretching the firewall beyond its original focus.">
+  <Slide {...slide('problem')}>
     <RuleEditor client:visible />
   </Slide>
 
-  <Slide id="bet" title="The expected answer was a separate bot product. I bet on the platform." line="A dozen customer interviews showed we already had the pieces. Customers needed them connected.">
+  <Slide {...slide('bet')}>
     <ThreePieces client:visible />
   </Slide>
 
-  <Slide id="mapping" title="I mapped where Signals and rules could act on a request" line="With our tech lead, I diagrammed the agent so the team could align before building the content.">
+  <Slide {...slide('mapping')}>
     <AgentFlow client:visible />
   </Slide>
 
-  <Slide id="response" title="I paired ready‑made detection with automatic response" line="Templated Signals tagged common bots, and rules blocked them without customers writing their own.">
+  <Slide {...slide('response')}>
     <SignalChain client:visible />
   </Slide>
 
-  <Slide id="monitoring" title="I made it easy to see the defense working" line="Ready‑made dashboards tracked bot activity before and after rules took effect.">
+  <Slide {...slide('monitoring')}>
     <Dashboards client:visible />
   </Slide>
 
-  <Slide id="outcome" title="Extending the platform beat rebuilding it" line="More kits were underway when the company was acquired and the work paused.">
+  <Slide {...slide('outcome')}>
     <Kits client:visible />
   </Slide>
 </CaseStudyLayout>

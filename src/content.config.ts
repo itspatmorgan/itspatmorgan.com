@@ -3,6 +3,18 @@ import { z } from "astro/zod";
 import { glob } from "astro/loaders";
 import { LAYER_COLORS } from "./lab/editorial-art/themes";
 
+// The words on a case study page (src/pages/work/<id>.astro). The page places the visuals and the
+// order of slides; this holds what they say.
+const caseStudy = z.object({
+  company: z.object({ name: z.string(), logo: z.string() }),
+  subline: z.string(),
+  // The search and share description, when it differs from the subline.
+  shareDescription: z.string().optional(),
+  shareImage: z.string(),
+  brief: z.object({ when: z.string(), role: z.string(), team: z.string(), outcome: z.string() }),
+  slides: z.record(z.string(), z.object({ title: z.string(), line: z.string().optional() })),
+});
+
 const projects = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/projects" }),
   schema: z.object({
@@ -18,6 +30,9 @@ const projects = defineCollection({
     heroImage: z.string().optional(),
     sortOrder: z.number(),
     draft: z.boolean().default(false),
+    // The project card summary on the homepage; the Work page uses `description`.
+    summary: z.string().optional(),
+    caseStudy: caseStudy.optional(),
   }),
 });
 
