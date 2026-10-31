@@ -39,6 +39,10 @@ resources when a skill needs them.
 
 | Skill | Purpose |
 | --- | --- |
-| `refactor-radar/` | Find targeted refactors and maintenance opportunities for approval |
 | `case-study-shaping/` | Shape a Work entry into a slide-like case study, from fact-finding to launch |
+| `case-study-demos/` | Build and animate the native product demos on a case study |
 | `project-card-visuals/` | Build the live visual on a case study's project card, in place of a thumbnail |
+| `brand-graphics/` | Make diagrams, illustrations and other graphics that stay on brand |
+| `share-cards/` | Make or refresh a page's 1200x630 share card with `scripts/share-card.mjs` |
+| `publish-article/` | Bring one Unknown Arts article from Obsidian into Writing, with its art |
+| `refactor-radar/` | Find targeted refactors and maintenance opportunities for approval |
