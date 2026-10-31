@@ -66,6 +66,7 @@ const communityTools = [
 
     <div id="studio-human" data-studio-panel="human" class="cs-page sc ds-landing">
     <header class="cs-slide cs-hero ds-hero" aria-labelledby="studio-title">
+      <span class="lw-paper texture-bg" aria-hidden="true"></span>
       <h1 id="studio-title"><PixelWaveText text="Design with intent." wave="studio-headline" initialSans /><br /><PixelWaveText text="Build with an agent." wave="studio-headline" initialSans /></h1>
       <p>An open-source prototype sandbox for designers and product managers who build with agents.</p>
       <div class="sc-next ds-actions">
@@ -85,18 +86,14 @@ const communityTools = [
     </Slide>
 
     <section class="cs-slide ds-proof" aria-label="Who uses Design Studio">
-      <figure class="ds-proof-card">
+      <figure class="ds-quote">
         <blockquote>“We have essentially replaced Figma with this at Sublime.”</blockquote>
         <figcaption>
-          <img class="ds-proof-face" src="/images/profiles/joe.avif" alt="" width="40" height="40" loading="lazy" decoding="async" />
+          <img class="ds-quote-face" src="/images/profiles/joe.avif" alt="" width="40" height="40" loading="lazy" decoding="async" />
           <span><b>Joe Salowitz</b><span>Product Designer at Sublime, <a href="https://x.com/JoeSalowitz/status/2114915923283120187" target="_blank" rel="noopener noreferrer">on X</a></span></span>
         </figcaption>
-        <a class="ds-proof-foot" href="/work/design-studio">
-          <img src="/images/studio-case/sublime-mark.svg" alt="" width="29" height="20" loading="lazy" decoding="async" />
-          <span>How Sublime’s product team uses it</span>
-          <Icon icon={ArrowRight01Icon} size={16} class="shrink-0" />
-        </a>
       </figure>
+      <a class="ds-case-link" href="/work/design-studio"><img src="/images/studio-case/sublime-mark.svg" alt="" width="23" height="16" loading="lazy" decoding="async" />How Sublime’s product team uses it <Icon icon={ArrowRight01Icon} size={14} class="shrink-0" /></a>
     </section>
 
     <Slide id="why-title" title="Between a one‑off prototype and the production repo" line="Design Studio uses your product’s components and rules, so designs look real, and lives in its own repo, so trying ideas stays fast.">
@@ -185,6 +182,12 @@ const communityTools = [
       <p class="sr-only" data-copy-status role="status" aria-live="polite"></p>
     </section>
 
+    <section class="cs-slide ds-learn" aria-labelledby="learn-title">
+      <h2 id="learn-title">Go deeper</h2>
+      <p>An interview, a live lesson and an article on why Design Studio exists and how teams work in it.</p>
+      <StudioPress items={learnMore} />
+    </section>
+
     <section class="ds-note" aria-labelledby="about-studio-title">
       <h2 id="about-studio-title" class="text-3xl font-medium tracking-tight sm:text-4xl">A note from the creator</h2>
       <div class="mt-8 grid items-start gap-10 md:grid-cols-[minmax(0,1fr)_auto] md:gap-14">
@@ -213,12 +216,7 @@ const communityTools = [
           </nav>
         </div>
       </div>
-    </section>
-
-    <section class="cs-slide ds-learn" aria-labelledby="learn-title">
-      <h2 id="learn-title">Go deeper</h2>
-      <p>An interview, a live lesson and an article on why Design Studio exists and how teams work in it.</p>
-      <StudioPress items={learnMore} />
+      <span class="lw-close" aria-hidden="true"></span>
     </section>
     </div>
     <section id="studio-agent" data-studio-panel="agent" hidden class="pt-16 pb-20 sm:pt-20 sm:pb-24">
@@ -238,7 +236,6 @@ const communityTools = [
   .studio-page { container: studio-page / inline-size; }
   /* The landing page shares the case studies' slide rhythm and stages (case-study.css), inside the Showcase shell. */
   .ds-landing.cs-page { max-width: none; margin: 0; padding: 0; }
-  .ds-hero { padding-top: clamp(56px, 8cqi, 96px); }
   .ds-hero > h1 { max-width: none; font-size: clamp(40px, 5.6cqi, 68px); line-height: 1.02; }
   .ds-hero > p { max-width: 34em; margin-top: 24px; }
   .ds-actions { margin-top: 36px; }
@@ -250,29 +247,18 @@ const communityTools = [
   .ds-hero-studio { margin-top: 56px; }
   .ds-hero-studio .hx-ask-wrap { margin-top: 0; }
   .ds-try-short { display: none; }
-  /* Proof: one quote card, with the person's face and the company's mark, so it reads as a voice and not as another slide headline. */
-  .ds-proof-card { max-width: 720px; margin: 0 auto; overflow: hidden; border: 1px solid var(--border); border-radius: 20px; background: var(--card); text-align: left; }
-  .ds-proof-card blockquote { margin: 0; padding: 40px 40px 0; font-size: clamp(24px, 2.6vw, 32px); line-height: 1.25; font-weight: 500; letter-spacing: -.03em; text-wrap: balance; }
-  .ds-proof-card figcaption { display: flex; align-items: center; gap: 12px; padding: 24px 40px 32px; font-size: 14px; line-height: 20px; }
-  .ds-proof-card figcaption > span { display: flex; flex-direction: column; }
-  .ds-proof-card figcaption b { font-weight: 500; }
-  .ds-proof-card figcaption span span { color: var(--muted-foreground); }
-  .ds-proof-card figcaption a { color: inherit; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: color-mix(in srgb, currentColor 35%, transparent); }
-  .ds-proof-face { flex: none; width: 40px; height: 40px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 1px var(--border); }
-  .ds-proof-foot { display: flex; align-items: center; gap: 12px; padding: 16px 40px; border-top: 1px solid var(--border); background: color-mix(in oklch, var(--muted) 50%, transparent); font-size: 15px; font-weight: 500; transition: background-color 200ms ease; }
-  .ds-proof-foot img { flex: none; }
-  .ds-proof-foot span { flex: 1; }
-  .ds-proof-foot svg { transition: transform 200ms var(--motion-ease-out-quick, ease); }
-  .ds-proof-foot:hover { background: var(--muted); }
-  .ds-proof-foot:hover svg { transform: translateX(2px); }
-  .ds-proof-foot:focus-visible { outline: 2px solid var(--ring); outline-offset: -2px; }
-  @media (max-width: 640px) {
-    .ds-proof-card blockquote { padding: 28px 24px 0; }
-    .ds-proof-card figcaption { padding: 20px 24px 24px; }
-    .ds-proof-foot { padding: 14px 24px; }
-  }
-  /* Share: the published Studio, then three short facts in a quiet row (no cards, so it doesn't echo the tools grid below). */
-  .ds-share-facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; max-width: 1024px; margin: 64px auto 0; text-align: left; }
+  /* Proof: the quote takes its section on its own, with the person's face and a link to the case study. */
+  .ds-quote { max-width: 860px; margin: 0 auto; }
+  .ds-quote blockquote { margin: 0; font-size: clamp(28px, 3.4vw, 44px); line-height: 1.15; font-weight: 500; letter-spacing: -.035em; text-wrap: balance; }
+  .ds-quote figcaption { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 28px; font-size: 14px; line-height: 20px; text-align: left; }
+  .ds-quote figcaption > span { display: flex; flex-direction: column; }
+  .ds-quote figcaption b { font-weight: 500; }
+  .ds-quote figcaption span span { color: var(--muted-foreground); }
+  .ds-quote figcaption a { color: inherit; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: color-mix(in srgb, currentColor 35%, transparent); }
+  .ds-quote-face { flex: none; width: 40px; height: 40px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 1px var(--border); }
+  .ds-case-link { display: inline-flex; align-items: center; gap: 8px; margin-top: 32px; font-size: 15px; font-weight: 500; text-decoration: underline; text-underline-offset: 4px; text-decoration-color: color-mix(in srgb, currentColor 35%, transparent); }
+  .ds-case-link:hover { text-decoration-color: currentColor; }
+  .ds-share-facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; max-width: 1024px; margin: 40px auto 0; text-align: left; }
   .ds-share-facts dt { font-size: 15px; line-height: 22px; font-weight: 500; }
   .ds-share-facts dd { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 6px 0 0; font-size: 14px; line-height: 22px; color: var(--muted-foreground); }
   .ds-share-host { display: inline-flex; align-items: center; gap: 6px; }
@@ -313,10 +299,8 @@ const communityTools = [
   .ds-step-foot a:hover { text-decoration-color: currentColor; }
   .ds-start > .ds-community { margin-top: 48px; font-size: 16px; }
   .ds-community a { color: var(--foreground); }
-  .ds-note { padding: 144px 0 96px; }
-  .ds-note + .ds-learn { padding-top: 48px; }
   @media (max-width: 860px) { .ds-start-grid { grid-template-columns: minmax(0, 1fr); max-width: 560px; gap: 12px; } }
-  @media (max-width: 760px) { .ds-note { padding-top: 88px; } .ds-start-grid { margin-top: 28px; } }
+  @media (max-width: 760px) { .ds-start-grid { margin-top: 28px; } }
   @media (max-width: 640px) {
     .ds-actions { flex-wrap: nowrap; gap: 8px; margin-top: 28px; }
     .ds-actions a { height: 40px; padding: 0 14px; font-size: 14px; white-space: nowrap; }

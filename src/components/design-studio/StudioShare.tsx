@@ -1,36 +1,31 @@
-import { useEffect, useRef, useState } from 'react';
-import { CheckmarkCircle02Icon, SquareLock02Icon } from '@hugeicons/core-free-icons';
-import { icon } from '../studio-case/StudioUI';
-import { StudioWindow, useReduced } from './explore/StudioWindow';
+// Publishing, drawn plainly: the Studio on your computer, your agent publishing it as a static website, and the same pages open in
+// your team's browsers at one link. The screens are wireframes, since the point is where the work goes, not what it shows. The
+// browsers are separate copies of a read-only site: nothing connects them to each other or back to your computer.
+const Page = () => <div className="pb-page">
+  <i className="pb-side" />
+  <div className="pb-main"><b /><i /><i /><span><i /><i /><i /></span><i /><i /></div>
+</div>;
 
-// Publishing, as it works: your agent builds the Studio as a static website and puts it on your host. Your team opens the link in a
-// browser and reads the prototypes and docs; nobody edits there, and there is nothing live between viewers. So the picture is a
-// plain browser at the team's link, with the agent's own report of the publish beside it, and a "Published" stamp in place of any
-// presence or share controls.
 export default function StudioShare() {
-  const reduced = useReduced();
-  const ref = useRef<HTMLDivElement>(null);
-  const [shown, setShown] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setShown(true); io.disconnect(); } }, { threshold: .5 });
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
-  return <div ref={ref} className={`sh ${shown || reduced ? 'is-shown' : ''}`} role="img"
-    aria-label="Your agent publishes the Studio as a static website. Your team opens it in the browser at your own link, read only">
-    <div className="sh-window" aria-hidden="true">
-      <div className="hx-browser-bar sh-bar">
-        <span className="hx-agent-dots"><i /><i /><i /></span>
-        <span className="sh-url">{icon(SquareLock02Icon, 14)}<span>design.yourteam.com<span className="sh-path">/prototypes/feedback-inbox</span></span></span>
-        <span className="sh-stamp">Published Oct 31</span>
+  return <figure className="sh" aria-label="Your agent publishes the Studio from your computer as a static website. Your team opens the same pages in any browser at your own link, to read, not edit">
+      <div className="pb" aria-hidden="true">
+        <div className="pb-local">
+          <div className="pb-frame"><div className="pb-bar"><span><i /><i /><i /></span><em>localhost</em></div><Page /></div>
+          <p><b>On your computer</b><span>You and your agent edit the Studio</span></p>
+        </div>
+        <div className="pb-link">
+          <svg viewBox="0 0 200 40" className="pb-wire"><path d="M0 20 H192" /><path d="M184 13 L192 20 L184 27" /></svg>
+          <span className="pb-chip">Publish</span>
+          <span className="pb-url">design.yourteam.com</span>
+        </div>
+        <div className="pb-team">
+          <div className="pb-stack">
+            {[0, 1, 2].map(i => <div key={i} className="pb-frame" style={{ left: `${i * 6}%`, top: i * 26 }}>
+              <div className="pb-bar"><span><i /><i /><i /></span><em>design.yourteam.com</em></div><Page />
+            </div>)}
+          </div>
+          <p><b>In your team’s browsers</b><span>A static site to read, with nothing to install</span></p>
+        </div>
       </div>
-      <div className="sh-view"><StudioWindow shown="inbox" min={0.6} crop="pane" /></div>
-    </div>
-    <div className="sh-report" aria-hidden="true">
-      <p className="hx-msg">Publish the Studio to our site</p>
-      <p className="hx-reply">{icon(CheckmarkCircle02Icon, 14)}<span>Built a static site and published it to <code>design.yourteam.com</code>. Your team can open it in any browser.</span></p>
-    </div>
-  </div>;
+  </figure>;
 }

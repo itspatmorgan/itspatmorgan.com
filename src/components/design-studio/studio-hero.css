@@ -87,26 +87,47 @@
 .cs-slide .hx { margin-top: 48px; }
 @media (max-width: 760px) { .cs-slide .hx { margin-top: 28px; } }
 
-/* Share (StudioShare.tsx): a published Studio in a browser, at the team's own link. */
+/* Share (StudioShare.tsx): a wireframe of the publish, from your computer to one link opened in many browsers. */
 .sh { max-width: 1024px; margin: 48px auto 0; text-align: left; }
-.sh-window { overflow: hidden; border-radius: 14px; background: var(--card); box-shadow: 0 0 0 1px color-mix(in oklch, var(--foreground) 10%, transparent), 0 24px 48px -24px rgb(0 0 0 / .22); }
-.dark .sh-window { box-shadow: 0 0 0 1px color-mix(in oklch, var(--foreground) 12%, transparent), 0 24px 48px -24px rgb(0 0 0 / .6); }
-.sh-bar { height: 48px; gap: 14px; padding: 0 14px; }
-.sh-url { flex: 1; min-width: 0; display: flex; align-items: center; gap: 8px; height: 30px; padding: 0 12px; border-radius: 8px; background: var(--muted); font-size: 13.5px; color: var(--foreground); }
-.sh-url > span { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
-.sh-url svg { flex: none; color: var(--muted-foreground); }
-.sh-path { color: var(--muted-foreground); }
-.sh-stamp { flex: none; display: inline-flex; align-items: center; height: 24px; padding: 0 10px; border-radius: 999px; box-shadow: inset 0 0 0 1px var(--border); font-size: 12.5px; color: var(--muted-foreground); }
-/* The agent's report of the publish, straddling the window's lower left corner. */
-.sh { position: relative; }
-.sh-report { position: absolute; left: -20px; bottom: -28px; z-index: 2; display: flex; flex-direction: column; gap: 10px; width: 330px; padding: 14px 16px; border-radius: 14px; background: var(--card); box-shadow: 0 0 0 1px color-mix(in oklch, var(--foreground) 10%, transparent), 0 18px 40px -16px rgb(0 0 0 / .3); opacity: 0; transform: translateY(8px); transition: opacity 400ms ease 300ms, transform 500ms cubic-bezier(.25, .8, .25, 1) 300ms; }
-.sh.is-shown .sh-report { opacity: 1; transform: none; }
-.sh-report p { margin: 0; }
-@media (prefers-reduced-motion: reduce) { .sh-report { transition: none; } }
-.sh-view { position: relative; }
-.sh .dx-window { border-radius: 0; box-shadow: none; }
-@media (max-width: 640px) {
-  .sh { margin-top: 28px; }
-  .sh-bar .hx-agent-dots, .sh-path, .sh-stamp { display: none; }
-  .sh-report { position: relative; left: auto; bottom: auto; width: auto; margin: -24px 12px 0; }
+.pb { display: grid; grid-template-columns: minmax(0, 340px) minmax(120px, 1fr) minmax(0, 384px); align-items: start; color: var(--foreground); }
+.pb-frame { width: 100%; overflow: hidden; border-radius: 10px; background: var(--card); box-shadow: 0 0 0 1px color-mix(in oklch, var(--foreground) 12%, transparent), 0 12px 28px -18px rgb(0 0 0 / .25); }
+.pb-bar { display: flex; align-items: center; gap: 10px; height: 30px; padding: 0 10px; border-bottom: 1px solid var(--border); }
+.pb-bar span { display: flex; gap: 4px; }
+.pb-bar span i { width: 7px; height: 7px; border-radius: 50%; background: color-mix(in oklch, var(--foreground) 14%, transparent); }
+.pb-bar em { flex: 1; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; height: 18px; padding: 0 8px; border-radius: 5px; background: var(--muted); font: 11px/18px 'Geist Mono Variable', ui-monospace, monospace; font-style: normal; color: var(--muted-foreground); }
+.pb-page { display: flex; height: 190px; }
+.pb-side { flex: none; width: 21%; border-right: 1px solid var(--border); background: color-mix(in oklch, var(--muted) 60%, transparent); }
+.pb-main { flex: 1; display: flex; flex-direction: column; gap: 9px; padding: 18px; }
+.pb-main > * { display: block; height: 7px; border-radius: 4px; background: color-mix(in oklch, var(--foreground) 9%, transparent); }
+.pb-main > b { width: 46%; height: 11px; background: color-mix(in oklch, var(--foreground) 20%, transparent); margin-bottom: 4px; }
+.pb-main > i:nth-of-type(2) { width: 70%; }
+.pb-main > span { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; height: 46px; margin: 6px 0; background: none; }
+.pb-main > span i { border-radius: 5px; background: color-mix(in oklch, var(--foreground) 6%, transparent); box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--foreground) 8%, transparent); }
+.pb-main > i:last-child { width: 55%; }
+.pb-local, .pb-team { display: flex; flex-direction: column; gap: 22px; min-width: 0; }
+.pb-local { padding-top: 52px; }
+.pb-stack { position: relative; height: 272px; }
+.pb-stack .pb-frame { position: absolute; width: 88%; }
+.pb-stack .pb-frame:nth-child(1) { opacity: .55; }
+.pb-stack .pb-frame:nth-child(2) { opacity: .8; }
+.pb p { display: flex; flex-direction: column; gap: 2px; margin: 0; font-size: 15px; line-height: 22px; }
+.pb-team p { padding-left: 12%; }
+.pb p b { font-weight: 500; }
+.pb p span { color: var(--muted-foreground); }
+.pb-link { position: relative; display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 142px 12px 0; }
+.pb-wire { width: 100%; height: 40px; overflow: visible; }
+.pb-wire path { fill: none; stroke: color-mix(in oklch, var(--foreground) 30%, transparent); stroke-width: 1.5; stroke-dasharray: 4 5; }
+.pb-wire path + path { stroke-dasharray: none; }
+.pb-chip { position: absolute; top: 130px; padding: 3px 10px; border-radius: 999px; background: var(--background); box-shadow: inset 0 0 0 1px var(--border); font-size: 13px; font-weight: 500; }
+.pb-url { padding: 5px 10px; border-radius: 6px; background: var(--muted); font: 12.5px/18px 'Geist Mono Variable', ui-monospace, monospace; color: var(--foreground); white-space: nowrap; }
+/* Narrow: the same three steps, top to bottom, joined by a dashed line. */
+@media (max-width: 900px) {
+  .pb { grid-template-columns: minmax(0, 1fr); max-width: 400px; margin: 0 auto; }
+  .pb-local { padding-top: 0; }
+  .pb-link { gap: 8px; padding: 20px 0; }
+  .pb-wire { display: none; }
+  .pb-link::before, .pb-link::after { content: ""; width: 0; height: 22px; border-left: 1.5px dashed color-mix(in oklch, var(--foreground) 30%, transparent); }
+  .pb-chip { position: static; }
+  .pb-team p { padding-left: 12%; }
 }
+@media (max-width: 640px) { .sh { margin-top: 28px; } }
