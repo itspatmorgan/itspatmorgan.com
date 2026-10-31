@@ -23,8 +23,8 @@ const protos: { x: number; title: string; system: 'product' | 'marketing'; scree
   { x: 648, title: 'Launch page', system: 'marketing', screen: 'launch' },
 ];
 const systems = {
-  product: { x: 178, w: 300, name: 'Product', path: 'src/systems/product', theme: 'green' as Theme, radius: 0, note: 'Square corners, green primary' },
-  marketing: { x: 640, w: 300, name: 'Marketing', path: 'src/systems/marketing', theme: 'marketing' as Theme, radius: 8, note: 'Warm paper, 8px corners' },
+  product: { x: 148, w: 300, name: 'Product', path: 'src/systems/product', theme: 'green' as Theme, radius: 0, note: 'Square corners, green primary' },
+  marketing: { x: 512, w: 300, name: 'Marketing', path: 'src/systems/marketing', theme: 'marketing' as Theme, radius: 8, note: 'Warm paper, 8px corners' },
 };
 
 /** A launch page in the Marketing system's tokens, at the Studio's native prototype size. */
