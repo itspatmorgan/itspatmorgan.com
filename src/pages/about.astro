@@ -1,20 +1,19 @@
 ---
 import PageLayout from "@/layouts/PageLayout.astro";
+import PageHeader from "@/components/layout/PageHeader.astro";
 ---
 
 <PageLayout
   title="About — Patrick Morgan"
   description="A personal introduction to Patrick Morgan: where he comes from, how he thinks, and how he explores creativity, technology, and meaning."
 >
-  <section class="mx-auto max-w-3xl px-6 pt-12 pb-16 sm:pt-24">
-    <h1 class="text-4xl font-medium tracking-tight sm:text-5xl">
+  <PageHeader>
+    <Fragment slot="title">
       <span class="block">I've never been easy</span>
       <span class="block">to put in a box.</span>
-    </h1>
-    <p class="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-      I'm a liberal arts kid who found his way through music, theater, advertising, code, design, writing, and a long-running fascination with making things.
-    </p>
-  </section>
+    </Fragment>
+    <Fragment slot="lead">I'm a liberal arts kid who found his way through music, theater, advertising, code, design, writing, and a long-running fascination with making things.</Fragment>
+  </PageHeader>
 
   <section class="pb-16">
     <div
