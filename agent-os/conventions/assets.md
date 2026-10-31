@@ -22,7 +22,7 @@ URLs with the current mark so external references cannot fetch retired branding.
 ## Share Images
 
 Every public page passes a 1200x630 JPG as `image` to its layout; pages without one fall back to
-`/images/share/home.jpg`. Cards follow the Design Studio card: paper background, logo and name top
+`/images/share/home.jpg`. Cards follow the Design Studio card (`/images/share/design-studio.jpg`): paper background, logo and name top
 left, the page headline, one short line, the URL in Geist Mono, and real UI or photos on the right.
 Case study cards crop the page's own hero screen. Use JPG or PNG, not WebP, since some apps ignore
 WebP previews. Writing articles use their generated `feature.jpg`.
