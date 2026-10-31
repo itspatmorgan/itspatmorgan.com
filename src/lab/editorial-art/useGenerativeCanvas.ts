@@ -133,14 +133,33 @@ export function useGenerativeCanvas(
     let startTime: number | null = null;
 
     if (activeMotion.mode === 'ambient') {
+      // Ambient motion never ends, so it only runs while the canvas is on screen; offscreen it would redraw every frame
+      // and compete with scrolling, clicks and the other demos on the page. Paused time is skipped, so it resumes where it left off.
+      let elapsed = 0;
+      let last: number | null = null;
+      let running = false;
       const tick = (ts: number) => {
-        if (!startTime) startTime = ts;
-        redraw({ progress: 1, time: ts - startTime, motion: motionRef.current });
+        if (last !== null) elapsed += ts - last;
+        last = ts;
+        redraw({ progress: 1, time: elapsed, motion: motionRef.current });
         rafId = requestAnimationFrame(tick);
       };
+      const setRunning = (next: boolean) => {
+        if (next === running) return;
+        running = next;
+        if (next) { last = null; rafId = requestAnimationFrame(tick); }
+        else cancelAnimationFrame(rafId);
+      };
 
-      rafId = requestAnimationFrame(tick);
-      return () => cancelAnimationFrame(rafId);
+      redraw({ progress: 1, time: 0, motion: activeMotion });
+      const canvas = canvasRef.current;
+      if (!canvas || typeof IntersectionObserver === 'undefined') {
+        setRunning(true);
+        return () => cancelAnimationFrame(rafId);
+      }
+      const observer = new IntersectionObserver(([entry]) => setRunning(entry.isIntersecting));
+      observer.observe(canvas);
+      return () => { observer.disconnect(); cancelAnimationFrame(rafId); };
     }
 
     function tick(ts: number) {

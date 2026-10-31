@@ -146,6 +146,10 @@ html.pw-intro :is([data-pixel-wave="hero"], [data-pixel-wave="headline"]) [data-
   html {
     @apply font-sans;
   }
+  /* Tailwind 4 leaves buttons on the default arrow; anything clickable should show a hand. */
+  button:not(:disabled), [role="button"]:not([aria-disabled="true"]), summary {
+    cursor: pointer;
+  }
 }
 
 /* Shimmer hover for non-interactive cards */
