@@ -7,7 +7,9 @@
 // Patrick's count for the launch posts on X and LinkedIn together: 30k+ views (2026-10-30).
 import { HugeiconsIcon } from '@hugeicons/react';
 import { ArrowUpRight01Icon, PlayIcon } from '@hugeicons/core-free-icons';
-import { mediaFeatures as items } from '@/data/media';
+import { mediaFeatures, type MediaFeature } from '@/data/media';
+// The case study shows the videos and the launch post by default; a page can pass its own set.
+const { items = mediaFeatures.filter(item => item.kind !== 'article') } = Astro.props as { items?: MediaFeature[] };
 ---
 
 <ul class="sc-press">
@@ -17,7 +19,7 @@ import { mediaFeatures as items } from '@/data/media';
         <span class="sc-press-media">
           <span class="sc-press-fallback" aria-hidden="true">{item.fallback}</span>
           <img src={item.image} alt={item.alt} loading="lazy" onerror="this.remove()" />
-          <span class="sc-press-play" aria-hidden="true"><HugeiconsIcon icon={PlayIcon} size={18} strokeWidth={1.8} /></span>
+          {item.kind !== 'article' && <span class="sc-press-play" aria-hidden="true"><HugeiconsIcon icon={PlayIcon} size={18} strokeWidth={1.8} /></span>}
         </span>
         <span class="sc-press-text">
           <span class="sc-press-title">{item.title}<HugeiconsIcon icon={ArrowUpRight01Icon} size={16} strokeWidth={1.8} /></span>
