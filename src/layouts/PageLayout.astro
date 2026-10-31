@@ -11,14 +11,15 @@ interface Props {
   image?: string;
   canonicalUrl?: string;
   noindex?: boolean;
+  type?: "website" | "article";
   /** showcase: visual pages on the 1024px shell. reading: text pages on the 720px column. */
   template?: "showcase" | "reading";
 }
 
-const { title, description, image, canonicalUrl, noindex, template = "reading" } = Astro.props;
+const { title, description, image, canonicalUrl, noindex, type, template = "reading" } = Astro.props;
 ---
 
-<BaseLayout title={title} description={description} image={image} canonicalUrl={canonicalUrl} noindex={noindex}>
+<BaseLayout title={title} description={description} image={image} canonicalUrl={canonicalUrl} noindex={noindex} type={type}>
   {/* Mobile top bar — hidden on desktop */}
   <Header />
 

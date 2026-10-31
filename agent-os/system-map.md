@@ -39,7 +39,6 @@ for related details. This file owns system orientation, not editing rules.
 | `/design-studio` | Design Studio project landing page, artifact previews, and setup |
 | `/design-studio-demo/` | Interactive Studio build included by the website deployment |
 | `/design-studio/agent.txt` | Plain-text Design Studio brief and setup guide, shared with the landing page's Agent mode |
-| `/resume` | Legacy resume-style route still present in the codebase |
 
 The Design Studio landing page embeds actual artifacts from the `/design-studio-demo/` build
 included in this website’s deployment. Its presentation and public-reader
@@ -168,6 +167,10 @@ build, then `wrangler versions upload --preview-alias pr-<number>`, which leaves
 production untouched and comments a stable `pr-<number>-itspatmorgan.<subdomain>.workers.dev`
 link on the PR. Both workflows use the `CLOUDFLARE_API_TOKEN` and
 `CLOUDFLARE_ACCOUNT_ID` repository secrets. Dependabot and fork PRs skip previews.
+
+Cloudflare Web Analytics runs with automatic setup on the itspatmorgan.com zone:
+Cloudflare injects its cookieless beacon at the edge, so the site has no analytics
+code. Don't add a manual beacon snippet, which would count visits twice.
 
 Disable the Studio repository's old Pages site when switching deployments so it
 cannot claim the product page's `/design-studio/` path after the source rename.

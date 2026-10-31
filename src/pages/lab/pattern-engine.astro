@@ -12,6 +12,7 @@ const entry = (await getCollection("lab")).find((item) => item.data.slug === "pa
 <BaseLayout
   title={`${entry?.data.title ?? "Pattern Engine"} — Patrick Morgan`}
   description={entry?.data.description ?? "Generate deterministic visual patterns for Unknown Arts articles and publishing assets."}
+  image="/images/share/lab-pattern-engine.jpg"
   noindex
 >
   <Header />

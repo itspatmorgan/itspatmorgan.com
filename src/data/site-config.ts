@@ -2,8 +2,9 @@ export const siteConfig = {
   name: "Patrick Morgan",
   title: "Patrick Morgan — Software Designer",
   description:
-    "Software designer building AI-powered tools at Sublime Security and writing Unknown Arts — a newsletter for creative builders in the age of AI.",
+    "Patrick is a designer who builds. Right now he's designing agentic email security at Sublime, writing Unknown Arts, and building Design Studio, an open-source prototyping environment.",
   url: "https://itspatmorgan.com",
+  xHandle: "@itspatmorgan",
   nav: [
     { label: "Home", href: "/" },
     { label: "About", href: "/about" },
