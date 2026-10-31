@@ -1,31 +1,75 @@
-// Publishing, drawn plainly: the Studio on your computer, your agent publishing it as a static website, and the same pages open in
-// your team's browsers at one link. The screens are wireframes, since the point is where the work goes, not what it shows. The
-// browsers are separate copies of a read-only site: nothing connects them to each other or back to your computer.
-const Page = () => <div className="pb-page">
-  <i className="pb-side" />
-  <div className="pb-main"><b /><i /><i /><span><i /><i /><i /></span><i /><i /></div>
+import { useEffect, useRef, useState } from 'react';
+import { ArrowUp02Icon, ArrowUpRight01Icon, CheckmarkCircle02Icon, SquareLock02Icon } from '@hugeicons/core-free-icons';
+import { icon } from '../studio-case/StudioUI';
+import { useReduced } from './explore/StudioWindow';
+import StepBar from './StepBar';
+
+// Sharing comes down to one thing: a link. You ask your agent to publish, it hands back one address, and that address opens the
+// Studio in anyone's browser. The demo is those three beats and nothing else, in the page's own controls. The Studio is drawn as a
+// wireframe: the point is the link, not what's behind it.
+const ASK = 'Publish the Studio to our site';
+const LINK = 'design.yourteam.com';
+const steps = [
+  { label: 'Ask your agent to publish', ms: 2600 },
+  { label: 'It hands back one link', ms: 2000 },
+  { label: 'Your team opens it in any browser', ms: 3800 },
+];
+
+const Page = () => <div className="ps-page">
+  <i className="ps-side" />
+  <div className="ps-main"><b /><i /><i /><span><i /><i /><i /></span><i /><i /></div>
 </div>;
 
 export default function StudioShare() {
-  return <figure className="sh" aria-label="Your agent publishes the Studio from your computer as a static website. Your team opens the same pages in any browser at your own link, to read, not edit">
-      <div className="pb" aria-hidden="true">
-        <div className="pb-local">
-          <div className="pb-frame"><div className="pb-bar"><span><i /><i /><i /></span><em>localhost</em></div><Page /></div>
-          <p><b>On your computer</b><span>You and your agent edit the Studio</span></p>
+  const reduced = useReduced();
+  const [step, setStep] = useState(0);
+  const [cut, setCut] = useState(0);
+  const [playing, setPlaying] = useState(true);
+  const [visible, setVisible] = useState(false);
+  const [typed, setTyped] = useState(0);
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([e]) => setVisible(e.intersectionRatio > 0.4), { threshold: [0, 0.4, 0.8] });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  const running = playing && visible && !reduced;
+  // Type the ask during the first beat; later beats show it whole.
+  useEffect(() => {
+    if (reduced || step > 0) { setTyped(ASK.length); return; }
+    setTyped(0);
+  }, [step, cut, reduced]);
+  useEffect(() => {
+    if (!running || step !== 0 || typed >= ASK.length) return;
+    const t = window.setTimeout(() => setTyped(n => n + 1), 38);
+    return () => window.clearTimeout(t);
+  }, [running, step, typed]);
+  useEffect(() => {
+    if (!running) return;
+    const t = window.setTimeout(() => { setStep(s => (s + 1) % steps.length); setCut(c => c + 1); }, steps[step].ms);
+    return () => window.clearTimeout(t);
+  }, [running, step, cut]);
+  const shown = reduced ? 2 : step;
+  const sent = shown > 0 || typed >= ASK.length;
+  return <div ref={ref} className="ps">
+    <div className="ps-stage" role="img" aria-label={`You ask your agent to publish the Studio. It replies with one link, ${LINK}, and your team opens that link in any browser to see the prototypes.`}>
+      <div className="ps-chat" aria-hidden="true">
+        <div className={`ps-composer ${shown > 0 ? 'is-sent' : ''}`}>
+          <p>{shown > 0 ? '' : ASK.slice(0, typed)}{shown === 0 && <i className="ps-caret" />}</p>
+          <span className={`hx-send ${sent && shown === 0 ? 'is-ready' : ''}`}>{icon(ArrowUp02Icon, 14)}</span>
         </div>
-        <div className="pb-link">
-          <svg viewBox="0 0 200 40" className="pb-wire"><path d="M0 20 H192" /><path d="M184 13 L192 20 L184 27" /></svg>
-          <span className="pb-chip">Publish</span>
-          <span className="pb-url">design.yourteam.com</span>
-        </div>
-        <div className="pb-team">
-          <div className="pb-stack">
-            {[0, 1, 2].map(i => <div key={i} className="pb-frame" style={{ left: `${i * 6}%`, top: i * 26 }}>
-              <div className="pb-bar"><span><i /><i /><i /></span><em>design.yourteam.com</em></div><Page />
-            </div>)}
-          </div>
-          <p><b>In your team’s browsers</b><span>A static site to read, with nothing to install</span></p>
-        </div>
+        {shown > 0 && <p className="hx-msg ps-ask">{ASK}</p>}
+        {shown > 0 && <p className="ps-reply">{icon(CheckmarkCircle02Icon, 15)}<span>Published. Share this link with your team:</span></p>}
+        {shown > 0 && <span className={`ps-link ${shown === 2 ? 'is-opened' : ''}`}>{LINK}{icon(ArrowUpRight01Icon, 14)}</span>}
       </div>
-  </figure>;
+      <div className={`ps-browser ${shown === 2 ? 'is-open' : ''}`} aria-hidden="true">
+        <div className="ps-bar"><span><i /><i /><i /></span><em>{icon(SquareLock02Icon, 12)}{LINK}</em></div>
+        <Page />
+      </div>
+    </div>
+    <StepBar title="sharing" steps={steps} current={shown} done={false} playing={running} cut={cut} reduced={reduced}
+      onJump={i => { setStep(i); setCut(c => c + 1); }} onToggle={() => setPlaying(p => !p)} />
+  </div>;
 }

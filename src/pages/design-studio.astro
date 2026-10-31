@@ -110,13 +110,8 @@ const communityTools = [
 
     <section class="cs-slide ds-share" aria-labelledby="share-title">
       <h2 id="share-title">Share a lasting link with your team</h2>
-      <p>Publish the Studio as a website on your own host. Your team opens the prototypes and the thinking behind them in the browser, and every update you publish lands at the same link.</p>
+      <p>Your agent publishes the Studio as a static site on your host and hands back one link. Your team opens it in any browser, with nothing to install. <a class="ds-inline-link" href={liveDemo}>See a published Studio <Icon icon={ArrowUpRight01Icon} size={14} class="shrink-0" /></a></p>
       <StudioShare client:visible />
-      <dl class="ds-share-facts">
-        <div><dt>Any static host</dt><dd>{publishingHosts.map((item) => <span class="ds-share-host"><span class="hero-vendor-logo setup-compatibility-logo" style={"--vendor-logo: url(" + item.logo + ")"} aria-hidden="true"></span>{item.title}</span>)}</dd></div>
-        <div><dt>Personal or Team mode</dt><dd>Start on your own. In Team mode, contributors edit their own prototypes and admins assign maintainers for shared systems.</dd></div>
-        <div><dt>See one live</dt><dd><a href={liveDemo}>Explore a published Studio <Icon icon={ArrowUpRight01Icon} size={14} class="shrink-0" /></a></dd></div>
-      </dl>
     </section>
 
     <section class="cs-slide ds-tools" aria-labelledby="tools-title">
@@ -258,13 +253,8 @@ const communityTools = [
   .ds-quote-face { flex: none; width: 40px; height: 40px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 1px var(--border); }
   .ds-case-link { display: inline-flex; align-items: center; gap: 6px; margin-top: 32px; font-size: 15px; font-weight: 500; text-decoration: underline; text-underline-offset: 4px; text-decoration-color: color-mix(in srgb, currentColor 35%, transparent); }
   .ds-case-link:hover { text-decoration-color: currentColor; }
-  .ds-share-facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; max-width: 1024px; margin: 40px auto 0; text-align: left; }
-  .ds-share-facts dt { font-size: 15px; line-height: 22px; font-weight: 500; }
-  .ds-share-facts dd { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 6px 0 0; font-size: 14px; line-height: 22px; color: var(--muted-foreground); }
-  .ds-share-host { display: inline-flex; align-items: center; gap: 6px; }
-  .ds-share-facts a { display: inline-flex; align-items: center; gap: 6px; font-weight: 500; color: var(--foreground); text-decoration: underline; text-underline-offset: 4px; text-decoration-color: color-mix(in srgb, currentColor 35%, transparent); }
-  .ds-share-facts a:hover { text-decoration-color: currentColor; }
-  @media (max-width: 760px) { .ds-share-facts { grid-template-columns: minmax(0, 1fr); gap: 20px; margin-top: 24px; } }
+  .ds-inline-link { display: inline-flex; align-items: center; gap: 4px; font-weight: 500; color: var(--foreground); text-decoration: underline; text-underline-offset: 4px; text-decoration-color: color-mix(in srgb, currentColor 35%, transparent); white-space: nowrap; }
+  .ds-inline-link:hover { text-decoration-color: currentColor; }
   .ds-tools-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; max-width: 1024px; margin: 48px auto 0; padding: 0; list-style: none; text-align: left; }
   .ds-tool { display: flex; flex-direction: column; height: 100%; overflow: hidden; border: 1px solid var(--border); border-radius: 16px; background: var(--card); transition: transform 200ms var(--motion-ease-out-quick, ease), box-shadow 200ms ease; }
   .ds-tool:hover { transform: translateY(-2px); box-shadow: 0 12px 28px -18px rgb(0 0 0 / .3); }
