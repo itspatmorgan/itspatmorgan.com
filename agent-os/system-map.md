@@ -63,8 +63,6 @@ pnpm generate:writing-art
 - `pnpm sync-writing`: syncs selected Obsidian newsletter articles into `src/content/writing/`.
 - `pnpm generate:writing-art`: generates deterministic writing feature images and website-owned visual metadata.
 
-There is also a maintenance script, `scripts/normalize-obsidian-newsletters.mjs`, for normalizing Obsidian newsletter frontmatter. It is not exposed as a package script.
-
 ## Content Model
 
 Content collections are defined in `src/content.config.ts`. Drafts should be
