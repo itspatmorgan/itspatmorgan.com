@@ -83,11 +83,18 @@ const communityTools = [
     </Slide>
 
     <section class="cs-slide ds-proof" aria-label="Who uses Design Studio">
-      <figure class="sc-quote">
+      <figure class="ds-proof-card">
         <blockquote>“We have essentially replaced Figma with this at Sublime.”</blockquote>
-        <figcaption>Joe Salowitz, Product Designer at Sublime, <a href="https://x.com/JoeSalowitz/status/2114915923283120187" target="_blank" rel="noopener noreferrer">on X</a></figcaption>
+        <figcaption>
+          <img class="ds-proof-face" src="/images/profiles/joe.avif" alt="" width="40" height="40" loading="lazy" decoding="async" />
+          <span><b>Joe Salowitz</b><span>Product Designer at Sublime, <a href="https://x.com/JoeSalowitz/status/2114915923283120187" target="_blank" rel="noopener noreferrer">on X</a></span></span>
+        </figcaption>
+        <a class="ds-proof-foot" href="/work/design-studio">
+          <img src="/images/studio-case/sublime-mark.svg" alt="" width="29" height="20" loading="lazy" decoding="async" />
+          <span>How Sublime’s product team uses it</span>
+          <Icon icon={ArrowRight01Icon} size={16} class="shrink-0" />
+        </a>
       </figure>
-      <a class="ds-case-link" href="/work/design-studio">How Sublime’s product team uses it <Icon icon={ArrowRight01Icon} size={14} class="shrink-0" /></a>
     </section>
 
     <Slide id="why-title" title="Between a one‑off prototype and the production repo" line="Design Studio uses your product’s components and rules, so designs look real, and lives in its own repo, so trying ideas stays fast.">
@@ -239,9 +246,27 @@ const communityTools = [
   .ds-hero-studio { margin-top: 56px; }
   .ds-hero-studio .hx-ask-wrap { margin-top: 0; }
   .ds-try-short { display: none; }
-  .ds-proof { padding-top: 128px; }
-  .ds-case-link { display: inline-flex; align-items: center; gap: 6px; margin-top: 32px; font-size: 15px; font-weight: 500; text-decoration: underline; text-underline-offset: 4px; text-decoration-color: color-mix(in srgb, currentColor 35%, transparent); }
-  .ds-case-link:hover { text-decoration-color: currentColor; }
+  /* Proof: one quote card, with the person's face and the company's mark, so it reads as a voice and not as another slide headline. */
+  .ds-proof-card { max-width: 720px; margin: 0 auto; overflow: hidden; border: 1px solid var(--border); border-radius: 20px; background: var(--card); text-align: left; }
+  .ds-proof-card blockquote { margin: 0; padding: 40px 40px 0; font-size: clamp(24px, 2.6vw, 32px); line-height: 1.25; font-weight: 500; letter-spacing: -.03em; text-wrap: balance; }
+  .ds-proof-card figcaption { display: flex; align-items: center; gap: 12px; padding: 24px 40px 32px; font-size: 14px; line-height: 20px; }
+  .ds-proof-card figcaption > span { display: flex; flex-direction: column; }
+  .ds-proof-card figcaption b { font-weight: 500; }
+  .ds-proof-card figcaption span span { color: var(--muted-foreground); }
+  .ds-proof-card figcaption a { color: inherit; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: color-mix(in srgb, currentColor 35%, transparent); }
+  .ds-proof-face { flex: none; width: 40px; height: 40px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 1px var(--border); }
+  .ds-proof-foot { display: flex; align-items: center; gap: 12px; padding: 16px 40px; border-top: 1px solid var(--border); background: color-mix(in oklch, var(--muted) 50%, transparent); font-size: 15px; font-weight: 500; transition: background-color 200ms ease; }
+  .ds-proof-foot img { flex: none; }
+  .ds-proof-foot span { flex: 1; }
+  .ds-proof-foot svg { transition: transform 200ms var(--motion-ease-out-quick, ease); }
+  .ds-proof-foot:hover { background: var(--muted); }
+  .ds-proof-foot:hover svg { transform: translateX(2px); }
+  .ds-proof-foot:focus-visible { outline: 2px solid var(--ring); outline-offset: -2px; }
+  @media (max-width: 640px) {
+    .ds-proof-card blockquote { padding: 28px 24px 0; }
+    .ds-proof-card figcaption { padding: 20px 24px 24px; }
+    .ds-proof-foot { padding: 14px 24px; }
+  }
   .ds-share-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; max-width: 1024px; margin: 48px auto 0; text-align: left; }
   .ds-share-grid > div { display: flex; flex-direction: column; padding: 24px; border: 1px solid var(--border); border-radius: 16px; background: var(--card); }
   .ds-share-grid h3 { font-size: 17px; line-height: 24px; font-weight: 500; letter-spacing: -.01em; }

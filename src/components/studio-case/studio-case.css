@@ -195,6 +195,21 @@
 .sc-line path { fill: none; stroke: var(--sc-node-line); stroke-width: 2; }
 .sc-line path.is-accent { stroke: var(--sc-accent); }
 .sc-line path.is-dash { stroke-dasharray: 6 6; }
+/* The spectrum (Spectrum.tsx): the ends light in turn while Design Studio waits, grayed out, then it lights and the line joins all three. */
+.sc-spectrum .sc-node { transition: opacity 420ms ease, border-color 420ms ease, box-shadow 420ms ease, background-color 420ms ease; }
+.sc-spectrum .is-dim { opacity: .4; }
+.sc-node.is-lit { border-color: var(--sc-ink); box-shadow: 0 0 0 4px color-mix(in srgb, var(--sc-ink) 8%, transparent); }
+.sc-node.is-ghost { border-style: dashed; background: transparent; box-shadow: none; }
+.sc-node.is-ghost h3, .sc-node.is-ghost p { color: color-mix(in srgb, var(--sc-ink-weak) 70%, transparent); }
+.sc-axis-label.is-lit { color: var(--sc-ink); }
+.sc-line path.is-lit { stroke: var(--sc-ink); }
+.sc-spectrum .sc-line path.is-draw { stroke-width: 3; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 700ms var(--motion-ease-out); }
+.sc-spectrum .sc-line path.is-draw.is-on { stroke-dashoffset: 0; }
+.sc-dot { position: absolute; width: 14px; height: 14px; margin: -7px 0 0 -7px; border-radius: 999px; background: var(--sc-node-line); transition: background-color 420ms ease, box-shadow 420ms ease, opacity 420ms ease, transform 420ms var(--motion-ease-out); }
+.sc-dot.is-lit { background: var(--sc-ink); box-shadow: 0 0 0 5px color-mix(in srgb, var(--sc-ink) 10%, transparent); }
+.sc-dot.is-ghost { background: var(--sc-node); box-shadow: inset 0 0 0 2px var(--sc-node-line); }
+.sc-dot.is-accent { background: var(--sc-accent); box-shadow: 0 0 0 5px var(--sc-accent-soft); }
+.sc-dot.is-big { transform: scale(1.3); }
 .sc-check { display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 10px; background: var(--sc-accent-soft); color: var(--sc-accent); font-size: 17px; font-weight: 500; }
 .sc-check.is-review { background: var(--sc-warm-soft); color: var(--sc-warm); }
 .sc-file { display: flex; align-items: center; gap: 8px; font-family: 'Geist Mono Variable', ui-monospace, monospace; font-size: 15px; color: var(--sc-ink); }
