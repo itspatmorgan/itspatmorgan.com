@@ -19,11 +19,21 @@ const caseStudy = "/work/design-studio";
     <div data-project-card-item class="group relative" data-project-card>
       <a href={caseStudy} class="absolute inset-0 z-10 rounded-xl" aria-label={project.data.title}></a>
       <article class="grid overflow-hidden rounded-xl border border-border bg-card transition-all duration-300 group-hover:-translate-y-0.5 group-hover:shadow-md group-hover:shadow-black/5 dark:group-hover:shadow-black/20 motion-reduce:translate-y-0 motion-reduce:transition-none lg:grid-cols-[1fr_2fr]">
-        {/* The case study's title and description at the bottom of the column, at the Work cards' sizes, the way the newsletter
-            card sets its text, so the open space above reads as intended. */}
-        <div class="order-2 flex flex-col justify-end p-4 lg:order-1 lg:p-6">
-          <h3 class="mb-2 text-base font-semibold tracking-tight">{project.data.title}</h3>
-          <p class="max-w-md text-sm leading-relaxed text-muted-foreground">{description}</p>
+        {/* Set like the newsletter card: Design Studio's mark at the top of the column, the case study's title and description at
+            the bottom, at the Work cards' sizes. The mark is the case study's own (design-studio-mark.svg), drawn in the theme's
+            colors so it reads in light and dark. */}
+        <div class="order-2 flex flex-col justify-between gap-6 p-4 lg:order-1 lg:p-6">
+          <svg viewBox="0 0 30 30" class="h-7 w-7 text-foreground" aria-hidden="true">
+            <rect width="30" height="30" rx="7" fill="currentColor" />
+            <g transform="translate(8.3 8) scale(.6)" fill="var(--card)">
+              <path d="M8.914 0H0V24H8.914V0Z" />
+              <path d="M11.314 0H13.029C16.211 0 19.264 1.264 21.514 3.515C23.764 5.765 25.029 8.817 25.029 12C25.029 15.183 23.764 18.235 21.514 20.485C19.264 22.736 16.211 24 13.029 24H11.314V0Z" />
+            </g>
+          </svg>
+          <div>
+            <h3 class="mb-2 text-base font-semibold tracking-tight">{project.data.title}</h3>
+            <p class="max-w-md text-sm leading-relaxed text-muted-foreground">{description}</p>
+          </div>
         </div>
         {/* The visual, 16:9 like the Work cards' and in the same inert frame. */}
         <div class="texture-bg relative order-1 flex items-center overflow-hidden border-b border-border lg:order-2 lg:border-b-0 lg:border-l">
