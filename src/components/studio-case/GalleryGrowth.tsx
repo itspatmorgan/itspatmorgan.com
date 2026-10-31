@@ -35,7 +35,10 @@ const pages: [string, typeof SquareIcon][] = [
 
 function FirstGallery() {
   return <div className="sc-first">
-    <div className="sc-first-head"><img src="/images/studio-case/logo-light-mode.svg" alt="" /><i />Design Prototypes</div>
+    <div className="sc-first-head">
+      <img className="is-light" src="/images/studio-case/logo-light-mode.svg" alt="" /><img className="is-dark" src="/images/studio-case/logo-dark-mode.svg" alt="" />
+      <i />Design Prototypes
+    </div>
     <div className="sc-first-body">
       <div className="sc-first-bar">Filter: <b>All authors {icon(ArrowDown01Icon, 14)}</b><span className="sc-views">1 projects <span style={{ display: 'inline-flex', border: '1px solid var(--sc-line)', borderRadius: 6, overflow: 'hidden' }}><span style={{ display: 'flex', padding: 6, background: '#3b82f6', color: '#fff' }}>{icon(Menu01Icon, 14)}</span><span style={{ display: 'flex', padding: 6, background: 'var(--sc-bg)' }}>{icon(DashboardSquare01Icon, 14)}</span></span></span></div>
       <div className="sc-first-card">
@@ -43,7 +46,7 @@ function FirstGallery() {
         <p>Configuration interfaces for ASA (Automated Security Analyst) and ADE (Automated Detection Engineer) agents. Includes high-fidelity designs, launch views, and wireframes.</p>
         <small>Patrick &nbsp;•&nbsp; Jan 26, 2026</small>
         <hr />
-        <p className="sc-pages">PAGES</p>
+        <p className="sc-pages">Pages</p>
         <ul>{pages.map(([t, i]) => <li key={t}><HugeiconsIcon icon={i} size={15} strokeWidth={1.5} />{t}</li>)}</ul>
       </div>
     </div>
