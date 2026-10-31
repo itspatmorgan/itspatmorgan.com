@@ -138,11 +138,13 @@ export function useGenerativeCanvas(
       let elapsed = 0;
       let last: number | null = null;
       let running = false;
+      // The drift is slow, so 30fps looks the same as 60 at half the drawing cost.
       const tick = (ts: number) => {
+        rafId = requestAnimationFrame(tick);
+        if (last !== null && ts - last < 30) return;
         if (last !== null) elapsed += ts - last;
         last = ts;
         redraw({ progress: 1, time: elapsed, motion: motionRef.current });
-        rafId = requestAnimationFrame(tick);
       };
       const setRunning = (next: boolean) => {
         if (next === running) return;

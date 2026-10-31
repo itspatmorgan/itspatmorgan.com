@@ -3,7 +3,7 @@ import { CountUp, Expand } from '../case-study/scene';
 
 // Primitives for the Sublime screens. Sizes are the source's Tailwind values in CSS pixels.
 
-export const ART = { asa: '/images/work/sublime/asa_cube.png', ade: '/images/work/sublime/ade_triangle.png' };
+export const ART = { asa: '/images/work/sublime/asa_cube.webp', ade: '/images/work/sublime/ade_triangle.webp' };
 
 type Verdict = 'malicious' | 'spam' | 'graymail' | 'benign';
 const verdictGlyph: Record<Verdict, ReactNode> = {

@@ -1,4 +1,3 @@
-@import '@fontsource-variable/inter';
 @import '@fontsource/ibm-plex-mono/400.css';
 @import '@fontsource/ibm-plex-mono/600.css';
 @import '@fontsource/ibm-plex-mono/700.css';
@@ -28,11 +27,11 @@
 .xp .xp-frame .cs-native-stage, .xp .xp-frame .cs-native { background: transparent; }
 /* Playback control pinned to the stage's corner, not the demo's. */
 .xp .cs-stage .cs-demo { position: static; }
-.xp .cs-native { font-family: 'Inter Variable', 'Inter', sans-serif; color: var(--x-ink); letter-spacing: 0; }
+.xp .cs-native { font-family: 'Geist Variable', sans-serif; color: var(--x-ink); letter-spacing: 0; }
 .xp .cs-native-stage { transition: opacity 240ms ease; }
 .xp-t { position: absolute; white-space: nowrap; }
 .xp-mono { font-family: 'IBM Plex Mono', monospace; }
-.xp-sf { font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Inter Variable', sans-serif; color: var(--x-black); }
+.xp-sf { font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Geist Variable', sans-serif; color: var(--x-black); }
 /* Ring and radius are in frame units; a frame drawn at another size sets --x-card-ring and --x-card-radius so they match the 1240 frames on screen. */
 .xp-card { position: absolute; left: 110px; top: 80px; width: 1020px; bottom: 0; background: var(--x-card); border-radius: var(--x-card-radius, 24px) var(--x-card-radius, 24px) 0 0; box-shadow: 0 0 0 var(--x-card-ring, 16px) var(--x-ring), var(--x-drop); }
 .xp-card > * { position: absolute; }

@@ -1,4 +1,3 @@
-@import '@fontsource-variable/inter';
 /* Studio bundles Comic Neue for lo-fi views (modules/view/lofi.css); so does this page. */
 @import '@fontsource/comic-neue/400.css';
 @import '@fontsource/comic-neue/700.css';
@@ -25,7 +24,7 @@
 }
 .sc .cs-frame .cs-native-stage, .sc .cs-frame .cs-native, .sc .sc-plain .cs-native-stage, .sc .sc-plain .cs-native { background: transparent; }
 .sc .sc-plain { padding: 0; overflow: hidden; }
-.sc .cs-native { font-family: 'Inter Variable', 'Inter', sans-serif; color: var(--sc-fg); letter-spacing: 0; font-feature-settings: 'cv11'; }
+.sc .cs-native { font-family: 'Geist Variable', sans-serif; color: var(--sc-fg); letter-spacing: 0; font-feature-settings: 'cv11'; }
 .sc .sc-os, .sc .sc-os * { font-family: 'Geist Variable', ui-sans-serif, system-ui, sans-serif; }
 .sc-fade { transition: opacity 380ms ease, transform 480ms cubic-bezier(.22, 1, .36, 1); }
 .sc-fade.is-out { opacity: 0; transform: translateY(8px); }
@@ -116,7 +115,7 @@
 .sc-flow-caption p { font-size: 11.5px; line-height: 15px; color: var(--sc-fg); }
 .sc-flow-arrow { position: absolute; right: -27px; top: 90px; width: 22px; height: 10px; fill: none; stroke: var(--sc-ink-weak); stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
 .sc-live { position: relative; overflow: hidden; }
-.sb-embed { position: absolute; left: 0; top: 0; transform-origin: 0 0; background: var(--sb-card); font-family: 'Inter Variable', 'Inter', sans-serif; color: var(--sb-strong); font-feature-settings: 'cv11'; pointer-events: none; }
+.sb-embed { position: absolute; left: 0; top: 0; transform-origin: 0 0; background: var(--sb-card); font-family: 'Geist Variable', sans-serif; color: var(--sb-strong); font-feature-settings: 'cv11'; pointer-events: none; }
 
 /* ── The open-source Studio ──────────────────────────────────────────────────────────────── */
 .sc-os { --os-bg: #fff; --os-fg: #0a0a0a; --os-muted: #f5f5f5; --os-weak: #737373; --os-line: #e5e5e5; --os-side: #fafafa; --os-select: #ebebeb; --os-btn: #525252; }
@@ -225,7 +224,7 @@
 .sc-rule { position: absolute; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; border: 1.5px solid var(--sc-node-line); border-radius: 10px; background: var(--sc-node); text-align: center; white-space: nowrap; transition: opacity 400ms ease; }
 .sc-rule b { font-family: 'Geist Mono Variable', ui-monospace, monospace; font-size: 15px; font-weight: 500; letter-spacing: 0; }
 .sc-rule span { font-size: 14px; color: var(--sc-ink-weak); }
-.sc-rule.is-agent b { font-family: 'Inter Variable', 'Inter', sans-serif; font-size: 16px; font-weight: 600; letter-spacing: -.01em; }
+.sc-rule.is-agent b { font-family: 'Geist Variable', sans-serif; font-size: 16px; font-weight: 600; letter-spacing: -.01em; }
 .sc-rule.is-entry { border-color: var(--sc-accent); box-shadow: 0 0 0 4px var(--sc-accent-soft); }
 .sc-rule.is-entry b { font-size: 18px; font-weight: 600; }
 .sc-rule-group { position: absolute; padding: 20px 22px 22px; border: 1.5px solid var(--sc-node-line); border-radius: 12px; background: var(--sc-node); transition: opacity 400ms ease; }
@@ -255,7 +254,7 @@
 /* The engineering handoff (Handoff): the prototype's folder in the repo, and an engineer's agent reading it. */
 .sc-editor { position: absolute; inset: 0; display: flex; background: var(--sc-bg); color: var(--sc-fg); }
 .sc-tree { flex: none; width: 324px; padding: 16px 8px; background: var(--sc-side); border-right: 1px solid var(--sc-line); font-family: 'Geist Mono Variable', ui-monospace, monospace; font-size: 13px; color: var(--sc-side-fg); }
-.sc-tree h5 { margin: 0 0 10px; padding: 0 10px; font-family: 'Inter Variable', 'Inter', sans-serif; font-size: 12.5px; font-weight: 500; color: var(--sc-fg); }
+.sc-tree h5 { margin: 0 0 10px; padding: 0 10px; font-family: 'Geist Variable', sans-serif; font-size: 12.5px; font-weight: 500; color: var(--sc-fg); }
 .sc-tree ul { list-style: none; margin: 0; padding: 0; }
 .sc-tree li { display: flex; align-items: center; gap: 6px; height: 28px; padding-right: 10px; border-radius: 6px; white-space: nowrap; transition: background-color 300ms ease, color 300ms ease; }
 .sc-tree li svg { flex: none; color: var(--sc-weak); transition: color 300ms ease; }
@@ -324,7 +323,7 @@
   --pt-sign-bg: #E3EEFF; --pt-sign-line: #304775; --pt-dot: #385595; --pt-ok-bg: #CCF4E2; --pt-ok-line: #0F855D; --pt-ok-ink: #0B4A38;
   --pt-radius: 16px; --pt-box-radius: 4px;
   min-height: 100%; padding: 40px 24px; background: var(--pt-page); color: var(--pt-strong);
-  font-family: 'Inter Variable', 'Inter', sans-serif; font-size: 14px; line-height: 20px; font-weight: 500; letter-spacing: 0; font-feature-settings: 'cv11';
+  font-family: 'Geist Variable', sans-serif; font-size: 14px; line-height: 20px; font-weight: 500; letter-spacing: 0; font-feature-settings: 'cv11';
 }
 .dark .pt {
   --pt-page: #24221f; --pt-card: #2a2725; --pt-line: #4b4742; --pt-line-weak: #3d3a36; --pt-strong: #ede9e4; --pt-weak: #a8a29b; --pt-icon: #c3bdb5;
@@ -370,7 +369,7 @@
 .pt-email-head span { width: 48px; color: var(--pt-weak); }
 .pt-email-head b { font-weight: 500; }
 .pt-email-head b.is-strong { font-weight: 600; }
-.pt-email-head code { font-family: 'SB JetBrains Mono', ui-monospace, monospace; font-size: 12px; color: var(--pt-weak); }
+.pt-email-head code { font-family: 'Geist Mono Variable', ui-monospace, monospace; font-size: 12px; color: var(--pt-weak); }
 .pt.is-lofi .pt-email-head code { padding: 2px 6px; border-radius: 4px; background: var(--pt-card); }
 .pt-email-body { display: grid; justify-items: start; gap: 12px; padding: 16px 20px; }
 .pt-email-body p { justify-self: stretch; }
