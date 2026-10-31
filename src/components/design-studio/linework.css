@@ -1,0 +1,50 @@
+/* Line work for /design-studio, after the drawn frames on cloudflare.com: the column is framed like a plan on a dotted sheet, each
+   section starts on a rule that ends in a small square handle, the two biggest breaks are hatched, the product windows carry crop
+   marks, and a dot field sits behind the hero's window. All of it is ink at low strength: it frames the content and never competes
+   with it. Nothing moves. On phones, where the column is the screen, only the rules, hatching and crop marks remain. */
+.studio-page {
+  --lw: color-mix(in oklch, var(--foreground) 8%, transparent);
+  --lw-handle: color-mix(in oklch, var(--foreground) 18%, transparent);
+  --lw-mark: color-mix(in oklch, var(--foreground) 24%, transparent);
+  --lw-dot: color-mix(in oklch, var(--foreground) 11%, transparent);
+  --rail: 24px;
+  position: relative; background: var(--background);
+}
+@media (min-width: 640px) { .studio-page { --rail: 32px; } }
+@media (min-width: 1024px) { .studio-page { --rail: 56px; } }
+
+/* 1. The sheet: a dot field in the margins, and a rail down each edge of the column. */
+main:has(> .studio-page) { background-image: radial-gradient(circle at 1px 1px, var(--lw-dot) 1px, transparent 1.4px); background-size: 14px 14px; }
+@media (min-width: 1136px) {
+  .studio-page::before { content: ""; position: absolute; inset: 0; border-left: 1px solid var(--lw); border-right: 1px solid var(--lw); pointer-events: none; }
+}
+
+/* Each section opens on a rule across the column, with a square handle where it meets each rail. */
+#studio-human > section { position: relative; }
+#studio-human > section::before { content: ""; position: absolute; top: 0; left: calc(-1 * var(--rail)); right: calc(-1 * var(--rail)); height: 1px; background: var(--lw); pointer-events: none; }
+#studio-human > section::after { content: ""; position: absolute; top: -3px; left: calc(-1 * var(--rail) - 3px); right: calc(-1 * var(--rail) - 3px); height: 7px; pointer-events: none;
+  background:
+    linear-gradient(var(--background), var(--background)) 1px 1px / 5px 5px no-repeat, linear-gradient(var(--lw-handle), var(--lw-handle)) 0 0 / 7px 7px no-repeat,
+    linear-gradient(var(--background), var(--background)) calc(100% - 1px) 1px / 5px 5px no-repeat, linear-gradient(var(--lw-handle), var(--lw-handle)) 100% 0 / 7px 7px no-repeat; }
+
+/* 2. The two biggest breaks, out of the hero and into Get started, are a hatched band, the way a plan hatches a cut wall. */
+#studio-human > header + section::before, #studio-human > #get-started::before {
+  height: 16px; border-top: 1px solid var(--lw); border-bottom: 1px solid var(--lw);
+  background: repeating-linear-gradient(135deg, var(--lw) 0 1px, transparent 1px 7px);
+}
+
+/* 3. Crop marks at the corners of the product windows, like marks on a print plate. */
+.hx-ask-wrap, .sh { position: relative; }
+.hx-ask-wrap::before, .sh::before { content: ""; position: absolute; inset: -12px; pointer-events: none;
+  background:
+    linear-gradient(var(--lw-mark), var(--lw-mark)) 0 0 / 10px 1px no-repeat, linear-gradient(var(--lw-mark), var(--lw-mark)) 0 0 / 1px 10px no-repeat,
+    linear-gradient(var(--lw-mark), var(--lw-mark)) 100% 0 / 10px 1px no-repeat, linear-gradient(var(--lw-mark), var(--lw-mark)) 100% 0 / 1px 10px no-repeat,
+    linear-gradient(var(--lw-mark), var(--lw-mark)) 0 100% / 10px 1px no-repeat, linear-gradient(var(--lw-mark), var(--lw-mark)) 0 100% / 1px 10px no-repeat,
+    linear-gradient(var(--lw-mark), var(--lw-mark)) 100% 100% / 10px 1px no-repeat, linear-gradient(var(--lw-mark), var(--lw-mark)) 100% 100% / 1px 10px no-repeat; }
+
+/* 5. Behind the hero's window, a dot field that fades in from above and out at the sides. */
+.ds-hero { position: relative; isolation: isolate; }
+.ds-hero::before { content: ""; position: absolute; z-index: -1; top: 38%; bottom: 0; left: calc(-1 * var(--rail)); right: calc(-1 * var(--rail)); pointer-events: none;
+  background-image: radial-gradient(circle at 1px 1px, var(--lw-dot) 1px, transparent 1.4px); background-size: 14px 14px;
+  -webkit-mask-image: radial-gradient(ellipse 75% 70% at 50% 60%, #000 35%, transparent 80%); mask-image: radial-gradient(ellipse 75% 70% at 50% 60%, #000 35%, transparent 80%); }
+@media (max-width: 639px) { .ds-hero::before { display: none; } }
