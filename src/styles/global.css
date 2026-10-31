@@ -28,14 +28,21 @@ html:active-view-transition-type(page-navigation)::view-transition-new(site-side
 html:active-view-transition-type(page-navigation)::view-transition-new(site-header) {
   animation: none;
 }
+/* The old page fades out quickly, then the new one fades in with a slight
+   rise. Normal blending fades through the page background, so the change reads
+   as one soft beat instead of a near-instant swap. */
+html:active-view-transition-type(page-navigation)::view-transition-old(root),
+html:active-view-transition-type(page-navigation)::view-transition-new(root) {
+  mix-blend-mode: normal;
+}
 html:active-view-transition-type(page-navigation)::view-transition-old(root) {
-  animation: page-content-out 160ms ease-out both;
+  animation: page-content-out 120ms ease-in both;
 }
 html:active-view-transition-type(page-navigation)::view-transition-new(root) {
-  animation: page-content-in 160ms ease-out both;
+  animation: page-content-in 260ms cubic-bezier(.22, 1, .36, 1) 60ms both;
 }
 @keyframes page-content-out { to { opacity: 0; } }
-@keyframes page-content-in { from { opacity: 0; } }
+@keyframes page-content-in { from { opacity: 0; transform: translateY(6px); } }
 @media (prefers-reduced-motion: reduce) {
   html:active-view-transition-type(page-navigation)::view-transition-old(root),
   html:active-view-transition-type(page-navigation)::view-transition-new(root) {
