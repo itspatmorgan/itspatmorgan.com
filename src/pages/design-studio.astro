@@ -110,7 +110,7 @@ const learnMore = mediaFeatures.filter((item) => item.title !== "Design Studio o
         <section id="install" class="ds-step" data-prompt-card aria-labelledby="install-title">
           <h3 id="install-title">Install and run locally</h3>
           <p class="ds-step-line">Use the agent harness you already use.</p>
-          <p class="ds-prompt texture-bg" data-setup-prompt>{installationPrompt.split(/(https:\/\/\S+?)(?=[.,]?(?:\s|$))/).map((part, i) => i % 2 ? <span class="ds-url">{part}</span> : part)}</p>
+          <p class="ds-prompt texture-bg" data-setup-prompt>{installationPrompt.split(/(https:\/\/\S+?)(?=[.,]?(?:\s|$))/).map((part, i) => i % 2 ? <span class="ds-url">{part.split(/(?<=\/)/).map((seg, j) => <Fragment>{j > 0 && <wbr />}{seg}</Fragment>)}</span> : part)}</p>
           <div class="ds-step-tools" aria-label="Example agent harnesses for Design Studio">
             {agentHarnesses.map((item) => (
               <span><span class="hero-vendor-logo setup-compatibility-logo" style={"--vendor-logo: url(" + item.logo + ")"} aria-hidden="true"></span>{item.title}</span>
@@ -215,7 +215,7 @@ const learnMore = mediaFeatures.filter((item) => item.title !== "Design Studio o
   .ds-share-grid a:hover, .ds-community a:hover { text-decoration-color: currentColor; }
   /* Get started: two prompt cards in the share cards' language, so the section reads as one centered composition. */
   .ds-start-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; max-width: 1024px; margin: 48px auto 0; text-align: left; }
-  .ds-step { display: flex; flex-direction: column; min-width: 0; padding: 24px; border: 1px solid var(--border); border-radius: 16px; background: var(--card); scroll-margin-top: 2rem; }
+  .ds-step { display: flex; flex-direction: column; min-width: 0; padding: 24px; border: 1px solid var(--border); border-radius: 16px; background: var(--card); scroll-margin-top: 2rem; container-type: inline-size; }
   .ds-step h3 { font-size: 17px; line-height: 24px; font-weight: 500; letter-spacing: -.01em; }
   .ds-step-line { margin-top: 6px; font-size: 15px; line-height: 23px; color: var(--muted-foreground); }
   .ds-prompt { flex: 1; margin-top: 20px; padding: 16px 18px; border: 1px solid var(--border); border-radius: 10px; font-size: 14.5px; line-height: 23px; overflow-wrap: anywhere; }
@@ -225,6 +225,10 @@ const learnMore = mediaFeatures.filter((item) => item.title !== "Design Studio o
   .ds-step-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 16px; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border); }
   .ds-step-foot a { display: inline-flex; align-items: center; gap: 6px; margin-left: auto; font-size: 14px; font-weight: 500; text-decoration: underline; text-underline-offset: 4px; text-decoration-color: color-mix(in srgb, currentColor 35%, transparent); }
   .ds-step-foot a:hover { text-decoration-color: currentColor; }
+  @container (max-width: 470px) {
+    .ds-step-foot { flex-direction: column; align-items: flex-start; }
+    .ds-step-foot a { margin-left: 0; }
+  }
   .ds-start > .ds-community { margin-top: 48px; font-size: 16px; }
   .ds-community a { color: var(--foreground); }
   .ds-note { padding: 144px 0 96px; }
@@ -254,7 +258,7 @@ const learnMore = mediaFeatures.filter((item) => item.title !== "Design Studio o
   .hero-vendor-logo { display: block; width: 1.75rem; height: 1.75rem; flex-shrink: 0; background: currentColor; mask: var(--vendor-logo) center / contain no-repeat; }
   .setup-compatibility-logo { width: 1.25rem; height: 1.25rem; }
   /* A long URL breaks evenly across lines instead of leaving its hyphen alone on one. */
-  @media (max-width: 640px) { .ds-url { word-break: break-all; } }
+  .ds-url { overflow-wrap: anywhere; }
   @media (max-width: 640px) {
     .ds-step { padding: 20px; }
     .ds-prompt { padding: 14px 16px; }
