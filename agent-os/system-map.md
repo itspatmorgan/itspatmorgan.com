@@ -18,7 +18,7 @@ for related details. This file owns system orientation, not editing rules.
 | Editorial art | Deterministic feature images and visual metadata for writing | Website-owned frontmatter and `public/images/writing/` |
 | Lab | Hosted experiments, tools, and interaction demos | `src/content/lab/`, `src/pages/lab/`, `src/lab/` |
 | Community | Community narrative, photos, and Kind Words | `src/pages/community.astro`, `src/data/community.ts`, `src/data/commendations.ts` |
-| Deployment | Static build published to GitHub Pages and Cloudflare Workers, with PR previews | `.github/workflows/deploy.yml`, `.github/workflows/preview.yml`, `wrangler.jsonc` |
+| Deployment | Static build published to Cloudflare Workers, with PR previews | `.github/workflows/deploy.yml`, `.github/workflows/preview.yml`, `wrangler.jsonc` |
 | Work orchestration | Strategy, plans, conventions, learnings, issues, project board, and cross-project tasks | `agent-os/`, GitHub Issues, Personal Website project, Notion Tasks |
 
 ## Public Routes
@@ -158,8 +158,9 @@ repository by permanent GitHub ID `1401250166`, and selects the latest successfu
 builds with Studio's mise toolchain and `STUDIO_BASE_PATH=/design-studio-demo/`,
 then copies the result into `dist/design-studio-demo/`. These build steps live in
 `.github/actions/build-site/`, shared by production and previews. The combined
-output is published by GitHub Pages and uploaded to the `itspatmorgan` Cloudflare
-Worker (static assets only, configured in `wrangler.jsonc`). Studio source stays in
+output is deployed to the `itspatmorgan` Cloudflare Worker (static assets only,
+configured in `wrangler.jsonc`), which serves itspatmorgan.com and www as custom
+domains. Studio source stays in
 its own repository.
 A failed source run cannot replace the last passing demo. An absent passing run
 fails the website build rather than publishing an unverified source commit.
@@ -170,15 +171,11 @@ production untouched and comments a stable `pr-<number>-itspatmorgan.<subdomain>
 link on the PR. Both workflows use the `CLOUDFLARE_API_TOKEN` and
 `CLOUDFLARE_ACCOUNT_ID` repository secrets. Dependabot and fork PRs skip previews.
 
-GitHub Pages still serves itspatmorgan.com, so the Cloudflare production step is
-`continue-on-error`. Once the domain is attached to the Worker, remove the Pages
-jobs, `public/CNAME` and that `continue-on-error`.
-
 Disable the Studio repository's old Pages site when switching deployments so it
 cannot claim the product page's `/design-studio/` path after the source rename.
 The root `404.html` supports direct demo URLs without redirecting their path and
-provides browser redirects from `/design-studio-starter/`. Pages fallback responses
-still return HTTP 404. Other missing website paths retain the website's 404 page.
+provides browser redirects from `/design-studio-starter/`. Cloudflare serves it
+for missing routes (`not_found_handling: "404-page"`) with HTTP 404. Other missing website paths retain the website's 404 page.
 
 Local `pnpm build` builds Astro alone. To preview the combined output, first build
 Studio in its own checkout with `STUDIO_BASE_PATH=/design-studio-demo/ pnpm build`,

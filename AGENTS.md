@@ -28,7 +28,7 @@ restrained, content-first design over decorative complexity.
 - Fonts: Geist Sans for body text, Geist Mono for labels, metadata, and code
 - Package manager: pnpm 10+
 - Node: v22.23.4+, the minimum Astro supports (Node 24 pinned in `.mise.toml` and `.nvmrc`, and used in CI)
-- Deployment: GitHub Actions builds the site; pushes to `main` publish to GitHub Pages and Cloudflare Workers, and pull requests get Cloudflare preview links
+- Deployment: GitHub Actions builds the site; pushes to `main` publish to Cloudflare Workers (itspatmorgan.com), and pull requests get Cloudflare preview links
 
 ## Commands
 
@@ -94,7 +94,7 @@ when appropriate.
 | --- | --- |
 | `agent-os/` | Shared strategy, system map, plans, conventions, learnings, and skills |
 | `.reference/` | User-provided briefs, screenshots, design tokens, outlines, and URLs |
-| `.github/workflows/deploy.yml` | Production deployment (GitHub Pages and Cloudflare) |
+| `.github/workflows/deploy.yml` | Production deployment to Cloudflare |
 | `.github/workflows/preview.yml` | Cloudflare preview link for each pull request |
 | `.github/actions/build-site/` | Shared build of the website plus the Design Studio demo |
 | `wrangler.jsonc` | Cloudflare Workers static hosting config |
