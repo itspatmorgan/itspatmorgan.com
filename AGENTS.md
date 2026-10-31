@@ -103,7 +103,7 @@ when appropriate.
 | `src/components/ui/` | shadcn/ui primitives |
 | `src/content/` | Work, writing, and lab content collections |
 | `src/content.config.ts` | Content collection schemas |
-| `src/data/` | Site config, commendations, and resume data |
+| `src/data/` | Site config, commendations, and career data |
 | `src/layouts/` | Base, page, project, and writing layouts |
 | `src/pages/` | Astro routes |
 | `src/styles/global.css` | Tailwind import, CSS tokens, global styles, prose styles |

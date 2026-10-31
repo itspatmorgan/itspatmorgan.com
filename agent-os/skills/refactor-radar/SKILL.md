@@ -97,7 +97,6 @@ After approval, create or update the smallest useful artifact:
 
 Use these as prompts during early runs. They are not a static backlog.
 
-- Should `/resume` remain, redirect, or be retired now that `/work` exists?
 - Should `src/content/projects` stay as the internal name or eventually become
   `work`?
 - Is `README.md` still concise as the public home base?
