@@ -4,9 +4,21 @@ import ProjectCard from "@/components/ProjectCard.astro";
 import ProjectDemo from "@/components/ProjectDemo.astro";
 import { liveDemoSlugs } from "@/data/project-demos";
 import { roles } from "@/data/experience";
+import { mediaFeatures } from "@/data/media";
+import { siteConfig } from "@/data/site-config";
 import { getCollection } from "astro:content";
 
 const allProjects = await getCollection("projects", ({ data }) => !data.draft);
+
+// Writing and talks: the newsletter first, Patrick's numbers as of 2026-10-30, then the talks. The launch post stays in the Design Studio case study only.
+const writingAndTalks = [
+  {
+    image: "/images/unknown-arts/banner.webp", alt: "Unknown Arts collage: a figure on a mountain ridge pointing toward a bird in flight",
+    fallback: "Unknown Arts", title: "Unknown Arts newsletter", sub: "200+ essays · 7,700+ subscribers · 800k views",
+    href: siteConfig.social.newsletter,
+  },
+  ...mediaFeatures.filter((item) => item.title !== "Design Studio open-source launch"),
+];
 
 function getRoleProjects(slugs: string[] = []) {
   return slugs
@@ -25,7 +37,7 @@ function getRoleProjects(slugs: string[] = []) {
 
   {/* Timeline */}
   <section class="mx-auto max-w-3xl px-6" data-resume-intro>
-    <p class="mb-10 font-mono text-sm uppercase tracking-widest text-muted-foreground">Career</p>
+    <h2 class="mb-8 text-2xl font-semibold tracking-tight">Career</h2>
 
     <div class="relative">
       <div class="absolute left-[5px] top-2 bottom-0 w-px bg-border"></div>
@@ -91,17 +103,40 @@ function getRoleProjects(slugs: string[] = []) {
     </div>
   </section>
 
-  {/* Skills */}
+  {/* Writing and talks: the newsletter and talks, kept apart from the case studies. A cover that can't load leaves the source's name. */}
+  <section class="mx-auto max-w-3xl px-6 pt-20" data-resume-media>
+    <h2 class="mb-8 text-2xl font-semibold tracking-tight">Writing and talks</h2>
+    <ul class="grid gap-3">
+      {writingAndTalks.map((item) => (
+        <li>
+          <a href={item.href} target="_blank" rel="noopener noreferrer" class="group/media flex items-center gap-4 rounded-xl border border-border bg-card p-3 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md hover:shadow-black/5 dark:hover:shadow-black/20 sm:gap-5">
+            <span class="relative aspect-video w-28 shrink-0 overflow-hidden rounded-lg bg-muted sm:w-40">
+              <span class="absolute inset-0 grid place-items-center text-sm font-medium text-muted-foreground" aria-hidden="true">{item.fallback}</span>
+              <img src={item.image} alt={item.alt} loading="lazy" onerror="this.remove()" class="relative h-full w-full object-cover" />
+            </span>
+            <span class="flex min-w-0 flex-col gap-0.5">
+              <span class="text-base font-semibold tracking-tight">{item.title}</span>
+              <span class="text-sm text-muted-foreground">{item.sub}</span>
+            </span>
+            <span class="ml-auto pr-2 text-muted-foreground transition-colors group-hover/media:text-foreground" aria-hidden="true">↗</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  {/* Toolkit: how Patrick works, his design practice, the coding agents he uses, and the stacks behind this site and Design Studio. */}
   <section class="mx-auto max-w-3xl px-6 pt-20 pb-24" data-resume-skills>
-    <p class="mb-10 font-mono text-sm uppercase tracking-widest text-muted-foreground">Skills</p>
+    <h2 class="mb-8 text-2xl font-semibold tracking-tight">Toolkit</h2>
     <div class="flex flex-col gap-5">
       {[
-        { label: "Design", skills: ["Product design", "Prototyping", "Interaction design", "Systems design", "Design systems", "User research", "Figma", "Framer", "Midjourney"] },
-        { label: "Dev", skills: ["HTML", "CSS", "Javascript", "React", "Tailwind", "ShadCN", "Git", "Github", "Claude Code", "Astro", "PNPM"] },
-        { label: "Domains", skills: ["B2B & Enterprise SaaS", "Cybersecurity", "FinTech"] },
+        { label: "Design", skills: ["Product design", "Interaction design", "Systems design", "Design systems", "Prototyping in code", "User research", "Figma"] },
+        { label: "Coding agents", skills: ["Claude Code", "Codex", "Cursor"] },
+        { label: "This site", skills: ["Astro", "React", "TypeScript", "Tailwind CSS", "shadcn/ui", "GitHub Pages"] },
+        { label: "Design Studio", skills: ["React", "TypeScript", "Vite", "TanStack Router", "Tailwind CSS", "shadcn/ui and Base UI", "Mermaid", "Excalidraw", "CodeMirror", "MDX", "Playwright"] },
       ].map(({ label, skills }) => (
         <div>
-          <p class="mb-2 font-mono text-sm uppercase tracking-widest text-muted-foreground/60">{label}</p>
+          <h3 class="mb-1 text-base font-semibold tracking-tight">{label}</h3>
           <p class="text-base leading-relaxed text-foreground/70">{skills.join(" · ")}</p>
         </div>
       ))}

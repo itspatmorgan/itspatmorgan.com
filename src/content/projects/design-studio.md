@@ -1,5 +1,5 @@
 ---
-title: "Building a Design Environment for People and Agents"
+title: "Building a design environment for people and agents"
 type: "professional"
 description: "I designed and built Design Studio on my own: the environment where Sublime's product team and their agents prototype together, and an open-source version for any team."
 skills: ["Design Tools", "AI Agent Workflows", "Design Systems", "Prototyping in Code"]

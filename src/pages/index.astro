@@ -6,11 +6,12 @@ import { liveDemoSlugs } from "@/data/project-demos";
 import PixelWaveText from "@/components/PixelWaveText.astro";
 import LabCard from "@/components/lab/LabCard.astro";
 import StudioHomeModule from "@/components/design-studio/StudioHomeModule.astro";
-import { GenerativePatternSurface } from "@/lab/editorial-art/GenerativePatternSurface";
 import { UAMark } from "@/lab/editorial-art/UAMark";
 import { siteConfig } from "@/data/site-config";
+import Icon from "@/components/icons/Icon.astro";
+import { Mail01Icon } from "@hugeicons/core-free-icons";
 import { commendations } from "@/data/commendations";
-import { communityPhotos, communityStory, featuredCommunityCommendations } from "@/data/community";
+import { communityPhotos, featuredCommunityCommendations } from "@/data/community";
 import { getCollection } from "astro:content";
 
 const allProjects = await getCollection("projects", ({ data }) => !data.draft);
@@ -24,6 +25,8 @@ const labEntries = (await getCollection("lab", ({ data }) => !data.draft))
     }
     return a.data.title.localeCompare(b.data.title);
   });
+// The homepage's writing list drops a title's closing aside, like "(And That's Okay)", so each title fits on one line.
+const shortTitle = (title: string) => title.replace(/\s*\([^)]*\)$/, "");
 const writingPosts = (await getCollection("writing", ({ data }) => !data.draft))
   .sort((a, b) => b.data.publishedDate.getTime() - a.data.publishedDate.getTime());
 const professionalProjects = allProjects
@@ -33,6 +36,7 @@ const featuredProjectDescriptions: Record<string, string> = {
   "sublime-agents": "Designed an AI agent that writes detection rules, and gives security teams control over its autonomy.",
   "query-language": "Designed a visual query builder that taught a complex query language as customers used it.",
   expansion: "Shaped how a new SKU came to market by extending the platform, not rebuilding it.",
+  "design-studio": "Designed and built the environment where Sublime's product team and their agents prototype together, then open-sourced it.",
 };
 
 const heroHeadline = "Patrick is a designer who builds.";
@@ -41,55 +45,35 @@ const heroIntroDetail = "The through line is my compulsion to turn ideas into us
 const heroCurrentWorkLead = "Right now, I'm designing agentic email security at";
 const heroCurrentWorkTail = "an open-source prototyping environment.";
 
-const newsletterPattern = {
-  type: "isoline",
-  seed: 211,
-  levels: 9,
-  scale: 340,
-  strokeWidth: 0.9,
-  opacity: 66,
-  color: "copper",
-} as const;
-
-const newsletterLightPattern = {
-  ...newsletterPattern,
-  opacity: 76,
-  strokeWidth: 1.05,
-  color: "bronze",
-} as const;
-
-const newsletterMotion = {
-  mode: "ambient",
-  speed: 20,
-  intensity: 28,
-} as const;
+// How to reach Patrick, closing the page. LinkedIn and X use the same brand marks as the sidebar.
+const contactLinks = [
+  { label: "Email", href: `mailto:${siteConfig.social.email}`, external: false, icon: null },
+  {
+    label: "LinkedIn", href: siteConfig.social.linkedin, external: true,
+    icon: `<path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>`,
+  },
+  {
+    label: "X", href: siteConfig.social.x, external: true,
+    icon: `<path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>`,
+  },
+];
 
 const communityCommendations = featuredCommunityCommendations
   .map((name) => commendations.find((commendation) => commendation.name === name))
   .filter((commendation) => Boolean(commendation));
-const homeCommunityPhotos = [
-  {
-    ...communityPhotos[0],
-    className: "rotate-[-2deg]",
-    position: "object-[8%_50%]",
-  },
-  {
-    ...communityPhotos[3],
-    className: "rotate-[2deg]",
-    position: "object-[42%_50%]",
-  },
-] as const;
-
-// Design Studio's public repo, linked from the Open source section header.
-const designStudioRepo = "https://github.com/itspatmorgan/design-studio";
+// All four Community page photos in one row of prints, tilted alternately; the crops are the Community page's own.
+const homeCommunityPhotos = communityPhotos.map((photo, i) => ({
+  ...photo,
+  className: ["rotate-[-2deg]", "rotate-[1.5deg]", "rotate-[-1deg]", "rotate-[2deg]"][i],
+}));
 
 // 1296 less 56 a side leaves 1184 of content, the case studies' widest stage, so the homepage and the work it links to share one measure.
 const homeShell = "mx-auto w-full max-w-[1296px] px-6 sm:px-8 lg:px-14";
 const homeSection = `${homeShell} py-12 sm:py-14 lg:py-16`;
 const homeFirstSection = `${homeShell} pt-5 pb-12 sm:pt-10 sm:pb-14 lg:pt-10 lg:pb-16`;
-const homeSectionHeader = "mb-7 flex items-center justify-between";
+const homeSectionHeader = "mb-6 flex items-baseline justify-between";
 const homeCardGrid = "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6";
-// Featured work runs two wide cards side by side, using the wide thumbnails.
+// Featured work runs two wide cards side by side, using the wide thumbnails, then Design Studio's case study across the full width.
 const homeWorkGrid = "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:gap-6";
 ---
 
@@ -183,7 +167,7 @@ const homeWorkGrid = "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:gap-6";
               aria-hidden="true"
             ></div>
             <div
-              class="builder-readout pointer-events-none absolute bottom-2 left-2 font-mono text-[10px] uppercase tracking-widest text-white/0 transition-colors duration-500 group-aria-pressed/builder:text-white/75"
+              class="builder-readout pointer-events-none absolute bottom-2 left-2 font-mono text-[11px] text-white/0 transition-colors duration-500 group-aria-pressed/builder:text-white/75"
               aria-hidden="true"
             >
               Developing...
@@ -199,8 +183,8 @@ const homeWorkGrid = "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:gap-6";
   {/* ── Work ─────────────────────────────────────────────── */}
   <section class={homeFirstSection}>
     <div class={homeSectionHeader} data-home-section-header>
-      <p class="font-mono text-xs uppercase tracking-widest text-muted-foreground">Work</p>
-      <a href="/work" class="text-xs text-muted-foreground transition-colors hover:text-foreground">View all →</a>
+      <h2 class="text-lg font-semibold tracking-tight sm:text-xl">Work</h2>
+      <a href="/work" class="text-sm text-muted-foreground transition-colors hover:text-foreground">View all →</a>
     </div>
     <div class={homeWorkGrid}>
       {professionalProjects.slice(0, 2).map((project, i) => (
@@ -223,22 +207,16 @@ const homeWorkGrid = "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:gap-6";
         </div>
       ))}
     </div>
-  </section>
-
-  {/* ── Design Studio ────────────────────────────────────── */}
-  <section class={homeSection} aria-labelledby="home-design-studio-title">
-    <div class={homeSectionHeader} data-home-section-header>
-      <p class="font-mono text-xs uppercase tracking-widest text-muted-foreground">Open source</p>
-      <a href={designStudioRepo} target="_blank" rel="noopener noreferrer" class="text-xs text-muted-foreground transition-colors hover:text-foreground">View on GitHub →</a>
+    <div class="mt-5 lg:mt-6">
+      <StudioHomeModule description={featuredProjectDescriptions["design-studio"]} />
     </div>
-    <StudioHomeModule />
   </section>
 
   {/* ── Writing ──────────────────────────────────────────── */}
   <section class={homeSection}>
     <div class={homeSectionHeader} data-home-section-header>
-      <p class="font-mono text-xs uppercase tracking-widest text-muted-foreground">Writing</p>
-      <a href="/writing" class="text-xs text-muted-foreground transition-colors hover:text-foreground">View all →</a>
+      <h2 class="text-lg font-semibold tracking-tight sm:text-xl">Writing</h2>
+      <a href="/writing" class="text-sm text-muted-foreground transition-colors hover:text-foreground">View all →</a>
     </div>
     <div class="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-6">
 
@@ -252,28 +230,26 @@ const homeWorkGrid = "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:gap-6";
           aria-label="Unknown Arts newsletter"
         >
           <article class="h-full overflow-hidden rounded-xl border border-border bg-card transition-all duration-300 group-hover:-translate-y-0.5 group-hover:shadow-md group-hover:shadow-black/5 dark:group-hover:shadow-black/20">
-            <div class="relative h-full min-h-[260px] w-full overflow-hidden bg-card">
-              <GenerativePatternSurface
-                name="unknown-arts-newsletter"
-                config={newsletterPattern}
-                lightConfig={newsletterLightPattern}
-                motion={newsletterMotion}
-                duration={2800}
-                className="absolute inset-0 opacity-95 transition-all duration-300 group-hover:scale-[1.03] group-hover:opacity-100"
-                client:only="react"
+            <div class="newsletter-paper relative h-full min-h-[260px] w-full overflow-hidden bg-card">
+              {/* The newsletter's own cover collage, cut out from its paper and laid on a matching paper for each theme. */}
+              <img
+                src="/images/unknown-arts/collage-cutout.webp"
+                alt=""
+                width="1232"
+                height="928"
+                class="newsletter-collage pointer-events-none absolute max-w-none transition-transform duration-300 group-hover:scale-[1.03]"
               />
-              <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#171716]/92 via-[#171716]/12 to-transparent opacity-0 dark:opacity-100"></div>
-              <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/68 via-background/0 to-transparent dark:hidden"></div>
-              <div class="pointer-events-none absolute bottom-6 left-6 right-6">
-                <div class="mb-3 text-[#b38b6d] dark:text-[#f7ccab]">
-                  <UAMark color="currentColor" height={24} />
-                </div>
-                <p class="text-2xl font-medium leading-none tracking-tight text-foreground dark:text-[#ede9e3]">
+              <div class="pointer-events-none absolute top-6 left-6 text-[#b38b6d] dark:text-[#f7ccab]">
+                <UAMark color="currentColor" height={24} />
+              </div>
+              <div class="newsletter-text pointer-events-none absolute bottom-6 left-6 right-6">
+                <p class="text-2xl font-medium leading-none tracking-tight text-foreground sm:text-[1.75rem] dark:text-[#ede9e3]">
                   Unknown Arts
                 </p>
-                <p class="mt-2 text-sm leading-snug text-muted-foreground dark:text-[#ede9e3]/70">
-                  The newsletter for creative builders in the age of AI. 7,500+ subscribers.
+                <p class="mt-3 text-sm leading-relaxed text-pretty text-muted-foreground dark:text-[#ede9e3]/70">
+                  Essays on how design, craft and building are changing with AI.
                 </p>
+                <p class="mt-2 font-mono text-xs text-muted-foreground/80 dark:text-[#ede9e3]/55">200+ published · 7,700+ readers</p>
               </div>
             </div>
           </article>
@@ -288,7 +264,7 @@ const homeWorkGrid = "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:gap-6";
               href={`/writing/${post.id}`}
               class="group flex items-baseline justify-between gap-4 py-3 text-sm transition-colors hover:text-accent"
             >
-              <span class="font-medium leading-snug">{post.data.title}</span>
+              <span class="font-medium leading-snug">{shortTitle(post.data.title)}</span>
               <span class="shrink-0 font-mono text-xs text-muted-foreground">
                 {post.data.publishedDate.toLocaleDateString("en-US", { month: "short", year: "numeric" })}
               </span>
@@ -300,11 +276,54 @@ const homeWorkGrid = "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:gap-6";
     </div>
   </section>
 
-  {/* ── Lab ──────────────────────────────────────────────── */}
+  {/* ── Community ────────────────────────────────────────── */}
   <section class={homeSection}>
     <div class={homeSectionHeader} data-home-section-header>
-      <p class="font-mono text-xs uppercase tracking-widest text-muted-foreground">Lab</p>
-      <a href="/lab" class="text-xs text-muted-foreground transition-colors hover:text-foreground">View all →</a>
+      <h2 class="text-lg font-semibold tracking-tight sm:text-xl">Community</h2>
+      <a href="/community" class="text-sm text-muted-foreground transition-colors hover:text-foreground">View all →</a>
+    </div>
+    {/* Social proof, shown rather than told: the photos, then what people say. The full story lives on /community. */}
+    <div class="grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-4 lg:gap-6" data-project-card-item>
+      {homeCommunityPhotos.map((photo) => (
+        <figure class:list={[
+          "bg-white p-2 pb-7 shadow-xl shadow-black/15 transition-transform duration-300 hover:rotate-0 hover:scale-[1.02] dark:bg-[#20201e] dark:shadow-black/40",
+          photo.className,
+        ]}>
+          <div class="aspect-[4/3] overflow-hidden bg-muted">
+            <img
+              src={photo.src}
+              alt={photo.alt}
+              loading="lazy"
+              class:list={[
+                "block h-full w-full object-cover",
+                photo.position,
+              ]}
+            />
+          </div>
+        </figure>
+      ))}
+    </div>
+    <div class="mt-12 columns-1 gap-4 sm:columns-2 lg:columns-3">
+      {communityCommendations.map((c) => c && (
+        <blockquote class="mb-4 break-inside-avoid rounded-lg p-5 texture-bg" data-project-card-item>
+          <p class="mb-4 font-mono text-[13px] leading-relaxed text-foreground">{c.quote}</p>
+          <footer class="flex items-center gap-3">
+            <img src={c.image} alt={c.name} class="h-8 w-8 shrink-0 rounded-full object-cover" loading="lazy" />
+            <div>
+              <p class="text-sm font-medium leading-tight">{c.name}</p>
+              <p class="text-xs text-muted-foreground">{c.role}</p>
+            </div>
+          </footer>
+        </blockquote>
+      ))}
+    </div>
+  </section>
+
+  {/* ── Lab: small experiments, kept after the work and the people so the page leads with the work ── */}
+  <section class={`${homeSection} pb-20 sm:pb-24 lg:pb-28`}>
+    <div class={homeSectionHeader} data-home-section-header>
+      <h2 class="text-lg font-semibold tracking-tight sm:text-xl">Lab</h2>
+      <a href="/lab" class="text-sm text-muted-foreground transition-colors hover:text-foreground">View all →</a>
     </div>
     <div class={homeCardGrid}>
       {labEntries.slice(0, 3).map((entry) => (
@@ -321,60 +340,6 @@ const homeWorkGrid = "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:gap-6";
     </div>
   </section>
 
-  {/* ── Community ────────────────────────────────────────── */}
-  <section class={`${homeSection} pb-20 sm:pb-24 lg:pb-28`}>
-    <div class={homeSectionHeader} data-home-section-header>
-      <p class="font-mono text-xs uppercase tracking-widest text-muted-foreground">Community</p>
-      <a href="/community" class="text-xs text-muted-foreground transition-colors hover:text-foreground">View all →</a>
-    </div>
-    <div class="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-6">
-      <div class="flex flex-col justify-center" data-project-card-item>
-        <p class="max-w-md text-xl font-semibold leading-snug tracking-tight">
-          {communityStory.heading}
-        </p>
-        <p class="mt-5 max-w-md text-sm leading-relaxed text-muted-foreground">
-          I stay active in creative communities through Unknown Arts, local gatherings, and showing up for the people making thoughtful work.
-        </p>
-      </div>
-      <div data-project-card-item>
-        <div class="grid grid-cols-2 gap-3 sm:gap-4">
-          {homeCommunityPhotos.map((photo) => (
-            <figure class:list={[
-              "bg-white p-2 pb-7 shadow-xl shadow-black/15 transition-transform duration-300 hover:rotate-0 hover:scale-[1.02] dark:bg-[#20201e] dark:shadow-black/40",
-              photo.className,
-            ]}>
-              <div class="aspect-square overflow-hidden bg-muted">
-                <img
-                  src={photo.src}
-                  alt={photo.alt}
-                  loading="lazy"
-                  class:list={[
-                    "block h-full w-full object-cover",
-                    photo.position,
-                  ]}
-                />
-              </div>
-            </figure>
-          ))}
-        </div>
-      </div>
-    </div>
-    <div class="mt-10 columns-1 gap-4 sm:columns-2 lg:columns-3">
-      {communityCommendations.map((c) => c && (
-        <blockquote class="mb-4 break-inside-avoid rounded-lg p-5 texture-bg" data-project-card-item>
-          <p class="mb-4 font-mono text-[13px] leading-relaxed text-foreground">{c.quote}</p>
-          <footer class="flex items-center gap-3">
-            <img src={c.image} alt={c.name} class="h-8 w-8 shrink-0 rounded-full object-cover" loading="lazy" />
-            <div>
-              <p class="text-sm font-medium leading-tight">{c.name}</p>
-              <p class="text-xs text-muted-foreground">{c.role}</p>
-            </div>
-          </footer>
-        </blockquote>
-      ))}
-    </div>
-  </section>
-
   {/* ── Closing ──────────────────────────────────────────── */}
   <section class={`${homeShell} pb-20 pt-2 text-center sm:pb-24 lg:pb-28`} data-cta-section>
     <PixelWaveText
@@ -384,6 +349,21 @@ const homeWorkGrid = "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:gap-6";
       initialSans
       class="text-3xl font-medium tracking-tight sm:text-4xl"
     />
+    {/* The next step for anyone the page convinced: three equal links, each an icon and a word. */}
+    <div class="mt-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm">
+      {contactLinks.map((link) => (
+        <a
+          href={link.href}
+          {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+          class="inline-flex items-center gap-2 text-muted-foreground transition-colors hover:text-foreground"
+        >
+          {link.icon
+            ? <svg class="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" set:html={link.icon} />
+            : <Icon icon={Mail01Icon} size={16} strokeWidth={1.75} class="shrink-0" />}
+          {link.label}
+        </a>
+      ))}
+    </div>
   </section>
 
   <style>
@@ -547,6 +527,56 @@ const homeWorkGrid = "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:gap-6";
         animation: none;
       }
     }
+
+  /* Newsletter card, composed like an editorial page on the cover's own paper: the mark at the top left, the text at the bottom
+     left, and the collage large on the right, bleeding off the card. Its left edge dissolves into the paper, so no band or
+     gradient sits behind the text. On phones the collage moves up and the text takes the full width below it. */
+  .newsletter-paper {
+    background: var(--card) url("/images/unknown-arts/paper-light.webp") center / cover;
+  }
+  :global(.dark) .newsletter-paper {
+    background-image: url("/images/unknown-arts/paper-dark.webp");
+  }
+  .newsletter-collage {
+    top: -14%;
+    right: -22%;
+    height: 78%;
+    width: auto;
+    transform-origin: right top;
+    mask-image: linear-gradient(180deg, #000 55%, transparent 92%);
+  }
+  @media (min-width: 40rem) {
+    /* Anchored just past the text column, so the collage never runs under the words at any card width; a wide card shows
+       more of it and a narrow one crops its right side. */
+    .newsletter-paper {
+      container-type: inline-size;
+    }
+    .newsletter-collage {
+      top: -17%;
+      right: auto;
+      left: 14rem;
+      height: 134%;
+      transform-origin: left center;
+      mask-image: linear-gradient(90deg, transparent 4%, #000 26%);
+    }
+    .newsletter-text {
+      right: auto;
+      max-width: 16rem;
+    }
+    @container (max-width: 34rem) {
+      .newsletter-collage {
+        top: -8%;
+        left: 14.5rem;
+        height: 116%;
+      }
+      .newsletter-text {
+        max-width: 14.5rem;
+      }
+    }
+  }
+  :global(.dark) .newsletter-collage {
+    filter: brightness(0.92);
+  }
   </style>
 
   <script>
