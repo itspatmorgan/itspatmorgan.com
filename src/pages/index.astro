@@ -9,7 +9,7 @@ import StudioHomeModule from "@/components/design-studio/StudioHomeModule.astro"
 import { UAMark } from "@/lab/editorial-art/UAMark";
 import { siteConfig } from "@/data/site-config";
 import { commendations } from "@/data/commendations";
-import { communityPhotos, communityStory, featuredCommunityCommendations } from "@/data/community";
+import { communityPhotos, featuredCommunityCommendations } from "@/data/community";
 import { getCollection } from "astro:content";
 
 const allProjects = await getCollection("projects", ({ data }) => !data.draft);
@@ -46,18 +46,11 @@ const heroCurrentWorkTail = "an open-source prototyping environment.";
 const communityCommendations = featuredCommunityCommendations
   .map((name) => commendations.find((commendation) => commendation.name === name))
   .filter((commendation) => Boolean(commendation));
-const homeCommunityPhotos = [
-  {
-    ...communityPhotos[0],
-    className: "rotate-[-2deg]",
-    position: "object-[8%_50%]",
-  },
-  {
-    ...communityPhotos[3],
-    className: "rotate-[2deg]",
-    position: "object-[42%_50%]",
-  },
-] as const;
+// All four Community page photos in one row of prints, tilted alternately; the crops are the Community page's own.
+const homeCommunityPhotos = communityPhotos.map((photo, i) => ({
+  ...photo,
+  className: ["rotate-[-2deg]", "rotate-[1.5deg]", "rotate-[-1deg]", "rotate-[2deg]"][i],
+}));
 
 // 1296 less 56 a side leaves 1184 of content, the case studies' widest stage, so the homepage and the work it links to share one measure.
 const homeShell = "mx-auto w-full max-w-[1296px] px-6 sm:px-8 lg:px-14";
@@ -295,39 +288,31 @@ const homeWorkGrid = "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:gap-6";
       <h2 class="text-lg font-semibold tracking-tight sm:text-xl">Community</h2>
       <a href="/community" class="text-sm text-muted-foreground transition-colors hover:text-foreground">View all →</a>
     </div>
-    <div class="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-6">
-      <div class="flex flex-col justify-center" data-project-card-item>
-        <p class="max-w-md text-xl font-semibold leading-snug tracking-tight">
-          {communityStory.heading}
-        </p>
-        <p class="mt-5 max-w-md text-sm leading-relaxed text-muted-foreground">
-          I stay active in creative communities through Unknown Arts, local gatherings, and showing up for the people making thoughtful work.
-        </p>
-      </div>
-      <div data-project-card-item>
-        <div class="grid grid-cols-2 gap-3 sm:gap-4">
-          {homeCommunityPhotos.map((photo) => (
-            <figure class:list={[
-              "bg-white p-2 pb-7 shadow-xl shadow-black/15 transition-transform duration-300 hover:rotate-0 hover:scale-[1.02] dark:bg-[#20201e] dark:shadow-black/40",
-              photo.className,
-            ]}>
-              <div class="aspect-square overflow-hidden bg-muted">
-                <img
-                  src={photo.src}
-                  alt={photo.alt}
-                  loading="lazy"
-                  class:list={[
-                    "block h-full w-full object-cover",
-                    photo.position,
-                  ]}
-                />
-              </div>
-            </figure>
-          ))}
-        </div>
-      </div>
+    {/* Social proof, shown rather than told: one line, the photos, then what people say. The full story lives on /community. */}
+    <p class="-mt-2 mb-8 max-w-2xl text-base text-pretty leading-relaxed text-muted-foreground" data-project-card-item>
+      I host small gatherings for designers and builders in LA, and show up for the people making thoughtful work.
+    </p>
+    <div class="grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-4 lg:gap-6" data-project-card-item>
+      {homeCommunityPhotos.map((photo) => (
+        <figure class:list={[
+          "bg-white p-2 pb-7 shadow-xl shadow-black/15 transition-transform duration-300 hover:rotate-0 hover:scale-[1.02] dark:bg-[#20201e] dark:shadow-black/40",
+          photo.className,
+        ]}>
+          <div class="aspect-[4/3] overflow-hidden bg-muted">
+            <img
+              src={photo.src}
+              alt={photo.alt}
+              loading="lazy"
+              class:list={[
+                "block h-full w-full object-cover",
+                photo.position,
+              ]}
+            />
+          </div>
+        </figure>
+      ))}
     </div>
-    <div class="mt-10 columns-1 gap-4 sm:columns-2 lg:columns-3">
+    <div class="mt-12 columns-1 gap-4 sm:columns-2 lg:columns-3">
       {communityCommendations.map((c) => c && (
         <blockquote class="mb-4 break-inside-avoid rounded-lg p-5 texture-bg" data-project-card-item>
           <p class="mb-4 font-mono text-[13px] leading-relaxed text-foreground">{c.quote}</p>
