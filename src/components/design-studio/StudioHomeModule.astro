@@ -21,11 +21,12 @@ const caseStudy = "/work/design-studio";
       <article class="grid overflow-hidden rounded-xl border border-border bg-card transition-all duration-300 group-hover:-translate-y-0.5 group-hover:shadow-md group-hover:shadow-black/5 dark:group-hover:shadow-black/20 motion-reduce:translate-y-0 motion-reduce:transition-none lg:grid-cols-[1fr_2fr]">
         {/* One block, centered in the column: Design Studio's mark sits right above the case study's title and description (at the
             Work cards' sizes), so the eye lands once and reads across into the visual. The mark is the case study's own
-            (design-studio-mark.svg), drawn in the theme's colors so it reads in light and dark. */}
+            (design-studio-mark.svg), drawn in the theme's colors
+            (a page-colored tile, the glyph in the text color) rather than inverted, so it sits quietly in light and dark. */}
         <div class="order-2 flex flex-col justify-center gap-4 p-4 lg:order-1 lg:p-8">
-          <svg viewBox="0 0 30 30" class="h-7 w-7 text-foreground" aria-hidden="true">
-            <rect width="30" height="30" rx="7" fill="currentColor" />
-            <g transform="translate(8.3 8) scale(.6)" fill="var(--card)">
+          <svg viewBox="0 0 30 30" class="h-8 w-8 text-foreground" aria-hidden="true">
+            <rect x=".5" y=".5" width="29" height="29" rx="7" fill="var(--background)" stroke="var(--border)" />
+            <g transform="translate(8.3 8) scale(.6)" fill="currentColor">
               <path d="M8.914 0H0V24H8.914V0Z" />
               <path d="M11.314 0H13.029C16.211 0 19.264 1.264 21.514 3.515C23.764 5.765 25.029 8.817 25.029 12C25.029 15.183 23.764 18.235 21.514 20.485C19.264 22.736 16.211 24 13.029 24H11.314V0Z" />
             </g>
