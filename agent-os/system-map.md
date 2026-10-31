@@ -19,7 +19,7 @@ for related details. This file owns system orientation, not editing rules.
 | Lab | Hosted experiments, tools, and interaction demos | `src/content/lab/`, `src/pages/lab/`, `src/lab/` |
 | Community | Community narrative, photos, and Kind Words | `src/pages/community.astro`, `src/data/community.ts`, `src/data/commendations.ts` |
 | Deployment | Static build published to Cloudflare Workers, with PR previews | `.github/workflows/deploy.yml`, `.github/workflows/preview.yml`, `wrangler.jsonc` |
-| Work orchestration | Strategy, plans, conventions, learnings, issues, project board, and cross-project tasks | `agent-os/`, GitHub Issues, Personal Website project, Notion Tasks |
+| Work orchestration | Strategy, conventions, learnings, issues, project board, and cross-project tasks | `agent-os/`, GitHub Issues, Personal Website project, Notion Tasks |
 
 ## Public Routes
 

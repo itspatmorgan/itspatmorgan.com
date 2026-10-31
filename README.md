@@ -8,7 +8,7 @@ This repository contains the source for [itspatmorgan.com](https://itspatmorgan.
 
 - [System map](agent-os/system-map.md) explains how the project is structured, how content works, and how to verify changes.
 - [Agent instructions](AGENTS.md) are the shared working guide for Codex, Claude, and other coding agents.
-- [Agent OS](agent-os/README.md) contains strategy, plans, and learnings for AI-assisted work on the project.
+- [Agent OS](agent-os/README.md) contains strategy, conventions, and learnings for AI-assisted work on the project.
 - [Project board](https://github.com/users/itspatmorgan/projects/2) and [issues](https://github.com/itspatmorgan/itspatmorgan.github.io/issues) track planned and active work.
 
 ## Local development
