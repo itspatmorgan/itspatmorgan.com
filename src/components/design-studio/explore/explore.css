@@ -1,0 +1,95 @@
+/* Hero explorations for /design-studio. Shared: the Studio window, then each direction's own parts. */
+.dx-window {
+  position: relative; width: 100%; overflow: hidden; border-radius: 14px; background: var(--card); text-align: left;
+  box-shadow: 0 0 0 1px color-mix(in oklch, var(--foreground) 9%, transparent), 0 24px 48px -24px rgb(0 0 0 / .22), 0 2px 6px rgb(0 0 0 / .04);
+}
+.dark .dx-window { box-shadow: 0 0 0 1px color-mix(in oklch, var(--foreground) 12%, transparent), 0 24px 48px -24px rgb(0 0 0 / .6); }
+.dx-native { position: absolute; left: 0; top: 0; transform-origin: 0 0; }
+.dx-native .sc-os { border-radius: 0; }
+.dx-pane { height: 100%; animation: dx-in 260ms cubic-bezier(.25, .8, .25, 1); }
+@keyframes dx-in { from { opacity: 0; } }
+.ss-lofi-layer.is-instant { transition: none; }
+.dx-os .ss-side li.is-pickable { cursor: pointer; border-radius: 6px; }
+.dx-os .ss-side li.is-pickable:hover:not(.is-on) { background: color-mix(in oklch, var(--os-select) 60%, transparent); }
+/* Echo's corner radius follows the theme. */
+.dx-os .ss-btn, .dx-os .ss-input, .dx-os .ss-table, .dx-os .ss-card, .dx-os .ss-tabs, .dx-os .ss-echo-top b i { border-radius: var(--e-radius, 0); }
+.dx-os .ss-badge { border-radius: calc(var(--e-radius, 0px) * 2); }
+.dx-os .ss-tabs span.is-on { border-radius: calc(var(--e-radius, 0px) * .7); }
+.dx-mono { font-family: 'Geist Mono Variable', ui-monospace, monospace; font-size: 12px; letter-spacing: -.01em; }
+.dx-page { overflow-x: clip; }
+
+/* 1. Dials: the window, with a panel of live controls straddling its lower right corner. */
+.dx-dials { position: relative; }
+.dx-panel {
+  position: absolute; right: -28px; top: 148px; z-index: 2; width: 324px; padding: 6px; border-radius: 16px;
+  background: color-mix(in oklch, var(--background) 82%, transparent); backdrop-filter: blur(16px) saturate(1.4); -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  box-shadow: 0 0 0 1px color-mix(in oklch, var(--foreground) 10%, transparent), 0 16px 40px -12px rgb(0 0 0 / .25);
+  font-size: 13px;
+}
+.dx-panel-head { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px 10px; font-weight: 500; }
+.dx-panel-head .dx-mono { color: var(--muted-foreground); }
+.dx-row { display: grid; grid-template-columns: 64px 1fr 56px; align-items: center; gap: 10px; min-height: 40px; padding: 4px 10px; border-radius: 10px; background: color-mix(in oklch, var(--muted) 70%, transparent); }
+.dx-row + .dx-row { margin-top: 4px; }
+.dx-row.is-stack { grid-template-columns: 1fr; gap: 8px; padding: 10px; }
+.dx-label { color: var(--muted-foreground); }
+.dx-value { text-align: right; color: var(--foreground); }
+.dx-slider { position: relative; height: 24px; cursor: ew-resize; touch-action: none; outline: none; }
+.dx-slider::before { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 4px; margin-top: -2px; border-radius: 4px; background: color-mix(in oklch, var(--foreground) 12%, transparent); }
+.dx-slider i { position: absolute; left: 0; top: 50%; height: 4px; margin-top: -2px; border-radius: 4px; background: var(--foreground); }
+.dx-slider b { position: absolute; top: 50%; width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 50%; background: var(--background); box-shadow: 0 0 0 1px color-mix(in oklch, var(--foreground) 25%, transparent), 0 2px 6px rgb(0 0 0 / .18); transition: transform 120ms; }
+.dx-slider:active b, .dx-slider:focus-visible b { transform: scale(1.15); }
+.dx-slider:focus-visible::before { box-shadow: 0 0 0 3px color-mix(in oklch, var(--ring) 40%, transparent); }
+.dx-swatches { display: flex; gap: 8px; }
+.dx-swatches button { width: 20px; height: 20px; border-radius: 50%; box-shadow: inset 0 0 0 1px rgb(0 0 0 / .1); transition: box-shadow 160ms, transform 160ms; }
+.dx-swatches button.is-on { box-shadow: 0 0 0 2px var(--background), 0 0 0 3.5px var(--foreground); }
+.dx-swatches button:hover { transform: scale(1.08); }
+.dx-seg { display: grid; grid-template-columns: repeat(5, 1fr); padding: 2px; border-radius: 8px; background: color-mix(in oklch, var(--foreground) 6%, transparent); }
+.dx-seg button { height: 28px; border-radius: 6px; font-size: 12px; color: var(--muted-foreground); transition: background 160ms, color 160ms; }
+.dx-seg button.is-on { background: var(--background); color: var(--foreground); box-shadow: 0 1px 2px rgb(0 0 0 / .1); }
+
+/* 2. Prompt: the agent's prompt box, example prompts as chips, and the Studio below. */
+.dx-prompt { display: flex; flex-direction: column; align-items: center; }
+.dx-composer {
+  width: 100%; max-width: 680px; padding: 14px 16px 12px; border-radius: 20px; background: var(--card); text-align: left;
+  box-shadow: 0 0 0 1px color-mix(in oklch, var(--foreground) 10%, transparent), 0 12px 32px -16px rgb(0 0 0 / .2);
+}
+.dx-composer-top { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 14px; font-size: 13px; color: var(--muted-foreground); }
+.dx-composer-into { margin-right: 2px; }
+.dx-agent { display: inline-flex; align-items: center; gap: 6px; color: var(--foreground); }
+.dx-logo { width: 14px; height: 14px; background: currentColor; mask: var(--logo) center / contain no-repeat; -webkit-mask: var(--logo) center / contain no-repeat; }
+.dx-composer-text { min-height: 120px; margin: 12px 0 8px; font-size: 16px; line-height: 24px; overflow-wrap: anywhere; }
+.dx-caret { display: inline-block; width: 2px; height: 18px; margin-left: 2px; vertical-align: -3px; background: var(--foreground); animation: dx-blink 1s steps(2) infinite; }
+@keyframes dx-blink { 50% { opacity: 0; } }
+.dx-composer-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.dx-composer-hint { color: var(--muted-foreground); }
+.dx-send { display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 14px; border-radius: 999px; background: var(--foreground); color: var(--background); font-size: 14px; font-weight: 500; }
+.dx-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; max-width: 760px; margin: 16px 0 48px; }
+.dx-chips button { position: relative; overflow: hidden; height: 32px; padding: 0 12px; border-radius: 999px; font-size: 13px; color: var(--muted-foreground); box-shadow: inset 0 0 0 1px var(--border); transition: color 160ms, background 160ms; }
+.dx-chips button:hover { color: var(--foreground); }
+.dx-chips button.is-on { color: var(--foreground); background: var(--muted); }
+.dx-chip-timer { position: absolute; left: 0; bottom: 0; height: 2px; width: 100%; background: color-mix(in oklch, var(--foreground) 35%, transparent); transform-origin: 0 50%; animation: dx-fill 5200ms linear; }
+@keyframes dx-fill { from { transform: scaleX(0); } }
+.dx-prompt-window { -webkit-mask-image: linear-gradient(to bottom, #000 70%, transparent); mask-image: linear-gradient(to bottom, #000 70%, transparent); }
+
+/* 3. Product: tabs over the product at full size, running off the right edge. */
+.dx-product { text-align: left; }
+.dx-tabs { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
+.dx-tabs button { display: flex; flex-direction: column; gap: 10px; min-width: 112px; padding: 0 0 2px; text-align: left; font-size: 15px; color: var(--muted-foreground); transition: color 160ms; }
+.dx-tabs button:hover, .dx-tabs button.is-on { color: var(--foreground); }
+.dx-tabs i { position: relative; display: block; height: 2px; width: 100%; background: var(--border); overflow: hidden; }
+.dx-tabs button.is-on i { background: color-mix(in oklch, var(--foreground) 18%, transparent); }
+.dx-tabs i b { position: absolute; inset: 0; background: var(--foreground); transform-origin: 0 50%; animation: dx-fill 3600ms linear; }
+.dx-tab-line { margin: 18px 0 24px; min-height: 24px; font-size: 15px; color: var(--muted-foreground); }
+.dx-bleed { margin-right: calc(50% - 50vw); }
+@media (min-width: 1024px) { .dx-product-window { width: 1280px; } }
+
+@media (max-width: 760px) {
+  .dx-dials { padding-bottom: 0; }
+  .dx-panel { position: relative; right: auto; top: auto; width: auto; margin: -56px 10px 0; }
+  .dx-seg button { font-size: 11.5px; }
+  .dx-composer-text { min-height: 0; height: 110px; overflow: hidden; font-size: 15px; line-height: 22px; -webkit-mask-image: linear-gradient(to bottom, #000 70%, transparent); mask-image: linear-gradient(to bottom, #000 70%, transparent); }
+  .dx-chips { flex-wrap: nowrap; justify-content: flex-start; width: calc(100% + 48px); margin: 14px -24px 32px; padding: 0 24px; overflow-x: auto; scrollbar-width: none; }
+  .dx-chips button { flex: none; }
+  .dx-tabs { margin-right: -24px; padding-right: 24px; }
+  .dx-tabs button { min-width: 88px; }
+}

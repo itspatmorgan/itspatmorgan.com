@@ -46,7 +46,7 @@ function Echo({ on, children }: { on: 'overview' | 'inbox'; children: ReactNode 
 }
 
 /** The feedback inbox (FeedbackInboxScreen), unfiltered or showing open issues, optionally with the New feedback panel open. */
-function Inbox({ open = false, panel }: { open?: boolean; panel?: 'new' | 'error' }) {
+export function Inbox({ open = false, panel }: { open?: boolean; panel?: 'new' | 'error' }) {
   const rows = open ? items.filter(f => f.status !== 'resolved') : items;
   return <Echo on="inbox">
     <div className="ss-head">
@@ -124,7 +124,7 @@ function Detail() {
 }
 
 /** The review flow (feedback-flow.mermaid) as the Studio draws it with Mermaid, laid out left to right. */
-function Flow() {
+export function Flow() {
   return <div className="ss-pane ss-flow">
     <svg viewBox="268 0 1012 720" role="presentation">
       <defs><marker id="ss-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0 10 5 0 10z" /></marker></defs>
@@ -158,7 +158,7 @@ const Note = ({ x, y, children }: { x: number; y: number; children: ReactNode })
 const Arrow = ({ x, y, text }: { x: number; y: number; text: string }) => <div className="ss-arrow" style={{ left: x, top: y }}><i /><span>{text}</span></div>;
 
 /** The engineering handoff canvas (eng-handoff.excalidraw), in its own coordinates, at the 46% the Studio opens it at. */
-function Canvas() {
+export function Canvas() {
   return <div className="ss-pane ss-canvas">
     <span className="ss-canvas-menu">{icon(Menu01Icon, 18)}</span>
     <div className="ss-board" style={{ transform: 'translate(28px, 86px) scale(.46)' }}>
@@ -204,9 +204,9 @@ export function Doc() {
 
 export type Key = 'inbox' | 'lofi' | 'flow' | 'handoff' | 'context';
 /** The prototype's section nav (the Studio's artifact tree), States folded, as the prototype opens. */
-export function Nav({ on }: { on: Key }) {
+export function Nav({ on, onPick }: { on: Key; onPick?: (key: Key) => void }) {
   // The pointer aims at the row's empty end (`.ss-aim`), so it never covers the label it clicks.
-  const li = (i: typeof CodeIcon, t: string, key?: Key, child = true) => <li key={t} className={`${child ? 'is-child' : ''} ${key && key === on ? 'is-on' : ''}`}>{icon(i, 15)}{t}{key && <i className="ss-aim" data-target={key} />}</li>;
+  const li = (i: typeof CodeIcon, t: string, key?: Key, child = true) => <li key={t} className={`${child ? 'is-child' : ''} ${key && key === on ? 'is-on' : ''} ${key && onPick ? 'is-pickable' : ''}`} onClick={key && onPick ? () => onPick(key) : undefined}>{icon(i, 15)}{t}{key && <i className="ss-aim" data-target={key} />}</li>;
   const group = (t: string, open = true) => <li className="is-group">{icon(open ? ArrowDown01Icon : ArrowRight01Icon, 14)}{t}</li>;
   return <aside className="sc-side ss-side">
     <h4>Feedback Inbox <span>{icon(MoreHorizontalIcon, 16)}</span></h4>

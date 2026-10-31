@@ -1,0 +1,16 @@
+---
+import ExploreShell from "@/components/design-studio/explore/ExploreShell.astro";
+import PromptHero from "@/components/design-studio/explore/PromptHero";
+---
+
+<ExploreShell variant="prompt" title="Prompt">
+  <header class="dx-hero">
+    <h1>Design with intent.<br class="dx-br" /> Build with an agent.</h1>
+    <p class="dx-line">An open-source prototype sandbox. Paste one prompt into your agent to start.</p>
+    <div class="dx-stage dx-stage-tight"><PromptHero client:load /></div>
+  </header>
+</ExploreShell>
+
+<style>
+  .dx-stage-tight { margin-top: 32px; }
+</style>
