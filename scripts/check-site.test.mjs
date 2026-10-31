@@ -58,3 +58,11 @@ test('skips links into the Design Studio demo only when the build has no demo', 
   mkdirSync(join(dist, 'design-studio-demo/assets'), { recursive: true });
   assert.deepEqual(checkSite(dist).problems, ['/index.html: broken local link /design-studio-demo/']);
 });
+
+test('treats Design Studio demo routes as resolved once the demo is there, but still checks its files', () => {
+  const dist = site({
+    'index.html': `${head()}<a href="/design-studio-demo/prototypes/abc">Prototype</a><img src="/design-studio-demo/assets/gone.png">`,
+    'design-studio-demo/index.html': `${head()}<div id="root"></div>`,
+  });
+  assert.deepEqual(checkSite(dist).problems, ['/index.html: broken local link /design-studio-demo/assets/gone.png']);
+});

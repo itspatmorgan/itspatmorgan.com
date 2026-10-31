@@ -7,7 +7,9 @@
  * Every page needs a title, a description and a share image that exists.
  * Every local link, image, video and stylesheet must resolve to a file in the
  * build. The Design Studio demo is added by CI after the Astro build, so a
- * local build skips links into it.
+ * local build skips links into it. The demo is a single-page app: its routes
+ * (paths without a file extension) load through the root 404 page, so they
+ * only need the demo to be there.
  */
 
 import { existsSync, readFileSync, readdirSync, statSync } from 'fs';
@@ -38,6 +40,7 @@ export function localUrls(html) {
 
 /** Whether a site path resolves to a file in the build, as the Worker serves it. */
 export function resolves(dist, path) {
+  if (path.startsWith(STUDIO_DEMO) && !/\.[a-z0-9]+$/i.test(path)) return existsSync(join(dist, STUDIO_DEMO, 'index.html'));
   const target = join(dist, path);
   if (existsSync(target) && statSync(target).isFile()) return true;
   return existsSync(join(target, 'index.html')) || existsSync(`${target.replace(/\/$/, '')}.html`);
