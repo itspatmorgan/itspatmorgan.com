@@ -34,13 +34,19 @@
 
 .hx-os .ss-side h4 .hx-title { color: var(--os-fg); }
 
-/* How you work: a conversation in your coding agent on the left, the Studio rendering each result on the right. */
-.hx-ask-wrap { margin-top: 56px; }
-.hx-ask { display: grid; grid-template-columns: minmax(0, 360px) minmax(0, 1fr); gap: 20px; align-items: stretch; text-align: left; transition: opacity 400ms; }
-.hx-ask.is-fading .hx-thread, .hx-ask.is-fading .hx-ask-window .ss-panes { opacity: 0; }
-.hx-chat { display: flex; flex-direction: column; min-height: 0; border-radius: 14px; background: var(--card); box-shadow: 0 0 0 1px color-mix(in oklch, var(--foreground) 9%, transparent), 0 24px 48px -24px rgb(0 0 0 / .22); overflow: hidden; }
-.hx-chat-head { display: flex; align-items: center; justify-content: space-between; height: 48px; padding: 0 16px; border-bottom: 1px solid var(--border); font-size: 13px; font-weight: 500; }
-.hx-chat-agents { display: flex; gap: 10px; color: var(--muted-foreground); }
+/* How you work: one coding-agent window. The conversation runs on the left; the agent's own browser on the right shows the Studio
+   running locally, rendering each result. The window keeps one height; the thread scrolls inside it, as in any chat. */
+.hx-ask-wrap { margin-top: 56px; text-align: left; }
+.hx-agent { display: flex; flex-direction: column; height: 600px; border-radius: 14px; background: var(--card); box-shadow: 0 0 0 1px color-mix(in oklch, var(--foreground) 10%, transparent), 0 24px 48px -24px rgb(0 0 0 / .22); overflow: hidden; }
+.dark .hx-agent { box-shadow: 0 0 0 1px color-mix(in oklch, var(--foreground) 12%, transparent), 0 24px 48px -24px rgb(0 0 0 / .6); }
+.hx-agent.is-fading .hx-thread, .hx-agent.is-fading .hx-ask-window .ss-panes { opacity: 0; }
+.hx-agent-bar { display: flex; align-items: center; gap: 14px; flex: none; height: 40px; padding: 0 14px; border-bottom: 1px solid var(--border); font-size: 13px; font-weight: 500; }
+.hx-agent-dots { display: flex; gap: 6px; }
+.hx-agent-dots i { width: 10px; height: 10px; border-radius: 50%; background: color-mix(in oklch, var(--foreground) 14%, transparent); }
+.hx-agent-name { flex: 1; min-width: 0; }
+.hx-chat-agents { display: flex; align-items: center; gap: 10px; color: var(--muted-foreground); }
+.hx-agent-body { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); flex: 1; min-height: 0; }
+.hx-chat { display: flex; flex-direction: column; min-height: 0; border-right: 1px solid var(--border); }
 .hx-thread { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 18px; padding: 18px 16px; overflow-y: auto; scrollbar-width: none; transition: opacity 400ms; }
 .hx-thread::-webkit-scrollbar { display: none; }
 .hx-turn { display: flex; flex-direction: column; gap: 10px; animation: dx-in 300ms cubic-bezier(.25, .8, .25, 1); }
@@ -50,18 +56,25 @@
 .hx-reply code { font: 12px/20px 'Geist Mono Variable', ui-monospace, monospace; color: var(--foreground); overflow-wrap: anywhere; }
 .hx-reply.is-working i { flex: none; width: 12px; height: 12px; margin: 4px 1px 0; border-radius: 50%; border: 1.5px solid color-mix(in oklch, var(--foreground) 20%, transparent); border-top-color: var(--foreground); animation: hx-spin 700ms linear infinite; }
 @keyframes hx-spin { to { transform: rotate(360deg); } }
-.hx-composer { display: flex; align-items: flex-end; gap: 10px; margin: 0 12px 12px; padding: 10px 10px 10px 14px; border-radius: 14px; box-shadow: inset 0 0 0 1px var(--border); background: var(--background); }
-.hx-composer p { flex: 1; min-height: 40px; font-size: 14px; line-height: 20px; }
+.hx-composer { display: flex; align-items: flex-end; gap: 10px; flex: none; margin: 0 12px 12px; padding: 10px 10px 10px 14px; border-radius: 14px; box-shadow: inset 0 0 0 1px var(--border); background: var(--background); }
+.hx-composer p { flex: 1; height: 40px; overflow: hidden; font-size: 14px; line-height: 20px; }
 .hx-composer p.is-empty { color: var(--muted-foreground); }
 .hx-send { display: flex; align-items: center; justify-content: center; flex: none; width: 30px; height: 30px; border-radius: 50%; background: color-mix(in oklch, var(--foreground) 12%, transparent); color: var(--background); transition: background 200ms; }
 .hx-send.is-ready { background: var(--foreground); }
-.hx-ask-stage { position: relative; min-width: 0; }
+.hx-browser { display: flex; flex-direction: column; min-width: 0; min-height: 0; background: var(--background); }
+.hx-browser-bar { display: flex; align-items: center; gap: 12px; flex: none; height: 40px; padding: 0 12px; border-bottom: 1px solid var(--border); color: var(--muted-foreground); }
+.hx-browser-nav { display: flex; gap: 8px; flex: none; }
+.hx-url { flex: 1; min-width: 0; padding: 4px 10px; border-radius: 6px; background: var(--muted); font: 12px/18px 'Geist Mono Variable', ui-monospace, monospace; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hx-browser-view { position: relative; flex: 1; min-height: 0; overflow: hidden; }
+.hx-browser .dx-window { border-radius: 0; box-shadow: none; }
 .hx-ask-window .ss-panes { transition: opacity 400ms; }
 .hx-ask-window.is-empty .ss-panes { opacity: 0; }
-.hx-chat-agents { align-items: center; }
+/* On narrow screens the chat sits above the browser, inside the same window. */
 @media (max-width: 860px) {
-  .hx-ask { grid-template-columns: minmax(0, 1fr); gap: 12px; }
-  .hx-chat { height: 300px; }
+  .hx-agent { height: 640px; }
+  .hx-agent-body { grid-template-columns: minmax(0, 1fr); grid-template-rows: 280px minmax(0, 1fr); }
+  .hx-chat { border-right: 0; border-bottom: 1px solid var(--border); }
+  .hx-browser-nav { display: none; }
 }
 
 /* The Studio windows on this page. A screen fills its pane, so the app's background runs to the bottom edge. The rail's mark sits on
