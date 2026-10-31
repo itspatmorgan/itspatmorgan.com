@@ -1,5 +1,6 @@
 ---
 import PageLayout from "@/layouts/PageLayout.astro";
+import PageHeader from "@/components/layout/PageHeader.astro";
 import ArticleListItem from "@/components/ArticleListItem.astro";
 import { siteConfig } from "@/data/site-config";
 import { getCollection } from "astro:content";
@@ -22,9 +23,9 @@ const filterThemes = [
 
 <PageLayout title="Writing — Patrick Morgan" description="Articles on AI, design, and the creative frontier.">
   {/* Hero */}
-  <section class="mx-auto max-w-3xl px-6 pt-12 pb-16 sm:pt-24 sm:pb-12" data-writing-hero>
-    <h1 class="mb-4 text-4xl font-medium tracking-tight sm:text-5xl">Writing</h1>
-    <p class="max-w-xl text-lg text-muted-foreground">
+  <PageHeader data-writing-hero>
+    <Fragment slot="title">Writing</Fragment>
+    <Fragment slot="lead">
       A sample of articles focused on AI, design, and systems thinking. Subscribe to
       <a
         href={siteConfig.social.newsletter}
@@ -32,7 +33,7 @@ const filterThemes = [
         rel="noopener noreferrer"
         class="text-foreground underline underline-offset-4 transition-colors hover:text-accent"
       >Unknown Arts</a> for my entire catalog of 200+ articles.
-    </p>
+    </Fragment>
     {filterThemes.length > 0 && (
       <div
         class="mt-8 flex flex-wrap gap-2"
@@ -58,7 +59,7 @@ const filterThemes = [
         ))}
       </div>
     )}
-  </section>
+  </PageHeader>
 
   {/* Articles */}
   <section class="mx-auto max-w-3xl px-6 pb-24" data-writing-list>

@@ -1,5 +1,6 @@
 ---
 import PageLayout from "@/layouts/PageLayout.astro";
+import PageHeader from "@/components/layout/PageHeader.astro";
 import ProjectCard from "@/components/ProjectCard.astro";
 import ProjectDemo from "@/components/ProjectDemo.astro";
 import { liveDemoSlugs } from "@/data/project-demos";
@@ -30,10 +31,10 @@ function getRoleProjects(slugs: string[] = []) {
 <PageLayout title="Work — Patrick Morgan" description="13+ years moving between strategy, design, and code.">
 
   {/* Hero */}
-  <section class="mx-auto max-w-3xl px-6 pt-12 pb-12 sm:pt-24" data-resume-hero>
-    <h1 class="mb-3 text-4xl font-medium tracking-tight sm:text-5xl">Work</h1>
-    <p class="max-w-xl text-lg text-muted-foreground">13+ years moving between strategy, design, and code.</p>
-  </section>
+  <PageHeader data-resume-hero>
+    <Fragment slot="title">Work</Fragment>
+    <Fragment slot="lead">13+ years moving between strategy, design, and code.</Fragment>
+  </PageHeader>
 
   {/* Timeline */}
   <section class="mx-auto max-w-3xl px-6" data-resume-intro>

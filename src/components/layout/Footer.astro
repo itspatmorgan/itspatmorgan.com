@@ -1,5 +1,10 @@
+---
+// Matches the page template above it: the showcase shell (1024px of content) or the 720px reading column.
+const { template = "reading" } = Astro.props as { template?: "showcase" | "reading" };
+---
+
 <footer class="py-8 sm:py-10">
-  <div class="mx-auto flex w-full max-w-[1136px] items-center justify-between px-6 sm:px-8 lg:px-14">
+  <div class:list={["mx-auto flex w-full items-center justify-between", template === "showcase" ? "max-w-[1136px] px-6 sm:px-8 lg:px-14" : "max-w-3xl px-6"]}>
     <a
       href="/colophon"
       class="text-xs text-muted-foreground/70 transition-colors hover:text-foreground"

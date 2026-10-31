@@ -1,0 +1,10 @@
+---
+// The reading template's title block: one title size, lead and spacing for every 720px page.
+const { class: className, ...rest } = Astro.props;
+---
+
+<section class:list={["mx-auto max-w-3xl px-6 pt-12 pb-12 sm:pt-24", className]} {...rest}>
+  <h1 class="text-4xl font-medium tracking-tight sm:text-5xl"><slot name="title" /></h1>
+  <p class="mt-4 max-w-2xl text-lg leading-relaxed text-muted-foreground"><slot name="lead" /></p>
+  <slot />
+</section>

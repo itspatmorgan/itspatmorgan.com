@@ -11,9 +11,11 @@ interface Props {
   image?: string;
   canonicalUrl?: string;
   noindex?: boolean;
+  /** showcase: visual pages on the 1024px shell. reading: text pages on the 720px column. */
+  template?: "showcase" | "reading";
 }
 
-const { title, description, image, canonicalUrl, noindex } = Astro.props;
+const { title, description, image, canonicalUrl, noindex, template = "reading" } = Astro.props;
 ---
 
 <BaseLayout title={title} description={description} image={image} canonicalUrl={canonicalUrl} noindex={noindex}>
@@ -30,7 +32,7 @@ const { title, description, image, canonicalUrl, noindex } = Astro.props;
       <main class="flex-1">
         <slot />
       </main>
-      <Footer />
+      <Footer template={template} />
     </div>
   </div>
 </BaseLayout>
