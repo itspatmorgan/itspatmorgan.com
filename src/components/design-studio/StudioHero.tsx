@@ -12,7 +12,7 @@ import './studio-shapes.css';
 import './explore/explore.css';
 import './studio-hero.css';
 
-// The landing page's hero: the open-source Studio's prototype view with the Feedback Inbox sample, worked the way the Studio is
+// The landing page's browse section: the open-source Studio's prototype view with the Feedback Inbox sample, worked the way the Studio is
 // worked. Artifacts open from the sidebar. A screen's menu makes it lo-fi or hi-fi (the file's `/** @lofi */` marker, FileTree's
 // "Make lo-fi"). A document's menu opens its source. A short tour shows each move once, and hands over the moment the visitor touches the window.
 
@@ -44,10 +44,10 @@ const start = { view: 'inbox' as View, lofi: { overview: false, inbox: false, de
 // 820ms of travel and a 140ms press, plus the hold after it).
 const MOVE = 960;
 const chapters = [
-  { label: 'Open any artifact from the sidebar', ms: 1600 },
-  { label: 'Make a screen lo-fi from its menu, and back again', ms: 4 * MOVE + 520 + 2300 + 520 + 1400 },
-  { label: 'Flows, canvases and documents sit beside the screens', ms: 2 * MOVE + 2200 + 2400 },
-  { label: 'Every document is Markdown your agent reads and writes', ms: 4 * MOVE + 1300 + 520 + 2800 + 900 },
+  { label: 'Every artifact your agent makes is listed in the sidebar', ms: 1600 },
+  { label: 'Make a screen lo-fi or hi-fi from its menu', ms: 4 * MOVE + 520 + 2300 + 520 + 1400 },
+  { label: 'Open a flow or the handoff canvas beside the screens', ms: 2 * MOVE + 2200 + 2400 },
+  { label: 'Open a document’s Markdown source to edit it yourself', ms: 4 * MOVE + 1300 + 520 + 2800 + 900 },
 ];
 const yours = 'Your turn: click around';
 

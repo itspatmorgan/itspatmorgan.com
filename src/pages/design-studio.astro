@@ -75,11 +75,11 @@ const communityTools = [
           <span class="ds-harness"><span class="hero-vendor-logo ds-logo" style={"--vendor-logo: url(" + harness.logo + ")"} aria-hidden="true"></span>{harness.title}</span>
         ))}
       </p>
-      <div class="ds-hero-studio"><StudioHero client:load /></div>
+      <div class="ds-hero-studio"><StudioAsk client:load /></div>
     </header>
 
-    <Slide id="ask-title" title="Work in the agent you already use" line="Design Studio runs inside your coding harness. Ask Codex, Claude Code or Cursor for a screen, a flow or a doc, and see it rendered in the Studio.">
-      <StudioAsk client:visible />
+    <Slide id="browse-title" title="Browse everything your agent makes" line="Screens, flows, canvases and documents sit side by side in the Studio. Open any of them, and take the same actions yourself: make a screen lo-fi, or edit a document’s source.">
+      <StudioHero client:visible />
     </Slide>
 
     <section class="cs-slide ds-proof" aria-label="Who uses Design Studio">
@@ -237,6 +237,7 @@ const communityTools = [
   .ds-harness { display: inline-flex; align-items: center; gap: 6px; color: var(--foreground); }
   .ds-works .ds-logo { width: 16px; height: 16px; }
   .ds-hero-studio { margin-top: 56px; }
+  .ds-hero-studio .hx-ask-wrap { margin-top: 0; }
   .ds-try-short { display: none; }
   .ds-proof { padding-top: 128px; }
   .ds-case-link { display: inline-flex; align-items: center; gap: 6px; margin-top: 32px; font-size: 15px; font-weight: 500; text-decoration: underline; text-underline-offset: 4px; text-decoration-color: color-mix(in srgb, currentColor 35%, transparent); }
