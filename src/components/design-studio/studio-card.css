@@ -57,38 +57,52 @@
 .dc-inbox.is-lofi .dc-th { color: var(--dc-gray); background: transparent; }
 .dc-inbox.is-lofi .dc-tabs .is-on { background: transparent; box-shadow: inset 0 0 0 1px var(--dc-sketch); }
 
-/* Diagram. */
-.dc .dc-flow { display: block; width: 256px; margin-top: 22px; overflow: visible; color: var(--dc-weak); }
+/* Each artifact fills the panel about as the prototype does: it starts under the title, runs into the right fade, and reaches the
+   bottom fade, so no artifact reads as smaller than another. */
+
+/* Diagram: the flow at a readable size, centered in the space under its title, with the loop back from "Keep for review". */
+.dc .dc-flow { display: block; width: 320px; margin-top: 26px; overflow: visible; color: var(--dc-weak); }
 .dc-flow rect, .dc-flow > path { fill: var(--dc-subtle); stroke: var(--dc-line); }
 .dc-flow-lines path { fill: none; stroke: currentColor; stroke-width: 1.2; marker-end: url(#dc-arrow); }
-.dc-flow text { font-size: 11px; text-anchor: middle; fill: var(--dc-strong); }
-.dc-flow text.dc-flow-note { font-size: 10px; fill: var(--dc-weak); }
+.dc-flow text { font-size: 12px; text-anchor: middle; fill: var(--dc-strong); }
+.dc-flow text.dc-flow-note { font-size: 10.5px; fill: var(--dc-weak); }
+.dc-flow text.is-start { text-anchor: start; }
 
-/* Canvas: the handoff canvas, screens linked by the click that joins them, a note under each. */
-.dc-canvas .dc-board { display: flex; align-items: flex-start; gap: 8px; margin: 14px -20px 0 -12px; padding: 14px 12px 40px; background: radial-gradient(var(--dc-dot) 1px, transparent 1.2px) 0 0 / 12px 12px; }
-.dc-step { flex: none; width: 100px; }
-.dc-screen { height: 74px; padding: 7px 8px; border-radius: 4px; background: var(--dc-surface); box-shadow: 0 0 0 1px var(--dc-line), 0 1px 2px rgba(0, 0, 0, .04); }
-.dc .dc-screen p { margin-bottom: 6px; font-size: 8.5px; line-height: 10px; font-weight: 600; }
-.dc-screen span { display: block; height: 5px; margin-top: 5px; border-radius: 3px; background: var(--dc-gray-bg); }
-.dc .dc-sticky { width: 84px; margin-top: 10px; padding: 6px 7px; font-size: 9.5px; line-height: 12px; color: var(--dc-sticky-ink); background: var(--dc-sticky); box-shadow: 0 1px 2px rgba(0, 0, 0, .06); }
-.dc-link { flex: none; margin-top: 30px; font-size: 9.5px; line-height: 12px; color: var(--dc-weak); white-space: nowrap; }
+/* Canvas: the handoff canvas, screens linked by the click that joins them, a note under each, running off the panel's edges. */
+.dc-canvas .dc-board { display: flex; align-items: flex-start; gap: 10px; width: max-content; margin: 14px 0 0 -12px; padding: 16px 12px 60px; background: radial-gradient(var(--dc-dot) 1px, transparent 1.2px) 0 0 / 12px 12px; }
+.dc-step { flex: none; width: 124px; }
+.dc-screen { height: 96px; padding: 9px 10px; border-radius: 4px; background: var(--dc-surface); box-shadow: 0 0 0 1px var(--dc-line), 0 1px 2px rgba(0, 0, 0, .04); }
+.dc .dc-screen p { margin-bottom: 7px; font-size: 9.5px; line-height: 11px; font-weight: 600; }
+.dc-screen span { display: block; height: 5px; margin-top: 6px; border-radius: 3px; background: var(--dc-gray-bg); }
+.dc .dc-sticky { width: 100px; margin-top: 10px; padding: 7px 8px; font-size: 10px; line-height: 13px; color: var(--dc-sticky-ink); background: var(--dc-sticky); box-shadow: 0 1px 2px rgba(0, 0, 0, .06); }
+.dc-link { flex: none; margin-top: 42px; font-size: 10px; line-height: 12px; color: var(--dc-weak); white-space: nowrap; }
 .dc-link::after { content: ' →'; }
 
 /* Document. */
 .dc .dc-doc-h { font-size: 17px; line-height: 22px; font-weight: 600; letter-spacing: -.01em; }
-.dc .dc-doc-h2 { margin-top: 16px; font-size: 12px; line-height: 16px; font-weight: 600; }
-.dc .dc-doc-p { margin-top: 4px; max-width: 256px; font-size: 11px; line-height: 16px; color: var(--dc-weak); }
+.dc .dc-doc-h2 { margin-top: 14px; font-size: 12px; line-height: 16px; font-weight: 600; }
+.dc .dc-doc-p { margin-top: 4px; max-width: 300px; font-size: 11px; line-height: 16px; color: var(--dc-weak); }
 .dc .dc-doc-h + .dc-doc-p { margin-top: 6px; }
-.dc-doc-p b { font-weight: 600; color: var(--dc-strong); }
+.dc .dc-doc-list { margin: 4px 0 0; padding: 0; list-style: none; font-size: 11px; line-height: 16px; color: var(--dc-weak); }
+.dc .dc-doc-list li { position: relative; margin-top: 2px; padding-left: 12px; white-space: nowrap; }
+.dc .dc-doc-list li::before { content: ''; position: absolute; left: 2px; top: 7px; width: 3px; height: 3px; border-radius: 50%; background: var(--dc-sketch); }
+.dc-doc b { font-weight: 600; color: var(--dc-strong); }
 
-/* Phones: the same composition at the Work cards' 400 × 225, the artifact drawn a little smaller to keep its proportions. */
-.dc.is-compact .dc-panel { left: 110px; top: 16px; }
-.dc.is-compact .dc-view { zoom: .74; padding-left: 116px; padding-top: 18px; }
-.dc.is-compact .dc-list { left: 18px; top: 32px; width: 164px; padding: 12px 8px 8px; }
-.dc.is-compact .dc-list .pc-title { padding-left: 6px; margin-bottom: 4px; font-size: 12px; line-height: 16px; }
-.dc.is-compact .dc-list ul { --dc-row: 24px; }
-.dc.is-compact .dc-select { border-radius: 5px; }
-.dc.is-compact .dc-list li { gap: 7px; padding: 0 6px; font-size: 11.5px; }
-.dc.is-compact .dc-list li svg { width: 12px; height: 12px; }
+/* Phones, and the Work page's card: the same composition at the Work cards' 400 × 225, the artifact drawn a little smaller to keep its
+   proportions. The Work page's card is drawn at 400 × 225. On phones the wide card's 560 × 315 canvas holds a 400 × 225 frame scaled up to
+   fill it, in CSS, so the right drawing is there from the first paint. The compact rules follow the frame's width. */
+.dc-fit { position: absolute; inset: 0; container: dc-fit / inline-size; }
+@media (max-width: 639px) { .dc:not(.is-card) .dc-fit { right: auto; bottom: auto; width: 400px; height: 225px; transform: scale(1.4); transform-origin: 0 0; } }
+@container dc-fit (max-width: 480px) {
+  .dc .dc-fit .dc-panel { left: 110px; top: 16px; }
+  .dc .dc-fit .dc-view { zoom: .74; padding-left: 116px; padding-top: 18px; }
+  .dc .dc-fit .dc-flow { width: 280px; margin-top: 20px; }
+  .dc .dc-fit .dc-list { left: 18px; top: 32px; width: 164px; padding: 12px 8px 8px; }
+  .dc .dc-fit .dc-list .pc-title { padding-left: 6px; margin-bottom: 4px; font-size: 12px; line-height: 16px; }
+  .dc .dc-fit .dc-list ul { --dc-row: 24px; }
+  .dc .dc-fit .dc-select { border-radius: 5px; }
+  .dc .dc-fit .dc-list li { gap: 7px; padding: 0 6px; font-size: 11.5px; }
+  .dc .dc-fit .dc-list li svg { width: 12px; height: 12px; }
+}
 
 @media (prefers-reduced-motion: reduce) { .dc-list li, .dc-select, .dc-layer, .dc-layer.is-on { transition: none; } }

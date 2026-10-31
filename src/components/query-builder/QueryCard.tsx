@@ -5,8 +5,9 @@ import { EntityPill, SourceIcon } from './NativeUI';
 
 // The project card: every control maps to a piece of the language. Behind, the query in the visual builder; in front, the same query as
 // J1QL, over the builder's top edge and aligned with the controls. Each part of the code lights with the control it became, one pair at a
-// time, all four flash together, and it rests clean. Highlights switch instantly, so a pair never overlaps the one before it. The query,
-// controls and colors are the hero demo's (QueryBuilderDemo); the layout follows the card system in ProjectCardStage.
+// time, all four light together, and it rests clean. Each highlight fades out just before the next fades in, so the light passes from
+// pair to pair without a blink and two pairs are never lit at once. The query, controls and colors are the hero demo's
+// (QueryBuilderDemo); the layout follows the card system in ProjectCardStage.
 const timings = [600, 750, 750, 750, 750, 650, 2000];
 
 /** One query, as code and as controls, matched part by part. */
