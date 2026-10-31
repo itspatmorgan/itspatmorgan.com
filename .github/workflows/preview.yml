@@ -33,8 +33,18 @@ jobs:
           WRANGLER_OUTPUT_FILE_PATH: ${{ runner.temp }}/wrangler-output.json
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
-          pnpm exec wrangler versions upload --preview-alias "pr-$PR_NUMBER" \
-            --message "PR #$PR_NUMBER ${GITHUB_SHA::7}" | tee "$RUNNER_TEMP/wrangler.log"
+          set -o pipefail
+          upload() {
+            pnpm exec wrangler versions upload --preview-alias "pr-$PR_NUMBER" \
+              --message "PR #$PR_NUMBER ${GITHUB_SHA::7}" 2>&1 | tee "$RUNNER_TEMP/wrangler.log"
+          }
+          if ! upload; then
+            # Versions need an existing Worker. Create it once on workers.dev;
+            # the custom domain is attached separately, so visitors are unaffected.
+            grep -q "does not yet exist" "$RUNNER_TEMP/wrangler.log" || exit 1
+            pnpm exec wrangler deploy
+            upload
+          fi
           alias_url=$(jq -r 'select(.type == "version-upload") | .preview_alias_url // empty' "$WRANGLER_OUTPUT_FILE_PATH" | tail -n 1)
           version_url=$(jq -r 'select(.type == "version-upload") | .preview_url // empty' "$WRANGLER_OUTPUT_FILE_PATH" | tail -n 1)
           [ -n "$alias_url" ] || alias_url=$(grep -o "https://pr-$PR_NUMBER-[^ ]*workers\.dev" "$RUNNER_TEMP/wrangler.log" | tail -n 1)
