@@ -19,7 +19,7 @@
 
 - `BaseLayout.astro`
 - `PageLayout.astro`
-- `ProjectLayout.astro`
+- `CaseStudyLayout.astro`
 - `WritingLayout.astro`
 
 ## Related Files

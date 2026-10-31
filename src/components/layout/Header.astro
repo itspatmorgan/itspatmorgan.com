@@ -50,12 +50,12 @@ import { Moon02Icon, Sun03Icon, Menu01Icon } from "@hugeicons/core-free-icons";
     if (themeToggle.dataset.themeInitialized === "true") return;
     themeToggle.dataset.themeInitialized = "true";
 
-    function updateThemeLabel() {
+    const updateThemeLabel = () => {
       const isDark = document.documentElement.classList.contains("dark");
       const next = isDark ? "light" : "dark";
       themeToggle.setAttribute("aria-label", `Switch to ${next} mode`);
       themeToggle.setAttribute("title", `Switch to ${next} mode`);
-    }
+    };
 
     updateThemeLabel();
 

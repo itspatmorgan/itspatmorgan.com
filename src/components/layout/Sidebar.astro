@@ -535,21 +535,21 @@ const elsewhere = [
     if (themeToggle.dataset.themeInitialized === "true") return;
     themeToggle.dataset.themeInitialized = "true";
 
-    function updateTime() {
+    const updateTime = () => {
       time.textContent = new Date().toLocaleTimeString("en-US", {
         timeZone: "America/Los_Angeles",
         hour: "numeric",
         minute: "2-digit",
         hour12: true,
       });
-    }
+    };
 
-    function updateThemeLabel() {
+    const updateThemeLabel = () => {
       const isDark = document.documentElement.classList.contains("dark");
       const next = isDark ? "light" : "dark";
       themeToggle.setAttribute("aria-label", `Switch to ${next} mode`);
       themeToggle.setAttribute("title", `Switch to ${next} mode`);
-    }
+    };
 
     updateTime();
     updateThemeLabel();

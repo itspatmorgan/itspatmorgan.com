@@ -4,26 +4,19 @@ import { ArrowLeft01Icon } from "@hugeicons/core-free-icons";
 import PageLayout from "./PageLayout.astro";
 import { Badge } from "@/components/ui/badge";
 import { LiveEditorialVisual } from "@/lab/editorial-art/LiveEditorialVisual";
+import type { CollectionEntry } from "astro:content";
 
 interface Props {
   title: string;
   description: string;
   publishedDate: Date;
   theme?: string;
-  visual?: {
-    theme?: string;
-    background?: string;
-    generator: Record<string, unknown> & { type: string; seed: number };
-    lightMode?: { color: string; opacity: number; strokeWidth?: number };
-    texture?: number;
-    grain?: number;
-  };
+  visual?: CollectionEntry<"writing">["data"]["visual"];
   image?: string;
   canonicalUrl?: string;
 }
 
 const { title, description, publishedDate, theme, visual, image, canonicalUrl } = Astro.props;
-const isGeneratedEditorialImage = image?.includes("/feature.");
 
 function generatorLabel(type: string): string {
   return type.split("-").map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");

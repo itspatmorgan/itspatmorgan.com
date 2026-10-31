@@ -1,5 +1,5 @@
 name: Build site
-description: Build the Astro website and include the latest passing Design Studio demo in dist/.
+description: Build the Astro website, include the latest passing Design Studio demo in dist/, and check the output for broken links and missing page metadata.
 
 runs:
   using: composite
@@ -13,10 +13,9 @@ runs:
         cache: pnpm
     - shell: bash
       run: pnpm install --frozen-lockfile
+    # Production deploys don't wait on the checks workflow, so they audit here too.
     - shell: bash
       run: pnpm audit --audit-level=high
-    - shell: bash
-      run: node --test scripts/studio-deployment.test.mjs
     - shell: bash
       run: pnpm build
 
@@ -53,3 +52,6 @@ runs:
     - name: Include the demo in the website output
       shell: bash
       run: node scripts/include-studio-demo.mjs studio-source/dist
+    - name: Check links and page metadata
+      shell: bash
+      run: pnpm check:site

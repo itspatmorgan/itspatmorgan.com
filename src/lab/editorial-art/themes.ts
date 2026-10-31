@@ -1,6 +1,7 @@
 export type ThemeId = 'ai' | 'design' | 'systems' | 'creative' | 'career';
 export type Composition = 'centered' | 'left' | 'offset';
-export type LayerColor = 'copper' | 'light' | 'dark' | 'muted' | 'sage' | 'bronze';
+export const LAYER_COLORS = ['copper', 'light', 'dark', 'muted', 'sage', 'bronze'] as const;
+export type LayerColor = (typeof LAYER_COLORS)[number];
 export type TextFont = 'sans' | 'mono' | 'pixel';
 export type MotionMode = 'static' | 'reveal' | 'ambient';
 

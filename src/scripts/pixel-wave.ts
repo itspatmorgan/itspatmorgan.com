@@ -27,8 +27,8 @@ export function dissolvePixelWave(container: HTMLElement, lineIndex = 0) {
     sans.style.opacity = reducedMotion ? "1" : "0";
     if (reducedMotion) return;
     const delay = 0.15 + lineIndex * 0.2 + i * 0.025;
-    animate(pixel, { opacity: [1, 0] }, { duration: 0.35, delay, easing: "ease-in-out" });
-    animate(sans, { opacity: [0, 1] }, { duration: 0.35, delay, easing: "ease-in-out" });
+    animate(pixel, { opacity: [1, 0] }, { duration: 0.35, delay });
+    animate(sans, { opacity: [0, 1] }, { duration: 0.35, delay });
   });
   if (!reducedMotion) {
     setTimeout(() => { if (container.isConnected) enablePixelHover(container); }, 1500);
@@ -68,8 +68,8 @@ export function pixelWave(container: HTMLElement, delay: number) {
         if (flips >= flipCount) {
           clearInterval(interval);
           pixel.textContent = originalChar;
-          animate(pixel, { opacity: [1, 0] }, { duration: 0.3, easing: "ease-in-out" });
-          animate(sans, { opacity: [0, 1] }, { duration: 0.3, easing: "ease-in-out" });
+          animate(pixel, { opacity: [1, 0] }, { duration: 0.3 });
+          animate(sans, { opacity: [0, 1] }, { duration: 0.3 });
         }
       }, flipSpeed);
     }, resolveDelay);

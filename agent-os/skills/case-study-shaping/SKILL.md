@@ -324,12 +324,11 @@ The repo has no deploy previews, so Patrick reviews a published preview:
 On Patrick's go-ahead:
 
 1. Move the page onto the live slug and remove `noindex` and draft comments.
-2. Exclude that slug from `src/pages/work/[...slug].astro`.
-3. Update the homepage card summary in `featuredProjectDescriptions`
+2. Update the homepage card summary in `featuredProjectDescriptions`
    (`src/pages/index.astro`), which is separate from the entry description.
-4. Give the project card a live visual instead of a thumbnail, with the
+3. Give the project card a live visual instead of a thumbnail, with the
    `project-card-visuals` skill. It doesn't need to match the case study's hero.
-5. Build, open a PR, merge on his say-so, and confirm the deploy and live page.
+4. Build, open a PR, merge on his say-so, and confirm the deploy and live page.
 
 ### 10. Clean up
 
