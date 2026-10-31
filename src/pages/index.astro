@@ -232,15 +232,16 @@ const homeWorkGrid = "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:gap-6";
                 class="newsletter-collage pointer-events-none absolute max-w-none transition-transform duration-300 group-hover:scale-[1.03]"
               />
               <div class="newsletter-fade pointer-events-none absolute inset-0"></div>
-              <div class="pointer-events-none absolute bottom-6 left-6 right-6 sm:right-auto sm:max-w-[46%]">
+              <div class="pointer-events-none absolute bottom-6 left-6 right-6 sm:right-auto sm:max-w-[46%] lg:max-w-[44%]">
                 <div class="mb-3 text-[#b38b6d] dark:text-[#f7ccab]">
                   <UAMark color="currentColor" height={24} />
                 </div>
                 <p class="text-2xl font-medium leading-none tracking-tight text-foreground dark:text-[#ede9e3]">
                   Unknown Arts
                 </p>
-                <p class="mt-2 text-sm leading-relaxed text-muted-foreground dark:text-[#ede9e3]/70">
-                  Essays on how design, craft and building are changing with AI. 200+ published, 7,700+ readers.
+                <p class="mt-2 text-sm leading-relaxed text-balance text-muted-foreground dark:text-[#ede9e3]/70">
+                  Essays on how design, craft and building are changing with AI.
+                  <span class="block">200+ published, 7,700+ readers.</span>
                 </p>
               </div>
             </div>
@@ -529,15 +530,16 @@ const homeWorkGrid = "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:gap-6";
     background: linear-gradient(0deg, var(--card) 0%, color-mix(in oklab, var(--card) 85%, transparent) 38%, transparent 70%);
   }
   @media (min-width: 40rem) {
+    /* Sized by the card's width, so the collage always keeps to the right half whatever the card's size. */
     .newsletter-collage {
-      top: -10%;
-      right: -12%;
-      height: 124%;
+      top: 50%;
+      right: -10%;
+      width: 60%;
+      height: auto;
+      translate: 0 -50%;
     }
     .newsletter-fade {
-      background:
-        linear-gradient(90deg, var(--card) 0%, color-mix(in oklab, var(--card) 70%, transparent) 38%, transparent 60%),
-        linear-gradient(0deg, color-mix(in oklab, var(--card) 80%, transparent) 0%, transparent 45%);
+      background: linear-gradient(90deg, var(--card) 0%, var(--card) 42%, color-mix(in oklab, var(--card) 60%, transparent) 52%, transparent 64%);
     }
   }
   :global(.dark) .newsletter-collage {
