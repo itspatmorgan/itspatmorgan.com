@@ -8,7 +8,6 @@ import { Canvas, Detail, Doc, Flow, Inbox, Overview } from './StudioShapes';
 import { Editor } from './StudioDocs';
 import StepBar from './StepBar';
 import { usePhone } from '../case-study/scene';
-import { PHONE_ZOOM } from '../case-study/NativeStage';
 import { H, W, themeStyle, useDark, useFit, useReduced } from './explore/StudioWindow';
 import './studio-shapes.css';
 import './explore/explore.css';
@@ -41,10 +40,13 @@ const rows: Row[] = [
 ];
 
 // Phones: a square frame (every phone visual on this page is square), with the window drawn as tall as its artifact pane is wide so
-// the pane is square too, and a camera with two places. The pane shows the whole artifact, at the scale that fits the pane to the frame. The sidebar is a PHONE_ZOOM closer look at the rail, the artifact list and its menus, held while the
-// pointer works there; it rises only as far as a low row's menu needs. The window is never laid out again for a phone.
+// the pane is square too, and a camera with two places. The pane shows the whole artifact, at the scale that fits the pane to the frame. The sidebar is a closer look at the rail, the artifact list and its menus, held while the
+// pointer works there. The camera holds one view per chapter: it moves in to the sidebar as a chapter starts, and pulls back once,
+// slowly, to the whole artifact for its payoff. The window is never laid out again for a phone.
 const PANE_X = 269, PANE_W = W - PANE_X, PHONE_H = PANE_W;
 type Cam = { at: 'pane' } | { at: 'list'; y: number };
+// A gentler closer look than the case studies' zoom, so the sidebar view keeps a strip of the artifact beside it.
+const LIST_ZOOM = 1.35, CAM_MS = 1200;
 
 const start = { view: 'inbox' as View, lofi: { overview: false, inbox: false, detail: false, lofi: true } as Record<Screen, boolean>, source: false };
 
@@ -58,6 +60,8 @@ const chapters = [
   { label: 'Open a document’s Markdown source to edit it yourself', ms: 4 * MOVE + 1300 + 520 + 2800 + 900 },
 ];
 const yours = 'Your turn: click around';
+// On phones the third and fourth chapters also wait for the camera to move in to the sidebar.
+const phoneChapters = chapters.map((c, i) => i >= 2 ? { ...c, ms: c.ms + 1200 } : c);
 
 function screenOf(view: Screen) {
   return view === 'overview' ? <Overview /> : view === 'detail' ? <Detail /> : <Inbox />;
@@ -74,6 +78,8 @@ export default function StudioHero() {
   const { ref: box, s, x, ready, width } = useFit(0.62, 1, 'start', W, 1024);
   const phone = usePhone();
   const [cam, setCam] = useState<Cam>({ at: 'pane' });
+  const phoneRef = useRef(phone);
+  phoneRef.current = phone;
   const dark = useDark();
   const reduced = useReduced();
   const os = useRef<HTMLDivElement>(null);
@@ -115,34 +121,36 @@ export default function StudioHero() {
     const id = ++run.current;
     const alive = () => run.current === id;
     const wait = (ms: number) => new Promise<void>(done => window.setTimeout(done, ms));
-    const go = async (hx: string, aim: 'end' | 'start' | 'center', act: () => void, hold: number) => {
+    // Phones: a chapter that starts on the whole artifact moves in to the sidebar first, and waits for the camera to arrive.
+    const settle = async () => { if (!phoneRef.current) return alive(); setCam({ at: 'list', y: 0 }); await wait(CAM_MS); return alive(); };
+    const go = async (hx: string, aim: 'end' | 'start' | 'center', act: () => void, hold: number, pull = false) => {
       const at = place(hx, aim);
       if (!alive() || !at) return false;
-      // Phones: the closer look at the sidebar, low enough to show this row and a menu under it.
-      const listH = PHONE_H / PHONE_ZOOM;
-      setCam({ at: 'list', y: Math.max(0, Math.min(PHONE_H - listH, at.top + at.height + 64 - listH)) });
       setPointer(p => ({ ...p, x: at.x, y: at.y, shown: true }));
       await wait(820); if (!alive()) return false;
       setPointer(p => ({ ...p, pressing: true })); await wait(140); if (!alive()) return false;
       setPointer(p => ({ ...p, pressing: false })); act();
-      // A long hold is the result: phones pull back to the whole artifact to see it.
-      if (hold >= 1000) setCam({ at: 'pane' });
+      // A chapter's payoff: phones pull back once to the whole artifact to see it.
+      if (pull) setCam({ at: 'pane' });
       await wait(hold); return alive();
     };
     const steps: (() => Promise<boolean>)[] = [
-      async () => { setCam({ at: 'list', y: 0 }); await wait(chapters[0].ms); setCam({ at: 'pane' }); return alive(); },
+      async () => { await wait(chapters[0].ms); return alive(); },
       async () => await go('more-inbox', 'center', () => openMenu({ kind: 'screen', view: 'inbox' }, 'row-inbox'), 520)
         && await go('menu-lofi', 'start', () => toggleLofi('inbox'), 2300)
         && await go('more-inbox', 'center', () => openMenu({ kind: 'screen', view: 'inbox' }, 'row-inbox'), 520)
-        && await go('menu-lofi', 'start', () => toggleLofi('inbox'), 1400),
-      async () => await go('row-flow', 'end', () => open('flow'), 2200)
-        && await go('row-handoff', 'end', () => open('handoff'), 2400),
-      async () => await go('row-context', 'end', () => open('context'), 1300)
+        && await go('menu-lofi', 'start', () => toggleLofi('inbox'), 1400, true),
+      async () => await settle()
+        && await go('row-flow', 'end', () => open('flow'), 2200)
+        && await go('row-handoff', 'end', () => open('handoff'), 2400, true),
+      async () => await settle()
+        && await go('row-context', 'end', () => open('context'), 1300)
         && await go('more-context', 'center', () => openMenu({ kind: 'doc' }, 'row-context'), 520)
-        && await go('menu-source', 'start', () => { setSource(true); setMenu(null); }, 2800)
+        && await go('menu-source', 'start', () => { setSource(true); setMenu(null); }, 2800, true)
         && await go('row-inbox', 'end', () => open('inbox'), 900),
     ];
     setView(start.view); setLofi(start.lofi); setSource(false); setMenu(null);
+    setCam(from <= 1 ? { at: 'list', y: 0 } : { at: 'pane' });
     setTouring(true); setDone(false); setHanded(false);
     for (let i = from; i < steps.length; i++) {
       setChapter(i); setCut(n => n + 1);
@@ -184,7 +192,7 @@ export default function StudioHero() {
     </div>;
 
   // Phones: the camera's scale and offset, in the window's own pixels.
-  const k = cam.at === 'pane' ? width / PANE_W : width * PHONE_ZOOM / PANE_W;
+  const k = cam.at === 'pane' ? width / PANE_W : width * LIST_ZOOM / PANE_W;
   const camT = cam.at === 'pane' ? `scale(${k}) translate(${-PANE_X}px, 0px)` : `scale(${k}) translate(0px, ${-cam.y}px)`;
   return <div className={`hx ${phone ? 'is-phone' : ''}`}>
     <div ref={box} className={`dx-window hx-window ${ready ? 'is-fit' : ''}`} style={ready ? { height: phone ? width : H * s } : undefined} onPointerDownCapture={takeOver}>
@@ -219,7 +227,7 @@ export default function StudioHero() {
         </div>
       </div>
     </div>
-    <StepBar title="the Studio tour" caption={done || handed ? yours : chapters[chapter].label} steps={chapters} current={chapter} done={done}
+    <StepBar title="the Studio tour" caption={done || handed ? yours : chapters[chapter].label} steps={phone ? phoneChapters : chapters} current={chapter} done={done}
       playing={touring} cut={cut} reduced={reduced} onJump={jump} onToggle={toggle} />
   </div>;
 }
