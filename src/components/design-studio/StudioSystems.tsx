@@ -46,8 +46,8 @@ const mobile = {
 
 /** A wire from under a system to the top of a prototype that builds with it. */
 function wire(s: Box, b: Box, cardH: number) {
-  const from = s.x + s.w / 2, to = b.x + b.w / 2, top = s.y + cardH, mid = (top + b.y) / 2;
-  return `M${from} ${top} C ${from} ${mid + 4}, ${to} ${mid}, ${to} ${b.y - 6}`;
+  const from = s.x + s.w / 2, to = b.x + b.w / 2, top = s.y + cardH;
+  return `M${from} ${top} C ${from} ${top + 44}, ${to} ${top + 40}, ${to} ${b.y - 6}`;
 }
 
 /** A launch page in the Marketing system's tokens, at the Studio's native prototype size. */
