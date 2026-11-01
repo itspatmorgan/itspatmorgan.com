@@ -197,6 +197,13 @@
 .sy-proto figcaption { display: flex; justify-content: space-between; gap: 8px; margin-top: 12px; font-size: 15px; line-height: 22px; }
 .sy-proto figcaption b { font-weight: 600; }
 .sy-proto figcaption span { color: var(--sc-ink-weak); }
+/* Phones: the two-column drawing. Narrower cards take smaller swatches, and a caption's system goes under the prototype's name. */
+.sy-dia.is-phone .sy-system { padding: 18px; }
+.sy-dia.is-phone .sy-tokens { gap: 6px; margin-top: 14px; }
+.sy-dia.is-phone .sy-tokens i { width: 20px; height: 20px; }
+.sy-dia.is-phone .sy-btn { padding: 3px 10px; }
+.sy-dia.is-phone .sc-node p.sy-note { margin-top: 12px; }
+.sy-dia.is-phone .sy-proto figcaption { flex-direction: column; gap: 0; margin-top: 8px; }
 
 /* The Marketing system's launch page: warm paper, near-black brand, 8px corners, large type. */
 .ss-mk { padding: 0 72px; }

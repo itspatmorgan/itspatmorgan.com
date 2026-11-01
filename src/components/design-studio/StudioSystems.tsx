@@ -17,21 +17,42 @@ const captions = [
   'One brand, two systems for two jobs, and none of them conflict',
 ];
 
-// On a phone the drawing keeps its layout and shows a 720-wide window of it, at full height, so the type stays readable: both
-// systems first, then each system with the prototypes it builds, then both again.
-const PHONE_W = 720;
-const phoneX = [120, 0, 240, 120];
-
-const TW = 272, TH = 170, SCALE = TW / 1120, TOP = 316;
-const protos: { x: number; title: string; system: 'product' | 'marketing'; screen: 'inbox' | 'overview' | 'launch' }[] = [
-  { x: 40, title: 'Feedback inbox', system: 'product', screen: 'inbox' },
-  { x: 344, title: 'Overview', system: 'product', screen: 'overview' },
-  { x: 648, title: 'Launch page', system: 'marketing', screen: 'launch' },
+const TW = 272, TH = 170, TOP = 316;
+type Proto = { title: string; system: 'product' | 'marketing'; screen: 'inbox' | 'overview' | 'launch' };
+type Box = { x: number; y: number; w: number };
+const protos: Proto[] = [
+  { title: 'Feedback inbox', system: 'product', screen: 'inbox' },
+  { title: 'Overview', system: 'product', screen: 'overview' },
+  { title: 'Launch page', system: 'marketing', screen: 'launch' },
 ];
 const systems = {
-  product: { x: 148, w: 300, name: 'Product', path: 'src/systems/product', theme: 'green' as Theme, radius: 0, note: 'Echo green, dense UI, square corners' },
-  marketing: { x: 512, w: 300, name: 'Marketing', path: 'src/systems/marketing', theme: 'echo-marketing' as Theme, radius: 12, note: 'Echo green, warm paper, round corners' },
+  product: { name: 'Product', path: 'src/systems/product', theme: 'green' as Theme, radius: 0, note: 'Echo green, dense UI, square corners' },
+  marketing: { name: 'Marketing', path: 'src/systems/marketing', theme: 'echo-marketing' as Theme, radius: 12, note: 'Echo green, warm paper, round corners' },
 };
+// Desktop: both systems in a row over the three prototypes, wired across. Phones: the same drawing in two columns, each system over
+// the prototypes that build with it, so every name keeps its size and the wires run straight down.
+const desk = {
+  w: 960, h: 570, thumb: TW, cardH: 186,
+  systems: { product: { x: 148, y: 40, w: 300 }, marketing: { x: 512, y: 40, w: 300 } } as Record<'product' | 'marketing', Box>,
+  protos: [{ x: 40, y: TOP, w: TW }, { x: 344, y: TOP, w: TW }, { x: 648, y: TOP, w: TW }] as Box[],
+};
+const PW = 212;
+const mobile = {
+  w: 496, h: 704, thumb: PW, cardH: 176,
+  systems: { product: { x: 32, y: 12, w: PW }, marketing: { x: 280, y: 12, w: PW } } as Record<'product' | 'marketing', Box>,
+  protos: [{ x: 32, y: 248, w: PW }, { x: 32, y: 476, w: PW }, { x: 280, y: 248, w: PW }] as Box[],
+};
+
+// A wire from a system to a prototype. Desktop: a curve from under the system to the top of the prototype. Phones: a bracket down
+// the column's left gutter, out of the system's side and into the prototype's, so a wire never runs behind another prototype.
+function wire(phone: boolean, s: Box, b: Box, cardH: number) {
+  if (!phone) {
+    const from = s.x + s.w / 2, to = b.x + b.w / 2, top = s.y + cardH, mid = (top + b.y) / 2;
+    return `M${from} ${top} C ${from} ${mid + 4}, ${to} ${mid}, ${to} ${b.y - 6}`;
+  }
+  const spine = s.x - 16, y0 = s.y + cardH / 2, y1 = b.y + PW * TH / TW / 2, r = 8;
+  return `M${s.x - 2} ${y0} H${spine + r} Q${spine} ${y0} ${spine} ${y0 + r} V${y1 - r} Q${spine} ${y1} ${spine + r} ${y1} H${b.x - 6}`;
+}
 
 /** A launch page in the Marketing system's tokens, at the Studio's native prototype size. */
 function Launch() {
@@ -46,9 +67,9 @@ function Launch() {
   </div>;
 }
 
-function Thumb({ screen, theme, dark }: { screen: 'inbox' | 'overview' | 'launch'; theme: Theme; dark: boolean }) {
-  return <div className="sy-thumb" style={{ width: TW, height: TH }}>
-    <div className="sc-os ss-os dx-os" style={{ ...themeStyle(theme, dark), width: 1120, height: 700, transform: `scale(${SCALE})`, transformOrigin: '0 0' }}>
+function Thumb({ screen, theme, dark, w }: { screen: 'inbox' | 'overview' | 'launch'; theme: Theme; dark: boolean; w: number }) {
+  return <div className="sy-thumb" style={{ width: w, height: w * TH / TW }}>
+    <div className="sc-os ss-os dx-os" style={{ ...themeStyle(theme, dark), width: 1120, height: 700, transform: `scale(${w / 1120})`, transformOrigin: '0 0' }}>
       <div className="ss-panes"><div className="ss-pane"><div className="ss-app">{screen === 'inbox' ? <Inbox /> : screen === 'overview' ? <Overview /> : <Launch />}</div></div></div>
     </div>
   </div>;
@@ -60,17 +81,17 @@ export default function StudioSystems() {
   const step = scene.step;
   const dark = useDark();
   const phone = usePhone();
+  const L = phone ? mobile : desk;
   const lit = (s: 'product' | 'marketing') => step === 0 || step === 3 || (s === 'product' ? step === 1 : step === 2);
   const wired = (s: 'product' | 'marketing') => step === 3 || (s === 'product' ? step === 1 : step === 2);
   return <DemoFrame scene={scene} caption={false} stage="sc-plain" title="how systems and prototypes fit together"
     label="Two design systems in Design Studio, Product and Marketing, each in its own folder with its own theme, components and rules. The feedback inbox and overview prototypes build with the Product system; the launch page builds with the Marketing system. Both systems sit side by side without conflicting">
     <div className="cs-demo">
-      <NativeStage width={960} height={570} crop={phone ? { x: scene.reduced ? 120 : phoneX[step] ?? 120, y: 0, width: PHONE_W, height: 570 } : undefined}>
-        <div className="sc-dia sy-dia">
-          <svg className="sc-line" viewBox="0 0 960 570" aria-hidden="true">
-            {protos.map(p => {
-              const s = systems[p.system], from = s.x + s.w / 2, to = p.x + TW / 2;
-              const d = `M${from} 226 C ${from} 270, ${to} 266, ${to} ${TOP - 6}`;
+      <NativeStage width={L.w} height={L.h}>
+        <div className={`sc-dia sy-dia ${phone ? 'is-phone' : ''}`}>
+          <svg className="sc-line" viewBox={`0 0 ${L.w} ${L.h}`} aria-hidden="true">
+            {protos.map((p, i) => {
+              const d = wire(phone, L.systems[p.system], L.protos[i], L.cardH);
               return <g key={p.title}>
                 <path className="is-dash" d={d} />
                 <path className={`is-accent is-draw ${wired(p.system) ? 'is-on' : ''}`} pathLength={1} d={d} />
@@ -78,8 +99,8 @@ export default function StudioSystems() {
             })}
           </svg>
           {(Object.keys(systems) as ('product' | 'marketing')[]).map(k => {
-            const s = systems[k];
-            return <div key={k} className={`sc-node sy-system ${wired(k) ? 'is-accent' : ''} ${lit(k) ? '' : 'is-dim'}`} style={{ left: s.x, top: 40, width: s.w, height: 186 }}>
+            const s = systems[k], b = L.systems[k];
+            return <div key={k} className={`sc-node sy-system ${wired(k) ? 'is-accent' : ''} ${lit(k) ? '' : 'is-dim'}`} style={{ left: b.x, top: b.y, width: b.w, height: L.cardH }}>
               <h3>{s.name}</h3>
               <p className="sy-path">{s.path}</p>
               <div className="sy-tokens ss-os" style={themeStyle(s.theme, dark)}>
@@ -92,8 +113,8 @@ export default function StudioSystems() {
               <p className="sy-note">{s.note}</p>
             </div>;
           })}
-          {protos.map(p => <figure key={p.title} className={`sy-proto ${lit(p.system) ? '' : 'is-dim'} ${wired(p.system) ? 'is-wired' : ''}`} style={{ left: p.x, top: TOP }}>
-            <Thumb screen={p.screen} theme={systems[p.system].theme} dark={dark} />
+          {protos.map((p, i) => <figure key={p.title} className={`sy-proto ${lit(p.system) ? '' : 'is-dim'} ${wired(p.system) ? 'is-wired' : ''}`} style={{ left: L.protos[i].x, top: L.protos[i].y, width: L.protos[i].w }}>
+            <Thumb screen={p.screen} theme={systems[p.system].theme} dark={dark} w={L.thumb} />
             <figcaption><b>{p.title}</b><span>{systems[p.system].name} system</span></figcaption>
           </figure>)}
         </div>
