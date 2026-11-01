@@ -42,3 +42,9 @@ that look, it isn't done.
 The site speaks as a practitioner sharing work and ideas, not a candidate
 making a pitch. Contact links are welcome; "hire me" and availability
 language are not. Community copy stays location-agnostic.
+
+## Non-goals
+
+- A marketing-heavy landing page. The work makes the case.
+- Half-finished Lab experiments in public.
+- Broad abstractions or new libraries that don't clearly cut future work.

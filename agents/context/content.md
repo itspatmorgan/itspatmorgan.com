@@ -1,4 +1,4 @@
-# Content Conventions
+# Content
 
 - Always use the full, capitalized product name **Design Studio** in public
   copy, including setup prompts and Agent descriptions. Use **Design Studios**
@@ -8,9 +8,9 @@
 ## Design Studio installation and publishing
 
 - Use “agent harness” for the environment where someone works with their coding agent.
-- The starter repository owns the installation guide at `src/platform/context/installing.md`. Link to that guide rather than maintaining separate installation methods on the landing page.
+- The starter repository owns the [installation guide](https://github.com/itspatmorgan/design-studio/blob/main/src/platform/context/installing.md). Link to that guide rather than maintaining separate installation methods on the landing page.
 - Keep plugins out of the current launch flow. Agent harness logos are examples, not plugin installation choices.
-- Present installation and optional publishing as distinct steps in one setup flow: Design Studio builds a static website; the person's agent helps configure their chosen host using `src/platform/context/publishing.md`.
+- Present installation and optional publishing as distinct steps in one setup flow: Design Studio builds a static website; the person's agent helps configure their chosen host using the Design Studio [publishing guide](https://github.com/itspatmorgan/design-studio/blob/main/src/platform/context/publishing.md).
 - Use Vercel, Netlify, and Cloudflare as hosting examples, while making clear that other static-site hosts work too.
 - Keep the Human page and `/design-studio/agent.txt` aligned about installation, repository ownership, updates, and publishing.
 

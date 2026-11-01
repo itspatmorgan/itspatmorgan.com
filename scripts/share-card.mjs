@@ -1,4 +1,4 @@
-// Render a 1200x630 share card in the site's card layout (see agents/conventions/assets.md and the share-cards skill):
+// Render a 1200x630 share card in the site's card layout (see agents/context/assets.md and the make-share-card skill):
 // paper background, a lockup top left, the page's headline and one line, the URL in Geist Mono, and a visual on the right.
 //
 //   node scripts/share-card.mjs --out work-sublime-agents --title "Headline" --line "One line" --path /work/sublime-agents \

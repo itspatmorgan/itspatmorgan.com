@@ -1,9 +1,9 @@
 ---
-name: brand-graphics
-description: Use when making any static graphic for the site that isn't a recreated product screen, such as a diagram, illustration, chart, closing-lesson drawing, hero composition or card art, so it stays on brand. Product demos use case-study-demos; share cards use share-cards.
+name: make-brand-graphic
+description: Makes on-brand static graphics that aren't recreated product screens, such as diagrams, illustrations, charts, closing-lesson drawings, hero compositions and card art. Use when a page needs one. Product demos use build-case-study-demo; share cards use make-share-card.
 ---
 
-# Brand Graphics
+# Make a Brand Graphic
 
 ## Purpose
 
@@ -17,7 +17,7 @@ Read `agents/principles/design.md` and the design system at `/style-guide`
 ## First, ask whether it should be a graphic at all
 
 - If a real product screen can make the point, use the screen (see
-  case-study-demos). Graphics are for points with no interface: a strategy, a
+  build-case-study-demo). Graphics are for points with no interface: a strategy, a
   system, a lesson, a comparison over time.
 - If the slide's headline and line already make the point, the graphic may
   not be needed.

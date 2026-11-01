@@ -1,14 +1,14 @@
 ---
-name: project-card-visuals
-description: Use when creating or refining the live visual on a case study's project card (the homepage Work cards and the Work page cards), in place of a static thumbnail. Covers choosing the one idea a card shows, the shared two-layer card system, composing it from the case study's real product components, motion, review, and verification.
+name: build-project-card
+description: Builds the live visual on a case study's Work card (the homepage and Work page cards) in place of a static thumbnail, from choosing the one idea it shows to composing it from the case study's real components, motion and review. Use when adding or refining a Work card.
 ---
 
-# Project Card Visuals
+# Build a Project Card
 
 ## Purpose
 
-A project card has one job: make a recruiter or hiring manager, scanning the
-homepage, want to open the case study. Its visual is not a shrunken screen and
+A project card has one job: make a design leader, scanning the homepage,
+want to open the case study. Its visual is not a shrunken screen and
 not the case study's hero. It is a small composition, drawn for the card, that
 shows the one idea of that case study in about a second.
 
@@ -57,7 +57,7 @@ applies them to one card.
 ### 1. Find the one idea
 
 Name, in a few words, what makes this case study different from the others,
-from a recruiter's point of view: a translation (code becomes controls), an
+from a visitor's point of view: a translation (code becomes controls), an
 agent and the trust it earns, a result on a dashboard. The card shows that and
 nothing else.
 
@@ -98,28 +98,13 @@ nothing else.
 
 ### 3. Set the motion
 
-- One focused change per card: pairs light up, a status settles, bars rise.
-- A card rests on its last frame, and that frame makes the point by itself:
-  it is what most visitors see, and all that touch devices ever show.
-- It plays only on hover, never on load or scroll. A card that starts by
-  itself is often caught half on screen or mid-step as the page loads, which
-  reads as broken. Hovering plays it from its first frame back to the last,
-  with no fade, and lifts the front card a few pixels.
-- The first frame is complete too. No blank chart, no hidden rows, no empty
-  second line, since the hover starts there.
-- When text changes between states, keep the layout still: fixed column widths
-  and a second line that is always filled (the prototype's own in-progress
-  copy, then the result).
-- Nothing pops. When a state changes (a status pill, a line of text, a
-  highlight), keep both states mounted, stacked in one cell, and cross-fade:
-  the outgoing one fades out in about 180ms, the next fades in over about
-  360ms after an 80ms delay, so two states never sit on top of each other.
-  This matters most at the seam, where a hover takes the card from its last
-  frame back to its first. Don't remount on a `key` with an entry animation:
-  it also plays on page load.
-- Reduced motion shows the last frame only.
+Follow the Project cards and Poster frames rules in `agents/context/motion.md`:
+rest on the last frame, play only on hover from the first frame, one focused
+change, cross-fade every state change.
+
 - Cards use `useDemoLoop(timings, timings.length - 1, false, true)`, which
-  starts on the last step, and `ProjectCardStage`, which replays on hover.
+  starts on the last step, and `ProjectCardStage`, which replays on hover and
+  lifts the front card a few pixels.
 
 ### 4. Review
 
@@ -134,7 +119,8 @@ detail. Check against:
 - Noise: nothing decorative that doesn't serve the idea.
 - The neighbors: does the set read as one system without repeating itself?
 
-Present ranked findings before changing anything, as with case studies.
+Run the `review-change` skill and present ranked findings before changing
+anything.
 
 ## Guardrails
 
@@ -158,9 +144,8 @@ Present ranked findings before changing anything, as with case studies.
   configuration on port 4322) before shipping, not only in `pnpm dev`.
 - The dev server often keeps serving old modules and styles after edits to
   these components. Restart it before judging a change.
-- Never pick a card's drawing size in a hook after hydration (a `matchMedia`
-  check): the server renders one layout and the card jumps to the other as it
-  loads. Switch in CSS, as StudioCard's `.dc-fit` frame and container query do.
+- Switch a card's drawing size in CSS (`motion.md`), as StudioCard's `.dc-fit`
+  frame and container query do.
 - Background browser tabs pause the card's timers. Test motion and hover in a
   tab that is in front.
 - Measure text and column widths with a DOM `Range` in canvas units before

@@ -1,9 +1,9 @@
 ---
-name: share-cards
-description: Use when a page or case study is added, renamed or gets a new headline, or when asked to make or refresh a share card (the 1200x630 image shown when a link is shared). Renders cards in the site's layout with scripts/share-card.mjs.
+name: make-share-card
+description: Renders a page's 1200x630 share card (the image shown when a link is shared) in the site's layout with scripts/share-card.mjs. Use when a page or case study is added, renamed or gets a new headline, or when asked to make or refresh a share card.
 ---
 
-# Share Cards
+# Make a Share Card
 
 ## Purpose
 
@@ -14,7 +14,7 @@ the rules.
 
 ## Rules
 
-The full rules are in `agents/conventions/assets.md` (Share Images). In short:
+The full rules are in `agents/context/assets.md` (Share Images). In short:
 
 - **Lockup.** Company case studies (Sublime Security, JupiterOne, Signal
   Sciences) show their own logo, and both Design Studio cards show the Design
