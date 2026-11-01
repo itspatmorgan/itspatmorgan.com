@@ -55,7 +55,7 @@ export default function StudioShare() {
   const shown = reduced ? 2 : step;
   const sent = shown > 0 || typed >= ASK.length;
   return <div ref={ref} className="ps">
-    <div className={`ps-stage ${shown === 2 ? 'is-opened' : ''}`} role="img" aria-label={`You ask your agent to publish the Studio. It replies with one link, ${LINK}, and your team opens that link in any browser to see the prototypes.`}>
+    <div data-stage className={`ps-stage ${shown === 2 ? 'is-opened' : ''}`} role="img" aria-label={`You ask your agent to publish the Studio. It replies with one link, ${LINK}, and your team opens that link in any browser to see the prototypes.`}>
       <div className="ps-chat" aria-hidden="true">
         <div className={`ps-composer ${shown > 0 ? 'is-sent' : ''}`}>
           <p>{shown > 0 ? '' : ASK.slice(0, typed)}{shown === 0 && <i className="ps-caret" />}</p>

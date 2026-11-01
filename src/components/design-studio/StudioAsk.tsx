@@ -111,7 +111,7 @@ export default function StudioAsk() {
   const k = camW * PHONE_RATIO / PHONE_H;
   const camStyle = phone && camW ? { transform: `scale(${k}) translateX(${onBrowser ? camW / k - PHONE_W : 0}px)` } : undefined;
   return <div className="hx-ask-wrap" ref={ref}>
-  <div className={`hx-cam ${phone && camW ? 'is-ready' : ''}`} ref={cam}>
+  <div className={`hx-cam ${phone && camW ? 'is-ready' : ''}`} ref={cam} data-stage>
   <div className={`hx-agent ${fading ? 'is-fading' : ''}`} style={camStyle}>
     <header className="hx-agent-bar">
       <span className="hx-agent-dots" aria-hidden="true"><i /><i /><i /></span>
