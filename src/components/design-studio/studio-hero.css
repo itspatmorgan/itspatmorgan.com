@@ -8,7 +8,7 @@
 /* Phones: the browse window's camera moves between the artifact pane and a closer look at the sidebar (StudioHero). */
 .hx.is-phone .dx-native { transition: opacity 200ms ease, transform 900ms cubic-bezier(.45, 0, .1, 1); }
 @media (prefers-reduced-motion: reduce) { .hx.is-phone .dx-native { transition: opacity 200ms ease; } }
-@media (max-width: 640px) { .hx > .hx-window:not(.is-fit) { aspect-ratio: 851 / 700; min-height: 0; } }
+@media (max-width: 640px) { .hx > .hx-window:not(.is-fit) { aspect-ratio: 1; min-height: 0; } }
 .hx-os .ss-side h4 { gap: 8px; }
 .hx-title { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 .hx-os .ss-side li { display: flex; align-items: center; gap: 8px; padding-right: 4px; }
@@ -79,18 +79,20 @@
 .hx-browser .dx-window { border-radius: 0; box-shadow: none; }
 .hx-ask-window .ss-panes { transition: opacity 400ms; }
 .hx-ask-window.is-empty .ss-panes { opacity: 0; }
-/* Phones (StudioAsk's camera): the window keeps its desktop layout at 800 x 600 inside a 4:5 frame, and the camera's transform moves
+/* Phones (StudioAsk's camera): the window keeps its desktop layout at 780 x 520 inside a square frame (every phone visual on this
+   page is square), and the camera's transform moves
    between the chat and the browser. The frame carries the window's ring, so the ring stays a hairline at every zoom. */
 @media (max-width: 640px) {
-  .hx-cam { position: relative; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 14px; background: var(--card); box-shadow: 0 0 0 1px color-mix(in oklch, var(--foreground) 10%, transparent), 0 24px 48px -24px rgb(0 0 0 / .22); }
+  .hx-cam { position: relative; aspect-ratio: 1; overflow: hidden; border-radius: 14px; background: var(--card); box-shadow: 0 0 0 1px color-mix(in oklch, var(--foreground) 10%, transparent), 0 24px 48px -24px rgb(0 0 0 / .22); }
   .dark .hx-cam { box-shadow: 0 0 0 1px color-mix(in oklch, var(--foreground) 12%, transparent), 0 24px 48px -24px rgb(0 0 0 / .6); }
-  .hx-cam .hx-agent { position: absolute; left: 0; top: 0; width: 800px; height: 600px; border-radius: 0; box-shadow: none; transform-origin: 0 0; opacity: 0; transition: transform 900ms cubic-bezier(.45, 0, .1, 1); }
+  .hx-cam .hx-agent { position: absolute; left: 0; top: 0; width: 780px; height: 520px; border-radius: 0; box-shadow: none; transform-origin: 0 0; opacity: 0; transition: transform 900ms cubic-bezier(.45, 0, .1, 1); }
   .hx-cam.is-ready .hx-agent { opacity: 1; }
   /* The frame shows the window at about three quarters size, so the chat's type steps up to read at its desktop size. */
   .hx-cam .hx-msg { font-size: 18px; line-height: 26px; }
   .hx-cam .hx-reply { font-size: 17px; line-height: 25px; }
   .hx-cam .hx-reply code { font-size: 15.5px; line-height: 25px; }
   .hx-cam .hx-composer p { height: 52px; font-size: 18px; line-height: 26px; }
+  .hx-cam .hx-agent-body { grid-template-columns: 300px minmax(0, 1fr); }
 }
 @media (max-width: 640px) and (prefers-reduced-motion: reduce) { .hx-cam .hx-agent { transition: none; } }
 
@@ -139,13 +141,13 @@
 @media (max-width: 760px) {
   .ps { margin-top: 28px; }
   /* One box, one beat: the chat and the browser share a cell, and the browser slides in over the chat as the link opens. */
-  .ps-stage { grid-template-columns: minmax(0, 1fr); grid-template-areas: "beat"; min-height: 0; height: 320px; padding: 24px 20px; overflow: hidden; }
+  .ps-stage { grid-template-columns: minmax(0, 1fr); grid-template-areas: "beat"; min-height: 0; aspect-ratio: 1; padding: 24px 20px; overflow: hidden; }
   .ps-chat, .ps-browser { grid-area: beat; }
   .ps-chat { justify-content: flex-end; align-self: center; transition: opacity 360ms ease, transform 520ms cubic-bezier(.45, 0, .1, 1); }
   .ps-browser { align-self: center; opacity: 0; transform: translateX(24px); pointer-events: none; }
   .ps-browser.is-open { opacity: 1; transform: none; }
   .ps-stage.is-opened .ps-chat { opacity: 0; transform: translateX(-24px); }
-  .ps-page { height: 200px; }
+  .ps-page { height: clamp(160px, 52vw, 240px); }
 }
 @media (max-width: 760px) and (prefers-reduced-motion: reduce) { .ps-chat { transition: none; } }
 @media (prefers-reduced-motion: reduce) { .ps-browser, .ps-bar em, .ps-bar em svg { transition: none; } .ps-ask, .ps-reply, .ps-link { animation: none; } }

@@ -29,29 +29,25 @@ const systems = {
   product: { name: 'Product', path: 'src/systems/product', theme: 'green' as Theme, radius: 0, note: 'Echo green, dense UI, square corners' },
   marketing: { name: 'Marketing', path: 'src/systems/marketing', theme: 'echo-marketing' as Theme, radius: 12, note: 'Echo green, warm paper, round corners' },
 };
-// Desktop: both systems in a row over the three prototypes, wired across. Phones: the same drawing in two columns, each system over
-// the prototypes that build with it, so every name keeps its size and the wires run straight down.
+// Desktop: both systems in a row over the three prototypes, wired across. Phones: the same arrangement redrawn for a square frame
+// (every phone visual on this page is square), with larger type for its smaller scale, so names and notes stay readable and the
+// drawing sits inside the frame with even margins.
 const desk = {
   w: 960, h: 570, thumb: TW, cardH: 186,
   systems: { product: { x: 148, y: 40, w: 300 }, marketing: { x: 512, y: 40, w: 300 } } as Record<'product' | 'marketing', Box>,
   protos: [{ x: 40, y: TOP, w: TW }, { x: 344, y: TOP, w: TW }, { x: 648, y: TOP, w: TW }] as Box[],
 };
-const PW = 212;
+const PT = 176;
 const mobile = {
-  w: 496, h: 704, thumb: PW, cardH: 176,
-  systems: { product: { x: 32, y: 12, w: PW }, marketing: { x: 280, y: 12, w: PW } } as Record<'product' | 'marketing', Box>,
-  protos: [{ x: 32, y: 248, w: PW }, { x: 32, y: 476, w: PW }, { x: 280, y: 248, w: PW }] as Box[],
+  w: 600, h: 600, thumb: PT, cardH: 196,
+  systems: { product: { x: 24, y: 48, w: 264 }, marketing: { x: 312, y: 48, w: 264 } } as Record<'product' | 'marketing', Box>,
+  protos: [{ x: 24, y: 334, w: PT }, { x: 212, y: 334, w: PT }, { x: 400, y: 334, w: PT }] as Box[],
 };
 
-// A wire from a system to a prototype. Desktop: a curve from under the system to the top of the prototype. Phones: a bracket down
-// the column's left gutter, out of the system's side and into the prototype's, so a wire never runs behind another prototype.
-function wire(phone: boolean, s: Box, b: Box, cardH: number) {
-  if (!phone) {
-    const from = s.x + s.w / 2, to = b.x + b.w / 2, top = s.y + cardH, mid = (top + b.y) / 2;
-    return `M${from} ${top} C ${from} ${mid + 4}, ${to} ${mid}, ${to} ${b.y - 6}`;
-  }
-  const spine = s.x - 16, y0 = s.y + cardH / 2, y1 = b.y + PW * TH / TW / 2, r = 8;
-  return `M${s.x - 2} ${y0} H${spine + r} Q${spine} ${y0} ${spine} ${y0 + r} V${y1 - r} Q${spine} ${y1} ${spine + r} ${y1} H${b.x - 6}`;
+/** A wire from under a system to the top of a prototype that builds with it. */
+function wire(s: Box, b: Box, cardH: number) {
+  const from = s.x + s.w / 2, to = b.x + b.w / 2, top = s.y + cardH, mid = (top + b.y) / 2;
+  return `M${from} ${top} C ${from} ${mid + 4}, ${to} ${mid}, ${to} ${b.y - 6}`;
 }
 
 /** A launch page in the Marketing system's tokens, at the Studio's native prototype size. */
@@ -91,7 +87,7 @@ export default function StudioSystems() {
         <div className={`sc-dia sy-dia ${phone ? 'is-phone' : ''}`}>
           <svg className="sc-line" viewBox={`0 0 ${L.w} ${L.h}`} aria-hidden="true">
             {protos.map((p, i) => {
-              const d = wire(phone, L.systems[p.system], L.protos[i], L.cardH);
+              const d = wire(L.systems[p.system], L.protos[i], L.cardH);
               return <g key={p.title}>
                 <path className="is-dash" d={d} />
                 <path className={`is-accent is-draw ${wired(p.system) ? 'is-on' : ''}`} pathLength={1} d={d} />

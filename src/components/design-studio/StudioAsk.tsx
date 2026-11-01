@@ -11,10 +11,10 @@ import './studio-hero.css';
 // Studio rendering what each message makes. Each request writes or changes a file in the Feedback Inbox sample
 // (src/prototypes/parker/feedback-inbox), and the Studio opens it. The chat is a neutral harness, not any one product's interface.
 //
-// Phones keep the same window, chat beside browser, at a fixed 800 x 600 in a 4:5 frame, and pan between the two at one scale: the
+// Phones keep the same window, chat beside browser, at a fixed 780 x 520 in a square frame, and pan between the two at one scale: the
 // chat (with the browser's edge beside it) while a request is typed and worked on, then across to the whole browser as the result
 // lands. Stacking the chat over the browser would show a coding agent that no one uses.
-const PHONE_W = 800, PHONE_H = 600, PHONE_RATIO = 5 / 4;
+const PHONE_W = 780, PHONE_H = 520, PHONE_RATIO = 1;
 
 type Turn = { ask: string; did: string; file: string; key: Key; lofi?: boolean };
 const MIN = 0.5;

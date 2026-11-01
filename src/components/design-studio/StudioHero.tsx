@@ -40,10 +40,10 @@ const rows: Row[] = [
   { label: 'Project Context', i: File01Icon, view: 'context', child: true },
 ];
 
-// Phones: a frame the shape of the artifact pane, and a camera with two places. The pane shows the whole artifact, at the scale that
-// fits the pane to the frame. The sidebar is a PHONE_ZOOM closer look at the rail, the artifact list and its menus, held while the
+// Phones: a square frame (every phone visual on this page is square), with the window drawn as tall as its artifact pane is wide so
+// the pane is square too, and a camera with two places. The pane shows the whole artifact, at the scale that fits the pane to the frame. The sidebar is a PHONE_ZOOM closer look at the rail, the artifact list and its menus, held while the
 // pointer works there; it rises only as far as a low row's menu needs. The window is never laid out again for a phone.
-const PANE_X = 269, PANE_W = W - PANE_X;
+const PANE_X = 269, PANE_W = W - PANE_X, PHONE_H = PANE_W;
 type Cam = { at: 'pane' } | { at: 'list'; y: number };
 
 const start = { view: 'inbox' as View, lofi: { overview: false, inbox: false, detail: false, lofi: true } as Record<Screen, boolean>, source: false };
@@ -119,8 +119,8 @@ export default function StudioHero() {
       const at = place(hx, aim);
       if (!alive() || !at) return false;
       // Phones: the closer look at the sidebar, low enough to show this row and a menu under it.
-      const listH = H / PHONE_ZOOM;
-      setCam({ at: 'list', y: Math.max(0, Math.min(H - listH, at.top + at.height + 64 - listH)) });
+      const listH = PHONE_H / PHONE_ZOOM;
+      setCam({ at: 'list', y: Math.max(0, Math.min(PHONE_H - listH, at.top + at.height + 64 - listH)) });
       setPointer(p => ({ ...p, x: at.x, y: at.y, shown: true }));
       await wait(820); if (!alive()) return false;
       setPointer(p => ({ ...p, pressing: true })); await wait(140); if (!alive()) return false;
@@ -187,8 +187,8 @@ export default function StudioHero() {
   const k = cam.at === 'pane' ? width / PANE_W : width * PHONE_ZOOM / PANE_W;
   const camT = cam.at === 'pane' ? `scale(${k}) translate(${-PANE_X}px, 0px)` : `scale(${k}) translate(0px, ${-cam.y}px)`;
   return <div className={`hx ${phone ? 'is-phone' : ''}`}>
-    <div ref={box} className={`dx-window hx-window ${ready ? 'is-fit' : ''}`} style={ready ? { height: phone ? width * H / PANE_W : H * s } : undefined} onPointerDownCapture={takeOver}>
-      <div className="sc cs-native dx-native" style={{ width: W, height: H, transform: phone ? camT : `translateX(${x}px) scale(${s})`, opacity: ready ? 1 : 0 }}>
+    <div ref={box} className={`dx-window hx-window ${ready ? 'is-fit' : ''}`} style={ready ? { height: phone ? width : H * s } : undefined} onPointerDownCapture={takeOver}>
+      <div className="sc cs-native dx-native" style={{ width: W, height: phone ? PHONE_H : H, transform: phone ? camT : `translateX(${x}px) scale(${s})`, opacity: ready ? 1 : 0 }}>
         <div ref={os} className="sc-os ss-os dx-os hx-os" style={themeStyle('green', dark)} onClick={() => setMenu(null)}>
           <OsRail on="prototypes" />
           <aside className="sc-side ss-side">
