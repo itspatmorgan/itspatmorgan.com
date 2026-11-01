@@ -1,10 +1,8 @@
-/* Line work for /design-studio, after the drawn frames on cloudflare.com. The column is framed by two rails; each section starts on
-   a rule that ends in a small square on each rail, and the last rule closes the frame above the footer. The hero is the one textured
-   panel, and the two biggest breaks are hatched. All of it is ink at low strength: it frames the content and never competes with it.
+/* Line work for /design-studio. Each section starts on a hairline rule that fades at its ends, and the two biggest breaks are
+   hatched. All of it is ink at low strength: it gives the sections definition and never competes with them.
    Nothing moves. Every section has the same space above and below, so a rule always sits midway between two sections. */
 .studio-page {
   --lw: color-mix(in oklch, var(--foreground) 9%, transparent);
-  --lw-handle: color-mix(in oklch, var(--foreground) 20%, transparent);
   --rail: 24px; --gap: 72px;
   position: relative;
 }
@@ -12,33 +10,16 @@
 @media (min-width: 761px) { .studio-page { --gap: 112px; } }
 @media (min-width: 1024px) { .studio-page { --rail: 56px; } }
 
-/* The rails, on screens wide enough for the column to have margins. */
-@media (min-width: 1136px) {
-  .studio-page::before { content: ""; position: absolute; inset: 0; border-left: 1px solid var(--lw); border-right: 1px solid var(--lw); pointer-events: none; }
-  /* The rails run on through the footer to the foot of the page, so the frame doesn't stop short of the last line of content. */
-  main:has(> .studio-page) + footer { padding-top: 0; padding-bottom: 0; }
-  main:has(> .studio-page) + footer > div { position: relative; padding-block: 40px; }
-  main:has(> .studio-page) + footer > div::before { content: ""; position: absolute; inset: 0; border-left: 1px solid color-mix(in oklch, var(--foreground) 9%, transparent); border-right: 1px solid color-mix(in oklch, var(--foreground) 9%, transparent); pointer-events: none; }
-}
-
 /* Even spacing: the same gap above and below every section. The hero has no rule above it, so it keeps its own top space under the
    page header, and takes the shared gap below. */
 #studio-human > section { position: relative; padding-top: var(--gap); padding-bottom: var(--gap); }
 #studio-human > header.ds-hero { position: relative; padding-top: clamp(56px, 8cqi, 96px); padding-bottom: var(--gap); }
 
-/* A rule across the column at the top of each section, with a square on each rail. The last section draws one at
-   its foot too, so the frame closes above the footer. */
-#studio-human > section::before, #studio-human > :last-child > .lw-close::before {
-  content: ""; position: absolute; top: 0; left: calc(-1 * var(--rail)); right: calc(-1 * var(--rail)); height: 1px; background: var(--lw); pointer-events: none; }
-#studio-human > section::after, #studio-human > :last-child > .lw-close::after {
-  content: ""; position: absolute; top: -3px; left: calc(-1 * var(--rail) - 3px); right: calc(-1 * var(--rail) - 3px); height: 7px; pointer-events: none;
-  background:
-    linear-gradient(var(--background), var(--background)) 1px 1px / 5px 5px no-repeat, linear-gradient(var(--lw-handle), var(--lw-handle)) 0 0 / 7px 7px no-repeat,
-    linear-gradient(var(--background), var(--background)) calc(100% - 1px) 1px / 5px 5px no-repeat, linear-gradient(var(--lw-handle), var(--lw-handle)) 100% 0 / 7px 7px no-repeat; }
-/* The squares sit on the rails, so without rails (narrower screens) they go too; they would otherwise hang past the screen edge. */
-@media (max-width: 1135.98px) { #studio-human > section::after, #studio-human > :last-child > .lw-close::after { content: none; } }
-.lw-close { position: absolute; left: 0; right: 0; bottom: 0; height: 0; }
-
+/* A hairline rule at the top of each section, fading out at both ends so it divides the content without boxing the page in.
+   There are no side rails: the site's own navigation already draws a vertical line, and a second one beside it read as doubled. */
+#studio-human > section::before {
+  content: ""; position: absolute; top: 0; left: calc(-1 * var(--rail)); right: calc(-1 * var(--rail)); height: 1px; background: var(--lw); pointer-events: none;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent); mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent); }
 /* The two biggest breaks, out of the hero and into Get started, are a narrow hatched band, the way a plan hatches a cut wall. */
 #studio-human > header + section::before, #studio-human > #get-started::before {
   height: 14px; border-top: 1px solid var(--lw); border-bottom: 1px solid var(--lw);
