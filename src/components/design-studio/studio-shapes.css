@@ -234,25 +234,42 @@
 .sp-point { position: absolute; top: 0; width: 0; height: 0; z-index: 1; transition: opacity 420ms ease; }
 .sp-point.is-start { left: 0; } .sp-point.is-main { left: 50%; } .sp-point.is-end { left: 100%; }
 .sp-point i { position: absolute; left: -5px; top: -5px; width: 10px; height: 10px; border: 1.5px solid currentColor; background: var(--background); transition: background-color 420ms ease, transform 420ms var(--motion-ease-out); }
-.sp-point b { position: absolute; top: 18px; width: max-content; max-width: 30cqw; font-size: 17px; line-height: 24px; font-weight: 600; }
-.sp-point.is-start b { left: -5px; }
-.sp-point.is-main b { left: 0; transform: translateX(-50%); text-align: center; }
-.sp-point.is-end b { right: -5px; text-align: right; }
+.sp-label { position: absolute; top: 18px; width: max-content; max-width: 30cqw; }
+.sp-label b { display: block; font-size: 17px; line-height: 24px; font-weight: 600; }
+.sp-label small { display: none; font-size: 14px; line-height: 20px; color: var(--muted-foreground); }
+.sp-point.is-start .sp-label { left: -5px; }
+.sp-point.is-main .sp-label { left: 0; transform: translateX(-50%); text-align: center; }
+.sp-point.is-end .sp-label { right: -5px; text-align: right; }
 .sp-point.is-dim { opacity: .42; }
 .sp-point.is-lit i { background: currentColor; }
 .sp-point.is-main i { left: -8px; top: -8px; width: 16px; height: 16px; border-color: var(--accent); background: var(--accent); box-shadow: 0 0 0 5px color-mix(in oklch, var(--accent) 22%, transparent); }
 /* Design Studio lands as the two guides meet it. */
 .sp-point.is-main { transition: opacity 400ms cubic-bezier(.25, .8, .25, 1) 460ms; }
 .sp-point.is-main i { transition: transform 520ms cubic-bezier(.25, .8, .25, 1) 460ms; }
-.sp-point.is-main b { transition: opacity 400ms ease 580ms; }
+.sp-point.is-main .sp-label { transition: opacity 400ms ease 580ms; }
 .sp-point.is-main.is-off { opacity: 0; }
 .sp-point.is-main.is-off i { transform: scale(.4); }
-.sp-point.is-main.is-off b { opacity: 0; }
-.sp-point.is-main.is-off, .sp-point.is-main.is-off i, .sp-point.is-main.is-off b { transition-delay: 0ms; }
+.sp-point.is-main.is-off .sp-label { opacity: 0; }
+.sp-point.is-main.is-off, .sp-point.is-main.is-off i, .sp-point.is-main.is-off .sp-label { transition-delay: 0ms; }
 .sp { container-type: inline-size; }
+/* Phones: the same spectrum stood upright. The line runs down the left of a narrow column, each name sits on one line to its right, and
+   each end's quality moves under its name. The guides draw down from the top and up from the bottom to meet at Design Studio. */
 @media (max-width: 640px) {
-  .sp-end { font-size: 13px; line-height: 18px; }
-  .sp-line { margin-bottom: 84px; }
-  .sp-point b { font-size: 14px; line-height: 19px; max-width: 28cqw; }
+  .sp-stage { padding: 40px 24px; }
+  .sp { display: block; width: 196px; margin: 0 auto; }
+  .sp-end { display: none; }
+  .sp-line { width: 1px; height: 248px; margin: 18px 0 18px 8px; }
+  .sp-line::before, .sp-line::after { left: -3px; right: auto; }
+  .sp-line::before { top: -4px; } .sp-line::after { top: auto; bottom: -4px; }
+  .sp-guide { top: auto; left: -1px; width: 0; height: 50%; border-top: 0; border-left: 2px dashed var(--accent); }
+  .sp-guide.is-from-start { top: 0; left: -1px; clip-path: inset(0 0 100% 0); }
+  .sp-guide.is-from-end { bottom: 0; right: auto; left: -1px; clip-path: inset(100% 0 0 0); }
+  .sp-guide[data-on] { clip-path: inset(0); }
+  .sp-point { left: 0 !important; }
+  .sp-point.is-start { top: 0; } .sp-point.is-main { top: 50%; } .sp-point.is-end { top: 100%; }
+  .sp-point.is-start .sp-label, .sp-point.is-main .sp-label, .sp-point.is-end .sp-label { top: 0; left: 26px; right: auto; max-width: none; transform: translateY(-50%); text-align: left; white-space: nowrap; }
+  .sp-point.is-start .sp-label, .sp-point.is-end .sp-label { transform: translateY(-12px); }
+  .sp-label b { font-size: 16px; }
+  .sp-label small { display: block; }
 }
-@media (prefers-reduced-motion: reduce) { .sp-guide, .sp-end, .sp-point, .sp-point i, .sp-point b, .sp-point.is-main, .sp-point.is-main i, .sp-point.is-main b { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .sp-guide, .sp-end, .sp-point, .sp-point i, .sp-point.is-main, .sp-point.is-main i, .sp-point.is-main .sp-label { transition: none; } }
