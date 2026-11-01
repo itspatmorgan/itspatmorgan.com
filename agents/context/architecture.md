@@ -63,6 +63,9 @@ add other widths.
 
 ## Rules
 
+- New interactive pieces read the theme, reduced motion and the phone breakpoint
+  through `useDark`, `useReduced` and `usePhone` in `src/lib/hooks.ts`, never
+  their own media queries or observers.
 - Query content with `getCollection()` and filter drafts before rendering lists.
 - Keep words people edit in content files, not component code.
 - Navigation is document-based, with no Astro ClientRouter. If one is added,

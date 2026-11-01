@@ -2,6 +2,13 @@
 
 ## Images
 
+Run every new raster image through `pnpm image <file>` before it ships. It
+turns the image upright, strips metadata, scales it down to 2400px wide (2x the
+showcase stage; `--width` for less) and saves WebP beside it, or JPG for share
+cards. `--replace` removes the original. It prints the width and height to put
+on the `<img>`, so the page doesn't shift while it loads. SVGs and GIFs stay as
+they are.
+
 Favicons use `public/favicon.svg` as the canonical dots mark. After changing it,
 run `node scripts/generate-favicons.mjs` to regenerate every PNG, Apple touch
 icon, and ICO fallback. Raster variants use the light-theme palette; the SVG

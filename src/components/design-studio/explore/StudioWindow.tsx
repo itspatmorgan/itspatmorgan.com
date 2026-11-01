@@ -1,4 +1,5 @@
-import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from 'react';
+import { useEffect, useRef, useState, type CSSProperties } from 'react';
+import { useDark, useIsomorphicLayoutEffect, useReduced } from '@/lib/hooks';
 import { OsRail } from '../../studio-case/StudioUI';
 import { Canvas, Doc, Flow, Inbox, Nav, type Key } from '../StudioShapes';
 import '../studio-shapes.css';
@@ -50,33 +51,6 @@ const themeVars: Record<Theme, { light: Record<string, string>; dark: Record<str
   },
 };
 
-/** Whether the page is in dark mode, following the site's theme switch. */
-export function useDark() {
-  const [dark, setDark] = useState(false);
-  useEffect(() => {
-    const root = document.documentElement;
-    const read = () => setDark(root.classList.contains('dark'));
-    read();
-    const watch = new MutationObserver(read);
-    watch.observe(root, { attributes: true, attributeFilter: ['class'] });
-    return () => watch.disconnect();
-  }, []);
-  return dark;
-}
-
-/** Whether the visitor asked for less motion. */
-export function useReduced() {
-  const [reduced, setReduced] = useState(false);
-  useEffect(() => {
-    const query = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setReduced(query.matches);
-    const on = () => setReduced(query.matches);
-    query.addEventListener('change', on);
-    return () => query.removeEventListener('change', on);
-  }, []);
-  return reduced;
-}
-
 /** Steps through `count` items every `ms` until the visitor takes over (`stop`), skipping when reduced motion is on or off screen. */
 export function useAutoplay(count: number, ms: number, start = 0) {
   const [index, setIndex] = useState(start);
@@ -101,7 +75,6 @@ export function useAutoplay(count: number, ms: number, start = 0) {
 }
 
 export const W = 1120, H = 700, SIDE = 276;
-const useIsoLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect;
 
 /** Fits a native W-wide surface to its box: scales down to fit, holding `min` scale on narrow screens and cropping instead, from
  *  the left edge or, when `crop` is 'pane' and the whole sidebar would leave the view, from the start of the content pane. */
@@ -111,7 +84,7 @@ export function useFit(min: number, max: number, crop: 'start' | 'pane', base = 
   // effect measures the real box before the first paint after hydration, so the window never jumps from full size while scrolling.
   const [width, setWidth] = useState(guess);
   const [ready, setReady] = useState(false);
-  useIsoLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const el = ref.current;
     if (!el) return;
     setWidth(el.getBoundingClientRect().width);
