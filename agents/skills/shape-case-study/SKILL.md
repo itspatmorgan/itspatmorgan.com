@@ -34,7 +34,8 @@ Reuse these patterns before inventing new ones.
 - Copy is a draft for Patrick's own words: short, easy to rewrite, and
   presented as a draft.
 - Outline before building. Get the headline sequence approved first.
-- Build behind `noindex` with the entry `draft: true` until Patrick says launch.
+- Start from `pnpm new case-study <slug> "Title"` and keep the entry
+  `draft: true` (hidden and not indexed) until Patrick says launch.
 - Present one coherent pass at a time, not a menu of options.
 - Show only what the product does. A scene may compress time or skip steps,
   never invent behavior. Name every liberty in a code comment beside it, and
@@ -58,10 +59,9 @@ Reuse these patterns before inventing new ones.
    worth considering) before changing anything.
 7. **Share for review.** Open a pull request; Patrick reviews on its preview
    link. Work through his comments one at a time and push to the same branch.
-8. **Launch** on Patrick's go-ahead: move to the live slug, drop `noindex` and
-   `draft`, update the entry's `summary` (the homepage card line), give the card
-   a live visual with `build-project-card`, and make a share card with
-   `make-share-card`.
+8. **Launch** on Patrick's go-ahead: set `draft: false`, update the entry's
+   `summary` (the homepage card line), give the card a live visual with
+   `build-project-card`, and make a share card with `make-share-card`.
 9. **Wrap up** with the `wrap-up` skill.
 
 ## Guardrails

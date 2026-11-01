@@ -28,7 +28,7 @@ How the site fits together and where each thing lives. Content rules are in
 | Design Studio landing page | `src/pages/design-studio.astro`, scenes in `src/components/design-studio/` |
 | Design system reference | `/style-guide` (`src/pages/style-guide.astro`, noindex) |
 | Tokens and global styles | `src/styles/global.css` |
-| Scripts | `scripts/` (checks, share cards, frame check, writing sync, favicons) |
+| Scripts | `scripts/` (checks, review, starters, share cards, frame check, writing sync, favicons) |
 
 ## Routes
 
@@ -37,7 +37,7 @@ How the site fits together and where each thing lives. Content rules are in
 | `/` | Home: hero, Work (with the Design Studio card), Writing, Community, Lab, closing line |
 | `/about` | Personal narrative |
 | `/work` | Career timeline and case studies |
-| `/work/<slug>` | One case study per page; an entry without a page is a draft |
+| `/work/<slug>` | One case study per page. An entry with `draft: true` is hidden from Work and the homepage and not indexed |
 | `/writing`, `/writing/<slug>` | Curated Unknown Arts articles with theme filters |
 | `/lab`, `/lab/<slug>` | Lab experiments |
 | `/community` | Community story, photos and Kind Words |
@@ -49,7 +49,7 @@ How the site fits together and where each thing lives. Content rules are in
 
 ## Layouts
 
-`BaseLayout` → `PageLayout` → `CaseStudyLayout` or `WritingLayout`.
+`BaseLayout` → `PageLayout` → `CaseStudyLayout`, `LabLayout` or `WritingLayout`.
 
 `PageLayout` takes a `template`:
 
