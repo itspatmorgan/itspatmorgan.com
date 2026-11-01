@@ -1,4 +1,4 @@
-/* Line work for /design-studio, on one motif: dots. Each section starts on a fading row of dots, the hero and Get started carry dot
+/* Line work for /design-studio, on one motif: dots. Each section starts on a fading row of dots, the hero carries dot
    fields, and only the two biggest breaks get the hatched band. All of it is ink at low strength: it gives the sections definition and never competes with them.
    Nothing moves. Every section has the same space above and below, so a rule always sits midway between two sections. */
 .studio-page {
@@ -16,7 +16,7 @@
 #studio-human > header.ds-hero { position: relative; padding-top: clamp(56px, 8cqi, 96px); padding-bottom: var(--gap); }
 
 /* Each section starts on a row of dots in the hero's dot pitch, fading out at both ends, so the dividers carry the same dot motif as
-   the hero and Get started. There are no side rails: the site's own navigation already draws a vertical line beside the page. */
+   the hero. There are no side rails: the site's own navigation already draws a vertical line beside the page. */
 #studio-human > section::before {
   content: ""; position: absolute; top: -1px; left: calc(-1 * var(--rail)); right: calc(-1 * var(--rail)); height: 3px; pointer-events: none;
   background: radial-gradient(circle at 1.5px 1.5px, color-mix(in oklch, var(--foreground) 26%, transparent) 1px, transparent 1.4px) 0 0 / 14px 3px repeat-x;
@@ -27,13 +27,11 @@
   background: repeating-linear-gradient(135deg, var(--lw) 0 1px, transparent 1px 7px); }
 
 /* Dot fields at the edges of the hero frame the headline without sitting behind any text. */
-#studio-human > header.ds-hero, #studio-human > .ds-start { isolation: isolate; }
-.ds-hero > .lw-dots, .ds-start > .lw-dots { position: absolute; z-index: -1; left: 50%; top: 0; width: min(100%, 1136px); height: 460px; transform: translateX(-50%); pointer-events: none;
+#studio-human > header.ds-hero { isolation: isolate; }
+.ds-hero > .lw-dots { position: absolute; z-index: -1; left: 50%; top: 0; width: min(100%, 1136px); height: 460px; transform: translateX(-50%); pointer-events: none;
   background-image: radial-gradient(circle at 1px 1px, color-mix(in oklch, var(--foreground) 24%, transparent) 1px, transparent 1.4px); background-size: 14px 14px;
   -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 9%, transparent 22%, transparent 78%, #000 91%, transparent 100%), linear-gradient(180deg, transparent 0, #000 30%, #000 55%, transparent 100%);
   -webkit-mask-composite: source-in;
   mask-image: linear-gradient(90deg, transparent 0, #000 9%, transparent 22%, transparent 78%, #000 91%, transparent 100%), linear-gradient(180deg, transparent 0, #000 30%, #000 55%, transparent 100%);
   mask-composite: intersect; }
-/* Get started echoes the hero with a shorter pair of dot fields, so the page opens and closes on the same texture. */
-.ds-start > .lw-dots { top: 14px; height: 200px; }
-@media (max-width: 900px) { .ds-hero > .lw-dots, .ds-start > .lw-dots { display: none; } }
+@media (max-width: 900px) { .ds-hero > .lw-dots { display: none; } }
