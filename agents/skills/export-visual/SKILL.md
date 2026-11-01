@@ -36,6 +36,9 @@ product screen reaches both.
 - **Lay out, never squash or slice.** A format changes the stage the screen lays out in, so a taller format shows more of the page
   and a wider one more across. If the story doesn't fit a format, change the format or pick a detail; never crop the action,
   the result or a real word.
+- **The visual is the point.** In a slide, the screen takes the space and a one-line headline is the most it shares the frame
+  with. If a layout hides most of the screen (a split that crops it, a headline that pushes it down), change the layout or show
+  a detail.
 - **One gutter.** The card sits the same distance from the format's sides and top (the site's stage uses about 5% of its width)
   and runs off the bottom, unless the screen ends (`contained`), when it sits whole with that gutter all round.
 - **The poster tells the story.** Most people see one frame: a slide printout, a thumbnail, a post before it plays. Set `poster`
