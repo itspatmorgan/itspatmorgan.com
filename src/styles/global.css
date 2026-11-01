@@ -1,4 +1,6 @@
 @import "tailwindcss";
+/* Scripts hold templates and messages, not page markup, so their words never become classes. */
+@source not "../../scripts";
 @import "tw-animate-css";
 @import "./ui-utilities.css";
 @import "@fontsource-variable/geist";
@@ -90,6 +92,9 @@ html.pw-intro :is([data-pixel-wave="hero"], [data-pixel-wave="headline"], [data-
     --motion-ease-out-quick: cubic-bezier(.23, 1, .32, 1); /* quick UI responses, gliding highlights */
     --motion-ease-in-out: cubic-bezier(.65, 0, .35, 1);    /* things moving across the stage */
     --motion-ease-standard: cubic-bezier(.4, 0, .2, 1);    /* small state changes */
+    /* Demo scenes: two curves by job, mirrored in src/components/case-study/motion.ts. */
+    --motion-ease-travel: cubic-bezier(.45, 0, .1, 1);     /* a camera, pointer or panel moving to a new place */
+    --motion-ease-arrival: cubic-bezier(.25, .8, .25, 1);  /* something appearing or settling into place */
     --motion-route-out: 90ms;
     --motion-route-in: 180ms;
 }

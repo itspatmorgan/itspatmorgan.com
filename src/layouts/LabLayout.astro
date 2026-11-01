@@ -1,0 +1,35 @@
+---
+import type { CollectionEntry } from "astro:content";
+import PageLayout from "./PageLayout.astro";
+
+// A Lab experiment: "← Lab", the title and description from its entry (src/content/lab/<slug>.mdx), then the experiment in the
+// default slot. Words that introduce it go in the `intro` slot, under the description; words that follow the demo go in the page.
+interface Props {
+  entry: CollectionEntry<"lab">;
+  /** The 1200x630 share card, made with scripts/share-card.mjs. */
+  image?: string;
+}
+
+const { entry, image } = Astro.props;
+const { title, description } = entry.data;
+const intro = Astro.slots.has("intro");
+---
+
+<PageLayout title={`${title} — Patrick Morgan`} description={description} image={image} noindex>
+  <section class="mx-auto max-w-3xl px-6 pt-12 pb-12 sm:pt-24" data-lab-hero>
+    <a
+      href="/lab"
+      class="mb-8 inline-flex items-center gap-1 font-mono text-sm text-muted-foreground transition-colors hover:text-foreground"
+    >
+      <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+      </svg>
+      Lab
+    </a>
+    <h1 class="mb-4 text-4xl font-medium tracking-tight sm:text-5xl">{title}</h1>
+    <p class:list={["max-w-xl text-lg text-muted-foreground", { "mb-8": intro }]}>{description}</p>
+    {intro && <div class="prose"><slot name="intro" /></div>}
+  </section>
+
+  <slot />
+</PageLayout>

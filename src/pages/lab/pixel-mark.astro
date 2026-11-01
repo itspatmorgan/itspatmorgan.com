@@ -1,5 +1,5 @@
 ---
-import PageLayout from "@/layouts/PageLayout.astro";
+import LabLayout from "@/layouts/LabLayout.astro";
 import Logo from "@/components/layout/Logo.astro";
 import { getCollection, render } from "astro:content";
 import { MarkStates, NavSwitcherStates, ScaleStrip, MarkVariants } from "@/lab/pixel-mark/MarkStates";
@@ -10,28 +10,8 @@ if (!entry) throw new Error("Missing Lab entry: pixel-mark");
 const { Content } = await render(entry);
 ---
 
-<PageLayout
-  title={`${entry.data.title} — Patrick Morgan`}
-  description={entry.data.description}
-  image="/images/share/lab-pixel-mark.jpg"
-  noindex
->
-  <section class="mx-auto max-w-3xl px-6 pt-12 pb-12 sm:pt-24" data-lab-hero>
-    <a
-      href="/lab"
-      class="mb-8 inline-flex items-center gap-1 font-mono text-sm text-muted-foreground transition-colors hover:text-foreground"
-    >
-      <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-      </svg>
-      Lab
-    </a>
-    <h1 class="mb-4 text-4xl font-medium tracking-tight sm:text-5xl">{entry.data.title}</h1>
-    <p class="mb-8 max-w-xl text-lg text-muted-foreground">{entry.data.description}</p>
-    <div class="prose">
-      <Content />
-    </div>
-  </section>
+<LabLayout entry={entry} image="/images/share/lab-pixel-mark.jpg">
+  <Fragment slot="intro"><Content /></Fragment>
 
   <!-- Hero display -->
   <section data-lab-content>
@@ -78,4 +58,4 @@ const { Content } = await render(entry);
       <NavSwitcherStates client:load />
     </div>
   </section>
-</PageLayout>
+</LabLayout>

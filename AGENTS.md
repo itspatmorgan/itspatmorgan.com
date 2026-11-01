@@ -1,156 +1,71 @@
 # AGENTS.md
 
-Guidance for Codex, Claude, and other coding agents working in this repository.
-
-## Project Overview
-
-This is Patrick Morgan's personal portfolio and publishing site. See
-`agents/audience.md` for who it is for.
-
-The site should feel warm, minimal, editorial, and professional. Favor
-restrained, content-first design over decorative complexity.
-
-## Start Here
-
-Everything agents need beyond this file lives in [`agents/`](agents/README.md):
-
-- `agents/audience.md`: who the site speaks to, and the bar the work has to clear
-- `agents/principles/`: design and engineering principles, plus the classic
-  principle sets to consult
-- `agents/strategy.md`: purpose, active tracks, and non-goals
-- `agents/system-map.md`: how the website fits together
-- `agents/conventions/`: current architecture, content, styling, asset, and security rules
-- `agents/learnings/`: reusable lessons from completed work
-- `agents/skills/`: repeatable procedures. `.claude/skills` and `.agents/skills`
-  link here, so skills load automatically; add new ones under `agents/skills/`.
-
-## Tech Stack
-
-- Framework: Astro v7, static output
-- Styling: Tailwind CSS v4 through `@tailwindcss/vite`
-- Components: shadcn/ui, base-nova style, configured in `components.json`
-- React: use for stateful UI and isolated Lab experiences that need client interactivity
-- Content: Astro content collections with Zod schemas
-- Fonts: Geist Sans for body text, Geist Mono for labels, metadata, and code
-- Package manager: pnpm 10+
-- Node: v22.23.4+, the minimum Astro supports (Node 24 pinned in `.mise.toml` and `.nvmrc`, and used in CI)
-- Deployment: GitHub Actions builds the site; pushes to `main` publish to Cloudflare Workers (itspatmorgan.com), and pull requests get Cloudflare preview links
+Patrick Morgan's portfolio and publishing site, itspatmorgan.com: a static Astro 7
+site on Cloudflare Workers. The repository is public and is part of the work, so
+treat it as production.
 
 ## Commands
 
 ```bash
-pnpm dev
-pnpm build
-pnpm check
-pnpm check:site
-pnpm test
-pnpm preview
-pnpm sync-writing
-pnpm generate:writing-art
+pnpm dev          # localhost:4321
+pnpm check        # type check
+pnpm test         # script tests and the agent docs check
+pnpm build        # writes dist/ (never edit dist/ by hand)
+pnpm check:site   # after a build: links, titles, descriptions, share images
+pnpm new case-study|lab <slug> "Title"   # start a draft from the site's patterns
+pnpm image <file>  # resize a new image and save it as WebP (share cards stay JPG)
 ```
 
-`pnpm dev` starts Astro at `localhost:4321`. `pnpm build` writes production
-output to `dist/`. `pnpm check` type-checks the TypeScript and Astro files.
-`pnpm check:site` checks a finished build for broken local links and pages
-missing a title, description or share image. `pnpm test` runs the script tests.
+Node 24 and pnpm 10 are pinned in `.mise.toml`.
 
-For the common one-article publishing workflow, prefer targeted writing sync:
+## Before you start
 
-```bash
-pnpm sync-writing -- --title "Article Title" --theme AI --with-art
-```
+- For anything visitors see, read [audience](agents/audience.md) and the
+  [design principles](agents/principles/design.md). For everything else, the
+  [engineering principles](agents/principles/engineering.md).
+- Run `git status`. Build on changes you find; never revert them.
+- If a skill below fits the task, use it. Read the [context](agents/context/)
+  file for the area the task touches.
 
-Use untargeted `pnpm sync-writing` as a maintenance operation when intentionally
-re-syncing all website-ready Obsidian newsletters.
+## Rules for every task
 
-## Workflow
+- No plans, QA notes, screenshots or scratch files in the repository.
+- Use the system before inventing: the showcase and reading page templates,
+  Geist and Geist Mono, the color and motion tokens in `src/styles/global.css`,
+  and the shared scene player.
+- Light and dark, phones at 390px and reduced motion are all first-class.
+- Sentence case. No all-caps labels or eyebrows.
+- Words live in `src/content/`; components place the visuals.
+- Show real product, never stand-ins. Never invent metrics, quotes or dates.
+- No "hire me" or availability language.
+- `@/` imports. Astro by default, React for interactive pieces. Add a library
+  only when it clearly removes more work than it adds.
 
-Use a strategy -> plan -> track -> build -> review -> learn workflow for
-non-trivial work.
+## Done means
 
-Keep implementation plans, QA notes, and scratch files in the conversation or
-agent planning tools. Do not commit them to this repository; treat it as a
-production codebase.
+- `pnpm check`, `pnpm test`, `pnpm build` and `pnpm check:site` pass.
+- A visual change is checked on the PR's preview link in both themes, at 390px
+  and with reduced motion. The review-change skill does this.
+- A change visitors can't see can merge when checks are green. Anything visible
+  waits for Patrick.
+- Before closing, run wrap-up: did the work produce a rule worth keeping?
 
-Use `agents/skills/` when the task is a repeatable agent capability rather
-than a known implementation change. Skills should propose targeted work for
-approval before making broad changes.
+## Skills
 
-At the end of non-trivial work, decide whether to create no durable learning,
-update an existing note, create a new note, update a convention in
-`agents/conventions/`, update `AGENTS.md` because cross-agent guidance changed,
-or update `agents/system-map.md` because the system changed.
+Skills live in `agents/skills/` and load automatically through `.claude/skills`
+and `.agents/skills`.
 
-## Tracking
-
-Work can be tracked through GitHub Issues, the Personal Website project board,
-and the connected Notion Tasks database.
-
-- Issues: `https://github.com/itspatmorgan/itspatmorgan.com/issues`
-- Project board: `https://github.com/users/itspatmorgan/projects/2`
-- Notion Tasks: available for cross-project orchestration and planning
-
-Use labels that reflect the current site and work type when creating issues:
-
-- Where: `home`, `about`, `work`, `writing`, `lab`, `community`, `colophon`, `system`
-- What: `design`, `content`, `infrastructure`, `documentation`, `publishing`, `accessibility`
-
-When completing issue work, use `Closes #N` in the implementation commit message
-when appropriate.
-
-## Repository Map
-
-| Path | Purpose |
+| When the task is | Use |
 | --- | --- |
-| `agents/` | Audience, principles, strategy, system map, conventions, learnings, and skills |
-| `.github/workflows/deploy.yml` | Production deployment to Cloudflare |
-| `.github/workflows/preview.yml` | Cloudflare preview link for each pull request |
-| `.github/actions/build-site/` | Shared build of the website plus the Design Studio demo |
-| `wrangler.jsonc` | Cloudflare Workers static hosting config |
-| `public/images/` | Static image assets |
-| `scripts/` | Publishing, sync, and generation scripts |
-| `src/lab/` | Hosted Lab implementation code for tools, experiments, and interaction demos |
-| `src/visuals/` | Visual library: case study scenes drawn for slides and social posts (dev only, at `/visuals`) |
-| `src/components/` | Astro and React components |
-| `src/components/ui/` | shadcn/ui primitives |
-| `src/content/` | Work, writing, and lab content collections |
-| `src/content.config.ts` | Content collection schemas |
-| `src/data/` | Site config, commendations, and career data |
-| `src/layouts/` | Base, page, case study, and writing layouts |
-| `src/pages/` | Astro routes |
-| `src/styles/global.css` | Tailwind import, CSS tokens, global styles, prose styles |
+| Shaping or rewriting a case study's story and copy | `shape-case-study` |
+| Building or animating a case study demo | `build-case-study-demo` |
+| A live visual for a Work card | `build-project-card` |
+| A case study visual for a slide, social post or other fixed format | `export-visual` |
+| A diagram, illustration or other graphic | `make-brand-graphic` |
+| A 1200x630 share card | `make-share-card` |
+| Publishing an Unknown Arts article | `publish-article` |
+| Checking a change before Patrick sees it, or reviewing an area for cleanup | `review-change` |
+| Finishing a piece of work | `wrap-up` |
 
-Do not edit `dist/` as source. It is generated by `pnpm build`.
-
-## Core Conventions
-
-- Use `@/` imports for source files. The alias maps to `./src/*`.
-- Prefer `.astro` components by default.
-- Use React for stateful UI, client interactivity, and Lab experiences where an
-  isolated interactive surface benefits from React.
-- Query content with `getCollection()` from `astro:content`.
-- Filter drafts before rendering public listings.
-- Use the public terminology in `agents/conventions/content.md`.
-- Follow styling guidance in `agents/conventions/styling.md`.
-
-## Verification
-
-Run the narrowest useful verification for the change:
-
-- `pnpm check` and `pnpm build` for most code, content schema, route, and layout changes
-- `pnpm check:site` after a build that changes routes, links, images or page metadata
-- `pnpm dev` plus browser verification for visual or interactive changes
-- `pnpm sync-writing` followed by `pnpm build` for writing sync changes
-
-## Multi-Agent Coordination
-
-- Check `git status --short` before editing.
-- Do not overwrite or revert user changes unless explicitly asked.
-- If another agent has modified files relevant to the task, read those changes
-  and build on them.
-- Keep edits scoped to the user's request.
-- Avoid broad refactors unless they are necessary for the requested outcome.
-- Prefer existing local patterns over introducing new libraries or abstractions.
-- Update `AGENTS.md` only when durable cross-agent guidance changes.
-- Keep Claude-specific operational notes in `CLAUDE.md`.
-- Keep the top-level `README.md` concise as the public home base.
+How the agent docs are organized, and where a new rule goes:
+[agents/README.md](agents/README.md).

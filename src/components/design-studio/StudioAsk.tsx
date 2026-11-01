@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 import { ArrowUp02Icon, ArrowLeft01Icon, ArrowRight01Icon, Comment01Icon, CursorMagicSelection02Icon, Refresh01Icon, Tick02Icon } from '@hugeicons/core-free-icons';
 import { icon } from '../studio-case/StudioUI';
 import { agentHarnesses } from '../../data/design-studio-setup';
-import { SIDE, StudioWindow, W, useReduced, type Key } from './explore/StudioWindow';
+import { SIDE, StudioWindow, W, type Key } from './explore/StudioWindow';
 import StepBar from './StepBar';
-import { usePhone } from '../case-study/scene';
+import { usePhone, useReduced } from '@/lib/hooks';
 import './studio-hero.css';
 
 // How you work in Design Studio: in the coding agent you already use. On the left, a conversation in that agent; on the right, the
@@ -38,9 +38,16 @@ export default function StudioAsk() {
   const thread = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
   const [playing, setPlaying] = useState(true);
+  // The page opens on the first result, not an empty thread: the first frame a visitor sees shows the Studio at work. It holds
+  // there, then the conversation carries on; after the loop it starts again from an empty thread, as a chat does.
   const [turn, setTurn] = useState(0);
-  const [phase, setPhase] = useState<Phase>('typing');
-  const [typed, setTyped] = useState(0);
+  const [phase, setPhase] = useState<Phase>('done');
+  const [typed, setTyped] = useState(turns[0].ask.length);
+  const [opening, setOpening] = useState(true);
+  // The server renders the Studio at its full desktop size; it scales to the browser pane only once it hydrates. Until then its
+  // content stays hidden, then fades in at the right size, so the first result never jumps in scale on load.
+  const [hydrated, setHydrated] = useState(false);
+  useEffect(() => setHydrated(true), []);
   const [fading, setFading] = useState(false);
   const [cut, setCut] = useState(0);
   // The browser view's size: the Studio scales to its width and stretches its own height to fill it, so nothing is left blank.
@@ -64,7 +71,14 @@ export default function StudioAsk() {
     ro.observe(el);
     return () => ro.disconnect();
   }, [phone]);
-  const goTo = (i: number) => { setTurn(i); setTyped(0); setPhase('typing'); setFading(false); setCut(n => n + 1); };
+  // The camera lands on its first framing without moving, and only pans once that frame has painted.
+  const [settled, setSettled] = useState(false);
+  useEffect(() => {
+    if (!camW || settled) return;
+    const id = requestAnimationFrame(() => requestAnimationFrame(() => setSettled(true)));
+    return () => cancelAnimationFrame(id);
+  }, [camW, settled]);
+  const goTo = (i: number) => { setTurn(i); setTyped(0); setPhase('typing'); setFading(false); setOpening(false); setCut(n => n + 1); };
 
   useEffect(() => {
     const el = ref.current;
@@ -111,7 +125,7 @@ export default function StudioAsk() {
   const k = camW * PHONE_RATIO / PHONE_H;
   const camStyle = phone && camW ? { transform: `scale(${k}) translateX(${onBrowser ? camW / k - PHONE_W : 0}px)` } : undefined;
   return <div className="hx-ask-wrap" ref={ref}>
-  <div className={`hx-cam ${phone && camW ? 'is-ready' : ''}`} ref={cam}>
+  <div className={`hx-cam ${phone && camW ? 'is-ready' : ''} ${settled ? 'is-settled' : ''}`} ref={cam} data-stage>
   <div className={`hx-agent ${fading ? 'is-fading' : ''}`} style={camStyle}>
     <header className="hx-agent-bar">
       <span className="hx-agent-dots" aria-hidden="true"><i /><i /><i /></span>
@@ -141,13 +155,13 @@ export default function StudioAsk() {
           <span className="hx-browser-tools">{icon(CursorMagicSelection02Icon, 15)}{icon(Comment01Icon, 15)}</span>
         </div>
         <div className="hx-browser-view" ref={view}>
-          <StudioWindow shown={shown?.key ?? 'inbox'} fidelity={shown?.lofi ? 0 : 1} min={MIN} side={false} height={size.h / scale} className={`hx-ask-window ${shown ? '' : 'is-empty'}`} />
+          <StudioWindow shown={shown?.key ?? 'inbox'} fidelity={shown?.lofi ? 0 : 1} min={MIN} side={false} height={size.h / scale} className={`hx-ask-window ${shown && hydrated ? '' : 'is-empty'}`} />
         </div>
       </div>
     </div>
   </div>
   </div>
-  <StepBar title="the conversation" steps={steps} current={turn} done={false} playing={playing && visible && !reduced} cut={cut} reduced={reduced}
+  <StepBar title="the conversation" steps={opening ? [{ ...steps[0], ms: HOLD_MS }, ...steps.slice(1)] : steps} current={turn} done={false} playing={playing && visible && !reduced} cut={cut} reduced={reduced}
     onJump={i => { goTo(i); setPlaying(true); }} onToggle={() => setPlaying(p => !p)} />
   </div>;
 }

@@ -5,8 +5,9 @@ import { DemoFrame, useScene } from '../case-study/scene';
 // Two false starts at J1QL syntax (the box only accepted queries), then back to an empty box.
 const attempts = ['FIND User THAT', 'FIND aws_'];
 const frames: { text: string; ms: number }[] = [{ text: '', ms: 1400 }];
-for (const attempt of attempts) {
-  for (let i = 1; i <= attempt.length; i++) frames.push({ text: attempt.slice(0, i), ms: i === attempt.length ? 1300 : 75 });
+// The last guess is the payoff, so it holds long enough to read before it's deleted (agents/context/motion.md, Timing).
+for (const [n, attempt] of attempts.entries()) {
+  for (let i = 1; i <= attempt.length; i++) frames.push({ text: attempt.slice(0, i), ms: i < attempt.length ? 75 : n === attempts.length - 1 ? 2000 : 1300 });
   for (let i = attempt.length - 1; i >= 0; i--) frames.push({ text: attempt.slice(0, i), ms: i ? 28 : 700 });
 }
 const durations = frames.map(f => f.ms);
