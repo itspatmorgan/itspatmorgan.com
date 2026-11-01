@@ -10,6 +10,7 @@ import { GithubIcon, UserIcon, Robot01Icon, ArrowUpRight01Icon, ArrowDown01Icon,
 import Slide from "@/components/case-study/Slide.astro";
 import StudioHero from "@/components/design-studio/StudioHero";
 import StudioAsk from "@/components/design-studio/StudioAsk";
+import StudioRange from "@/components/design-studio/StudioRange";
 import StudioSystems from "@/components/design-studio/StudioSystems";
 import StudioShare from "@/components/design-studio/StudioShare";
 import StudioDocs from "@/components/design-studio/StudioDocs";
@@ -99,6 +100,9 @@ const communityTools = [
       <a class="ds-case-link" href="/work/design-studio">How Sublime’s product team uses it <Icon icon={ArrowRight01Icon} size={14} class="shrink-0" /></a>
     </section>
 
+    <Slide id="why-title" title="The flexibility of a one‑off, the truth of production" line="Design Studio uses your product’s components and rules, so designs look real, and lives in its own repo, so trying ideas stays fast.">
+      <StudioRange client:visible />
+    </Slide>
 
     <Slide id="systems-title" title="Define a system, then build with it" line="A system holds your theme, components and rules. Keep one for each job, like Product and Marketing, sharing your brand but tuned for their audience. Each prototype builds with the one it names, so they never conflict.">
       <StudioSystems client:visible />
