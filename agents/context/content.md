@@ -28,7 +28,11 @@ rename it casually.
 
 Work entries live in `src/content/projects/*.md`. Each live case study has its
 own page, `src/pages/work/<slug>.astro`, which places the visuals; the entry
-holds the words. An entry with no page is a draft and does not render.
+holds the words. An entry with no page does not render. Start a new case study
+with `pnpm new case-study <slug> "Title"`: it writes the entry with
+`draft: true` (hidden from Work and the homepage, and not indexed), the page,
+a product stylesheet and one scene, with a TODO in every placeholder. A test
+fails if a published entry still has a TODO.
 
 Common frontmatter:
 
@@ -85,6 +89,10 @@ Thinking`, or `Creative Practice`. Use `tags` for lower-level metadata.
 ## Lab
 
 Lab entries live in `src/content/lab/*.mdx` and are hosted under `/lab/<slug>`.
+Start one with `pnpm new lab <slug> "Title"`: a draft entry and a page on
+`LabLayout` (back link, title, description and intro), with the experiment
+below it. Give it a live card preview in `src/components/lab/LabPreview.astro`
+before launch.
 
 Common frontmatter:
 

@@ -13,6 +13,7 @@
     "astro": "astro",
     "check": "astro check",
     "check:site": "node scripts/check-site.mjs",
+    "new": "node scripts/new.mjs",
     "test": "node --test 'scripts/*.test.mjs'",
     "sync-writing": "node scripts/sync-writing.mjs",
     "generate:writing-art": "node scripts/generate-writing-art.mjs"

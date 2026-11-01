@@ -12,6 +12,7 @@ pnpm check        # type check
 pnpm test         # script tests and the agent docs check
 pnpm build        # writes dist/ (never edit dist/ by hand)
 pnpm check:site   # after a build: links, titles, descriptions, share images
+pnpm new case-study|lab <slug> "Title"   # start a draft from the site's patterns
 ```
 
 Node 24 and pnpm 10 are pinned in `.mise.toml`.

@@ -1,4 +1,6 @@
 @import "tailwindcss";
+/* Scripts hold templates and messages, not page markup, so their words never become classes. */
+@source not "../../scripts";
 @import "tw-animate-css";
 @import "./ui-utilities.css";
 @import "@fontsource-variable/geist";
