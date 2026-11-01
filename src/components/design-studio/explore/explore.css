@@ -6,7 +6,7 @@
 .dark .dx-window { box-shadow: 0 0 0 1px color-mix(in oklch, var(--foreground) 12%, transparent), 0 24px 48px -24px rgb(0 0 0 / .6); }
 .dx-native { position: absolute; left: 0; top: 0; transform-origin: 0 0; }
 .dx-native .sc-os { border-radius: 0; }
-.dx-pane { height: 100%; animation: dx-in 260ms cubic-bezier(.25, .8, .25, 1); }
+.dx-pane { height: 100%; animation: dx-in 260ms var(--motion-ease-arrival); }
 @keyframes dx-in { from { opacity: 0; } }
 .ss-lofi-layer.is-instant { transition: none; }
 .dx-os .ss-side li.is-pickable { cursor: pointer; border-radius: 6px; }

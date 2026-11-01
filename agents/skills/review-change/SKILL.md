@@ -19,14 +19,26 @@ Read `agents/audience.md`, `agents/principles/design.md` and
 2. **Checks.** Run `pnpm check`, `pnpm test`, `pnpm build` and
    `pnpm check:site`. Save long output to a temporary log and report only
    failures and warnings.
-3. **Look at it.** For anything visible, capture each touched page before
-   (production) and after (the PR preview link, or `pnpm dev`), in light and
-   dark, at desktop (about 1300px) and 390px. Lay them side by side.
-4. **Look at the motion.** For each touched scene or card, run
-   `node scripts/frame-check.mjs --url <page> --slides <ids>` and read the
-   contact sheets against `agents/context/motion.md`: poster frames complete,
-   one change per step, no single-frame snaps, the loop seam, the payoff hold,
-   and phone framing. Check reduced motion lands on the final frame.
+3. **Make the sheets.** With `pnpm dev` running (or the PR preview link as
+   `--after`), run:
+
+   ```bash
+   node scripts/review.mjs --pages /work/<slug>,/design-studio --motion --out /tmp/review
+   ```
+
+   It saves before/after sheets for each page in light and dark at 1300px and
+   390px (demos at their final frame), each scene's first frame beside its
+   resting frame, and frame pairs for possible single-frame snaps. It reports
+   sideways scrolling, clipped text, all-caps text, console errors, blank first
+   frames and snaps. Add `--square` for product pages whose phone visuals share
+   a square frame, and `--scenes 2,4` to limit the motion pass. Production is
+   the default "before"; a new page has none.
+4. **Look at the motion.** Open the sheets and read them against
+   `agents/context/motion.md`: poster frames complete, one change per step, the
+   loop seam, the payoff hold and phone framing. For a camera move or
+   transition that needs a closer look, run
+   `node scripts/frame-check.mjs --url <page> --slides <ids>` for contact sheets
+   every 250ms. The script flags candidates; you decide which are real.
 5. **Read it.** Every headline, line and caption against the copy rules: one
    point, plain and specific, sentence case, one line where the rules say one
    line, no text overflowing its box.
@@ -44,7 +56,8 @@ Read `agents/audience.md`, `agents/principles/design.md` and
    Not verified: states, widths or themes that couldn't be checked
    ```
 
-   Attach the before/after and contact sheets as files outside the repository.
+   Attach the sheets as files outside the repository, and lead with the
+   findings, not the sheets.
 
 ## Mode 2: an area
 
