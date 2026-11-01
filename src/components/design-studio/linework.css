@@ -15,6 +15,10 @@
 /* The rails, on screens wide enough for the column to have margins. */
 @media (min-width: 1136px) {
   .studio-page::before { content: ""; position: absolute; inset: 0; border-left: 1px solid var(--lw); border-right: 1px solid var(--lw); pointer-events: none; }
+  /* The rails run on through the footer to the foot of the page, so the frame doesn't stop short of the last line of content. */
+  main:has(> .studio-page) + footer { padding-top: 0; padding-bottom: 0; }
+  main:has(> .studio-page) + footer > div { position: relative; padding-block: 40px; }
+  main:has(> .studio-page) + footer > div::before { content: ""; position: absolute; inset: 0; border-left: 1px solid color-mix(in oklch, var(--foreground) 9%, transparent); border-right: 1px solid color-mix(in oklch, var(--foreground) 9%, transparent); pointer-events: none; }
 }
 
 /* Even spacing: the same gap above and below every section. The hero has no rule above it, so it keeps its own top space under the
