@@ -27,6 +27,10 @@ The full rules are in `agents/conventions/assets.md` (Share Images). In short:
   own hero screen, real photos, real product UI. Product screens bleed off the
   right and bottom edges. Everything else sits centered in the right region,
   inside the 64px margins.
+- **Product page.** /design-studio is the open source project's own page, so
+  its card is a launch card, not a portfolio card. Render it with
+  `--layout product --title "Design with intent. Build with an agent." --name "Design Studio"
+  --logo /images/studio-case/design-studio-mark.svg --capture http://localhost:4321/design-studio/ --selector ".hx-window"`.
 - **Format.** JPG at `public/images/share/<name>.jpg`, passed to the page's
   layout as its image (`caseStudy.shareImage` for case studies). Writing
   articles use their generated `feature.jpg` instead.

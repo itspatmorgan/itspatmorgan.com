@@ -9,6 +9,9 @@
 // pass --invert to show them dark on the paper, as the case study pages do. --visual is a file under public/; --capture screenshots an
 // element of a running page (start `pnpm dev` or `pnpm preview` first). --bleed runs a product screen off the right and bottom
 // edges at --width px wide (default 900), as case study cards do; otherwise the visual is centered in the right region. Writes public/images/share/<out>.jpg.
+//
+// --layout product is the launch card for a product's own page (only /design-studio today): the logo and --name as a centered
+// wordmark, --title as the tagline under it, a dot field, and the --capture or --visual window rising from the bottom edge. It has no URL or line.
 import { createRequire } from 'node:module';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
@@ -38,7 +41,11 @@ try {
     const page = await browser.newPage({ viewport: { width: 1440, height: 1000 }, deviceScaleFactor: 2 });
     await page.goto(args.capture, { waitUntil: 'networkidle' });
     await page.emulateMedia({ reducedMotion: 'reduce' });
-    const shot = await page.locator(args.selector ?? 'main').first().screenshot();
+    const target = page.locator(args.selector ?? 'main').first();
+    // Islands below the fold hydrate when they scroll into view (client:visible), so bring the element in and let it settle.
+    await target.scrollIntoViewIfNeeded();
+    await page.waitForTimeout(2500);
+    const shot = await target.screenshot();
     visual = `data:image/png;base64,${shot.toString('base64')}`;
     await page.close();
   } else if (args.visual) {
@@ -51,6 +58,18 @@ try {
   const bleed = args.bleed === 'true';
   const bleedWidth = Number(args.width ?? 900);
   const invert = args.invert === 'true';
+  const product = args.layout === 'product';
+
+  const productCard = `
+    .dots { position: absolute; inset: 0; background-image: radial-gradient(oklch(0.17 0.01 60 / 0.16) 1.2px, transparent 1.6px); background-size: 16px 16px;
+      background-position: 8px 8px; -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000, transparent 75%); }
+    .head { position: absolute; top: 58px; left: 0; right: 0; text-align: center; }
+    .wordmark { display: inline-flex; align-items: center; gap: 16px; font-size: 52px; font-weight: 600; letter-spacing: -0.03em; }
+    .wordmark img { width: 52px; height: 52px; ${invert ? 'filter: invert(1);' : ''} }
+    .tagline { margin-top: 14px; font-size: 26px; letter-spacing: -0.01em; color: oklch(0.50 0.01 60); }
+    .window { position: absolute; left: 150px; top: 236px; width: 900px; height: 480px; overflow: hidden; border-radius: 14px; background: oklch(0.98 0.004 80);
+      box-shadow: 0 0 0 1px oklch(0.88 0.008 80), 0 30px 80px oklch(0.15 0.01 60 / 0.12); }
+    .window img { display: block; width: 100%; }`;
 
   const html = `<!doctype html><html><head><style>
     @font-face { font-family: Geist; src: url(${sans}); font-weight: 100 900; }
@@ -67,11 +86,15 @@ try {
     .region img { max-width: 100%; max-height: 100%; }
     .bleed { position: absolute; left: 616px; top: 56px; right: 0; bottom: 0; border-radius: 16px 0 0 0; overflow: hidden; box-shadow: 0 0 0 1px oklch(0.90 0.008 80), 0 20px 50px oklch(0.15 0.01 60 / 0.10); }
     .bleed img { display: block; width: ${bleedWidth}px; max-width: none; }
-  </style></head><body>
+    ${product ? productCard : ''}
+  </style></head><body>${product ? `
+    <div class="dots"></div>
+    <div class="head"><div class="wordmark"><img src="${logo}" alt="">${escape(args.name ?? 'Patrick Morgan')}</div><div class="tagline">${escape(args.title)}</div></div>
+    ${visual ? `<div class="window"><img src="${visual}" alt=""></div>` : ''}` : `
     <div class="lockup"><img src="${logo}" alt="">${escape(args.name ?? 'Patrick Morgan')}</div>
     <div class="copy"><h1>${escape(args.title)}</h1>${args.line ? `<p>${escape(args.line)}</p>` : ''}</div>
     <div class="url">itspatmorgan.com${escape(args.path === '/' ? '' : args.path)}</div>
-    ${visual ? (bleed ? `<div class="bleed"><img src="${visual}" alt=""></div>` : `<div class="region"><img src="${visual}" alt=""></div>`) : ''}
+    ${visual ? (bleed ? `<div class="bleed"><img src="${visual}" alt=""></div>` : `<div class="region"><img src="${visual}" alt=""></div>`) : ''}`}
   </body></html>`;
 
   const card = await browser.newPage({ viewport: { width: 1200, height: 630 } });
