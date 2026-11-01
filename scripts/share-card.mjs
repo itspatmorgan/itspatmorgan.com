@@ -45,6 +45,8 @@ try {
     // Islands below the fold hydrate when they scroll into view (client:visible), so bring the element in and let it settle.
     await target.scrollIntoViewIfNeeded();
     await page.waitForTimeout(2500);
+    // The product card draws the window's corners, ring and shadow itself, so capture the window square and bare.
+    if (args.layout === 'product') await target.evaluate((el) => { el.style.borderRadius = '0'; el.style.boxShadow = 'none'; });
     const shot = await target.screenshot();
     visual = `data:image/png;base64,${shot.toString('base64')}`;
     await page.close();
@@ -67,8 +69,11 @@ try {
     .wordmark { display: inline-flex; align-items: center; gap: 16px; font-size: 52px; font-weight: 600; letter-spacing: -0.03em; }
     .wordmark img { width: 52px; height: 52px; ${invert ? 'filter: invert(1);' : ''} }
     .tagline { margin-top: 14px; font-size: 26px; letter-spacing: -0.01em; color: oklch(0.50 0.01 60); }
-    .window { position: absolute; left: 150px; top: 236px; width: 900px; height: 480px; overflow: hidden; border-radius: 14px; background: oklch(0.98 0.004 80);
-      box-shadow: 0 0 0 1px oklch(0.88 0.008 80), 0 30px 80px oklch(0.15 0.01 60 / 0.12); }
+    /* One hairline ring drawn over the screenshot's edge (so it stays crisp against both paper and UI), then a tight contact
+       shadow and a long soft one, like the page's own Studio windows. */
+    .window { position: absolute; left: 150px; top: 236px; width: 900px; height: 480px; overflow: hidden; border-radius: 14px; background: oklch(0.99 0.003 80);
+      box-shadow: 0 1px 2px oklch(0.15 0.01 60 / 0.06), 0 10px 24px -8px oklch(0.15 0.01 60 / 0.10), 0 40px 80px -28px oklch(0.15 0.01 60 / 0.22); }
+    .window::after { content: ''; position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 0 0 1px oklch(0.15 0.01 60 / 0.11); pointer-events: none; }
     .window img { display: block; width: 100%; }`;
 
   const html = `<!doctype html><html><head><style>
