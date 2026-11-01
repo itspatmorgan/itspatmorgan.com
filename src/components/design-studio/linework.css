@@ -1,9 +1,8 @@
-/* Line work for /design-studio. Each section starts on a hairline rule that fades at its ends, and the two biggest breaks are
-   hatched. All of it is ink at low strength: it gives the sections definition and never competes with them.
+/* Line work for /design-studio, on one motif: dots. Each section starts on a fading row of dots, the hero and Get started carry dot
+   fields, and only the two biggest breaks get the hatched band. All of it is ink at low strength: it gives the sections definition and never competes with them.
    Nothing moves. Every section has the same space above and below, so a rule always sits midway between two sections. */
 .studio-page {
   --lw: color-mix(in oklch, var(--foreground) 9%, transparent);
-  --lw-mark: color-mix(in oklch, var(--foreground) 22%, transparent);
   --rail: 24px; --gap: 72px;
   position: relative;
 }
@@ -16,28 +15,16 @@
 #studio-human > section { position: relative; padding-top: var(--gap); padding-bottom: var(--gap); }
 #studio-human > header.ds-hero { position: relative; padding-top: clamp(56px, 8cqi, 96px); padding-bottom: var(--gap); }
 
-/* A hairline rule at the top of each section, fading out at both ends so it divides the content without boxing the page in.
-   There are no side rails: the site's own navigation already draws a vertical line, and a second one beside it read as doubled. */
+/* Each section starts on a row of dots in the hero's dot pitch, fading out at both ends, so the dividers carry the same dot motif as
+   the hero and Get started. There are no side rails: the site's own navigation already draws a vertical line beside the page. */
 #studio-human > section::before {
-  content: ""; position: absolute; top: 0; left: calc(-1 * var(--rail)); right: calc(-1 * var(--rail)); height: 1px; background: var(--lw); pointer-events: none;
+  content: ""; position: absolute; top: -1px; left: calc(-1 * var(--rail)); right: calc(-1 * var(--rail)); height: 3px; pointer-events: none;
+  background: radial-gradient(circle at 1.5px 1.5px, color-mix(in oklch, var(--foreground) 26%, transparent) 1px, transparent 1.4px) 0 0 / 14px 3px repeat-x;
   -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent); mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent); }
 /* The two biggest breaks, out of the hero and into Get started, are a narrow hatched band, the way a plan hatches a cut wall. */
 #studio-human > header + section::before, #studio-human > #get-started::before {
-  height: 14px; border-top: 1px solid var(--lw); border-bottom: 1px solid var(--lw);
+  top: 0; height: 14px; border-top: 1px solid var(--lw); border-bottom: 1px solid var(--lw);
   background: repeating-linear-gradient(135deg, var(--lw) 0 1px, transparent 1px 7px); }
-
-/* A light mix of dividers, so the rhythm doesn't repeat: most are the plain fading rule, a few are a row of dots in the hero's
-   dot pitch, and a few are a dimension line (a rule across the column with a short tick at each end), the way a drawing marks a
-   measured run. Sections in order: 1 workspace, 2 proof, 3 spectrum, 4 systems, 5 context, 6 share, 7 tools, 8 get started,
-   9 go deeper, 10 creator note. 1 and 8 are hatched, and the hero and Get started carry the dot fields. */
-#studio-human > section:is(:nth-of-type(3), :nth-of-type(7))::before {
-  top: -1px; height: 3px; background: radial-gradient(circle at 1.5px 1.5px, color-mix(in oklch, var(--foreground) 26%, transparent) 1px, transparent 1.4px) 0 0 / 14px 3px repeat-x; }
-#studio-human > section:is(:nth-of-type(5), :nth-of-type(9))::before {
-  top: -3px; left: 0; right: 0; height: 7px; -webkit-mask-image: none; mask-image: none;
-  background:
-    linear-gradient(var(--lw-mark), var(--lw-mark)) 0 0 / 1px 7px no-repeat,
-    linear-gradient(var(--lw-mark), var(--lw-mark)) 100% 0 / 1px 7px no-repeat,
-    linear-gradient(var(--lw), var(--lw)) 0 3px / 100% 1px no-repeat; }
 
 /* Dot fields at the edges of the hero frame the headline without sitting behind any text. */
 #studio-human > header.ds-hero, #studio-human > .ds-start { isolation: isolate; }
