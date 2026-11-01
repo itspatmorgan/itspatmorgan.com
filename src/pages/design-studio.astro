@@ -3,7 +3,7 @@ import PageLayout from "@/layouts/PageLayout.astro";
 import Icon from "@/components/icons/Icon.astro";
 import PixelWaveText from "@/components/PixelWaveText.astro";
 import agentGuide from "@/data/design-studio-agent.txt?raw";
-import { setupGuide, publishingGuide, agentHarnesses, publishingHosts, installationPrompt, publishingPrompt } from "@/data/design-studio-setup";
+import { setupGuide, publishingGuide, agentHarnesses, installationPrompt, publishingPrompt } from "@/data/design-studio-setup";
 import { buttonVariants } from "@/components/ui/button";
 import { siteConfig } from "@/data/site-config";
 import { GithubIcon, UserIcon, Robot01Icon, ArrowUpRight01Icon, ArrowDown01Icon, ArrowRight01Icon, Copy01Icon } from "@hugeicons/core-free-icons";
@@ -150,12 +150,7 @@ const communityTools = [
             <button type="button" hidden data-copy-prompt class={buttonVariants({ className: "h-9 px-4" })} aria-label="Copy Design Studio installation prompt">Copy prompt</button>
             <a href={setupGuide}>Installation guide <Icon icon={ArrowUpRight01Icon} size={14} class="shrink-0" /></a>
           </div>
-          <p class="ds-step-tools" aria-label="Agents that run Design Studio"><span class="ds-step-tools-label">Works with</span>
-            {agentHarnesses.map((item) => (
-              <span><span class="hero-vendor-logo setup-compatibility-logo" style={"--vendor-logo: url(" + item.logo + ")"} aria-hidden="true"></span>{item.title}</span>
-            ))}
-            <span>and more</span>
-          </p>
+          <p class="ds-step-tools">Agents like Claude Code, Codex and Cursor</p>
         </li>
         <li id="publish" class="ds-step" data-prompt-card aria-labelledby="publish-title">
           <h3 id="publish-title"><span class="ds-step-num" aria-hidden="true">2</span>Publish and share</h3>
@@ -167,12 +162,7 @@ const communityTools = [
             <button type="button" hidden data-copy-prompt class={buttonVariants({ className: "h-9 px-4" })} aria-label="Copy Design Studio publishing prompt">Copy prompt</button>
             <a href={publishingGuide}>Publishing guide <Icon icon={ArrowUpRight01Icon} size={14} class="shrink-0" /></a>
           </div>
-          <p class="ds-step-tools" aria-label="Hosts for a published Design Studio"><span class="ds-step-tools-label">Hosts</span>
-            {publishingHosts.map((item) => (
-              <span><span class="hero-vendor-logo setup-compatibility-logo" style={"--vendor-logo: url(" + item.logo + ")"} aria-hidden="true"></span>{item.title}</span>
-            ))}
-            <span>and more</span>
-          </p>
+          <p class="ds-step-tools">Hosts like Cloudflare, Vercel and Netlify</p>
         </li>
       </ol>
       <p class="ds-community">Built something? <a href="https://github.com/itspatmorgan/design-studio/discussions">Share it with the community on GitHub</a>, or tag <a href={siteConfig.social.x}>@itspatmorgan</a> on X.</p>
@@ -281,10 +271,9 @@ const communityTools = [
   .ds-prompt { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; font-size: 14px; line-height: 22px; color: var(--muted-foreground); overflow-wrap: anywhere; }
   .ds-prompt-box.is-open .ds-prompt { display: block; -webkit-line-clamp: unset; }
   .ds-prompt-more { margin-top: 6px; font-size: 13px; font-weight: 500; color: var(--foreground); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: color-mix(in srgb, currentColor 30%, transparent); }
-  .ds-step-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; margin-top: auto; padding-top: 20px; font-size: 13px; color: var(--muted-foreground); }
-  .ds-step-tools > span { display: inline-flex; align-items: center; gap: 6px; }
-  .ds-step-tools .ds-step-tools-label { color: var(--foreground); }
-  .ds-step-tools .setup-compatibility-logo { width: 16px; height: 16px; }
+  .ds-step-tools { margin-top: auto; padding-top: 20px; font-size: 13px; line-height: 20px; color: var(--muted-foreground); white-space: nowrap; }
+  /* One line from 360px up. The narrowest phones let it wrap, balanced, rather than run past the card. */
+  @media (max-width: 359px) { .ds-step-tools { white-space: normal; text-wrap: balance; } }
   .ds-step-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-top: 16px; }
   .ds-step-foot a { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 500; text-decoration: underline; text-underline-offset: 4px; text-decoration-color: color-mix(in srgb, currentColor 35%, transparent); }
   .ds-step-foot a:hover { text-decoration-color: currentColor; }
@@ -336,13 +325,11 @@ const communityTools = [
   /* Below about 340px wide the header has no room for the badge; the brand stays on one line without it. */
   @container studio-page (max-width: 18rem) { .studio-beta { display: none; } }
   .hero-vendor-logo { display: block; width: 1.75rem; height: 1.75rem; flex-shrink: 0; background: currentColor; mask: var(--vendor-logo) center / contain no-repeat; }
-  .setup-compatibility-logo { width: 1.25rem; height: 1.25rem; }
   /* A long URL breaks evenly across lines instead of leaving its hyphen alone on one. */
   .ds-url { overflow-wrap: anywhere; }
   @media (max-width: 640px) {
     .ds-step { padding: 20px; }
     .ds-prompt-box { padding: 12px 14px; }
-    .ds-step-tools { gap: 6px 12px; }
   }
   .creator-portrait-field::before {
     content: "";
