@@ -5,6 +5,10 @@
    0.62), so nothing jumps while the page scrolls; the scaled content fades in once it fits. */
 .hx-window:not(.is-fit) { aspect-ratio: 1120 / 700; min-height: 434px; max-height: 700px; }
 .hx-window .dx-native { transition: opacity 200ms ease; }
+/* Phones: the browse window's camera moves between the artifact pane and a closer look at the sidebar (StudioHero). */
+.hx.is-phone .dx-native { transition: opacity 200ms ease, transform 900ms cubic-bezier(.45, 0, .1, 1); }
+@media (prefers-reduced-motion: reduce) { .hx.is-phone .dx-native { transition: opacity 200ms ease; } }
+@media (max-width: 640px) { .hx > .hx-window:not(.is-fit) { aspect-ratio: 851 / 700; min-height: 0; } }
 .hx-os .ss-side h4 { gap: 8px; }
 .hx-title { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 .hx-os .ss-side li { display: flex; align-items: center; gap: 8px; padding-right: 4px; }

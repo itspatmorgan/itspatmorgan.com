@@ -125,7 +125,7 @@ export function useFit(min: number, max: number, crop: 'start' | 'pane', base = 
   const cropped = fit < min;
   // Skip the sidebar only when the whole of it would leave the view; a partial skip would cut its labels mid-word.
   const x = cropped && crop === 'pane' && base === W && W - width / s >= SIDE ? -SIDE * s : 0;
-  return { ref, s, x, cropped, ready };
+  return { ref, s, x, cropped, ready, width };
 }
 
 /** Echo's tokens for a theme, light or dark, plus its corner radius. */
