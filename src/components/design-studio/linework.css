@@ -1,5 +1,5 @@
 /* Line work for /design-studio, on one motif: dots. Each section starts on a fading row of dots, the hero carries dot
-   fields, and only the two biggest breaks get the hatched band. All of it is ink at low strength: it gives the sections definition and never competes with them.
+   fields, and only the breaks after the hero and before the creator's note get the hatched band. All of it is ink at low strength: it gives the sections definition and never competes with them.
    Nothing moves. Every section has the same space above and below, so a rule always sits midway between two sections. */
 .studio-page {
   --lw: color-mix(in oklch, var(--foreground) 9%, transparent);
@@ -21,8 +21,9 @@
   content: ""; position: absolute; top: -1px; left: calc(-1 * var(--rail)); right: calc(-1 * var(--rail)); height: 3px; pointer-events: none;
   background: radial-gradient(circle at 1.5px 1.5px, color-mix(in oklch, var(--foreground) 26%, transparent) 1px, transparent 1.4px) 0 0 / 14px 3px repeat-x;
   -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent); mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent); }
-/* The two biggest breaks, out of the hero and into Get started, are a narrow hatched band, the way a plan hatches a cut wall. */
-#studio-human > header + section::before, #studio-human > #get-started::before {
+/* The two big breaks, out of the hero and into the creator's note, are a narrow hatched band, the way a plan hatches a cut wall.
+   Everything between them, the main flow of the page, uses the dot rule. */
+#studio-human > header + section::before, #studio-human > .ds-note::before {
   top: 0; height: 14px; border-top: 1px solid var(--lw); border-bottom: 1px solid var(--lw);
   background: repeating-linear-gradient(135deg, var(--lw) 0 1px, transparent 1px 7px); }
 
