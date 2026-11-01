@@ -75,13 +75,20 @@
 .hx-browser .dx-window { border-radius: 0; box-shadow: none; }
 .hx-ask-window .ss-panes { transition: opacity 400ms; }
 .hx-ask-window.is-empty .ss-panes { opacity: 0; }
-/* On narrow screens the chat sits above the browser, inside the same window. */
-@media (max-width: 860px) {
-  .hx-agent { height: 640px; }
-  .hx-agent-body { grid-template-columns: minmax(0, 1fr); grid-template-rows: 280px minmax(0, 1fr); }
-  .hx-chat { border-right: 0; border-bottom: 1px solid var(--border); }
-  .hx-browser-nav { display: none; }
+/* Phones (StudioAsk's camera): the window keeps its desktop layout at 800 x 600 inside a 4:5 frame, and the camera's transform moves
+   between the chat and the browser. The frame carries the window's ring, so the ring stays a hairline at every zoom. */
+@media (max-width: 640px) {
+  .hx-cam { position: relative; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 14px; background: var(--card); box-shadow: 0 0 0 1px color-mix(in oklch, var(--foreground) 10%, transparent), 0 24px 48px -24px rgb(0 0 0 / .22); }
+  .dark .hx-cam { box-shadow: 0 0 0 1px color-mix(in oklch, var(--foreground) 12%, transparent), 0 24px 48px -24px rgb(0 0 0 / .6); }
+  .hx-cam .hx-agent { position: absolute; left: 0; top: 0; width: 800px; height: 600px; border-radius: 0; box-shadow: none; transform-origin: 0 0; opacity: 0; transition: transform 900ms cubic-bezier(.45, 0, .1, 1); }
+  .hx-cam.is-ready .hx-agent { opacity: 1; }
+  /* The frame shows the window at about three quarters size, so the chat's type steps up to read at its desktop size. */
+  .hx-cam .hx-msg { font-size: 18px; line-height: 26px; }
+  .hx-cam .hx-reply { font-size: 17px; line-height: 25px; }
+  .hx-cam .hx-reply code { font-size: 15.5px; line-height: 25px; }
+  .hx-cam .hx-composer p { height: 52px; font-size: 18px; line-height: 26px; }
 }
+@media (max-width: 640px) and (prefers-reduced-motion: reduce) { .hx-cam .hx-agent { transition: none; } }
 
 /* The Studio windows on this page. A screen fills its pane, so the app's background runs to the bottom edge. The rail's mark sits on
    the same line as the sidebar title and the app's top bar (28px down), and the rail's icons center on the column beside its hairline. */

@@ -296,14 +296,15 @@ const communityTools = [
   @media (max-width: 860px) { .ds-start-grid { grid-template-columns: minmax(0, 1fr); max-width: 560px; gap: 12px; } }
   @media (max-width: 760px) { .ds-start-grid { margin-top: 28px; } }
   @media (max-width: 640px) {
-    .ds-actions { flex-wrap: nowrap; gap: 8px; margin-top: 28px; }
+    .ds-actions { flex-wrap: nowrap; gap: 8px; }
     .ds-actions a { height: 40px; padding: 0 14px; font-size: 14px; white-space: nowrap; }
     .ds-try { display: none; }
     .ds-try-short { display: inline; }
     .ds-hero > h1 { font-size: clamp(32px, 9.4vw, 40px); }
-    .ds-hero > p { margin-top: 18px; }
-    .ds-hero-studio { margin-top: 36px; }
-    .ds-hero > .ds-works { gap: 4px 10px; font-size: 13px; }
+    .ds-hero > p { margin-top: 20px; }
+    .ds-actions { margin-top: 32px; }
+    .ds-hero > .ds-works { gap: 6px 12px; margin-top: 28px; font-size: 13px; }
+    .ds-hero-studio { margin-top: 56px; }
   }
   /* Small phones (iPhone SE and narrower): the headline keeps two lines and the two buttons stack at full width inside the gutter. */
   @media (max-width: 374px) {
@@ -327,7 +328,13 @@ const communityTools = [
     .studio-github { width: 2.75rem; justify-content: center; }
     .studio-control-label { display: none; }
     .studio-mode-icon { display: flex; }
-    .studio-header .mode-tab { display: flex; align-items: center; justify-content: center; width: 2.25rem; height: 2.25rem; padding: 0; }
+    .studio-header .mode-tab { display: flex; align-items: center; justify-content: center; width: 1.75rem; height: 1.75rem; padding: 0; }
+    /* The controls match the smaller mark: 28px tabs in a 36px pill, 18px icons, so the row reads at one size. */
+    .studio-header [data-studio-modes] { padding: 3px; }
+    .studio-header .mode-indicator { top: 3px; bottom: 3px; }
+    .studio-header .studio-mode-icon svg { width: 16px; height: 16px; }
+    .studio-github { width: 2.25rem; }
+    .studio-github svg { width: 18px; height: 18px; }
   }
   /* Below about 340px wide the header has no room for the badge; the brand stays on one line without it. */
   @container studio-page (max-width: 18rem) { .studio-beta { display: none; } }
