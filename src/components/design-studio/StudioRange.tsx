@@ -4,6 +4,7 @@ import './studio-shapes.css';
 // Where Design Studio sits, as one spectrum: flexible to explore at one end, true to your product at the other. One-off prototypes
 // hold the flexible end, the production repo (the source of truth) holds the other, and gold guides draw in from both to Design
 // Studio in the middle. Drawn in the site's own line work (a hairline with square handles) and its ink and gold.
+// Phones turn it upright, so every name keeps one line.
 const timings = [1000, 1000, 4600];
 const captions = [
   'One-off prototypes are flexible, but connect to nothing',
@@ -26,9 +27,10 @@ export default function StudioRange() {
       <div className="sp-line">
         <span className="sp-guide is-from-start" data-on={joined || undefined} />
         <span className="sp-guide is-from-end" data-on={joined || undefined} />
-        <div className={`sp-point is-start ${state(0)}`}><i /><b>One-off prototypes</b></div>
-        <div className={`sp-point is-main ${joined ? 'is-lit' : 'is-off'}`}><i /><b>Design Studio</b></div>
-        <div className={`sp-point is-end ${state(1)}`}><i /><b>The production repo</b></div>
+        {/* On phones the spectrum runs top to bottom, and each end's quality sits under its name instead of above the line. */}
+        <div className={`sp-point is-start ${state(0)}`}><i /><span className="sp-label"><b>One-off prototypes</b><small>Flexible to explore</small></span></div>
+        <div className={`sp-point is-main ${joined ? 'is-lit' : 'is-off'}`}><i /><span className="sp-label"><b>Design Studio</b></span></div>
+        <div className={`sp-point is-end ${state(1)}`}><i /><span className="sp-label"><b>The production repo</b><small>True to your product</small></span></div>
       </div>
     </div>
   </DemoFrame>;

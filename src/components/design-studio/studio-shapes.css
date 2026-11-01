@@ -167,6 +167,19 @@
 .ss-editor li { display: grid; grid-template-columns: 56px 1fr; counter-increment: md; white-space: pre-wrap; }
 .ss-editor li::before { content: counter(md); padding-right: 16px; text-align: right; color: var(--os-weak); }
 .ss-editor li > * { min-width: 0; }
+/* Phones: the context section's square frame (every phone visual on this page is square). The toggle sits at the top; the document
+   fills the rest and fades out at its foot. */
+.ss-doc-stage { display: flex; flex-direction: column; aspect-ratio: 1; padding-top: 0; }
+.ss-doc-stage > .cs-stage-bar { flex: none; }
+.ss-doc-stage .ss-doc-phone { flex: 1; min-height: 0; }
+.ss-doc-phone .cs-native-stage { aspect-ratio: auto !important; height: 100%; }
+.ss-doc-phone { position: relative; overflow: hidden; margin-top: 16px; border-radius: 10px; box-shadow: 0 0 0 1px color-mix(in oklch, var(--foreground) 10%, transparent), 0 18px 40px -22px rgb(0 0 0 / .3); }
+.ss-doc-phone::after { content: ""; position: absolute; inset: auto 0 0; height: 48px; background: linear-gradient(rgb(255 255 255 / 0), #fff); pointer-events: none; }
+.dark .ss-doc-phone::after { background: linear-gradient(rgb(31 29 27 / 0), #1f1d1b); }
+.ss-doc-phone .ss-os { width: 440px; height: 600px; border-radius: 0; }
+.ss-doc-phone .ss-doc { padding: 32px 24px 0; }
+.ss-doc-phone .ss-editor header code { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; direction: rtl; text-align: left; }
+.ss-doc-phone .ss-editor li { grid-template-columns: 40px 1fr; }
 .ss-editor li.is-current { background: color-mix(in srgb, var(--os-muted) 80%, var(--os-bg)); }
 .ss-editor li.is-current::before { color: var(--os-fg); }
 .md-h { font-weight: 700; color: var(--md-h); }
@@ -197,6 +210,15 @@
 .sy-proto figcaption { display: flex; justify-content: space-between; gap: 8px; margin-top: 12px; font-size: 15px; line-height: 22px; }
 .sy-proto figcaption b { font-weight: 600; }
 .sy-proto figcaption span { color: var(--sc-ink-weak); }
+/* Phones: the drawing redrawn for a square frame at about 0.6 scale, so its type steps up to read at about the size it has on desktop. */
+.sy-dia.is-phone .sy-system { padding: 20px; }
+.sy-dia.is-phone .sy-system h3 { font-size: 26px; line-height: 32px; }
+.sy-dia.is-phone .sy-path { font-size: 15px; line-height: 22px; }
+.sy-dia.is-phone .sy-tokens { gap: 7px; margin-top: 16px; }
+.sy-dia.is-phone .sy-tokens i { width: 24px; height: 24px; }
+.sy-dia.is-phone .sy-btn { padding: 4px 12px; font-size: 15px; }
+.sy-dia.is-phone .sc-node p.sy-note { margin-top: 14px; font-size: 17px; line-height: 23px; }
+.sy-dia.is-phone .sy-proto figcaption { flex-direction: column; gap: 0; margin-top: 10px; font-size: 18px; line-height: 24px; }
 
 /* The Marketing system's launch page: warm paper, near-black brand, 8px corners, large type. */
 .ss-mk { padding: 0 72px; }
@@ -234,25 +256,42 @@
 .sp-point { position: absolute; top: 0; width: 0; height: 0; z-index: 1; transition: opacity 420ms ease; }
 .sp-point.is-start { left: 0; } .sp-point.is-main { left: 50%; } .sp-point.is-end { left: 100%; }
 .sp-point i { position: absolute; left: -5px; top: -5px; width: 10px; height: 10px; border: 1.5px solid currentColor; background: var(--background); transition: background-color 420ms ease, transform 420ms var(--motion-ease-out); }
-.sp-point b { position: absolute; top: 18px; width: max-content; max-width: 30cqw; font-size: 17px; line-height: 24px; font-weight: 600; }
-.sp-point.is-start b { left: -5px; }
-.sp-point.is-main b { left: 0; transform: translateX(-50%); text-align: center; }
-.sp-point.is-end b { right: -5px; text-align: right; }
+.sp-label { position: absolute; top: 18px; width: max-content; max-width: 30cqw; }
+.sp-label b { display: block; font-size: 17px; line-height: 24px; font-weight: 600; }
+.sp-label small { display: none; font-size: 14px; line-height: 20px; color: var(--muted-foreground); }
+.sp-point.is-start .sp-label { left: -5px; }
+.sp-point.is-main .sp-label { left: 0; transform: translateX(-50%); text-align: center; }
+.sp-point.is-end .sp-label { right: -5px; text-align: right; }
 .sp-point.is-dim { opacity: .42; }
 .sp-point.is-lit i { background: currentColor; }
 .sp-point.is-main i { left: -8px; top: -8px; width: 16px; height: 16px; border-color: var(--accent); background: var(--accent); box-shadow: 0 0 0 5px color-mix(in oklch, var(--accent) 22%, transparent); }
 /* Design Studio lands as the two guides meet it. */
 .sp-point.is-main { transition: opacity 400ms cubic-bezier(.25, .8, .25, 1) 460ms; }
 .sp-point.is-main i { transition: transform 520ms cubic-bezier(.25, .8, .25, 1) 460ms; }
-.sp-point.is-main b { transition: opacity 400ms ease 580ms; }
+.sp-point.is-main .sp-label { transition: opacity 400ms ease 580ms; }
 .sp-point.is-main.is-off { opacity: 0; }
 .sp-point.is-main.is-off i { transform: scale(.4); }
-.sp-point.is-main.is-off b { opacity: 0; }
-.sp-point.is-main.is-off, .sp-point.is-main.is-off i, .sp-point.is-main.is-off b { transition-delay: 0ms; }
+.sp-point.is-main.is-off .sp-label { opacity: 0; }
+.sp-point.is-main.is-off, .sp-point.is-main.is-off i, .sp-point.is-main.is-off .sp-label { transition-delay: 0ms; }
 .sp { container-type: inline-size; }
+/* Phones: the same spectrum stood upright. The line runs down the left of a narrow column, each name sits on one line to its right, and
+   each end's quality moves under its name. The guides draw down from the top and up from the bottom to meet at Design Studio. */
 @media (max-width: 640px) {
-  .sp-end { font-size: 13px; line-height: 18px; }
-  .sp-line { margin-bottom: 84px; }
-  .sp-point b { font-size: 14px; line-height: 19px; max-width: 28cqw; }
+  .sp-stage { display: flex; align-items: center; justify-content: center; aspect-ratio: 1; padding: 24px; }
+  .sp { display: block; width: 186px; margin: 0 0 20px; }
+  .sp-end { display: none; }
+  .sp-line { width: 1px; height: clamp(168px, 52vw, 212px); margin: 0 0 0 8px; }
+  .sp-line::before, .sp-line::after { left: -3px; right: auto; }
+  .sp-line::before { top: -4px; } .sp-line::after { top: auto; bottom: -4px; }
+  .sp-guide { top: auto; left: -1px; width: 0; height: 50%; border-top: 0; border-left: 2px dashed var(--accent); }
+  .sp-guide.is-from-start { top: 0; left: -1px; clip-path: inset(0 0 100% 0); }
+  .sp-guide.is-from-end { bottom: 0; right: auto; left: -1px; clip-path: inset(100% 0 0 0); }
+  .sp-guide[data-on] { clip-path: inset(0); }
+  .sp-point { left: 0 !important; }
+  .sp-point.is-start { top: 0; } .sp-point.is-main { top: 50%; } .sp-point.is-end { top: 100%; }
+  .sp-point.is-start .sp-label, .sp-point.is-main .sp-label, .sp-point.is-end .sp-label { top: 0; left: 26px; right: auto; max-width: none; transform: translateY(-50%); text-align: left; white-space: nowrap; }
+  .sp-point.is-start .sp-label, .sp-point.is-end .sp-label { transform: translateY(-12px); }
+  .sp-label b { font-size: 16px; }
+  .sp-label small { display: block; }
 }
-@media (prefers-reduced-motion: reduce) { .sp-guide, .sp-end, .sp-point, .sp-point i, .sp-point b, .sp-point.is-main, .sp-point.is-main i, .sp-point.is-main b { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .sp-guide, .sp-end, .sp-point, .sp-point i, .sp-point.is-main, .sp-point.is-main i, .sp-point.is-main .sp-label { transition: none; } }

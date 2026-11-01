@@ -4,11 +4,17 @@ import { icon } from '../studio-case/StudioUI';
 import { agentHarnesses } from '../../data/design-studio-setup';
 import { SIDE, StudioWindow, W, useReduced, type Key } from './explore/StudioWindow';
 import StepBar from './StepBar';
+import { usePhone } from '../case-study/scene';
 import './studio-hero.css';
 
 // How you work in Design Studio: in the coding agent you already use. On the left, a conversation in that agent; on the right, the
 // Studio rendering what each message makes. Each request writes or changes a file in the Feedback Inbox sample
 // (src/prototypes/parker/feedback-inbox), and the Studio opens it. The chat is a neutral harness, not any one product's interface.
+//
+// Phones keep the same window, chat beside browser, at a fixed 780 x 520 in a square frame, and pan between the two at one scale: the
+// chat (with the browser's edge beside it) while a request is typed and worked on, then across to the whole browser as the result
+// lands. Stacking the chat over the browser would show a coding agent that no one uses.
+const PHONE_W = 780, PHONE_H = 520, PHONE_RATIO = 1;
 
 type Turn = { ask: string; did: string; file: string; key: Key; lofi?: boolean };
 const MIN = 0.5;
@@ -48,6 +54,16 @@ export default function StudioAsk() {
     return () => ro.disconnect();
   }, []);
   const scale = Math.min(1, Math.max(MIN, size.w / (W - SIDE)));
+  const phone = usePhone();
+  const cam = useRef<HTMLDivElement>(null);
+  const [camW, setCamW] = useState(0);
+  useEffect(() => {
+    const el = cam.current;
+    if (!el || !phone) return;
+    const ro = new ResizeObserver(([e]) => setCamW(e.contentRect.width));
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [phone]);
   const goTo = (i: number) => { setTurn(i); setTyped(0); setPhase('typing'); setFading(false); setCut(n => n + 1); };
 
   useEffect(() => {
@@ -90,9 +106,13 @@ export default function StudioAsk() {
   const shown = shownTurn >= 0 ? turns[shownTurn] : null;
   const sent = turns.slice(0, phase === 'typing' ? turn : turn + 1);
   const draft = phase === 'typing' ? turns[turn].ask.slice(0, typed) : '';
-
+  // The phone camera: the whole window's height, panned to the chat or to the browser pane at the right edge.
+  const onBrowser = reduced || phase === 'done';
+  const k = camW * PHONE_RATIO / PHONE_H;
+  const camStyle = phone && camW ? { transform: `scale(${k}) translateX(${onBrowser ? camW / k - PHONE_W : 0}px)` } : undefined;
   return <div className="hx-ask-wrap" ref={ref}>
-  <div className={`hx-agent ${fading ? 'is-fading' : ''}`}>
+  <div className={`hx-cam ${phone && camW ? 'is-ready' : ''}`} ref={cam}>
+  <div className={`hx-agent ${fading ? 'is-fading' : ''}`} style={camStyle}>
     <header className="hx-agent-bar">
       <span className="hx-agent-dots" aria-hidden="true"><i /><i /><i /></span>
       <span className="hx-agent-name">Your coding agent</span>
@@ -125,6 +145,7 @@ export default function StudioAsk() {
         </div>
       </div>
     </div>
+  </div>
   </div>
   <StepBar title="the conversation" steps={steps} current={turn} done={false} playing={playing && visible && !reduced} cut={cut} reduced={reduced}
     onJump={i => { goTo(i); setPlaying(true); }} onToggle={() => setPlaying(p => !p)} />

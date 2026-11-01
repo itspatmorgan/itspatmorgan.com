@@ -6,7 +6,8 @@ import StepBar from './StepBar';
 
 // Sharing comes down to one thing: a link. You ask your agent to publish, it hands back one address, and that address opens the
 // Studio in anyone's browser. The demo is those three beats and nothing else, in the page's own controls. The Studio is drawn as a
-// wireframe: the point is the link, not what's behind it.
+// wireframe: the point is the link, not what's behind it. Phones show one beat at a time in the same box: the chat with its link,
+// then the browser that link opens, sliding in over it, rather than both stacked into one tall card.
 const ASK = 'Publish the Studio to our site';
 const LINK = 'design.yourteam.com';
 const steps = [
@@ -54,7 +55,7 @@ export default function StudioShare() {
   const shown = reduced ? 2 : step;
   const sent = shown > 0 || typed >= ASK.length;
   return <div ref={ref} className="ps">
-    <div className="ps-stage" role="img" aria-label={`You ask your agent to publish the Studio. It replies with one link, ${LINK}, and your team opens that link in any browser to see the prototypes.`}>
+    <div className={`ps-stage ${shown === 2 ? 'is-opened' : ''}`} role="img" aria-label={`You ask your agent to publish the Studio. It replies with one link, ${LINK}, and your team opens that link in any browser to see the prototypes.`}>
       <div className="ps-chat" aria-hidden="true">
         <div className={`ps-composer ${shown > 0 ? 'is-sent' : ''}`}>
           <p>{shown > 0 ? '' : ASK.slice(0, typed)}{shown === 0 && <i className="ps-caret" />}</p>

@@ -1,6 +1,7 @@
 import { motion, useReducedMotion } from 'motion/react';
 import type { ReactNode } from 'react';
-import { SceneFrame, Screens, useScene, useStage } from '../case-study/scene';
+import { DemoFrame, SceneFrame, Screens, useScene, useStage } from '../case-study/scene';
+import { NativeStage } from '../case-study/NativeStage';
 import { OsRail } from '../studio-case/StudioUI';
 import { Doc, Nav } from './StudioShapes';
 import './studio-shapes.css';
@@ -57,8 +58,21 @@ export default function StudioDocs() {
       <span><b>{v}</b></span>
     </button>)}
   </div>;
+  const label = "The Feedback Inbox's project context in Design Studio, first as a rendered page with the problem, who it's for, working assumptions and open questions, then as the Markdown file behind it in the Studio's source editor";
+  // Phones: the idea is the file, not the Studio around it, so the frame holds only the artifact pane, narrow enough that the page and
+  // its Markdown read at a real size, and the toggle flips between them.
+  if (stage.phone) return <DemoFrame scene={scene} title="the document and its Markdown" label={label} stage="ss-doc-stage">
+    <div className="cs-stage-bar">{bar}</div>
+    <div className="ss-doc-phone">
+      <NativeStage width={440} height={600}>
+        <div className="sc-os ss-os" aria-hidden="true">
+          <div className="ss-panes"><Screens id={views[step]}>{step === 0 ? <Doc /> : <Editor />}</Screens></div>
+        </div>
+      </NativeStage>
+    </div>
+  </DemoFrame>;
   return <SceneFrame scene={scene} stage={stage} bar={bar} title="the document and its Markdown"
-    label="The Feedback Inbox's project context in Design Studio, first as a rendered page with the problem, who it's for, working assumptions and open questions, then as the Markdown file behind it in the Studio's source editor">
+    label={label}>
     <div style={{ position: 'relative', height: stage.box.height }} aria-hidden="true">
       <div className="sc-os ss-os">
         <OsRail on="prototypes" />
