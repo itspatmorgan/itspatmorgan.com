@@ -3,7 +3,7 @@ import CaseStudyLayout from '@/layouts/CaseStudyLayout.astro';
 import Slide from '@/components/case-study/Slide.astro';
 import { getCaseStudy } from '@/lib/case-study';
 import Workspace from '@/components/studio-case/Workspace';
-import Spectrum from '@/components/studio-case/Spectrum';
+import StudioRange from '@/components/design-studio/StudioRange';
 import GalleryGrowth from '@/components/studio-case/GalleryGrowth';
 import RulesMap from '@/components/studio-case/RulesMap';
 import ScopeCheck from '@/components/studio-case/ScopeCheck';
@@ -27,7 +27,7 @@ const { project, slide } = await getCaseStudy('design-studio');
   <Workspace slot="hero" client:load />
 
   <Slide {...slide('bet')}>
-    <Spectrum client:visible />
+    <StudioRange client:visible />
   </Slide>
 
   <Slide {...slide('adoption')}>

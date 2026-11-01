@@ -43,8 +43,8 @@ for related details. This file owns system orientation, not editing rules.
 The Design Studio landing page uses the case-study slide system (`case-study.css`,
 `studio-case.css`) inside the Showcase shell. Its scenes are native recreations of the
 open-source Studio's Feedback Inbox sample and Product system, in
-`src/components/design-studio/` (`StudioShapes`, `StudioSystem`, `StudioDocs`), with
-the `Spectrum` scene shared from the case study. "Try the live demo" links to the
+`src/components/design-studio/` (`StudioHero`, `StudioSystems`, `StudioShare`,
+`StudioDocs`). The case study reuses its `StudioRange` spectrum. "Try the live demo" links to the
 `/design-studio-demo/` build rather than embedding it.
 
 ## Commands
