@@ -3,6 +3,7 @@
    Nothing moves. Every section has the same space above and below, so a rule always sits midway between two sections. */
 .studio-page {
   --lw: color-mix(in oklch, var(--foreground) 9%, transparent);
+  --lw-mark: color-mix(in oklch, var(--foreground) 22%, transparent);
   --rail: 24px; --gap: 72px;
   position: relative;
 }
@@ -25,12 +26,27 @@
   height: 14px; border-top: 1px solid var(--lw); border-bottom: 1px solid var(--lw);
   background: repeating-linear-gradient(135deg, var(--lw) 0 1px, transparent 1px 7px); }
 
+/* A light mix of dividers, so the rhythm doesn't repeat: most are the plain fading rule, a few are a row of dots in the hero's
+   dot pitch, and a few are a dimension line (a rule across the column with a short tick at each end), the way a drawing marks a
+   measured run. Sections in order: 1 workspace, 2 proof, 3 spectrum, 4 systems, 5 context, 6 share, 7 tools, 8 get started,
+   9 go deeper, 10 creator note. 1 and 8 are hatched, and the hero and Get started carry the dot fields. */
+#studio-human > section:is(:nth-of-type(3), :nth-of-type(7))::before {
+  top: -1px; height: 3px; background: radial-gradient(circle at 1.5px 1.5px, color-mix(in oklch, var(--foreground) 26%, transparent) 1px, transparent 1.4px) 0 0 / 14px 3px repeat-x; }
+#studio-human > section:is(:nth-of-type(5), :nth-of-type(9))::before {
+  top: -3px; left: 0; right: 0; height: 7px; -webkit-mask-image: none; mask-image: none;
+  background:
+    linear-gradient(var(--lw-mark), var(--lw-mark)) 0 0 / 1px 7px no-repeat,
+    linear-gradient(var(--lw-mark), var(--lw-mark)) 100% 0 / 1px 7px no-repeat,
+    linear-gradient(var(--lw), var(--lw)) 0 3px / 100% 1px no-repeat; }
+
 /* Dot fields at the edges of the hero frame the headline without sitting behind any text. */
-#studio-human > header.ds-hero { isolation: isolate; }
-.ds-hero > .lw-dots { position: absolute; z-index: -1; left: 50%; top: 0; width: min(100%, 1136px); height: 460px; transform: translateX(-50%); pointer-events: none;
+#studio-human > header.ds-hero, #studio-human > .ds-start { isolation: isolate; }
+.ds-hero > .lw-dots, .ds-start > .lw-dots { position: absolute; z-index: -1; left: 50%; top: 0; width: min(100%, 1136px); height: 460px; transform: translateX(-50%); pointer-events: none;
   background-image: radial-gradient(circle at 1px 1px, color-mix(in oklch, var(--foreground) 24%, transparent) 1px, transparent 1.4px); background-size: 14px 14px;
   -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 9%, transparent 22%, transparent 78%, #000 91%, transparent 100%), linear-gradient(180deg, transparent 0, #000 30%, #000 55%, transparent 100%);
   -webkit-mask-composite: source-in;
   mask-image: linear-gradient(90deg, transparent 0, #000 9%, transparent 22%, transparent 78%, #000 91%, transparent 100%), linear-gradient(180deg, transparent 0, #000 30%, #000 55%, transparent 100%);
   mask-composite: intersect; }
-@media (max-width: 900px) { .ds-hero > .lw-dots { display: none; } }
+/* Get started echoes the hero with a shorter pair of dot fields, so the page opens and closes on the same texture. */
+.ds-start > .lw-dots { top: 14px; height: 200px; }
+@media (max-width: 900px) { .ds-hero > .lw-dots, .ds-start > .lw-dots { display: none; } }
