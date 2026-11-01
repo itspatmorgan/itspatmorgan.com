@@ -85,7 +85,7 @@ const communityTools = [
       <div class="ds-hero-studio"><StudioAsk client:load /></div>
     </header>
 
-    <Slide id="browse-title" title="One surface for you and your agent" line="Context, flows, screens and canvases sit side by side. Your agent builds them, you shape them in the same place, and the prototype carries what the project needs to say.">
+    <Slide id="browse-title" title="One surface for you and your agent" line="Context, flows, screens and canvases sit side by side. Your agent builds them, and you refine them in the same place.">
       <StudioHero client:visible />
     </Slide>
 
@@ -104,23 +104,23 @@ const communityTools = [
       <StudioRange client:visible />
     </Slide>
 
-    <Slide id="systems-title" title="Define a system, then build with it" line="A system holds your theme, components and rules. Keep one for each job, like Product and Marketing, sharing your brand but tuned for their audience. Each prototype builds with the one it names, so they never conflict.">
+    <Slide id="systems-title" title="Define a system, then build with it" line="A system holds your theme, components and rules. Keep one for each job, like Product and Marketing, both on your brand. Each prototype names the system it builds with.">
       <StudioSystems client:visible />
     </Slide>
 
-    <Slide id="context-title" title="Keep the thinking with the work" line="Briefs, decisions and open questions live beside the prototype as Markdown. Your team reads the page, and your agent reads and writes the same file.">
+    <Slide id="context-title" title="Keep the thinking with the work" line="Briefs, decisions and open questions sit beside the prototype as Markdown. Your team reads them on the page, and your agent edits the same files.">
       <StudioDocs client:visible />
     </Slide>
 
     <section class="cs-slide ds-share" aria-labelledby="share-title">
       <h2 id="share-title">Share a lasting link with your team</h2>
-      <p>Your agent publishes the Studio as a static site on your host and hands back one link. Your team opens it in any browser, with nothing to install. <a class="ds-inline-link" href={liveDemo}>See a published Studio <Icon icon={ArrowUpRight01Icon} size={14} class="shrink-0" /></a></p>
+      <p>Your agent publishes the Studio to your host and gives you one link. Your team opens it in any browser, with nothing to install. <a class="ds-inline-link" href={liveDemo}>See a published Studio <Icon icon={ArrowUpRight01Icon} size={14} class="shrink-0" /></a></p>
       <StudioShare client:visible />
     </section>
 
     <section class="cs-slide ds-tools" aria-labelledby="tools-title">
       <h2 id="tools-title">A home for community-built design tools</h2>
-      <p>Design Studio is a community project built to be the base for other people&rsquo;s tools. Add a skill or library someone in the community made, and your agent uses it in every prototype. A few that pair well:</p>
+      <p>Design Studio is a community project, built as a base for other people&rsquo;s tools. Add a skill or library from the community, and your agent uses it in every prototype. A few that pair well:</p>
       <ul class="ds-tools-grid">
         {communityTools.map(tool => <li>
           <a href={tool.href} class="ds-tool">
@@ -138,7 +138,7 @@ const communityTools = [
 
     <section id="get-started" class="cs-slide ds-start" aria-labelledby="setup-title">
       <h2 id="setup-title">Get started with your agent</h2>
-      <p>Two prompts take you from a running Studio on your computer to a link your team can open.</p>
+      <p>Two prompts: one runs the Studio on your computer, the other publishes a link your team can open.</p>
       <ol class="ds-start-grid">
         <li id="install" class="ds-step" data-prompt-card aria-labelledby="install-title">
           <h3 id="install-title"><span class="ds-step-num" aria-hidden="true">1</span>Install and run locally</h3>
@@ -183,7 +183,7 @@ const communityTools = [
 
     <section class="cs-slide ds-learn" aria-labelledby="learn-title">
       <h2 id="learn-title">Go deeper</h2>
-      <p>An interview, a live lesson and an article on why Design Studio exists and how teams work in it.</p>
+      <p>An interview, a live lesson and an article on why Design Studio exists and how teams use it.</p>
       <StudioPress items={learnMore} />
     </section>
 
