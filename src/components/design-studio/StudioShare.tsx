@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { ArrowUp02Icon, ArrowUpRight01Icon, CheckmarkCircle02Icon, SquareLock02Icon } from '@hugeicons/core-free-icons';
 import { icon } from '../studio-case/StudioUI';
-import { useReduced } from './explore/StudioWindow';
+import { StudioWindow, useReduced } from './explore/StudioWindow';
 import StepBar from './StepBar';
 
 // Sharing comes down to one thing: a link. You ask your agent to publish, it hands back one address, and that address opens the
-// Studio in anyone's browser. The demo is those three beats and nothing else, in the page's own controls. The Studio is drawn as a
-// wireframe: the point is the link, not what's behind it. Phones show one beat at a time in the same box: the chat with its link,
+// Studio in anyone's browser. The demo is those three beats and nothing else, in the page's own controls. The link opens the real
+// Studio, the Feedback Inbox sample, at a small scale: the point is the link, but what it opens is the product, never a wireframe. Phones show one beat at a time in the same box: the chat with its link,
 // then the browser that link opens, sliding in over it, rather than both stacked into one tall card.
 const ASK = 'Publish the Studio to our site';
 const LINK = 'design.yourteam.com';
@@ -16,10 +16,6 @@ const steps = [
   { label: 'Your team opens it in any browser', ms: 3800 },
 ];
 
-const Page = () => <div className="ps-page">
-  <i className="ps-side" />
-  <div className="ps-main"><b /><i /><i /><span><i /><i /><i /></span><i /><i /></div>
-</div>;
 
 export default function StudioShare() {
   const reduced = useReduced();
@@ -27,7 +23,9 @@ export default function StudioShare() {
   const [cut, setCut] = useState(0);
   const [playing, setPlaying] = useState(true);
   const [visible, setVisible] = useState(false);
-  const [typed, setTyped] = useState(0);
+  // The first pass opens with the ask already typed, ready to send, so the first frame says what's happening; later passes type it.
+  const [typed, setTyped] = useState(ASK.length);
+  const [opening, setOpening] = useState(true);
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const el = ref.current;
@@ -39,7 +37,7 @@ export default function StudioShare() {
   const running = playing && visible && !reduced;
   // Type the ask during the first beat; later beats show it whole.
   useEffect(() => {
-    if (reduced || step > 0) { setTyped(ASK.length); return; }
+    if (reduced || step > 0 || opening) { setTyped(ASK.length); return; }
     setTyped(0);
   }, [step, cut, reduced]);
   useEffect(() => {
@@ -49,7 +47,7 @@ export default function StudioShare() {
   }, [running, step, typed]);
   useEffect(() => {
     if (!running) return;
-    const t = window.setTimeout(() => { setStep(s => (s + 1) % steps.length); setCut(c => c + 1); }, steps[step].ms);
+    const t = window.setTimeout(() => { setStep(s => (s + 1) % steps.length); setCut(c => c + 1); setOpening(false); }, steps[step].ms);
     return () => window.clearTimeout(t);
   }, [running, step, cut]);
   const shown = reduced ? 2 : step;
@@ -67,10 +65,10 @@ export default function StudioShare() {
       </div>
       <div className={`ps-browser ${shown === 2 ? 'is-open' : ''}`} aria-hidden="true">
         <div className="ps-bar"><span><i /><i /><i /></span><em>{icon(SquareLock02Icon, 12)}{LINK}</em></div>
-        <Page />
+        <StudioWindow shown="inbox" min={0.2} instant className="ps-window" />
       </div>
     </div>
     <StepBar title="sharing" steps={steps} current={shown} done={false} playing={running} cut={cut} reduced={reduced}
-      onJump={i => { setStep(i); setCut(c => c + 1); }} onToggle={() => setPlaying(p => !p)} />
+      onJump={i => { setStep(i); setCut(c => c + 1); setOpening(false); }} onToggle={() => setPlaying(p => !p)} />
   </div>;
 }

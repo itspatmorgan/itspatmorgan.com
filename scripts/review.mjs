@@ -112,7 +112,9 @@ async function audit(page, route, width, theme) {
       const own = [...el.childNodes].some(n => n.nodeType === 3 && n.textContent.trim().length > 1);
       if (!own) continue;
       const s = getComputedStyle(el);
-      if ((s.overflowX !== 'visible' || s.textOverflow === 'ellipsis') && el.scrollWidth > el.clientWidth + 1) clipped.push(label(el));
+      // Inside a demo, an ellipsis is the product's own truncation (a long title in a table row); on the page it hides copy.
+      const truncates = s.textOverflow === 'ellipsis' && !el.closest('.cs-stage, [data-stage], .cs-native');
+      if ((s.overflowX !== 'visible' && s.textOverflow !== 'ellipsis' || truncates) && el.scrollWidth > el.clientWidth + 1) clipped.push(label(el));
       if (s.textTransform === 'uppercase' && /[a-z]/i.test(el.textContent)) caps.push(label(el));
     }
     const stages = [...document.querySelectorAll('.cs-stage, [data-stage]')].filter(visible).map(el => { const r = el.getBoundingClientRect(); return { w: Math.round(r.width), h: Math.round(r.height), at: label(el.closest('section') ?? el) }; });
@@ -171,6 +173,11 @@ async function motion(route, dir) {
 
 /** Scrolls stage `i` to the middle of the viewport and returns a function that screenshots it. */
 async function framer(page, i) {
+  // Scroll the stage in, then wait for its island to hydrate (Astro drops the `ssr` attribute), so the first frame is the
+  // scene's own first frame and the box is measured after any layout the island sets up.
+  await page.evaluate(i => document.querySelectorAll('.cs-stage, [data-stage]')[i].scrollIntoView({ block: 'center' }), i);
+  await page.waitForFunction(i => !document.querySelectorAll('.cs-stage, [data-stage]')[i].closest('astro-island[ssr]'), i, { timeout: 5000 }).catch(() => {});
+  await page.waitForTimeout(400); // let an entrance fade finish; a scene that opens empty still shows as empty
   const box = await page.evaluate(i => {
     const el = document.querySelectorAll('.cs-stage, [data-stage]')[i];
     el.scrollIntoView({ block: 'center' });
