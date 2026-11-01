@@ -124,6 +124,10 @@ Phones are 640px and below. Check every visual at 390px.
   frame, square (1:1) on Design Studio. Fit the content inside with even
   margins, center it optically, and avoid tall modules. Watch for wrapping and
   crowding. Header controls stay in proportion to the logo. Zooms are calm.
+- **Before hydration** the server renders the desktop layout. A visual that
+  switches to its phone layout in a hook holds its phone size in CSS until then,
+  so nothing below it moves, and lands on its first phone framing without a
+  camera move. `review.mjs --motion` shows the frame a phone sees on load.
 
 ## Reduced motion
 
