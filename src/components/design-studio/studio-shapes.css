@@ -233,9 +233,9 @@
 .rg-point span { position: absolute; display: flex; flex-direction: column; width: max-content; max-width: 34cqw; }
 .rg-point.is-right span { left: 16px; top: 0; transform: translateY(-50%); }
 .rg-point.is-left span { right: 16px; top: 0; transform: translateY(-50%); align-items: flex-end; text-align: right; }
-.rg-point.is-below span { left: -5px; top: 16px; }
-.rg-point.is-above span { right: -8px; bottom: 20px; align-items: flex-end; text-align: right; }
-.rg-point b { font-size: 16px; line-height: 22px; font-weight: 600; }
+.rg-point.is-below span { left: -5px; top: 14px; }
+.rg-point.is-above span { right: -8px; bottom: 16px; align-items: flex-end; text-align: right; }
+.rg-point b { font-size: 17px; line-height: 24px; font-weight: 600; }
 .rg-point em { font-size: 14px; line-height: 20px; font-style: normal; color: var(--muted-foreground); }
 .rg-point.is-dim { opacity: .42; }
 .rg-point.is-off { opacity: 0; }

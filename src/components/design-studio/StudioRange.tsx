@@ -3,7 +3,7 @@ import { DemoFrame, useScene } from '../case-study/scene';
 import './studio-shapes.css';
 
 // Where Design Studio sits, as points on a two-by-two: flexibility to explore across, truth to your product up. Each quadrant is
-// named, each point says what it is in plain words (no product names), and Design Studio lands where the line up from one-off
+// named, each point is just its name (the quadrants say the rest; no product names), and Design Studio lands where the line up from one-off
 // prototypes meets the line across from the production repo: the flexibility of one, the truth of the other. Drawn in the site's
 // own line work (hairlines, square marks) and its ink and gold, at real type sizes so it reads on a phone too.
 const timings = [2400, 2400, 4600];
@@ -14,12 +14,12 @@ const captions = [
 ];
 
 // `at` places the label clear of the guide lines: beside the mark, or under or over it.
-type Point = { x: number; y: number; name: string; note: string; at: 'right' | 'left' | 'below' | 'above' };
+type Point = { x: number; y: number; name: string; at: 'right' | 'left' | 'below' | 'above' };
 // Positions in percent of the plot, from the top left.
-const ONE: Point = { x: 80, y: 84, name: 'One-off prototypes', note: 'Quick to make, connected to nothing', at: 'left' };
-const PROD: Point = { x: 16, y: 30, name: 'The production repo', note: 'Built to ship, slow to explore in', at: 'below' };
-const MOCK: Point = { x: 24, y: 56, name: 'Static mockups', note: 'Drawn by hand, out of date fast', at: 'right' };
-const DS: Point = { x: 80, y: 30, name: 'Design Studio', note: 'Your product’s real parts, easy to explore', at: 'above' };
+const ONE: Point = { x: 80, y: 84, name: 'One-off prototypes', at: 'left' };
+const PROD: Point = { x: 16, y: 30, name: 'The production repo', at: 'below' };
+const MOCK: Point = { x: 24, y: 56, name: 'Static mockups', at: 'right' };
+const DS: Point = { x: 80, y: 30, name: 'Design Studio', at: 'above' };
 
 const quadrants = [
   { name: 'True, but rigid', at: 'is-tl' },
@@ -31,7 +31,7 @@ const quadrants = [
 function Mark({ p, state, main = false }: { p: Point; state: string; main?: boolean }) {
   return <div className={`rg-point is-${p.at} ${main ? 'is-main' : ''} ${state}`} style={{ left: `${p.x}%`, top: `${p.y}%` } as CSSProperties}>
     <i />
-    <span><b>{p.name}</b><em>{p.note}</em></span>
+    <span><b>{p.name}</b></span>
   </div>;
 }
 
