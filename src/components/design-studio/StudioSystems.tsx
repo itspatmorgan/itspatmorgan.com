@@ -1,5 +1,5 @@
 import { NativeStage } from '../case-study/NativeStage';
-import { DemoFrame, useScene } from '../case-study/scene';
+import { DemoFrame, usePhone, useScene } from '../case-study/scene';
 import { Inbox, Overview } from './StudioShapes';
 import { themeStyle, useDark, type Theme } from './explore/StudioWindow';
 import './studio-shapes.css';
@@ -16,6 +16,11 @@ const captions = [
   'Marketing pages build with the Marketing system',
   'One brand, two systems for two jobs, and none of them conflict',
 ];
+
+// On a phone the drawing keeps its layout and shows a 720-wide window of it, at full height, so the type stays readable: both
+// systems first, then each system with the prototypes it builds, then both again.
+const PHONE_W = 720;
+const phoneX = [120, 0, 240, 120];
 
 const TW = 272, TH = 170, SCALE = TW / 1120, TOP = 316;
 const protos: { x: number; title: string; system: 'product' | 'marketing'; screen: 'inbox' | 'overview' | 'launch' }[] = [
@@ -54,12 +59,13 @@ export default function StudioSystems() {
   const scene = useScene(timings, captions, { loop: false });
   const step = scene.step;
   const dark = useDark();
+  const phone = usePhone();
   const lit = (s: 'product' | 'marketing') => step === 0 || step === 3 || (s === 'product' ? step === 1 : step === 2);
   const wired = (s: 'product' | 'marketing') => step === 3 || (s === 'product' ? step === 1 : step === 2);
   return <DemoFrame scene={scene} caption={false} stage="sc-plain" title="how systems and prototypes fit together"
     label="Two design systems in Design Studio, Product and Marketing, each in its own folder with its own theme, components and rules. The feedback inbox and overview prototypes build with the Product system; the launch page builds with the Marketing system. Both systems sit side by side without conflicting">
     <div className="cs-demo">
-      <NativeStage width={960} height={570}>
+      <NativeStage width={960} height={570} crop={phone ? { x: scene.reduced ? 120 : phoneX[step] ?? 120, y: 0, width: PHONE_W, height: 570 } : undefined}>
         <div className="sc-dia sy-dia">
           <svg className="sc-line" viewBox="0 0 960 570" aria-hidden="true">
             {protos.map(p => {
