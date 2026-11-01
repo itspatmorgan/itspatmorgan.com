@@ -178,6 +178,8 @@
 .sc .sc-os .ss-editor ol, .sc .sc-os .ss-editor ol *, .sc .sc-os .ss-editor header code { font-family: 'Geist Mono Variable', ui-monospace, monospace; }
 
 /* Systems (StudioSystems.tsx): two system cards wired to the prototypes that build with them. */
+/* The drawing's own highlight is the site's gold; green belongs to Echo, the example brand, and stays inside its screens. */
+.sy-dia { --sc-accent: var(--accent); --sc-accent-soft: color-mix(in oklch, var(--accent) 22%, transparent); }
 .sy-dia .sc-node { transition: opacity 420ms ease, border-color 420ms ease, box-shadow 420ms ease; }
 .sy-dia .is-dim { opacity: .4; }
 .sy-dia .sc-line path.is-draw { stroke-width: 2.5; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 700ms var(--motion-ease-out); }
