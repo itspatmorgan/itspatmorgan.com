@@ -4,7 +4,7 @@ import './studio-shapes.css';
 // Where Design Studio sits, as one spectrum: flexible to explore at one end, true to your product at the other. One-off prototypes
 // hold the flexible end, the production repo (the source of truth) holds the other, and gold guides draw in from both to Design
 // Studio in the middle. Drawn in the site's own line work (a hairline with square handles) and its ink and gold.
-const timings = [2200, 2200, 4600];
+const timings = [1000, 1000, 4600];
 const captions = [
   'One-off prototypes are flexible, but connect to nothing',
   'The production repo is the source of truth, but slow to explore in',
