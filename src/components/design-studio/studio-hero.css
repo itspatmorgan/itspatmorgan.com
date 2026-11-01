@@ -6,7 +6,7 @@
 .hx-window:not(.is-fit) { aspect-ratio: 1120 / 700; min-height: 434px; max-height: 700px; }
 .hx-window .dx-native { transition: opacity 200ms ease; }
 /* Phones: the browse window's camera moves between the artifact pane and a closer look at the sidebar (StudioHero). */
-.hx.is-phone .dx-native { transition: opacity 200ms ease, transform 1200ms cubic-bezier(.65, 0, .35, 1); }
+.hx.is-phone .dx-native { transition: opacity 200ms ease, transform 1200ms var(--motion-ease-in-out); }
 @media (prefers-reduced-motion: reduce) { .hx.is-phone .dx-native { transition: opacity 200ms ease; } }
 @media (max-width: 640px) { .hx > .hx-window:not(.is-fit) { aspect-ratio: 1; min-height: 0; } }
 .hx-os .ss-side h4 { gap: 8px; }
@@ -23,7 +23,7 @@
 .hx-menu {
   position: absolute; z-index: 5; min-width: 200px; padding: 4px; border-radius: 8px; background: var(--os-bg); color: var(--os-fg);
   box-shadow: 0 0 0 1px var(--os-line), 0 10px 28px -6px rgb(0 0 0 / .18), 0 2px 6px rgb(0 0 0 / .06);
-  font-size: 13px; animation: hx-menu 140ms cubic-bezier(.25, .8, .25, 1);
+  font-size: 13px; animation: hx-menu 140ms var(--motion-ease-arrival);
 }
 @keyframes hx-menu { from { opacity: 0; transform: translateY(-4px) scale(.98); } }
 .hx-menu-head { padding: 6px 8px 4px; font-size: 12px; color: var(--os-weak); }
@@ -34,7 +34,7 @@
 .hx-item em { display: flex; color: var(--os-fg); }
 .ss-ed-btn.is-pickable { cursor: pointer; }
 
-.hx-pointer { position: absolute; left: 0; top: 0; z-index: 6; pointer-events: none; opacity: 0; transition: transform 820ms cubic-bezier(.45, 0, .1, 1), opacity 240ms; filter: drop-shadow(0 2px 3px rgb(0 0 0 / .25)); }
+.hx-pointer { position: absolute; left: 0; top: 0; z-index: 6; pointer-events: none; opacity: 0; transition: transform 820ms var(--motion-ease-travel), opacity 240ms; filter: drop-shadow(0 2px 3px rgb(0 0 0 / .25)); }
 .hx-pointer path { fill: #111; stroke: #fff; stroke-width: 1.4; stroke-linejoin: round; transform-origin: 2px 2px; transition: transform 120ms; }
 .hx-pointer.is-shown { opacity: 1; }
 .hx-pointer.is-pressing path { transform: scale(.86); }
@@ -57,9 +57,9 @@
 .hx-chat { display: flex; flex-direction: column; min-height: 0; border-right: 1px solid var(--border); }
 .hx-thread { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 18px; padding: 18px 16px; overflow-y: auto; scrollbar-width: none; transition: opacity 400ms; }
 .hx-thread::-webkit-scrollbar { display: none; }
-.hx-turn { display: flex; flex-direction: column; gap: 10px; animation: dx-in 300ms cubic-bezier(.25, .8, .25, 1); }
+.hx-turn { display: flex; flex-direction: column; gap: 10px; animation: dx-in 300ms var(--motion-ease-arrival); }
 .hx-msg { align-self: flex-end; max-width: 88%; padding: 9px 13px; border-radius: 14px 14px 4px 14px; background: var(--muted); font-size: 14px; line-height: 20px; }
-.hx-reply { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; line-height: 20px; color: var(--muted-foreground); animation: dx-in 300ms cubic-bezier(.25, .8, .25, 1); }
+.hx-reply { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; line-height: 20px; color: var(--muted-foreground); animation: dx-in 300ms var(--motion-ease-arrival); }
 .hx-reply > svg { flex: none; margin-top: 3px; color: oklch(0.6 0.13 160); }
 .hx-reply code { font: 12px/20px 'Geist Mono Variable', ui-monospace, monospace; color: var(--foreground); overflow-wrap: anywhere; }
 .hx-reply.is-working i { flex: none; width: 12px; height: 12px; margin: 4px 1px 0; border-radius: 50%; border: 1.5px solid color-mix(in oklch, var(--foreground) 20%, transparent); border-top-color: var(--foreground); animation: hx-spin 700ms linear infinite; }
@@ -85,7 +85,7 @@
 @media (max-width: 640px) {
   .hx-cam { position: relative; aspect-ratio: 1; overflow: hidden; border-radius: 14px; background: var(--card); box-shadow: 0 0 0 1px color-mix(in oklch, var(--foreground) 10%, transparent), 0 24px 48px -24px rgb(0 0 0 / .22); }
   .dark .hx-cam { box-shadow: 0 0 0 1px color-mix(in oklch, var(--foreground) 12%, transparent), 0 24px 48px -24px rgb(0 0 0 / .6); }
-  .hx-cam .hx-agent { position: absolute; left: 0; top: 0; width: 780px; height: 520px; border-radius: 0; box-shadow: none; transform-origin: 0 0; opacity: 0; transition: transform 900ms cubic-bezier(.45, 0, .1, 1); }
+  .hx-cam .hx-agent { position: absolute; left: 0; top: 0; width: 780px; height: 520px; border-radius: 0; box-shadow: none; transform-origin: 0 0; opacity: 0; transition: transform 900ms var(--motion-ease-travel); }
   .hx-cam.is-ready .hx-agent { opacity: 1; }
   /* The frame shows the window at about three quarters size, so the chat's type steps up to read at its desktop size. */
   .hx-cam .hx-msg { font-size: 18px; line-height: 26px; }
@@ -115,13 +115,13 @@
 .ps-composer.is-sent p::before { content: "Ask for a change"; color: var(--muted-foreground); }
 .ps-caret { display: inline-block; width: 1.5px; height: 15px; margin-left: 1px; vertical-align: -2px; background: var(--foreground); animation: ps-blink 1s steps(1) infinite; }
 @keyframes ps-blink { 50% { opacity: 0; } }
-.ps-ask { margin: 0; animation: dx-in 300ms cubic-bezier(.25, .8, .25, 1); }
-.ps-reply { display: flex; gap: 8px; margin: 4px 0 0; font-size: 14px; line-height: 20px; color: var(--muted-foreground); animation: dx-in 300ms cubic-bezier(.25, .8, .25, 1) 120ms both; }
+.ps-ask { margin: 0; animation: dx-in 300ms var(--motion-ease-arrival); }
+.ps-reply { display: flex; gap: 8px; margin: 4px 0 0; font-size: 14px; line-height: 20px; color: var(--muted-foreground); animation: dx-in 300ms var(--motion-ease-arrival) 120ms both; }
 .ps-reply svg { flex: none; margin-top: 2px; color: oklch(0.6 0.13 160); }
-.ps-link { align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 10px; background: var(--foreground); color: var(--background); font: 500 15px/20px 'Geist Mono Variable', ui-monospace, monospace; animation: dx-in 360ms cubic-bezier(.25, .8, .25, 1) 260ms both; transition: transform 160ms ease; }
+.ps-link { align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 10px; background: var(--foreground); color: var(--background); font: 500 15px/20px 'Geist Mono Variable', ui-monospace, monospace; animation: dx-in 360ms var(--motion-ease-arrival) 260ms both; transition: transform 160ms ease; }
 .ps-link.is-opened { animation: ps-press 360ms ease; }
 @keyframes ps-press { 40% { transform: scale(.95); } }
-.ps-browser { overflow: hidden; border-radius: 10px; background: var(--background); box-shadow: 0 0 0 1px color-mix(in oklch, var(--foreground) 12%, transparent), 0 18px 40px -22px rgb(0 0 0 / .3); opacity: .35; transform: translateY(10px) scale(.98); transition: opacity 500ms ease 150ms, transform 600ms cubic-bezier(.25, .8, .25, 1) 150ms; }
+.ps-browser { overflow: hidden; border-radius: 10px; background: var(--background); box-shadow: 0 0 0 1px color-mix(in oklch, var(--foreground) 12%, transparent), 0 18px 40px -22px rgb(0 0 0 / .3); opacity: .35; transform: translateY(10px) scale(.98); transition: opacity 500ms ease 150ms, transform 600ms var(--motion-ease-arrival) 150ms; }
 .ps-browser.is-open { opacity: 1; transform: none; }
 .ps-bar { display: flex; align-items: center; gap: 12px; height: 36px; padding: 0 12px; border-bottom: 1px solid var(--border); }
 .ps-bar span { display: flex; gap: 5px; }
@@ -143,7 +143,7 @@
   /* One box, one beat: the chat and the browser share a cell, and the browser slides in over the chat as the link opens. */
   .ps-stage { grid-template-columns: minmax(0, 1fr); grid-template-areas: "beat"; min-height: 0; aspect-ratio: 1; padding: 24px 20px; overflow: hidden; }
   .ps-chat, .ps-browser { grid-area: beat; }
-  .ps-chat { justify-content: flex-end; align-self: center; transition: opacity 360ms ease, transform 520ms cubic-bezier(.45, 0, .1, 1); }
+  .ps-chat { justify-content: flex-end; align-self: center; transition: opacity 360ms ease, transform 520ms var(--motion-ease-travel); }
   .ps-browser { align-self: center; opacity: 0; transform: translateX(24px); pointer-events: none; }
   .ps-browser.is-open { opacity: 1; transform: none; }
   .ps-stage.is-opened .ps-chat { opacity: 0; transform: translateX(-24px); }

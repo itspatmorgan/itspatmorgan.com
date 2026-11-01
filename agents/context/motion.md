@@ -9,13 +9,17 @@ check), put it there and keep this file as the reason.
 ## Tokens
 
 Curves and route timings live in `src/styles/global.css`. Use a token instead
-of writing a curve by hand, in CSS and in the scene player.
+of writing a curve by hand. In React, use `EASE` from
+`src/components/case-study/motion.ts`, which mirrors the demo curves (a test
+keeps the two in step).
 
 | Job | Token |
 | --- | --- |
-| Travel: something moving across the stage (camera, pointer, panel) | `--motion-ease-in-out` |
-| Arrival: an entrance or a settle | `--motion-ease-out` |
+| Demos, travel: a camera, pointer or panel moving to a new place | `--motion-ease-travel`, `EASE.travel` |
+| Demos, arrival: something appearing or settling into place | `--motion-ease-arrival`, `EASE.arrival` |
+| Site entrances and settles, including the page fade | `--motion-ease-out` |
 | Quick UI responses, gliding highlights | `--motion-ease-out-quick` |
+| Phone stage pans and other site-level moves | `--motion-ease-in-out` |
 | Small state changes | `--motion-ease-standard` |
 | Route out and in | `--motion-route-out` (90ms), `--motion-route-in` (180ms) |
 
@@ -54,9 +58,12 @@ Case study and Design Studio demos run on the scene player in
 
 ### Timing
 
-- The payoff, the frame that makes the point, holds about 2 seconds.
+- The payoff, the frame that makes the point, holds about 2 seconds
+  (`PAYOFF_HOLD_MS`). It's often but not always the last step, so set it in
+  the scene's timings; the review checks it.
 - The loop seam, from the last frame fading out to the first frame back, takes
-  under 1 second.
+  under 1 second. The scene player fades out for `SEAM_FADE_MS` (240ms), resets
+  and fades back in.
 - Nothing sits still for more than about 3 seconds while playing.
 - No dead pauses. Tune step timings until each beat reads and then moves on.
 
@@ -67,8 +74,9 @@ Case study and Design Studio demos run on the scene player in
 - A zoom frames one whole component with padding, and its crop lands at a
   layout gutter, never mid-word or past the page edge. Skip a zoom that only
   trims edges. A new page arrives at full frame.
-- The pointer travels in a gentle arc, longer moves taking longer. It never
-  covers the words it clicks and rests on empty space between moves.
+- The pointer travels in a gentle upward arc, longer moves taking a little
+  longer (`Pointer` in `scene.tsx` does this). When placing it, never cover the
+  words it clicks, and rest it on empty space between moves.
 - Direct attention with the camera, never with highlight rings or outlines that
   could pass for UI.
 

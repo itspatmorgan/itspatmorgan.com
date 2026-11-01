@@ -109,7 +109,7 @@
 
 /* Lo-fi (modules/view/lofi.css): the same screen in grayscale with handwritten type. */
 .ss-app.is-lofi { filter: grayscale(1); }
-.ss-lofi-layer { position: absolute; inset: 0; opacity: 0; background: var(--e-bg); transition: opacity 450ms cubic-bezier(.25, .8, .25, 1); }
+.ss-lofi-layer { position: absolute; inset: 0; opacity: 0; background: var(--e-bg); transition: opacity 450ms var(--motion-ease-arrival); }
 .ss-lofi-layer.is-shown { opacity: 1; }
 .ss-app.is-lofi, .ss-app.is-lofi * { font-family: 'Comic Neue', 'Comic Sans MS', cursive !important; }
 
@@ -248,7 +248,7 @@
 /* Square handles at the two ends, like the site's other line work. */
 .sp-line::before, .sp-line::after { content: ""; position: absolute; top: -3px; width: 7px; height: 7px; border: 1px solid var(--sp-line); background: var(--background); }
 .sp-line::before { left: -4px; } .sp-line::after { right: -4px; }
-.sp-guide { position: absolute; top: -1px; width: 50%; border-top: 2px dashed var(--accent); transition: clip-path 560ms cubic-bezier(.45, 0, .1, 1); }
+.sp-guide { position: absolute; top: -1px; width: 50%; border-top: 2px dashed var(--accent); transition: clip-path 560ms var(--motion-ease-travel); }
 .sp-guide.is-from-start { left: 0; clip-path: inset(0 100% 0 0); }
 .sp-guide.is-from-end { right: 0; clip-path: inset(0 0 0 100%); }
 .sp-guide[data-on] { clip-path: inset(0); }
@@ -266,8 +266,8 @@
 .sp-point.is-lit i { background: currentColor; }
 .sp-point.is-main i { left: -8px; top: -8px; width: 16px; height: 16px; border-color: var(--accent); background: var(--accent); box-shadow: 0 0 0 5px color-mix(in oklch, var(--accent) 22%, transparent); }
 /* Design Studio lands as the two guides meet it. */
-.sp-point.is-main { transition: opacity 400ms cubic-bezier(.25, .8, .25, 1) 460ms; }
-.sp-point.is-main i { transition: transform 520ms cubic-bezier(.25, .8, .25, 1) 460ms; }
+.sp-point.is-main { transition: opacity 400ms var(--motion-ease-arrival) 460ms; }
+.sp-point.is-main i { transition: transform 520ms var(--motion-ease-arrival) 460ms; }
 .sp-point.is-main .sp-label { transition: opacity 400ms ease 580ms; }
 .sp-point.is-main.is-off { opacity: 0; }
 .sp-point.is-main.is-off i { transform: scale(.4); }

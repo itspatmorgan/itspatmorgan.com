@@ -4,6 +4,7 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { ArrowReloadHorizontalIcon, Cursor01Icon, PauseIcon, PlayIcon } from '@hugeicons/core-free-icons';
 import { useDemoLoop } from './useDemoLoop';
 import { NativeStage, PHONE_ZOOM } from './NativeStage';
+import { EASE, PAYOFF_HOLD_MS, SEAM_FADE_MS, travelTime } from './motion';
 
 // Scene plumbing for case-study demos, first built for the Sublime screens. A scene starts when it scrolls into view. By default it cycles: the last step holds for its
 // time, then the frame fades out and the scene starts again from its first frame, since a flow's last screen rarely tells the whole
@@ -11,6 +12,10 @@ import { NativeStage, PHONE_ZOOM } from './NativeStage';
 
 export function useScene(timings: readonly number[], captions: readonly string[], { loop: cycle = true }: { loop?: boolean } = {}) {
   const loop = useDemoLoop(timings, 0, false, true);
+  // In development, flag a scene with no frame held long enough to read as its payoff (agents/context/motion.md, Timing).
+  useEffect(() => {
+    if (import.meta.env.DEV && Math.max(...timings) < PAYOFF_HOLD_MS) console.warn(`Scene "${captions[captions.length - 1]}": no step holds ${PAYOFF_HOLD_MS}ms for its payoff.`);
+  }, [timings]);
   const [fade, setFade] = useState(false);
   // Each replay is a new take: keying the screen on it remounts it, so entrances and count-ups run again from the start.
   const [take, setTake] = useState(0);
@@ -27,7 +32,7 @@ export function useScene(timings: readonly number[], captions: readonly string[]
   const beat = beats.reduce((current, b, i) => (b.start <= loop.step ? i : current), 0);
   const replay = () => {
     setFade(true);
-    window.setTimeout(() => { loop.replay(); setTake(n => n + 1); setCut(n => n + 1); setFade(false); }, 240);
+    window.setTimeout(() => { loop.replay(); setTake(n => n + 1); setCut(n => n + 1); setFade(false); }, SEAM_FADE_MS);
   };
   // The loop hook stops on the last step; a cycling scene holds it for its time, then restarts with a fade rather than stepping backward.
   const last = timings[timings.length - 1];
@@ -143,7 +148,7 @@ export function SceneTour({ scene, title, caption = true }: { scene: Scene; titl
   return <div className="cs-tour">
     <figcaption className="cs-tour-caption" aria-live={scene.playing && !scene.done ? 'off' : 'polite'}>
       <AnimatePresence mode="popLayout" initial={false}>
-        <motion.span key={scene.beat} initial={{ opacity: 0, y: 4, filter: 'blur(2px)' }} animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }} exit={{ opacity: 0, y: -4, filter: 'blur(2px)' }} transition={{ duration: .26, ease: [.23, 1, .32, 1] }}>{scene.beats[scene.beat]?.caption}</motion.span>
+        <motion.span key={scene.beat} initial={{ opacity: 0, y: 4, filter: 'blur(2px)' }} animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }} exit={{ opacity: 0, y: -4, filter: 'blur(2px)' }} transition={{ duration: .26, ease: EASE.arrival }}>{scene.beats[scene.beat]?.caption}</motion.span>
       </AnimatePresence>
     </figcaption>
     <TourControls scene={scene} label={label} finished={finished} running={running} />
@@ -193,7 +198,7 @@ export function Camera({ view, width, height, children, cameraRef, style, reduce
     const travel = Math.hypot(to.cx - from.cx, to.cy - from.cy) * Math.max(from.s, to.s) + Math.abs(Math.log(to.s / from.s)) * width;
     if (travel < 1) { jump(); return; }
     const controls = animate(0, 1, {
-      duration: Math.min(1.1, .55 + travel / 1800), ease: [.65, 0, .35, 1],
+      duration: travelTime(travel, { min: .55 }), ease: EASE.travel,
       onUpdate: p => { s.set(from.s * Math.pow(to.s / from.s, p)); cx.set(from.cx + (to.cx - from.cx) * p); cy.set(from.cy + (to.cy - from.cy) * p); },
     });
     return () => controls.stop();
@@ -263,8 +268,8 @@ export function useShot(key: string | null, view: View | null): View {
   return held.current?.view ?? HOME;
 }
 
-/** A pointer that moves like a hand: it glides in when it appears, travels on a critically damped spring, dips when it presses, and
- *  keeps its on-screen size whatever the camera does. */
+/** A pointer that moves like a hand: it glides in when it appears, travels in a gentle arc that bows upward (longer moves take a
+ *  little longer and bow a little more), dips when it presses, and keeps its on-screen size whatever the camera does. */
 export function Pointer({ at, visible, pressing = false, reduced = false }: { at: { x: number; y: number } | null; visible: boolean; pressing?: boolean; reduced?: boolean }) {
   const show = visible && !!at && !reduced;
   const camera = useContext(CameraScale);
@@ -275,17 +280,28 @@ export function Pointer({ at, visible, pressing = false, reduced = false }: { at
   const opacity = useMotionValue(0);
   const shown = useRef(false);
   useEffect(() => {
-    const glide = { type: 'spring' as const, bounce: 0, duration: .75 };
     if (!show) { if (shown.current) animate(opacity, 0, { duration: .2 }); shown.current = false; return; }
+    const k = camera?.get() ?? 1;
     if (!shown.current) {
       // Enter from just below and to the right of the target, as if the hand had been resting nearby.
-      const k = camera?.get() ?? 1;
       x.jump(at!.x + 22 / k); y.jump(at!.y + 30 / k);
       animate(opacity, 1, { duration: .25 });
       shown.current = true;
     }
-    const ax = animate(x, at!.x, glide), ay = animate(y, at!.y, glide);
-    return () => { ax.stop(); ay.stop(); };
+    const from = { x: x.get(), y: y.get() }, to = at!;
+    const dx = to.x - from.x, dy = to.y - from.y, distance = Math.hypot(dx, dy);
+    if (distance < 1) { x.jump(to.x); y.jump(to.y); return; }
+    // A quadratic curve through a control point pushed off the straight line, on the upper side, so the hand lifts as it travels.
+    const bow = Math.min(distance * .12, 48 / k);
+    let nx = -dy / distance, ny = dx / distance;
+    if (ny > 0 || (ny === 0 && nx > 0)) { nx = -nx; ny = -ny; }
+    const cx = from.x + dx / 2 + nx * bow, cy = from.y + dy / 2 + ny * bow;
+    // Capped at the old spring's .75s, so a scene's press steps still land after the pointer does.
+    const move = animate(0, 1, {
+      duration: travelTime(distance * k, { min: .35, max: .75, per: 1400 }), ease: EASE.travel,
+      onUpdate: p => { const q = 1 - p; x.set(q * q * from.x + 2 * q * p * cx + p * p * to.x); y.set(q * q * from.y + 2 * q * p * cy + p * p * to.y); },
+    });
+    return () => move.stop();
   }, [show, at?.x, at?.y]);
   return <motion.div className="cs-cursor cs-pointer" aria-hidden="true" style={{ left: 0, top: 0, x, y, opacity }}>
     <motion.div style={{ scale: counter, transformOrigin: '4px 3px' }}>
@@ -327,7 +343,7 @@ export function CountUp({ to, run, duration = 1.1, format = (n: number) => Strin
   useEffect(() => {
     if (reduced) { setValue(to); return; }
     if (!run) { setValue(0); return; }
-    const controls = animate(0, to, { duration, ease: [.23, 1, .32, 1], onUpdate: setValue });
+    const controls = animate(0, to, { duration, ease: EASE.arrival, onUpdate: setValue });
     return () => controls.stop();
   }, [run, to, duration, reduced]);
   return <span style={{ fontVariantNumeric: 'tabular-nums' }}>{format(value)}</span>;
@@ -338,8 +354,8 @@ export function CountUp({ to, run, duration = 1.1, format = (n: number) => Strin
 export function Screens({ id, children }: { id: string; children: ReactNode }) {
   // popLayout lifts the outgoing screen out of the flow, so the two crossfade over each other and the card is never empty.
   return <AnimatePresence mode="popLayout" initial={false}>
-    <motion.div key={id} initial={{ opacity: 0, y: 8, filter: 'blur(3px)' }} animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }} exit={{ opacity: 0, filter: 'blur(2px)', transition: { duration: .3, ease: [.65, 0, .35, 1] } }}
-      transition={{ duration: .45, ease: [.23, 1, .32, 1] }} style={{ background: 'var(--cs-card)' }}>{children}</motion.div>
+    <motion.div key={id} initial={{ opacity: 0, y: 8, filter: 'blur(3px)' }} animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }} exit={{ opacity: 0, filter: 'blur(2px)', transition: { duration: .3, ease: EASE.travel } }}
+      transition={{ duration: .45, ease: EASE.arrival }} style={{ background: 'var(--cs-card)' }}>{children}</motion.div>
   </AnimatePresence>;
 }
 
