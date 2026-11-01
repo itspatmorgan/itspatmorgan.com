@@ -31,6 +31,8 @@
   background:
     linear-gradient(var(--background), var(--background)) 1px 1px / 5px 5px no-repeat, linear-gradient(var(--lw-handle), var(--lw-handle)) 0 0 / 7px 7px no-repeat,
     linear-gradient(var(--background), var(--background)) calc(100% - 1px) 1px / 5px 5px no-repeat, linear-gradient(var(--lw-handle), var(--lw-handle)) 100% 0 / 7px 7px no-repeat; }
+/* The squares sit on the rails, so without rails (narrower screens) they go too; they would otherwise hang past the screen edge. */
+@media (max-width: 1135.98px) { #studio-human > section::after, #studio-human > :last-child > .lw-close::after { content: none; } }
 .lw-close { position: absolute; left: 0; right: 0; bottom: 0; height: 0; }
 
 /* The two biggest breaks, out of the hero and into Get started, are a narrow hatched band, the way a plan hatches a cut wall. */

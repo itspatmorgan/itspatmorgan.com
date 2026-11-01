@@ -1,6 +1,6 @@
 # Design Studio
 
-A prototype sandbox for designers and product managers who build. Create connected prototypes and reusable systems that bring together components, theme, context, and skills. Work with your coding agent, your code, and your context, individually or with a team. Design Studio is open source and built on open file formats you can extend.
+An open-source prototype sandbox for designers and product managers who build with agents. Create connected prototypes and reusable systems that bring together components, theme, context, and skills. Work with your coding agent, your code, and your context, individually or with a team. Design Studio is open source and built on open file formats you can extend.
 
 Product: Design Studio
 Source repository: https://github.com/itspatmorgan/design-studio
@@ -31,6 +31,13 @@ Keep shared product knowledge and design principles in system context. Save the 
 ## Build together
 
 A published link lets people try interactive prototypes and browse artifacts. Share the repository when teammates or engineers need to continue from the code and context. Each contributor builds locally. Team mode scopes source editing; it does not control access to the published viewer.
+
+## Add community tools
+
+Design Studio is a community project, built as a base for other people's design tools. When the person wants one, add the skill or library to their Design Studio so the agent uses it in every prototype. A few that pair well:
+- DialKit by Josh Puckett: live controls for springs, easing, color, and layout. https://www.dialkit.dev/
+- Stageshow by Benji Taylor: a skill for product UI demos, cursor walkthroughs, and feature cards, filmed to check the work. https://benji.org/stageshow
+- Skills for design engineers by Emil Kowalski: build, review, and tune animation, test a UI with worst-case data, and make a web app feel native on a phone. https://emilkowal.ski/skill
 
 ## Work on your own terms
 
@@ -73,7 +80,7 @@ Design Studio can live in the person's own private or company repository. They c
 
 ## Publish for your team
 
-Publishing is optional and separate from installation. The ongoing public demo uses GitHub Pages on itspatmorgan.com. ChatGPT Sites is an optional publishing-workflow demonstration. Teams choose their own host. Design Studio builds a static website for hosting services such as Vercel, Netlify, Cloudflare, or the team's existing static-site host. Help the person choose a host if needed.
+Publishing is optional and separate from installation. Teams choose their own host. Design Studio builds a static website for hosting services such as Vercel, Netlify, Cloudflare, or the team's existing static-site host. Help the person choose a host if needed.
 
 Publishing prompt:
 > Help me publish my Design Studio with [hosting service] so [audience] can explore it. Follow my Design Studio's publishing instructions and guide me through setting up hosting. Review what will be shared and verify the published link.
@@ -88,7 +95,6 @@ https://github.com/itspatmorgan/design-studio/blob/main/src/platform/context/pub
 Share work made with Design Studio and tag Patrick Morgan at https://x.com/itspatmorgan.
 Feedback and contributions: https://github.com/itspatmorgan/design-studio
 Follow Unknown Arts for experiments and ideas about building with agents: https://www.unknownarts.com
-
 
 ## Work in Design Studio
 
