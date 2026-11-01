@@ -39,7 +39,8 @@ function Mark({ p, state, main = false }: { p: Point; state: string; main?: bool
 export default function StudioRange() {
   const scene = useScene(timings, captions, { loop: false });
   const step = scene.step;
-  const joined = step >= 2;
+  // The payoff is the poster: with reduced motion the chart shows its finished state, not the first beat.
+  const joined = step >= 2 || scene.reduced;
   const state = (i: number) => joined ? '' : step === i ? 'is-lit' : 'is-dim';
   return <DemoFrame scene={scene} caption={false} stage="rg-stage" title="where Design Studio sits"
     label="A two-by-two with flexibility to explore across and truth to your product up. Static mockups are rigid and made up. One-off prototypes are flexible but connect to nothing. The production repo is true to the product but slow to explore in. Design Studio sits in the corner none of them reach: true to the product and flexible to explore">
@@ -48,7 +49,7 @@ export default function StudioRange() {
         {quadrants.map(q => <span key={q.at} className={`rg-quad ${q.at} ${q.at === 'is-tr' && !joined ? 'is-dim' : ''}`}>{q.name}</span>)}
         <span className="rg-guide is-up" style={{ left: `${ONE.x}%`, top: `${DS.y}%`, height: `${ONE.y - DS.y}%` }} data-on={joined || undefined} />
         <span className="rg-guide is-across" style={{ left: `${PROD.x}%`, top: `${PROD.y}%`, width: `${DS.x - PROD.x}%` }} data-on={joined || undefined} />
-        <Mark p={MOCK} state="is-dim" />
+        <Mark p={MOCK} state={joined ? '' : 'is-dim'} />
         <Mark p={ONE} state={state(0)} />
         <Mark p={PROD} state={state(1)} />
         <Mark p={DS} state={joined ? 'is-lit' : 'is-off'} main />

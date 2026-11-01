@@ -237,15 +237,24 @@
 .rg-point.is-above span { right: -8px; bottom: 20px; align-items: flex-end; text-align: right; }
 .rg-point b { font-size: 16px; line-height: 22px; font-weight: 600; }
 .rg-point em { font-size: 14px; line-height: 20px; font-style: normal; color: var(--muted-foreground); }
-.rg-point.is-dim { opacity: .38; }
+.rg-point.is-dim { opacity: .42; }
 .rg-point.is-off { opacity: 0; }
 .rg-point.is-lit i { background: currentColor; }
 .rg-point.is-main i { left: -8px; top: -8px; width: 16px; height: 16px; border-color: var(--accent); background: var(--accent); box-shadow: 0 0 0 5px color-mix(in oklch, var(--accent) 22%, transparent); }
+/* The payoff follows its cause: the line up from one-offs draws first, the line across from production 120ms later, both on the
+   travel curve, and Design Studio's mark lands as they arrive, its label a beat after. Dashed lines are revealed by a clip, never
+   scaled, so the dashes keep their size while they draw. */
+.rg-point.is-main { transition: opacity 500ms cubic-bezier(.25, .8, .25, 1) 820ms; }
+.rg-point.is-main i { transition: transform 700ms cubic-bezier(.25, .8, .25, 1) 780ms; }
+.rg-point.is-main span { transition: opacity 500ms ease 960ms; }
 .rg-point.is-main.is-off i { transform: scale(.4); }
-.rg-guide { position: absolute; transition: transform 700ms var(--motion-ease-out); }
-.rg-guide.is-up { border-left: 2px dashed var(--accent); transform: scaleY(0); transform-origin: 50% 100%; }
-.rg-guide.is-across { border-top: 2px dashed var(--accent); transform: scaleX(0); transform-origin: 0 50%; }
-.rg-guide[data-on] { transform: none; }
+.rg-point.is-main.is-off span { opacity: 0; }
+.rg-point.is-main.is-off, .rg-point.is-main.is-off i, .rg-point.is-main.is-off span { transition-delay: 0ms; }
+.rg-guide { position: absolute; transition: clip-path 900ms cubic-bezier(.45, 0, .1, 1); }
+.rg-guide.is-up { border-left: 2px dashed var(--accent); clip-path: inset(100% 0 0 0); }
+.rg-guide.is-across { border-top: 2px dashed var(--accent); clip-path: inset(0 100% 0 0); transition-delay: 120ms; }
+.rg-guide[data-on] { clip-path: inset(0); }
+.rg-guide:not([data-on]) { transition-duration: 0ms; transition-delay: 0ms; }
 @media (max-width: 640px) {
   .rg-plot { aspect-ratio: 4 / 5; }
   .rg-point b { font-size: 14px; line-height: 19px; }
@@ -254,4 +263,4 @@
   .rg-point.is-right span { left: -5px; top: 16px; transform: none; }
   .rg-quad { font-size: 12px; }
 }
-@media (prefers-reduced-motion: reduce) { .rg-guide, .rg-point, .rg-point i, .rg-quad { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .rg-guide, .rg-point, .rg-point i, .rg-point span, .rg-point.is-main, .rg-point.is-main i, .rg-point.is-main span, .rg-quad { transition: none; } }
