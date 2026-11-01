@@ -8,12 +8,15 @@ import { buttonVariants } from "@/components/ui/button";
 import { siteConfig } from "@/data/site-config";
 import { GithubIcon, UserIcon, Robot01Icon, ArrowUpRight01Icon, ArrowDown01Icon, ArrowRight01Icon, Copy01Icon } from "@hugeicons/core-free-icons";
 import Slide from "@/components/case-study/Slide.astro";
-import StudioShapes from "@/components/design-studio/StudioShapes";
-import Spectrum from "@/components/studio-case/Spectrum";
-import StudioSystem from "@/components/design-studio/StudioSystem";
+import StudioHero from "@/components/design-studio/StudioHero";
+import StudioAsk from "@/components/design-studio/StudioAsk";
+import StudioRange from "@/components/design-studio/StudioRange";
+import StudioSystems from "@/components/design-studio/StudioSystems";
+import StudioShare from "@/components/design-studio/StudioShare";
 import StudioDocs from "@/components/design-studio/StudioDocs";
 import "@/components/case-study/case-study.css";
 import "@/components/studio-case/studio-case.css";
+import "@/components/design-studio/linework.css";
 
 const repository = "https://github.com/itspatmorgan/design-studio";
 const liveDemo = "https://itspatmorgan.com/design-studio-demo/";
@@ -23,16 +26,29 @@ import StudioPress from "@/components/studio-case/StudioPress.astro";
 import { mediaFeatures } from "@/data/media";
 // Go deeper: the Dive Club interview, the Maven lesson and Xinran Ma's article, as the case study shows its press.
 const learnMore = mediaFeatures.filter((item) => item.title !== "Design Studio open-source launch");
+
+// Community tools that pair with Design Studio (checked against each project's own page, 2026-10-31).
+const communityTools = [
+  { name: "DialKit", by: "Josh Puckett", does: "Live controls beside your interface for springs, easing, color and layout, so you tune a screen by feel and keep the values.", image: "https://dialkit.dev/og.png", href: "https://www.dialkit.dev/" },
+  { name: "Stageshow", by: "Benji Taylor", does: "A skill that has your agent build product UI demos, cursor walkthroughs and feature cards, then film them to check its work.", image: "https://benji.org/media/stageshow/og.png", href: "https://benji.org/stageshow" },
+  { name: "Skills for design engineers", by: "Emil Kowalski", does: "Skills to build, review and tune animation, test a UI with worst-case data, and make a web app feel native on a phone.", image: "https://emilkowal.ski/skill/opengraph-image.jpg", href: "https://emilkowal.ski/skill" },
+];
 ---
 
 <PageLayout template="showcase" title="Design Studio: Design with intent. Build with an agent." description="Design Studio is an open source, AI prototype sandbox for designers and product managers who build." image="/images/share/design-studio.jpg">
   <div class="studio-page mx-auto w-full max-w-[1136px] px-6 sm:px-8 lg:px-14">
     <header class="studio-header flex items-center justify-between gap-6 pt-9 sm:pt-12">
       <a href="/design-studio" class="studio-brand flex shrink-0 items-center gap-3 font-medium tracking-tight" aria-label="Design Studio home — public beta, under active development">
-        <svg width="27" height="26" viewBox="12.48 12 25.03 24" fill="currentColor" aria-hidden="true"><path d="M21.3943 12H12.48V36H21.3943V12Z" /><path d="M23.7944 12H25.5087C28.6913 12 31.7436 13.2643 33.994 15.5147C36.2444 17.7652 37.5087 20.8174 37.5087 24C37.5087 27.1826 36.2444 30.2348 33.994 32.4853C31.7436 34.7357 28.6913 36 25.5087 36H23.7944V12Z" /></svg>
-        <span class="studio-brand-label flex items-center gap-2">
+        <svg viewBox="0 0 30 30" class="studio-mark text-foreground" aria-hidden="true">
+          <rect x=".5" y=".5" width="29" height="29" rx="7" fill="var(--background)" stroke="var(--border)" />
+          <g transform="translate(8.3 8) scale(.6)" fill="currentColor">
+            <path d="M8.914 0H0V24H8.914V0Z" />
+            <path d="M11.314 0H13.029C16.211 0 19.264 1.264 21.514 3.515C23.764 5.765 25.029 8.817 25.029 12C25.029 15.183 23.764 18.235 21.514 20.485C19.264 22.736 16.211 24 13.029 24H11.314V0Z" />
+          </g>
+        </svg>
+        <span class="studio-brand-label flex items-center gap-2 whitespace-nowrap">
           <span class="studio-brand-name text-lg">Design Studio</span>
-          <span class="rounded-full border border-border bg-muted px-2 py-0.5 font-mono text-xs leading-tight tracking-wide text-muted-foreground" title="Public beta · Under active development">Beta</span>
+          <span class="studio-beta rounded-full border border-border bg-muted px-2 py-0.5 font-mono text-xs leading-tight tracking-wide text-muted-foreground" title="Public beta · Under active development">Beta</span>
         </span>
       </a>
       <div class="studio-header-controls ml-auto flex shrink-0 items-center gap-4 sm:gap-6">
@@ -50,96 +66,125 @@ const learnMore = mediaFeatures.filter((item) => item.title !== "Design Studio o
 
     <div id="studio-human" data-studio-panel="human" class="cs-page sc ds-landing">
     <header class="cs-slide cs-hero ds-hero" aria-labelledby="studio-title">
+      <span class="lw-dots" aria-hidden="true"></span>
       <h1 id="studio-title"><PixelWaveText text="Design with intent." wave="studio-headline" initialSans /><br /><PixelWaveText text="Build with an agent." wave="studio-headline" initialSans /></h1>
-      <p>Design Studio is an open source, AI prototype sandbox for designers and product managers who build.</p>
+      {/* Like the home hero: start in pixel type before the first paint on the first visit of a session, so the dissolve below never flashes sans first. */}
+      <script is:inline>
+        (() => { try { if (!sessionStorage.getItem("studioWaveSeen") && !matchMedia("(prefers-reduced-motion: reduce)").matches) { document.documentElement.classList.add("pw-intro"); setTimeout(() => document.documentElement.classList.remove("pw-intro"), 3000); } } catch {} })();
+      </script>
+      <p>An open-source prototype sandbox for designers and product managers who build with agents.</p>
       <div class="sc-next ds-actions">
         <a href="#get-started" class="is-primary" data-copy-text={installationPrompt} data-copy-label="Copy setup prompt" data-copy-done="Copied. Paste it into your agent"><Icon icon={Copy01Icon} size={16} class="shrink-0" /><span data-copy-face>Copy setup prompt</span></a>
-        <a href={liveDemo}>Try the live demo <Icon icon={ArrowUpRight01Icon} size={14} class="shrink-0" /></a>
+        <a href={liveDemo}><span class="ds-try">Try the live demo</span><span class="ds-try-short">Live demo</span> <Icon icon={ArrowUpRight01Icon} size={14} class="shrink-0" /></a>
       </div>
-      <div class="ds-works">
-        <span class="ds-works-row">Paste it into
-          {agentHarnesses.map((harness) => (
-            <span class="ds-harness"><span class="hero-vendor-logo ds-logo" style={"--vendor-logo: url(" + harness.logo + ")"} aria-hidden="true"></span>{harness.title}</span>
-          ))}
-        </span>
-        <span class="ds-works-line">Or point your agent at <a href="/design-studio/agent.txt">itspatmorgan.com/design-studio/agent.txt</a></span>
-      </div>
-      <StudioShapes client:load />
+      <p class="ds-works">Works with
+        {agentHarnesses.map((harness) => (
+          <span class="ds-harness"><span class="hero-vendor-logo ds-logo" style={"--vendor-logo: url(" + harness.logo + ")"} aria-hidden="true"></span>{harness.title}</span>
+        ))}
+      </p>
+      <div class="ds-hero-studio"><StudioAsk client:load /></div>
     </header>
 
+    <Slide id="browse-title" title="One workspace for you and your agent" line="Context, flows, screens and canvases sit side by side. Your agent builds them, and you refine them in the same place.">
+      <StudioHero client:visible />
+    </Slide>
+
     <section class="cs-slide ds-proof" aria-label="Who uses Design Studio">
-      <figure class="sc-quote">
+      <figure class="ds-quote">
         <blockquote>“We have essentially replaced Figma with this at Sublime.”</blockquote>
-        <figcaption>Joe Salowitz, Product Designer at Sublime, <a href="https://x.com/JoeSalowitz/status/2114915923283120187" target="_blank" rel="noopener noreferrer">on X</a></figcaption>
+        <figcaption>
+          <img class="ds-quote-face" src="/images/profiles/joe.avif" alt="" width="40" height="40" loading="lazy" decoding="async" />
+          <span><b>Joe Salowitz</b><span>Product Designer at Sublime, <a href="https://x.com/JoeSalowitz/status/2114915923283120187" target="_blank" rel="noopener noreferrer">on X</a></span></span>
+        </figcaption>
       </figure>
       <a class="ds-case-link" href="/work/design-studio">How Sublime’s product team uses it <Icon icon={ArrowRight01Icon} size={14} class="shrink-0" /></a>
     </section>
 
-    <Slide id="why-title" title="Between a one‑off prototype and the production repo" line="Design Studio uses your product’s components and rules, so designs look real, and lives in its own repo, so trying ideas stays fast.">
-      <Spectrum client:visible />
+    <Slide id="why-title" title="The flexibility of a one‑off, the truth of production" line="Design Studio builds with your product’s real components, so designs look true. It lives in its own repo, so you can explore freely.">
+      <StudioRange client:visible />
     </Slide>
 
-    <Slide id="systems-title" title="Your design system, ready for your agent" line="Bring your theme, components, context and skills. Every component is documented with live examples, so your agent builds with the real thing.">
-      <StudioSystem client:visible />
+    <Slide id="systems-title" title="Define a system, then build with it" line="A system holds your theme, components and rules. Keep one for each job, like Product and Marketing, both on your brand. Each prototype names the system it builds with.">
+      <StudioSystems client:visible />
     </Slide>
 
-    <Slide id="context-title" title="Keep the thinking with the work" line="Briefs, decisions and open questions live beside the prototype as Markdown. Your team reads the page, and your agent reads and writes the same file.">
+    <Slide id="context-title" title="Keep the thinking with the work" line="Briefs, decisions and open questions sit beside the prototype as Markdown. Your team reads them on the page, and your agent edits the same files.">
       <StudioDocs client:visible />
     </Slide>
 
     <section class="cs-slide ds-share" aria-labelledby="share-title">
       <h2 id="share-title">Share a lasting link with your team</h2>
-      <p>Publish Design Studio as a static website on Vercel, Netlify, Cloudflare or another host. Keep editing locally, and publish updates to the same link.</p>
-      <div class="ds-share-grid">
-        <div><h3>Publish a website</h3><p>Your team explores the prototypes and the thinking behind them in the browser, with nothing to install.</p><a href={liveDemo}>Explore a published Studio <Icon icon={ArrowUpRight01Icon} size={14} class="shrink-0" /></a></div>
-        <div><h3>Start in Personal mode</h3><p>Explore on your own, with full control of your prototypes, systems and settings.</p></div>
-        <div><h3>Grow into Team mode</h3><p>Contributors edit their own prototypes. Admins manage access and assign maintainers for shared systems.</p></div>
-      </div>
+      <p>Your agent publishes the Studio to your host and gives you one link. Your team opens it in any browser, with nothing to install. <a class="ds-inline-link" href={liveDemo}>See a published Studio <Icon icon={ArrowUpRight01Icon} size={14} class="shrink-0" /></a></p>
+      <StudioShare client:visible />
     </section>
 
-    <section class="cs-slide ds-learn" aria-labelledby="learn-title">
-      <h2 id="learn-title">Go deeper</h2>
-      <p>An interview, a live lesson and an article on why Design Studio exists and how teams work in it.</p>
-      <StudioPress items={learnMore} />
+    <section class="cs-slide ds-tools" aria-labelledby="tools-title">
+      <h2 id="tools-title">A home for community-built design tools</h2>
+      <p>Design Studio is a community project, built as a base for other people&rsquo;s tools. Add a skill or library from the community, and your agent uses it in every prototype. A few that pair well:</p>
+      <ul class="ds-tools-grid">
+        {communityTools.map(tool => <li>
+          <a href={tool.href} class="ds-tool">
+            <span class="ds-tool-art"><img src={tool.image} alt="" loading="lazy" decoding="async" /></span>
+            <span class="ds-tool-text">
+              <span class="ds-tool-name">{tool.name} <Icon icon={ArrowUpRight01Icon} size={14} class="shrink-0" /></span>
+              <span class="ds-tool-by">{tool.by}</span>
+              <span class="ds-tool-does">{tool.does}</span>
+            </span>
+          </a>
+        </li>)}
+      </ul>
     </section>
+
 
     <section id="get-started" class="cs-slide ds-start" aria-labelledby="setup-title">
       <h2 id="setup-title">Get started with your agent</h2>
-      <p>Paste a prompt into your coding agent. It installs Design Studio and opens the preview, then helps you publish when you’re ready to share.</p>
-      <div class="ds-start-grid">
-        <section id="install" class="ds-step" data-prompt-card aria-labelledby="install-title">
-          <h3 id="install-title">Install and run locally</h3>
-          <p class="ds-step-line">Use the agent harness you already use.</p>
-          <p class="ds-prompt texture-bg" data-setup-prompt>{installationPrompt.split(/(https:\/\/\S+?)(?=[.,]?(?:\s|$))/).map((part, i) => i % 2 ? <span class="ds-url">{part.split(/(?<=\/)/).map((seg, j) => <Fragment>{j > 0 && <wbr />}{seg}</Fragment>)}</span> : part)}</p>
-          <div class="ds-step-tools" aria-label="Example agent harnesses for Design Studio">
+      <p>Two prompts: one runs the Studio on your computer, the other publishes a link your team can open.</p>
+      <ol class="ds-start-grid">
+        <li id="install" class="ds-step" data-prompt-card aria-labelledby="install-title">
+          <h3 id="install-title"><span class="ds-step-num" aria-hidden="true">1</span>Install and run locally</h3>
+          <p class="ds-step-line">Paste into your agent to install and open the preview.</p>
+          <div class="ds-prompt-box">
+            <p class="ds-prompt" data-setup-prompt>{installationPrompt.split(/(https:\/\/\S+?)(?=[.,]?(?:\s|$))/).map((part, i) => i % 2 ? <span class="ds-url">{part.split(/(?<=\/)/).map((seg, j) => <Fragment>{j > 0 && <wbr />}{seg}</Fragment>)}</span> : part)}</p>
+            <button type="button" hidden class="ds-prompt-more" data-prompt-more aria-expanded="false">Show full prompt</button>
+          </div>
+          <div class="ds-step-foot">
+            <button type="button" hidden data-copy-prompt class={buttonVariants({ className: "h-9 px-4" })} aria-label="Copy Design Studio installation prompt">Copy prompt</button>
+            <a href={setupGuide}>Installation guide <Icon icon={ArrowUpRight01Icon} size={14} class="shrink-0" /></a>
+          </div>
+          <p class="ds-step-tools" aria-label="Agents that run Design Studio"><span class="ds-step-tools-label">Works with</span>
             {agentHarnesses.map((item) => (
               <span><span class="hero-vendor-logo setup-compatibility-logo" style={"--vendor-logo: url(" + item.logo + ")"} aria-hidden="true"></span>{item.title}</span>
             ))}
             <span>and more</span>
+          </p>
+        </li>
+        <li id="publish" class="ds-step" data-prompt-card aria-labelledby="publish-title">
+          <h3 id="publish-title"><span class="ds-step-num" aria-hidden="true">2</span>Publish and share</h3>
+          <p class="ds-step-line">When you’re ready, paste this to publish a shareable link.</p>
+          <div class="ds-prompt-box">
+            <p class="ds-prompt" data-setup-prompt>{publishingPrompt}</p>
+            <button type="button" hidden class="ds-prompt-more" data-prompt-more aria-expanded="false">Show full prompt</button>
           </div>
           <div class="ds-step-foot">
-            <button type="button" hidden data-copy-prompt class={buttonVariants({ className: "h-9 px-4" })} aria-label="Copy Design Studio installation prompt">Copy installation prompt</button>
-            <a href={setupGuide}>Full installation guide <Icon icon={ArrowUpRight01Icon} size={14} class="shrink-0" /></a>
+            <button type="button" hidden data-copy-prompt class={buttonVariants({ className: "h-9 px-4" })} aria-label="Copy Design Studio publishing prompt">Copy prompt</button>
+            <a href={publishingGuide}>Publishing guide <Icon icon={ArrowUpRight01Icon} size={14} class="shrink-0" /></a>
           </div>
-        </section>
-        <section id="publish" class="ds-step" data-prompt-card aria-labelledby="publish-title">
-          <h3 id="publish-title">Publish and share</h3>
-          <p class="ds-step-line">Publish a static website on the host you choose.</p>
-          <p class="ds-prompt texture-bg" data-setup-prompt>{publishingPrompt}</p>
-          <div class="ds-step-tools" aria-label="Example hosting services for Design Studio">
+          <p class="ds-step-tools" aria-label="Hosts for a published Design Studio"><span class="ds-step-tools-label">Hosts</span>
             {publishingHosts.map((item) => (
               <span><span class="hero-vendor-logo setup-compatibility-logo" style={"--vendor-logo: url(" + item.logo + ")"} aria-hidden="true"></span>{item.title}</span>
             ))}
             <span>and more</span>
-          </div>
-          <div class="ds-step-foot">
-            <button type="button" hidden data-copy-prompt class={buttonVariants({ className: "h-9 px-4" })} aria-label="Copy Design Studio publishing prompt">Copy publishing prompt</button>
-            <a href={publishingGuide}>Full publishing guide <Icon icon={ArrowUpRight01Icon} size={14} class="shrink-0" /></a>
-          </div>
-        </section>
-      </div>
+          </p>
+        </li>
+      </ol>
       <p class="ds-community">Built something? <a href="https://github.com/itspatmorgan/design-studio/discussions">Share it with the community on GitHub</a>, or tag <a href={siteConfig.social.x}>@itspatmorgan</a> on X.</p>
       <p class="sr-only" data-copy-status role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="cs-slide ds-learn" aria-labelledby="learn-title">
+      <h2 id="learn-title">Go deeper</h2>
+      <p>An interview, a live lesson and an article on why Design Studio exists and how teams use it.</p>
+      <StudioPress items={learnMore} />
     </section>
 
     <section class="ds-note" aria-labelledby="about-studio-title">
@@ -189,65 +234,94 @@ const learnMore = mediaFeatures.filter((item) => item.title !== "Design Studio o
   .studio-page { container: studio-page / inline-size; }
   /* The landing page shares the case studies' slide rhythm and stages (case-study.css), inside the Showcase shell. */
   .ds-landing.cs-page { max-width: none; margin: 0; padding: 0; }
-  .ds-hero { padding-top: clamp(56px, 8cqi, 96px); }
   .ds-hero > h1 { max-width: none; font-size: clamp(40px, 5.6cqi, 68px); line-height: 1.02; }
   .ds-hero > p { max-width: 34em; margin-top: 24px; }
   .ds-actions { margin-top: 36px; }
   .ds-actions a { height: 44px; padding: 0 20px; font-size: 15px; }
   .ds-actions a [data-copy-face] { transition: opacity 160ms ease; }
-  .ds-works { display: flex; flex-direction: column; align-items: center; gap: 8px; margin-top: 24px; font-size: 14px; line-height: 20px; color: var(--muted-foreground); }
-  .ds-works-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 4px 14px; }
-  .ds-works-line { text-align: center; text-wrap: balance; }
+  .ds-hero > .ds-works { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 4px 14px; max-width: none; margin-top: 24px; font-size: 14px; line-height: 20px; color: var(--muted-foreground); }
   .ds-harness { display: inline-flex; align-items: center; gap: 6px; color: var(--foreground); }
   .ds-works .ds-logo { width: 16px; height: 16px; }
-  .ds-works a { color: var(--foreground); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: color-mix(in srgb, currentColor 35%, transparent); }
-  .ds-works a:hover { text-decoration-color: currentColor; }
-  .ds-hero > :global(.cs-scene) { margin-top: 64px; }
-  .ds-proof { padding-top: 128px; }
+  .ds-hero-studio { margin-top: 56px; }
+  .ds-hero-studio .hx-ask-wrap { margin-top: 0; }
+  .ds-try-short { display: none; }
+  /* Proof: the quote takes its section on its own, with the person's face and a link to the case study. */
+  .ds-quote { max-width: 860px; margin: 0 auto; }
+  .ds-quote blockquote { margin: 0; font-size: clamp(28px, 3.4vw, 44px); line-height: 1.15; font-weight: 500; letter-spacing: -.035em; text-wrap: balance; }
+  .ds-quote figcaption { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 28px; font-size: 14px; line-height: 20px; text-align: left; }
+  .ds-quote figcaption > span { display: flex; flex-direction: column; }
+  .ds-quote figcaption b { font-weight: 500; }
+  .ds-quote figcaption span span { color: var(--muted-foreground); }
+  .ds-quote figcaption a { color: inherit; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: color-mix(in srgb, currentColor 35%, transparent); }
+  .ds-quote-face { flex: none; width: 40px; height: 40px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 1px var(--border); }
   .ds-case-link { display: inline-flex; align-items: center; gap: 6px; margin-top: 32px; font-size: 15px; font-weight: 500; text-decoration: underline; text-underline-offset: 4px; text-decoration-color: color-mix(in srgb, currentColor 35%, transparent); }
   .ds-case-link:hover { text-decoration-color: currentColor; }
-  .ds-share-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; max-width: 1024px; margin: 48px auto 0; text-align: left; }
-  .ds-share-grid > div { display: flex; flex-direction: column; padding: 24px; border: 1px solid var(--border); border-radius: 16px; background: var(--card); }
-  .ds-share-grid h3 { font-size: 17px; line-height: 24px; font-weight: 500; letter-spacing: -.01em; }
-  .ds-share-grid p { margin-top: 8px; font-size: 15px; line-height: 23px; color: var(--muted-foreground); }
-  .ds-share-grid a, .ds-community a { text-decoration: underline; text-underline-offset: 4px; text-decoration-color: color-mix(in srgb, currentColor 35%, transparent); }
-  .ds-share-grid a { display: inline-flex; align-items: center; gap: 6px; margin-top: auto; padding-top: 20px; font-size: 14px; font-weight: 500; }
-  .ds-share-grid a:hover, .ds-community a:hover { text-decoration-color: currentColor; }
+  .ds-inline-link { display: inline-flex; align-items: center; gap: 4px; font-weight: 500; color: var(--foreground); text-decoration: underline; text-underline-offset: 4px; text-decoration-color: color-mix(in srgb, currentColor 35%, transparent); white-space: nowrap; }
+  .ds-inline-link:hover { text-decoration-color: currentColor; }
+  .ds-tools-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; max-width: 1024px; margin: 48px auto 0; padding: 0; list-style: none; text-align: left; }
+  .ds-tool { display: flex; flex-direction: column; height: 100%; overflow: hidden; border: 1px solid var(--border); border-radius: 16px; background: var(--card); transition: transform 200ms var(--motion-ease-out-quick, ease), box-shadow 200ms ease; }
+  .ds-tool:hover { transform: translateY(-2px); box-shadow: 0 12px 28px -18px rgb(0 0 0 / .3); }
+  .ds-tool:focus-visible { outline: 2px solid var(--ring); outline-offset: 3px; }
+  /* Every card's art is the same frame, in the 1200 x 630 shape social share images are made for. Each project's image fills it edge
+     to edge from the center, so an image of another shape loses a little evenly from both sides rather than showing bars. */
+  .ds-tool-art { position: relative; display: block; flex: none; aspect-ratio: 1200 / 630; min-height: 0; overflow: hidden; border-bottom: 1px solid var(--border); background: var(--muted); }
+  .ds-tool-art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; }
+  .ds-tool-text { display: flex; flex: 1; flex-direction: column; padding: 18px 20px 22px; }
+  .ds-tool-name { display: inline-flex; align-items: center; gap: 6px; font-size: 17px; line-height: 24px; font-weight: 500; letter-spacing: -.01em; }
+  .ds-tool-by { margin-top: 2px; font-size: 14px; line-height: 20px; color: var(--muted-foreground); }
+  .ds-tool-does { margin-top: 10px; font-size: 15px; line-height: 23px; color: var(--muted-foreground); }
+  @media (prefers-reduced-motion: reduce) { .ds-tool, .ds-tool:hover { transition: none; transform: none; } }
+  @media (max-width: 860px) { .ds-tools-grid { grid-template-columns: minmax(0, 1fr); max-width: 560px; margin-top: 28px; gap: 12px; } }
+  .ds-community a { text-decoration: underline; text-underline-offset: 4px; text-decoration-color: color-mix(in srgb, currentColor 35%, transparent); }
+  .ds-community a:hover { text-decoration-color: currentColor; }
   /* Get started: two prompt cards in the share cards' language, so the section reads as one centered composition. */
-  .ds-start-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; max-width: 1024px; margin: 48px auto 0; text-align: left; }
+  .ds-start-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; max-width: 1024px; margin: 48px auto 0; padding: 0; list-style: none; text-align: left; }
   .ds-step { display: flex; flex-direction: column; min-width: 0; padding: 24px; border: 1px solid var(--border); border-radius: 16px; background: var(--card); scroll-margin-top: 2rem; container-type: inline-size; }
-  .ds-step h3 { font-size: 17px; line-height: 24px; font-weight: 500; letter-spacing: -.01em; }
-  .ds-step-line { margin-top: 6px; font-size: 15px; line-height: 23px; color: var(--muted-foreground); }
-  .ds-prompt { flex: 1; margin-top: 20px; padding: 16px 18px; border: 1px solid var(--border); border-radius: 10px; font-size: 14.5px; line-height: 23px; overflow-wrap: anywhere; }
-  .ds-step-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 16px; margin-top: 16px; font-size: 13px; color: var(--muted-foreground); }
+  .ds-step h3 { display: flex; align-items: center; gap: 10px; font-size: 17px; line-height: 24px; font-weight: 500; letter-spacing: -.01em; }
+  .ds-step-num { display: block; flex: none; width: 22px; height: 22px; border-radius: 50%; background: var(--foreground); color: var(--background); font-size: 12px; font-weight: 600; line-height: 22px; text-align: center; font-variant-numeric: tabular-nums; }
+  .ds-step-line { margin-top: 8px; font-size: 15px; line-height: 23px; color: var(--muted-foreground); }
+  .ds-prompt-box { position: relative; margin-top: 16px; padding: 14px 16px; border: 1px solid var(--border); border-radius: 10px; background: var(--background); }
+  .ds-prompt { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; font-size: 14px; line-height: 22px; color: var(--muted-foreground); overflow-wrap: anywhere; }
+  .ds-prompt-box.is-open .ds-prompt { display: block; -webkit-line-clamp: unset; }
+  .ds-prompt-more { margin-top: 6px; font-size: 13px; font-weight: 500; color: var(--foreground); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: color-mix(in srgb, currentColor 30%, transparent); }
+  .ds-step-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; margin-top: auto; padding-top: 20px; font-size: 13px; color: var(--muted-foreground); }
   .ds-step-tools > span { display: inline-flex; align-items: center; gap: 6px; }
+  .ds-step-tools .ds-step-tools-label { color: var(--foreground); }
   .ds-step-tools .setup-compatibility-logo { width: 16px; height: 16px; }
-  .ds-step-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 16px; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border); }
-  .ds-step-foot a { display: inline-flex; align-items: center; gap: 6px; margin-left: auto; font-size: 14px; font-weight: 500; text-decoration: underline; text-underline-offset: 4px; text-decoration-color: color-mix(in srgb, currentColor 35%, transparent); }
+  .ds-step-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-top: 16px; }
+  .ds-step-foot a { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 500; text-decoration: underline; text-underline-offset: 4px; text-decoration-color: color-mix(in srgb, currentColor 35%, transparent); }
   .ds-step-foot a:hover { text-decoration-color: currentColor; }
-  @container (max-width: 470px) {
-    .ds-step-foot { flex-direction: column; align-items: flex-start; }
-    .ds-step-foot a { margin-left: 0; }
-  }
   .ds-start > .ds-community { margin-top: 48px; font-size: 16px; }
   .ds-community a { color: var(--foreground); }
-  .ds-note { padding: 144px 0 96px; }
-  @media (max-width: 860px) { .ds-start-grid { grid-template-columns: minmax(0, 1fr); max-width: 560px; gap: 12px; } .ds-share-grid { grid-template-columns: minmax(0, 1fr); max-width: 560px; margin-top: 28px; gap: 12px; } }
-  @media (max-width: 760px) { .ds-note { padding-top: 88px; } .ds-start-grid { margin-top: 28px; } }
+  @media (max-width: 860px) { .ds-start-grid { grid-template-columns: minmax(0, 1fr); max-width: 560px; gap: 12px; } }
+  @media (max-width: 760px) { .ds-start-grid { margin-top: 28px; } }
   @media (max-width: 640px) {
-    .ds-actions a { height: 40px; padding: 0 16px; font-size: 14px; }
-    .ds-works { font-size: 13px; }
-    .ds-works-row { gap: 4px 10px; }
+    .ds-actions { flex-wrap: nowrap; gap: 8px; margin-top: 28px; }
+    .ds-actions a { height: 40px; padding: 0 14px; font-size: 14px; white-space: nowrap; }
+    .ds-try { display: none; }
+    .ds-try-short { display: inline; }
+    .ds-hero > h1 { font-size: clamp(32px, 9.4vw, 40px); }
+    .ds-hero > p { margin-top: 18px; }
+    .ds-hero-studio { margin-top: 36px; }
+    .ds-hero > .ds-works { gap: 4px 10px; font-size: 13px; }
+  }
+  /* Small phones (iPhone SE and narrower): the headline keeps two lines and the two buttons stack at full width inside the gutter. */
+  @media (max-width: 374px) {
+    .ds-hero > h1 { font-size: 28px; }
+    .ds-actions { flex-direction: column; align-items: stretch; width: 100%; }
+    .ds-actions a { justify-content: center; }
   }
   .studio-text-link { display: inline-flex; min-height: 2.75rem; align-items: center; gap: 0.5rem; font-size: 0.875rem; font-weight: 500; text-decoration: underline; text-underline-offset: 4px; transition: color 150ms; }
   .studio-text-link:hover { color: var(--accent); }
   .studio-text-link:focus-visible { outline: 2px solid var(--ring); outline-offset: 4px; }
   .studio-mode-icon { display: none; }
+  .studio-mark { display: block; width: 2rem; height: 2rem; flex-shrink: 0; }
   @container studio-page (max-width: 39.999rem) {
     .studio-header { gap: 0.5rem; }
     .studio-brand { gap: 0.5rem; }
-    .studio-brand > svg { width: 1.5rem; height: auto; }
-    .studio-brand-label { flex-direction: column; align-items: flex-start; gap: 0.25rem; }
+    .studio-brand .studio-mark { width: 1.75rem; height: 1.75rem; }
+    .studio-brand-label { gap: 0.375rem; }
+    .studio-beta { padding: 0.0625rem 0.375rem; font-size: 0.6875rem; }
     .studio-brand-name { font-size: clamp(0.875rem, 4.5cqi, 1.125rem); white-space: nowrap; }
     .studio-header-controls { gap: 0.25rem; }
     .studio-github { width: 2.75rem; justify-content: center; }
@@ -255,16 +329,16 @@ const learnMore = mediaFeatures.filter((item) => item.title !== "Design Studio o
     .studio-mode-icon { display: flex; }
     .studio-header .mode-tab { display: flex; align-items: center; justify-content: center; width: 2.25rem; height: 2.25rem; padding: 0; }
   }
+  /* Below about 340px wide the header has no room for the badge; the brand stays on one line without it. */
+  @container studio-page (max-width: 18rem) { .studio-beta { display: none; } }
   .hero-vendor-logo { display: block; width: 1.75rem; height: 1.75rem; flex-shrink: 0; background: currentColor; mask: var(--vendor-logo) center / contain no-repeat; }
   .setup-compatibility-logo { width: 1.25rem; height: 1.25rem; }
   /* A long URL breaks evenly across lines instead of leaving its hyphen alone on one. */
   .ds-url { overflow-wrap: anywhere; }
   @media (max-width: 640px) {
     .ds-step { padding: 20px; }
-    .ds-prompt { padding: 14px 16px; }
+    .ds-prompt-box { padding: 12px 14px; }
     .ds-step-tools { gap: 6px 12px; }
-    .ds-step-foot { flex-direction: column; align-items: flex-start; }
-    .ds-step-foot a { margin-left: 0; }
   }
   .creator-portrait-field::before {
     content: "";
@@ -296,13 +370,24 @@ const learnMore = mediaFeatures.filter((item) => item.title !== "Design Studio o
 </style>
 
 <script>
-  import { enablePixelHover } from "@/scripts/pixel-wave";
+  import { dissolvePixelWave, enablePixelHover } from "@/scripts/pixel-wave";
 
   function initStudioPage() {
+    // The headline opens in pixel type and dissolves to sans on the first visit of a session, line by line, as the home hero does.
     const headline = document.querySelector<HTMLElement>("#studio-title");
     if (headline && !headline.dataset.waveInitialized) {
       headline.dataset.waveInitialized = "true";
-      headline.querySelectorAll<HTMLElement>("[data-pixel-wave]").forEach(enablePixelHover);
+      const lines = Array.from(headline.querySelectorAll<HTMLElement>("[data-pixel-wave]"));
+      let seen = true;
+      try { seen = !!sessionStorage.getItem("studioWaveSeen"); sessionStorage.setItem("studioWaveSeen", "1"); } catch {}
+      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (seen || reduced) lines.forEach(enablePixelHover);
+      else {
+        // One continuous sweep across both lines, like the home headline: each line starts where the one above it ends.
+        let before = 0;
+        lines.forEach((line) => { dissolvePixelWave(line, before / 8); before += line.querySelectorAll("[data-pw-char]").length; });
+      }
+      document.documentElement.classList.remove("pw-intro");
     }
     const modeList = document.querySelector<HTMLElement>("[data-studio-modes]");
     if (modeList && !modeList.dataset.initialized) {
@@ -386,6 +471,20 @@ const learnMore = mediaFeatures.filter((item) => item.title !== "Design Studio o
         window.setTimeout(() => { copyAgent.textContent = "Copy guide"; }, 2000);
       });
     }
+    // Long prompts show three lines; the rest opens in place. Copying always takes the whole prompt.
+    document.querySelectorAll<HTMLButtonElement>("[data-prompt-more]").forEach((more) => {
+      if (more.dataset.initialized === "true") return;
+      more.dataset.initialized = "true";
+      const box = more.closest<HTMLElement>(".ds-prompt-box");
+      const prompt = box?.querySelector<HTMLElement>("[data-setup-prompt]");
+      if (!box || !prompt) return;
+      more.hidden = prompt.scrollHeight <= prompt.clientHeight + 1;
+      more.addEventListener("click", () => {
+        const open = box.classList.toggle("is-open");
+        more.setAttribute("aria-expanded", String(open));
+        more.textContent = open ? "Show less" : "Show full prompt";
+      });
+    });
     if (!navigator.clipboard?.writeText) return;
     document.querySelectorAll<HTMLButtonElement>("[data-copy-prompt]").forEach((button) => {
       if (button.dataset.initialized === "true") return;
