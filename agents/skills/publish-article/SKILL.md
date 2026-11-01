@@ -1,6 +1,6 @@
 ---
 name: publish-article
-description: Use when Patrick wants an Unknown Arts newsletter article added to or updated on the site's Writing section, from his Obsidian vault, with its generated feature art.
+description: Brings one Unknown Arts article from Patrick's Obsidian vault into the site's Writing section, with its generated feature art. Use when Patrick wants an article added or updated on the site.
 ---
 
 # Publish an Article
@@ -42,7 +42,7 @@ can't reach it: run this on his machine, or ask him to.
 
 6. Open a pull request. Mention that the Writing share card
    (`public/images/share/writing.jpg`) lists recent titles and may want a
-   refresh with the share-cards skill.
+   refresh with the make-share-card skill.
 
 ## Guardrails
 
@@ -53,5 +53,5 @@ can't reach it: run this on his machine, or ask him to.
 
 ## Related
 
-- `agents/learnings/writing-sync.md` and `agents/learnings/editorial-art.md`
+- `agents/context/publishing.md`
 - `scripts/sync-writing.mjs`, `scripts/generate-writing-art.mjs`

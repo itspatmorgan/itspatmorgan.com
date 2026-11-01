@@ -1,4 +1,4 @@
-# Styling Conventions
+# Styling
 
 ## Visual Direction
 
@@ -18,11 +18,9 @@ changes. The values live in `src/styles/global.css`:
 - Type: `font-sans` (Geist), `font-mono` (Geist Mono), `font-pixel` (Geist
   Pixel, the hero dissolve only).
 - Shape: one radius scale from `--radius`.
-- Motion: easing curves `--motion-ease-out`, `--motion-ease-out-quick`,
-  `--motion-ease-in-out` and `--motion-ease-standard`, and route timings
-  `--motion-route-out` (90ms) and `--motion-route-in` (180ms). Use a token
-  instead of writing a curve by hand; add a new one only when none fits.
-- Layout: the showcase and reading templates (see `PageLayout.astro`).
+- Motion: the `--motion-*` easing and route tokens. The rules are in
+  `motion.md`.
+- Layout: the showcase and reading templates (see `architecture.md`).
 
 ## Rules
 
@@ -36,30 +34,15 @@ changes. The values live in `src/styles/global.css`:
   icon library. Keep decorative icons hidden from assistive technology and put
   accessible names on their controls. Custom logos and illustrations remain SVGs.
 - Dark mode is class-based with `.dark` on `<html>`.
-- Home page sections generally use `mx-auto max-w-3xl px-6 py-16`.
 - Section dividers use `border-t border-border`.
+- Sentence case everywhere, in the body font. No all-caps labels.
 - Do not add eyebrow labels above headings. Establish hierarchy with headings,
   supporting copy, spacing, and grouping.
 - Markdown prose uses custom `.prose` styles in `global.css`, not
   `@tailwindcss/typography`.
 - Keep visual work readable and consistent with the current portfolio aesthetic.
-- Render primary content in its final visible position. All pages using the shared layout have a
-  native document fade (old page out in 90ms, new page in over
-  180ms with a 4px rise; keep route motion under ~250ms). Links prefetch on
-  hover through Astro's `prefetch` config, opted in by `BaseLayout.astro` and styled in
-  `global.css`. Do not layer page or scroll entrance animations onto it. Browsers
-  without transition support use ordinary document navigation; reduced motion
-  disables the route transition.
-- Keep automatic load effects off the navigation logo. Preserve intentional
-  hover, click, tabs, and demo effects. Home pixel effects live in
-  `src/scripts/home-interactions.ts`: the hero headline's quick pixel-to-sans
-  dissolve on the first home visit of a session, and the same dissolve on the
-  closing line when it scrolls into view. Those two are the only home load and
-  scroll motion; keep them on the fast `dissolvePixelWave`, not the slower
-  glyph-cycling `pixelWave`.
-- Navigation remains document-based; there is no Astro ClientRouter. If one is
-  introduced later, review script initialization and timer/observer cleanup
-  before relying on `astro:*` lifecycle listeners.
+- Render primary content in its final visible position. Route, load and
+  scroll motion follow `motion.md`.
 
 ## Related Files
 
