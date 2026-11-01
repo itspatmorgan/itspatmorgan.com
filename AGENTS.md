@@ -60,6 +60,7 @@ and `.agents/skills`.
 | Shaping or rewriting a case study's story and copy | `shape-case-study` |
 | Building or animating a case study demo | `build-case-study-demo` |
 | A live visual for a Work card | `build-project-card` |
+| A case study visual for a slide, social post or other fixed format | `export-visual` |
 | A diagram, illustration or other graphic | `make-brand-graphic` |
 | A 1200x630 share card | `make-share-card` |
 | Publishing an Unknown Arts article | `publish-article` |

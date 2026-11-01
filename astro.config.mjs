@@ -40,6 +40,19 @@ function rehypeFigure() {
   };
 }
 
+/** The visual library (src/visuals): case study scenes drawn for slides and social posts, at /visuals. It is a working tool, so it
+ *  exists only under `astro dev` and never reaches the built site. */
+function visualLibrary() {
+  return {
+    name: 'visual-library',
+    hooks: {
+      'astro:config:setup': (/** @type {any} */ { command, injectRoute }) => {
+        if (command === 'dev') injectRoute({ pattern: '/visuals', entrypoint: './src/visuals/VisualsPage.astro' });
+      },
+    },
+  };
+}
+
 // https://astro.build/config
 export default defineConfig({
   site: 'https://itspatmorgan.com',
@@ -51,7 +64,7 @@ export default defineConfig({
   devToolbar: {
     enabled: false,
   },
-  integrations: [react(), mdx()],
+  integrations: [react(), mdx(), visualLibrary()],
   markdown: {
     // Keep the existing caption transform on the supported unified pipeline.
     processor: unified({ rehypePlugins: [rehypeFigure] }),

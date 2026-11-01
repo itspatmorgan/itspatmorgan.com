@@ -21,6 +21,7 @@ How the site fits together and where each thing lives. Content rules are in
 | Shell: layout, navigation, footer, theme, metadata | `src/layouts/`, `src/components/layout/`, `src/data/site-config.ts` |
 | Work case studies | Words in `src/content/projects/<slug>.md`, page in `src/pages/work/<slug>.astro`, demos in `src/components/<product>/` |
 | Shared case study system | `src/components/case-study/` (slides, stage, scene player, project cards) |
+| Visual library | `src/visuals/` (formats, visuals, the `/visuals` gallery), recorded with `scripts/visuals-record.mjs` |
 | Writing | `src/content/writing/`, synced from Obsidian (see `publishing.md`) |
 | Lab | Entry in `src/content/lab/<slug>.mdx`, page in `src/pages/lab/<slug>.astro`, code in `src/lab/<slug>/` |
 | Community and Kind Words | `src/pages/community.astro`, `src/data/community.ts`, `src/data/commendations.ts` |
@@ -46,6 +47,7 @@ How the site fits together and where each thing lives. Content rules are in
 | `/design-studio/agent.txt` | Plain-text Design Studio brief for agents, shared with the page's Agent mode |
 | `/design-studio-demo/` | Live Studio build, added at deploy time (see `deployment.md`) |
 | `/style-guide` | Design system reference, not indexed |
+| `/visuals` | Visual library: case study scenes drawn for slides and social posts (`src/visuals/`). Served by `astro dev` only, never built |
 
 ## Layouts
 

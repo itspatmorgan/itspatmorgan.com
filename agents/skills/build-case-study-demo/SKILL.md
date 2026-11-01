@@ -72,6 +72,13 @@ Case study demos keep the whole desktop frame on phones (`motion.md`, Phones).
 - Product and landing page visuals (the Design Studio page) get their own phone
   design in the page's square frame instead (`motion.md`, Phones).
 
+## Other formats
+
+The same scenes are drawn for slides and social posts by the visual library
+(`export-visual`). Keep a scene's layout driven by `useStage` (`stage.W`,
+`stage.box`) rather than fixed stage numbers, so it lays out in any format, and
+mark the regions a close look would frame with `data-frame`.
+
 ## Verification
 
 - `node scripts/frame-check.mjs --url http://localhost:4321/work/<slug> --slides <ids>`

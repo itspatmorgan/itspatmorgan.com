@@ -62,11 +62,21 @@ export function Zoom({ width, to = 1020, children, style, zoomRef }: { width: nu
  *  laptop. The card bleeds off the stage's bottom edge, as a page that goes on; a `contained` screen that ends sits whole inside the
  *  stage instead. Phones get the same stage (see `phoneCrop`). */
 export function useStage({ wide, height = 760, contained = false }: { wide: number; height?: number; contained?: boolean }) {
-  const phone = usePhone();
-  const g = { width: 1240, height, inset: 64, top: 64, ring: 16, bottom: contained ? 64 : 0 };
+  const format = useContext(FormatContext);
+  const phone = usePhone() && !format;
+  const g = format
+    ? { width: format.width, height: format.height, inset: format.inset, top: format.top, ring: format.ring, bottom: contained ? format.inset : 0 }
+    : { width: 1240, height, inset: 64, top: 64, ring: 16, bottom: contained ? 64 : 0 };
   const card = g.width - g.inset * 2;
   return { phone, W: wide, g, card, box: { width: wide, height: (g.height - g.top - g.bottom) * wide / card } };
 }
+
+/** A format outside the site, such as a slide or a social post: the stage's size and the card's inset, top and ring, in that format's
+ *  pixels. Scenes don't know about formats. Under a FormatContext, `useStage` lays the same screen out for the format, and SceneFrame
+ *  drops the tour and draws the stage at exactly the format's size, so the visual library (src/visuals) can render and record it. A
+ *  `crop`, in stage pixels, shows one region of the stage up close (a detail). Without the context, the site's stage is unchanged. */
+export type Format = { width: number; height: number; inset: number; top: number; ring: number; crop?: { x: number; y: number; width: number; height: number } };
+export const FormatContext = createContext<Format | null>(null);
 export type Stage = ReturnType<typeof useStage>;
 
 /** What a phone zooms to: a point or rect in source pixels as the card shows them, set at the zoomed frame's left edge, center or right
@@ -96,16 +106,26 @@ export function onCard(r: { x: number; y: number; w?: number } | null, view: Vie
  *  motion keeps the whole stage. A `bar` (a view toggle, say) sits inside the stage above the card, at its own size on every screen. */
 export function SceneFrame({ scene, stage, label, title, size = 'wide', controls = true, focus = null, bar, children }: { scene: Scene; stage: Stage; label: string; title: string; size?: 'wide' | 'normal'; controls?: boolean; focus?: Focus | null; bar?: ReactNode; children: ReactNode }) {
   const { g, card } = stage;
+  const format = useContext(FormatContext);
+  const screen = (crop?: Format['crop']) => <NativeStage width={g.width} height={g.height} crop={crop}>
+    <div className={`cs-shell ${g.bottom ? 'is-contained' : ''}`} style={{ left: g.inset - g.ring, top: g.top - g.ring, bottom: g.bottom ? g.bottom - g.ring : 0, width: card + g.ring * 2, padding: g.bottom ? g.ring : `${g.ring}px ${g.ring}px 0` }}>
+      <div className="cs-card">
+        <Zoom key={scene.take} width={stage.W} to={card}>{children}</Zoom>
+      </div>
+    </div>
+  </NativeStage>;
+  // In a format, the stage alone at the format's size: no tour, and what the recorder needs to know about the scene's playback.
+  if (format) return <figure className={`cs-scene ${scene.fade ? 'cs-loop-reset' : ''}`} ref={scene.ref as RefObject<HTMLElement>} aria-label={label} data-cycle={scene.cycle} data-done={scene.done} data-step={scene.step} data-steps={scene.count}>
+    <div className="cs-stage texture-bg cs-frame vl-stage" style={{ '--vl-ring': `${g.ring}px` } as CSSProperties}>
+      {bar && !format.crop && <div className="cs-stage-bar">{bar}</div>}
+      {screen(format.crop)}
+    </div>
+    <figcaption className="sr-only">{scene.caption}</figcaption>
+  </figure>;
   return <figure className={`cs-scene ${scene.fade ? 'cs-loop-reset' : ''}`} ref={scene.ref as RefObject<HTMLElement>} aria-label={label}>
     <div className={`cs-stage texture-bg cs-frame is-${size}`}>
       {bar && <div className="cs-stage-bar">{bar}</div>}
-      <NativeStage width={g.width} height={g.height} crop={stage.phone ? phoneCrop(scene.step > 0 && !scene.reduced ? focus : null, stage) : undefined}>
-        <div className={`cs-shell ${g.bottom ? 'is-contained' : ''}`} style={{ left: g.inset - g.ring, top: g.top - g.ring, bottom: g.bottom ? g.bottom - g.ring : 0, width: card + g.ring * 2, padding: g.bottom ? g.ring : `${g.ring}px ${g.ring}px 0` }}>
-          <div className="cs-card">
-            <Zoom key={scene.take} width={stage.W} to={card}>{children}</Zoom>
-          </div>
-        </div>
-      </NativeStage>
+      {screen(stage.phone ? phoneCrop(scene.step > 0 && !scene.reduced ? focus : null, stage) : undefined)}
     </div>
     {controls ? <SceneTour scene={scene} title={title} /> : <figcaption className="sr-only">{scene.caption}</figcaption>}
   </figure>;
