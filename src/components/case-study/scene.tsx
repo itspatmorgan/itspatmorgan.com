@@ -2,6 +2,9 @@ import { createContext, useContext, useEffect, useLayoutEffect, useRef, useState
 import { AnimatePresence, animate, motion, useMotionValue, useTransform, type MotionValue } from 'motion/react';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { ArrowReloadHorizontalIcon, Cursor01Icon, PauseIcon, PlayIcon } from '@hugeicons/core-free-icons';
+import { usePhone } from '@/lib/hooks';
+// Demos take their scene API from here, the phone breakpoint included.
+export { usePhone };
 import { useDemoLoop } from './useDemoLoop';
 import { NativeStage, PHONE_ZOOM } from './NativeStage';
 import { EASE, PAYOFF_HOLD_MS, SEAM_FADE_MS, travelTime } from './motion';
@@ -49,22 +52,6 @@ export function useScene(timings: readonly number[], captions: readonly string[]
   return { ...loop, done, cycle, fade, take, cut, replay, beats, beat, caption: captions[loop.step], jumpTo };
 }
 export type Scene = ReturnType<typeof useScene>;
-
-const useIsomorphicLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect;
-/** Whether the page is phone-sized. Demos keep their desktop layout and proportions there, shown whole, and zoom in a little on the
- *  steps that need a closer look. */
-export function usePhone() {
-  const [phone, setPhone] = useState(false);
-  // Set before the first paint after hydration, so a phone never sees the uncropped frame.
-  useIsomorphicLayoutEffect(() => {
-    const media = window.matchMedia('(max-width: 640px)');
-    const update = () => setPhone(media.matches);
-    update();
-    media.addEventListener('change', update);
-    return () => media.removeEventListener('change', update);
-  }, []);
-  return phone;
-}
 
 /** Lays out children at `width` source pixels and scales them to fill `to` frame pixels. */
 export function Zoom({ width, to = 1020, children, style, zoomRef }: { width: number; to?: number; children: ReactNode; style?: CSSProperties; zoomRef?: RefObject<HTMLDivElement | null> }) {
