@@ -1,0 +1,20 @@
+/* The visual library's dev page (/visuals). A visual in a format is the case study stage at the format's exact size: no page
+   padding, no rounded stage, no fade at the card's foot (the format's edge ends it), and the card's ring at the format's scale. */
+.vl-stage { max-width: none; margin: 0; padding: 0; border-radius: 0; overflow: hidden; }
+.vl-stage .cs-shell { -webkit-mask-image: none; mask-image: none; }
+.vl-stage .cs-card { box-shadow: 0 0 0 var(--vl-ring) var(--cs-ring), var(--cs-drop); }
+.vl-stage .cs-native-stage.is-cropped { -webkit-mask-image: none; mask-image: none; }
+.vl-stage .cs-stage-bar { margin-bottom: 0; }
+
+.vl-single { margin: 0; padding: 0; }
+.vl-gallery { max-width: 1760px; margin: 0 auto; padding: 56px 40px 120px; }
+.vl-gallery header { max-width: 760px; margin-bottom: 56px; }
+.vl-gallery h1 { font-size: 32px; font-weight: 600; letter-spacing: -.02em; }
+.vl-gallery header p { margin-top: 12px; color: var(--muted-foreground); line-height: 1.55; }
+.vl-gallery h2 { margin: 64px 0 8px; font-size: 22px; font-weight: 600; }
+.vl-gallery h3 { margin: 32px 0 12px; font-size: 15px; font-weight: 500; }
+.vl-gallery code { margin-left: 6px; font: 12px var(--font-mono); color: var(--muted-foreground); }
+.vl-row { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 24px; }
+.vl-row figcaption { margin-top: 8px; font-size: 13px; color: var(--muted-foreground); }
+.vl-preview { overflow: hidden; border-radius: 6px; outline: 1px solid var(--border); }
+.vl-row figcaption a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }

@@ -119,6 +119,12 @@ note or Share button: Patrick had one removed (2026-10-30).
 - Check every step at 390px: the first frame is whole, and each zoom keeps
   the step's subject in view.
 
+## Other formats
+
+The same scenes are drawn for slides and social posts by the visual library (see visual-library). Keep a scene's layout driven
+by `useStage` (`stage.W`, `stage.box`) rather than fixed stage numbers, so it lays out in any format, and mark the regions a close
+look would frame with `data-frame`.
+
 ## Verification
 
 - `node scripts/frame-check.mjs --url http://localhost:4321/work/<slug>

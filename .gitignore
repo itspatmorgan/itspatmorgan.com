@@ -26,3 +26,6 @@ pnpm-debug.log*
 
 # wrangler
 .wrangler/
+
+# visual library recordings (scripts/visuals-record.mjs)
+visuals-out/

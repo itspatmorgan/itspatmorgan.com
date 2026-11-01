@@ -47,6 +47,12 @@ open-source Studio's Feedback Inbox sample and Product system, in
 `StudioDocs`). The case study reuses its `StudioRange` spectrum. "Try the live demo" links to the
 `/design-studio-demo/` build rather than embedding it.
 
+## Development Routes
+
+| Route | Purpose |
+| --- | --- |
+| `/visuals` | The visual library (`src/visuals/`): case study scenes drawn for slides and social posts, and their details. Served by `astro dev` only, never built; `scripts/visuals-record.mjs` records from it. See `agents/skills/visual-library/` |
+
 ## Commands
 
 ```bash

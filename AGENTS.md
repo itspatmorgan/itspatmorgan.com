@@ -110,6 +110,7 @@ when appropriate.
 | `public/images/` | Static image assets |
 | `scripts/` | Publishing, sync, and generation scripts |
 | `src/lab/` | Hosted Lab implementation code for tools, experiments, and interaction demos |
+| `src/visuals/` | Visual library: case study scenes drawn for slides and social posts (dev only, at `/visuals`) |
 | `src/components/` | Astro and React components |
 | `src/components/ui/` | shadcn/ui primitives |
 | `src/content/` | Work, writing, and lab content collections |
