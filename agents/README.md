@@ -36,7 +36,8 @@ the `description` says what the skill does and when to use it.
 When the same instruction comes up twice, write it down once, in the first
 place that fits:
 
-1. A check that fails the build, a type or a script, if the rule can run.
+1. A check, if the rule can run: one that fails the build (a type or a test),
+   or one that `scripts/review.mjs` flags for the review loop.
 2. A principle, if it's about judgment across the whole site.
 3. A context file, if it's a fact or rule about how the site works.
 4. A skill step, if it only matters while doing that job.

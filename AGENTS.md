@@ -44,11 +44,13 @@ Node 24 and pnpm 10 are pinned in `.mise.toml`.
 ## Done means
 
 - `pnpm check`, `pnpm test`, `pnpm build` and `pnpm check:site` pass.
-- A visual change is checked on the PR's preview link in both themes, at 390px
-  and with reduced motion. The review-change skill does this.
+- A visible change is reviewed before Patrick sees it: run the review-change
+  loop (review, fix, repeat until clean, three rounds at most), then send him
+  the preview link, before and after shots, and only what you couldn't settle.
 - A change visitors can't see can merge when checks are green. Anything visible
   waits for Patrick.
-- Before closing, run wrap-up: did the work produce a rule worth keeping?
+- Before closing, run wrap-up: every correction Patrick made becomes a rule, and
+  a check where one can run.
 
 ## Skills
 

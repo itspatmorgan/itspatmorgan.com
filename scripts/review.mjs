@@ -9,8 +9,9 @@
 //                                (reduced motion), so the two sides differ only where the change does.
 //   posters.png                  with --motion: each scene's first frame (as it scrolls in) beside its resting frame.
 //   snaps/                       with --motion: frame pairs where a scene changed a lot in a single frame with stillness either side.
-// and prints a report (also saved as <out>/report.md): horizontal overflow, clipped text, all-caps text, console errors, phone stage
-// shapes (with --square, any phone stage that isn't square is flagged), poster frames that are blank, and possible snaps.
+// and prints a report (also saved as <out>/report.md): horizontal overflow, clipped text, all-caps text, orphaned last words,
+// captions that wrap at desktop width, console errors, phone stage shapes (with --square, any phone stage that isn't square is
+// flagged), and with --motion poster frames that are blank, possible snaps, and phone zooms that are fast or frequent.
 // A stage is a `.cs-stage` (the scene player's frame) or any element marked `data-stage`.
 //
 // Start `pnpm dev` or `pnpm preview` first, or pass a PR preview link as --after. Keep the output out of the repository.
@@ -106,7 +107,26 @@ async function audit(page, route, width, theme) {
     const visible = el => { const r = el.getBoundingClientRect(); const s = getComputedStyle(el); return r.width > 2 && r.height > 2 && s.visibility !== 'hidden' && s.opacity !== '0'; };
     const label = el => `${el.tagName.toLowerCase()}${el.className && typeof el.className === 'string' ? '.' + el.className.trim().split(/\s+/).slice(0, 2).join('.') : ''} "${(el.textContent ?? '').trim().slice(0, 40)}"`;
     const overflow = document.documentElement.scrollWidth > window.innerWidth + 1;
-    const clipped = [], caps = [];
+    const clipped = [], caps = [], orphans = [], wrapped = [];
+    // The last two words of an element's text, as ranges, so their lines can be compared.
+    const lastWords = el => {
+      const words = [];
+      const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+      for (let n = walker.nextNode(); n; n = walker.nextNode()) {
+        for (const m of n.textContent.matchAll(/\S+/g)) { words.push([n, m.index, m.index + m[0].length]); if (words.length > 2) words.shift(); }
+      }
+      return words.map(([n, a, b]) => { const r = document.createRange(); r.setStart(n, a); r.setEnd(n, b); return r.getBoundingClientRect(); });
+    };
+    for (const el of document.querySelectorAll('h1, h2, h3, h4, p, li, dd, figcaption, .cs-tour-caption > span')) {
+      if (!visible(el) || el.closest('.cs-stage, [data-stage], [aria-hidden="true"], svg, .sr-only') || (el.textContent ?? '').trim().length < 20) continue;
+      const lineHeight = parseFloat(getComputedStyle(el).lineHeight) || parseFloat(getComputedStyle(el).fontSize) * 1.3;
+      const words = lastWords(el);
+      const lines = Math.round(el.getBoundingClientRect().height / lineHeight);
+      // An orphan: the last word sits alone on a line below the rest. Only in short text (headings, lines, captions, briefs), where a
+      // lone word reads as a mistake; in a long paragraph it's normal.
+      if (words.length === 2 && lines >= 2 && lines <= 3 && words[1].top - words[0].top > lineHeight / 2) orphans.push(label(el));
+      if (el.matches('.cs-tour-caption > span') && innerWidth > 640 && el.getBoundingClientRect().height > lineHeight * 1.5) wrapped.push(label(el));
+    }
     for (const el of document.querySelectorAll('body *')) {
       if (!el.childNodes.length || !visible(el) || el.closest('[aria-hidden="true"], svg')) continue;
       const own = [...el.childNodes].some(n => n.nodeType === 3 && n.textContent.trim().length > 1);
@@ -118,11 +138,13 @@ async function audit(page, route, width, theme) {
       if (s.textTransform === 'uppercase' && /[a-z]/i.test(el.textContent)) caps.push(label(el));
     }
     const stages = [...document.querySelectorAll('.cs-stage, [data-stage]')].filter(visible).map(el => { const r = el.getBoundingClientRect(); return { w: Math.round(r.width), h: Math.round(r.height), at: label(el.closest('section') ?? el) }; });
-    return { overflow, clipped: clipped.slice(0, 8), caps: caps.slice(0, 8), stages };
+    return { overflow, clipped: clipped.slice(0, 8), caps: caps.slice(0, 8), orphans: orphans.slice(0, 8), wrapped: wrapped.slice(0, 8), stages };
   });
   if (found.overflow) note(route, 'the page scrolls sideways', where);
   for (const c of found.clipped) note(route, `text clipped in ${c}`, where);
   for (const c of found.caps) note(route, `all-caps text in ${c}`, where);
+  for (const c of found.orphans) note(route, `last word alone on its line in ${c}`, where);
+  for (const c of found.wrapped) note(route, `caption wraps past one line in ${c}`, where);
   for (const e of page.errors.slice(0, 5)) note(route, `console error "${e.slice(0, 120)}"`, where);
   if (width <= 640 && theme === 'light') {
     for (const s of found.stages) {
@@ -148,9 +170,11 @@ async function motion(route, dir) {
       await live.reload({ waitUntil: 'load' });
       const shoot = await framer(live, i);
       const first = await shoot();
+      await sampleZoom(live, i);
       const frames = [first];
       const started = Date.now();
       while (Date.now() - started < duration) frames.push(await shoot());
+      if (width <= 640) for (const z of await zooms(live)) note(route, `${name}: ${z}`);
       const still = await (await framer(rest, i))().catch(() => null);
       posters.push({ name, first: first.toString('base64'), rest: still?.toString('base64') ?? null });
       const diffs = await compare(frames.map(f => f.toString('base64')));
@@ -185,6 +209,45 @@ async function framer(page, i) {
     return { x: Math.max(0, r.x), y: Math.max(0, r.y), width: Math.min(r.width, innerWidth), height: Math.min(r.height, innerHeight) };
   }, i);
   return () => page.screenshot({ clip: box, animations: 'allow' });
+}
+
+/** Records the on-screen scale of stage `i`'s content every animation frame, so camera moves can be timed. The scale is the content's
+ *  drawn width over its layout width, which includes every transform above it (the camera, the phone crop). */
+async function sampleZoom(page, i) {
+  await page.evaluate(i => {
+    const stage = document.querySelectorAll('.cs-stage, [data-stage]')[i];
+    const el = stage.querySelector('.cs-camera') ?? stage.querySelector('.cs-native') ?? stage.firstElementChild;
+    window.__zoom = [];
+    if (!el || !el.offsetWidth) return;
+    const start = performance.now();
+    requestAnimationFrame(function tick(now) {
+      if (el.offsetWidth) window.__zoom.push([now - start, el.getBoundingClientRect().width / el.offsetWidth]);
+      requestAnimationFrame(tick);
+    });
+  }, i);
+}
+
+/** Phone camera moves that break the motion rules: a zoom quicker than the camera's own minimum, or zooms coming back to back. */
+async function zooms(page) {
+  const samples = await page.evaluate(() => window.__zoom ?? []);
+  const moves = [];
+  let move = null;
+  for (let k = 1; k < samples.length; k++) {
+    const [t, s] = samples[k], changing = Math.abs(Math.log(s / samples[k - 1][1])) > .0005;
+    if (changing && !move) move = { start: samples[k - 1][0], from: samples[k - 1][1] };
+    if (!changing && move) { moves.push({ ...move, end: t, to: s }); move = null; }
+  }
+  // Only real zooms count (the scale changes by a tenth or more), not a settle or a pan.
+  const real = moves.filter(m => Math.abs(Math.log(m.to / m.from)) > Math.log(1.1));
+  const found = [];
+  for (const m of real) {
+    const ms = Math.round(m.end - m.start);
+    if (ms < 450) found.push(`zoom from ${m.from.toFixed(2)}× to ${m.to.toFixed(2)}× at ${(m.start / 1000).toFixed(1)}s takes ${ms}ms (fast zooms disorient; keep camera moves slow)`);
+  }
+  for (let k = 1; k < real.length; k++) {
+    if (real[k].start - real[k - 1].end < 2000) found.push(`zooms at ${(real[k - 1].start / 1000).toFixed(1)}s and ${(real[k].start / 1000).toFixed(1)}s come less than 2s apart (prefer few, slow camera moves)`);
+  }
+  return found;
 }
 
 /** For a run of frames: the share of pixels that changed between each frame and the one before, and which frames are nearly blank. */
