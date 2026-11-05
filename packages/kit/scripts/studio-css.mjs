@@ -65,10 +65,16 @@ export function studioCss(sheet) {
   root.walkDecls(/^(animation|animation-name)$/, decl => {
     for (const [from, to] of frames) decl.value = decl.value.replace(new RegExp(`(^|[\\s,])${from}(?=$|[\\s,])`, 'g'), `$1${to}`);
   });
-  // A url() must name a package file (resolved from the kit's peers in both apps), never a relative or site path.
+  // A url() names a file beside the stylesheet in the kit. Bare package paths don't resolve in Studio's CSS pipeline, and
+  // site paths don't exist there, so both are refused; relative paths are rewritten for the copy in studio/.
   root.walkDecls(decl => {
-    for (const [, url] of decl.value.matchAll(/url\(\s*['"]?([^'")]+)/g))
-      if (/^(\.|\/)/.test(url)) throw new Error(`${sheet}: ${url} is a relative or site path; import the file in the component or use a package path`);
+    decl.value = decl.value.replace(/url\(\s*(['"]?)([^'")]+)\1\s*\)/g, (match, quote, url) => {
+      if (url.startsWith('data:')) return match;
+      if (!url.startsWith('./') && !url.startsWith('../')) throw new Error(`${sheet}: ${url} must be a file in the kit, referenced by a relative path`);
+      const file = path.join(KIT, 'src', path.dirname(sheet), url);
+      if (!fs.existsSync(file)) throw new Error(`${sheet}: ${url} does not exist`);
+      return `url('${path.relative(path.join(KIT, 'studio'), file)}')`;
+    });
   });
   return `/* Generated from src/${sheet} by scripts/studio-css.mjs. Edit the source, then run it again. */\n${root.toString()}`;
 }

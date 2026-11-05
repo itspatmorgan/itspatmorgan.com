@@ -46,7 +46,8 @@ Studio comes to the site by moving its file in.
   or parameters), set in `packages/kit/tsconfig.json`. It imports only itself, React, Motion, Hugeicons and the
   fonts it declares, never `@/`. Components don't import their CSS: the page that uses them does, because Studio
   needs the scoped copy. A `.ts` module needs its own line in the kit's exports. The tests check all of this.
-- Images are imported with `?url` beside the component, never `/images/` URLs, so they resolve in Astro and Vite.
+- Images are imported with `?url` beside the component, never `/images/` URLs, so they resolve in Astro and Vite. A
+  stylesheet's `url()` points at a file beside it in the kit (Studio's CSS pipeline doesn't resolve package paths).
 - Studio scopes every style under its theme class. After changing a kit stylesheet, run
   `pnpm --filter @itspatmorgan/kit studio-css` to rewrite `studio/`; the tests fail while they disagree.
 - Words stay in `src/content/`; Studio snapshots them separately.

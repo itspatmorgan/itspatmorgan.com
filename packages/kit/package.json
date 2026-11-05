@@ -21,7 +21,6 @@
     "studio-css": "node scripts/studio-css.mjs"
   },
   "peerDependencies": {
-    "@fontsource-variable/geist-mono": "^5.0.0",
     "@fontsource/ibm-plex-mono": "^5.0.0",
     "@hugeicons/core-free-icons": "*",
     "@hugeicons/react": "*",
