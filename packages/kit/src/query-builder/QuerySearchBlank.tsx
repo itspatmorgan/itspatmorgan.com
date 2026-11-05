@@ -1,6 +1,6 @@
 import { SourceIcon } from './NativeUI';
-import { NativeStage } from '@itspatmorgan/kit/case-study/NativeStage';
-import { DemoFrame, useScene } from '@itspatmorgan/kit/case-study/scene';
+import { NativeStage } from '../case-study/NativeStage';
+import { DemoFrame, useScene } from '../case-study/scene';
 
 // Two false starts at J1QL syntax (the box only accepted queries), then back to an empty box.
 const attempts = ['FIND User THAT', 'FIND aws_'];
@@ -11,7 +11,7 @@ for (const [n, attempt] of attempts.entries()) {
   for (let i = attempt.length - 1; i >= 0; i--) frames.push({ text: attempt.slice(0, i), ms: i ? 28 : 700 });
 }
 const durations = frames.map(f => f.ms);
-const captions = frames.map((f, i) => (i === 0 ? 'An empty box, with no hint of what to ask' : 'A new customer guesses at the syntax, then deletes it'));
+const captions = frames.map((_, i) => (i === 0 ? 'An empty box, with no hint of what to ask' : 'A new customer guesses at the syntax, then deletes it'));
 
 /** The original starting point: a free-form search box with no guidance. */
 export default function QuerySearchBlank() {

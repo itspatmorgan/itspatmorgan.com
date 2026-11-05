@@ -1,5 +1,5 @@
 /* JupiterOne used Ubuntu Mono, which runs small and narrow. Geist Mono stands in for it, scaled so the query text keeps its original size. */
-@font-face { font-family: 'QB Mono'; src: url('../../../node_modules/@fontsource-variable/geist-mono/files/geist-mono-latin-wght-normal.woff2') format('woff2-variations'); font-weight: 100 900; font-style: normal; font-display: swap; size-adjust: 86%; }
+@font-face { font-family: 'QB Mono'; src: url('./geist-mono-latin-wght-normal.woff2') format('woff2-variations'); font-weight: 100 900; font-style: normal; font-display: swap; size-adjust: 86%; }
 
 .qb-query-stage { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px -4px #00000018; }
 .qb-film-stage { background: var(--card); border: 1px solid var(--border); padding: 24px; border-radius: 10px; }

@@ -2,13 +2,13 @@
 import CaseStudyLayout from '@/layouts/CaseStudyLayout.astro';
 import Slide from '@/components/case-study/Slide.astro';
 import { getCaseStudy } from '@/lib/case-study';
-import QueryBuilderDemo from '@/components/query-builder/QueryBuilderDemo';
-import QuerySearchBlank from '@/components/query-builder/QuerySearchBlank';
-import FigmaFlow from '@/components/query-builder/FigmaFlow';
-import QuerySentence from '@/components/query-builder/QuerySentence';
-import QueryNaturalLanguage from '@/components/query-builder/QueryNaturalLanguage';
+import QueryBuilderDemo from '@itspatmorgan/kit/query-builder/QueryBuilderDemo';
+import QuerySearchBlank from '@itspatmorgan/kit/query-builder/QuerySearchBlank';
+import FigmaFlow from '@itspatmorgan/kit/query-builder/FigmaFlow';
+import QuerySentence from '@itspatmorgan/kit/query-builder/QuerySentence';
+import QueryNaturalLanguage from '@itspatmorgan/kit/query-builder/QueryNaturalLanguage';
 import '@itspatmorgan/kit/case-study/case-study.css';
-import '@/components/query-builder/query-builder.css';
+import '@itspatmorgan/kit/query-builder/query-builder.css';
 
 const { project, slide } = await getCaseStudy('query-language');
 ---

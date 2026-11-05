@@ -16,9 +16,9 @@ Reference implementations, one per case study:
 
 - `packages/kit/src/sublime/SublimeCard.tsx`: an agent and its result. ADÉ's hub
   card with its artwork behind; the rule it auto-accepted in front.
-- `src/components/query-builder/QueryCard.tsx`: a translation. The builder
+- `packages/kit/src/query-builder/QueryCard.tsx`: a translation. The builder
   behind; the same query as code in front; each pair lights together.
-- `src/components/expansion/ExpansionCard.tsx`: a result. The product's stacked
+- `packages/kit/src/expansion/ExpansionCard.tsx`: a result. The product's stacked
   bar chart behind; its legend in front.
 - `src/components/design-studio/StudioCard.tsx`: a range. Design Studio's
   artifact types in front; behind, the artifact selected. Hover walks the list

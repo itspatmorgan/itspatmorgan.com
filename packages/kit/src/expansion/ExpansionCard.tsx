@@ -1,5 +1,5 @@
-import { ProjectCardStage } from '@itspatmorgan/kit/case-study/ProjectCardStage';
-import { useDemoLoop } from '@itspatmorgan/kit/case-study/useDemoLoop';
+import { ProjectCardStage } from '../case-study/ProjectCardStage';
+import { useDemoLoop } from '../case-study/useDemoLoop';
 import { barColors, botSignalBars } from './figma-bars';
 
 // The project card: bot traffic, sorted by ready-made signals and visible at a glance, which is where the case study ends. Behind, the

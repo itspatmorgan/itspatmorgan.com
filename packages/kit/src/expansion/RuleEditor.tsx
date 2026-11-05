@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
-import { NativeStage, zoomCrop } from '@itspatmorgan/kit/case-study/NativeStage';
-import { DemoFrame, usePhone, useScene } from '@itspatmorgan/kit/case-study/scene';
+import { NativeStage, zoomCrop } from '../case-study/NativeStage';
+import { DemoFrame, usePhone, useScene } from '../case-study/scene';
 import { T, Box, Select, IconButton } from './ExpansionUI';
 
 // Frame 700's rule editor, filled in as a customer's workaround: a rule that exists only to tag likely bot traffic with a signal of their own.
