@@ -24,6 +24,7 @@ export const SHEETS = [
   'design-studio/studio-shapes.css',
   'design-studio/explore/explore.css',
   'studio-case/studio-case.css',
+  'tokens.css',
 ];
 const THEME = '.website-theme';
 const DARK = `${THEME}[data-color-mode="dark"]`;

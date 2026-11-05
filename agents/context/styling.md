@@ -10,7 +10,8 @@ restrained, content-first design over decorative complexity.
 `/style-guide` (`src/pages/style-guide.astro`, not indexed) is the visual
 reference: color, type, layout, shape, motion, shared components and prose,
 rendered with the real tokens. Keep it current when a token or shared piece
-changes. The values live in `src/styles/global.css`:
+changes. Color, motion and the base radius live in `packages/kit/src/tokens.css`, which
+Design Studio shares; type, the radius scale and the rest live in `src/styles/global.css`:
 
 - Color: semantic OKLCH tokens (`--background`, `--foreground`, `--card`,
   `--muted`, `--muted-foreground`, `--accent`, `--border`, `--destructive`),
@@ -25,7 +26,7 @@ changes. The values live in `src/styles/global.css`:
 ## Rules
 
 - Tailwind CSS v4 is configured through the Vite plugin, not PostCSS.
-- CSS custom properties use OKLCH tokens in `src/styles/global.css`.
+- CSS custom properties use OKLCH tokens in `packages/kit/src/tokens.css`.
 - Use semantic Tailwind tokens such as `text-muted-foreground`, `bg-card`,
   `border-border`, and `hover:text-accent`.
 - Use Hugeicons for standard UI icons: geometry from `@hugeicons/core-free-icons`,
@@ -46,6 +47,7 @@ changes. The values live in `src/styles/global.css`:
 
 ## Related Files
 
+- `packages/kit/src/tokens.css`
 - `src/styles/global.css`
 - `src/components/`
 - `src/layouts/`

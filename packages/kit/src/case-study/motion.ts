@@ -1,5 +1,5 @@
 // Motion values the scene player shares with CSS. The curves mirror --motion-ease-travel and --motion-ease-arrival in
-// src/styles/global.css (a test keeps them in step); the rules behind them are in agents/context/motion.md.
+// src/tokens.css (a test keeps them in step); the rules behind them are in agents/context/motion.md.
 
 /** Two curves by job: travel for a camera, pointer or panel moving to a new place; arrival for something appearing or settling. */
 export const EASE = {
