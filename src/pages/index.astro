@@ -448,6 +448,19 @@ const homeWorkGrid = "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:gap-6";
       opacity: 0.11;
     }
 
+    /* src/scripts/hero-dots.ts redraws the halo on a canvas that overhangs the hero, so the pointer's bloom can reach past it.
+       The CSS halo above stays for phones, reduced motion and before the script runs. */
+    .hero-desktop > :global(.hero-dots) {
+      position: absolute;
+      left: -160px;
+      top: -160px;
+      z-index: 0;
+      pointer-events: none;
+    }
+    :global(html[data-hero-dots]) .hero-desktop::before {
+      display: none;
+    }
+
     .builder-grid {
       background-image:
         linear-gradient(rgba(244, 238, 231, 0.12) 1px, transparent 1px),
