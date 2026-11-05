@@ -31,7 +31,8 @@ How the site fits together and where each thing lives. Content rules are in
 | Career timeline | `src/data/experience.ts` |
 | Design Studio landing page | `src/pages/design-studio.astro`, scenes in `packages/kit/src/design-studio/` |
 | Design system reference | `/style-guide` (`src/pages/style-guide.astro`, noindex) |
-| Tokens and global styles | `src/styles/global.css` |
+| Tokens | `packages/kit/src/tokens.css` (colors and motion, shared with Studio) |
+| Global styles | `src/styles/global.css` |
 | Scripts | `scripts/` (checks, review, starters, share cards, frame check, writing sync, favicons) |
 
 ## The kit

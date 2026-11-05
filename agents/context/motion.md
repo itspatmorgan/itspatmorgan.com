@@ -8,7 +8,7 @@ check), put it there and keep this file as the reason.
 
 ## Tokens
 
-Curves and route timings live in `src/styles/global.css`. Use a token instead
+Curves and route timings live in `packages/kit/src/tokens.css`. Use a token instead
 of writing a curve by hand. In React, use `EASE` from
 `packages/kit/src/case-study/motion.ts`, which mirrors the demo curves (a test
 keeps the two in step).

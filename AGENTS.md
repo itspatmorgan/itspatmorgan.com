@@ -31,7 +31,7 @@ Node 24 and pnpm 10 are pinned in `.mise.toml`.
 
 - No plans, QA notes, screenshots or scratch files in the repository.
 - Use the system before inventing: the showcase and reading page templates,
-  Geist and Geist Mono, the color and motion tokens in `src/styles/global.css`,
+  Geist and Geist Mono, the color and motion tokens in `packages/kit/src/tokens.css`,
   and the shared scene player.
 - Light and dark, phones at 390px and reduced motion are all first-class.
 - Sentence case. No all-caps labels or eyebrows.
