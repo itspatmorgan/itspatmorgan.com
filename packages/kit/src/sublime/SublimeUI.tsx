@@ -1,9 +1,11 @@
 import type { CSSProperties, ReactNode } from 'react';
 import { CountUp, Expand } from '../case-study/scene';
+import adeArt from './assets/ade_triangle.webp?url';
+import asaArt from './assets/asa_cube.webp?url';
 
 // Primitives for the Sublime screens. Sizes are the source's Tailwind values in CSS pixels.
 
-export const ART = { asa: '/images/work/sublime/asa_cube.webp', ade: '/images/work/sublime/ade_triangle.webp' };
+export const ART = { asa: asaArt, ade: adeArt };
 
 type Verdict = 'malicious' | 'spam' | 'graymail' | 'benign';
 const verdictGlyph: Record<Verdict, ReactNode> = {

@@ -1,4 +1,4 @@
-// The scene player's easing curves (src/components/case-study/motion.ts) must match the CSS tokens of the same name in
+// The scene player's easing curves (packages/kit/src/case-study/motion.ts) must match the CSS tokens of the same name in
 // src/styles/global.css, so demos and the rest of the site move with one set of curves.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -7,7 +7,7 @@ import path from 'node:path';
 
 const root = path.resolve(import.meta.dirname, '..');
 const css = readFileSync(path.join(root, 'src/styles/global.css'), 'utf8');
-const ts = readFileSync(path.join(root, 'src/components/case-study/motion.ts'), 'utf8');
+const ts = readFileSync(path.join(root, 'packages/kit/src/case-study/motion.ts'), 'utf8');
 const numbers = text => text.split(',').map(n => Number(n.trim()));
 
 test('scene player curves match the CSS motion tokens', () => {

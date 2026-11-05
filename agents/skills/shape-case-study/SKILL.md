@@ -18,10 +18,10 @@ first; they set the bar.
 - The page, `src/pages/work/<slug>.astro`, places visuals only:
   `getCaseStudy('<slug>')` from `src/lib/case-study.ts`, `CaseStudyLayout`, then
   one `<Slide {...slide('<id>')}>` per point.
-- Shared layout and rhythm are in `src/components/case-study/case-study.css`
+- Shared layout and rhythm are in `packages/kit/src/case-study/case-study.css`
   (`cs-` classes). Each product has its own stylesheet and namespace (`qb-*`,
   `xp`, `sb`, `sc`), passed to the layout as `product`.
-- References: Sublime agents (`src/components/sublime/`, the most current scene
+- References: Sublime agents (`packages/kit/src/sublime/`, the most current scene
   pattern), Query Builder, Expansion, and Design Studio
   (`src/components/studio-case/`, a tool shown through real work made in it).
 

@@ -1,5 +1,5 @@
-import { NativeStage } from '../case-study/NativeStage';
-import { DemoFrame, useScene } from '../case-study/scene';
+import { NativeStage } from '@itspatmorgan/kit/case-study/NativeStage';
+import { DemoFrame, useScene } from '@itspatmorgan/kit/case-study/scene';
 import { T, Tag } from './ExpansionUI';
 import { SigSciLogo } from './SigSciLogo';
 

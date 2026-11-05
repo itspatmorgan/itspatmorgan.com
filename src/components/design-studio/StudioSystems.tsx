@@ -1,8 +1,8 @@
-import { NativeStage } from '../case-study/NativeStage';
-import { DemoFrame, usePhone, useScene } from '../case-study/scene';
+import { NativeStage } from '@itspatmorgan/kit/case-study/NativeStage';
+import { DemoFrame, usePhone, useScene } from '@itspatmorgan/kit/case-study/scene';
 import { Inbox, Overview } from './StudioShapes';
 import { themeStyle, type Theme } from './explore/StudioWindow';
-import { useDark } from '@/lib/hooks';
+import { useDark } from '@itspatmorgan/kit/hooks';
 import './studio-shapes.css';
 
 // Systems in the open-source Studio: each lives in its own folder (src/systems/<name>) with its theme, components and rules, and

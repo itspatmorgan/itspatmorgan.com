@@ -13,14 +13,17 @@ How the site fits together and where each thing lives. Content rules are in
 - Markdown and MDX run through `unified()` from `@astrojs/markdown-remark` in
   `astro.config.mjs`, which keeps the image-caption rehype transform.
 - `@/` imports map to `src/`.
+- A pnpm workspace: the site at the root, and `packages/kit` (`@itspatmorgan/kit`), the code it shares with
+  Patrick's Design Studio.
 
 ## Where things live
 
 | Area | Source of truth |
 | --- | --- |
 | Shell: layout, navigation, footer, theme, metadata | `src/layouts/`, `src/components/layout/`, `src/data/site-config.ts` |
-| Work case studies | Words in `src/content/projects/<slug>.md`, page in `src/pages/work/<slug>.astro`, demos in `src/components/<product>/` |
-| Shared case study system | `src/components/case-study/` (slides, stage, scene player, project cards) |
+| Work case studies | Words in `src/content/projects/<slug>.md`, page in `src/pages/work/<slug>.astro`, demos in `src/components/<product>/` or, once shared, `packages/kit/src/<product>/` |
+| Shared case study system | `packages/kit/src/case-study/` (stage, scene player, project cards); `Slide.astro` stays in `src/components/case-study/` |
+| Code shared with Studio | `packages/kit` (see below) |
 | Visual library | `src/visuals/` (formats, visuals, the `/visuals` gallery), recorded with `scripts/visuals-record.mjs` |
 | Writing | `src/content/writing/`, synced from Obsidian (see `publishing.md`) |
 | Lab | Entry in `src/content/lab/<slug>.mdx`, page in `src/pages/lab/<slug>.astro`, code in `src/lab/<slug>/` |
@@ -30,6 +33,21 @@ How the site fits together and where each thing lives. Content rules are in
 | Design system reference | `/style-guide` (`src/pages/style-guide.astro`, noindex) |
 | Tokens and global styles | `src/styles/global.css` |
 | Scripts | `scripts/` (checks, review, starters, share cards, frame check, writing sync, favicons) |
+
+## The kit
+
+`packages/kit` holds the code the site shares with Patrick's Design Studio (the `pm-prototypes` repo, deployed at
+studio.itspatmorgan.com): the theme hooks, the scene player and stages, and the case study demos moved so far (Sublime).
+The site imports it as `@itspatmorgan/kit/<path>`; Studio's Website system installs it from this repo at a pinned commit.
+Both sides render the same files, so a demo changed here reaches Studio when its pin moves, and a piece prototyped in
+Studio comes to the site by moving its file in.
+
+- Kit code is React and TypeScript that passes Studio's stricter settings (`verbatimModuleSyntax`, no unused locals
+  or parameters). It imports only itself, React, Motion and Hugeicons, never `@/` (a test checks).
+- Images are imported with `?url` beside the component, never `/images/` URLs, so they resolve in Astro and Vite.
+- Studio scopes every style under its theme class. After changing a kit stylesheet, run
+  `pnpm --filter @itspatmorgan/kit studio-css` to rewrite `studio/`; the tests fail while they disagree.
+- Words stay in `src/content/`; Studio snapshots them separately.
 
 ## Routes
 
@@ -66,7 +84,7 @@ add other widths.
 ## Rules
 
 - New interactive pieces read the theme, reduced motion and the phone breakpoint
-  through `useDark`, `useReduced` and `usePhone` in `src/lib/hooks.ts`, never
+  through `useDark`, `useReduced` and `usePhone` in `packages/kit/src/hooks.ts`, never
   their own media queries or observers.
 - Query content with `getCollection()` and filter drafts before rendering lists.
 - Keep words people edit in content files, not component code.

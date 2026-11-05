@@ -1,6 +1,6 @@
 import { ArrowDown01Icon, CanvasIcon, CodeSquareIcon, LockPasswordIcon, Menu01Icon, Note01Icon, SecurityWarningIcon, Shield01Icon, Tick02Icon } from '@hugeicons/core-free-icons';
 import type { ReactNode } from 'react';
-import { SceneFrame, Screens, useScene, useStage } from '../case-study/scene';
+import { SceneFrame, Screens, useScene, useStage } from '@itspatmorgan/kit/case-study/scene';
 import { Rail, icon } from './StudioUI';
 
 // The hero: Patrick's Phishing Training Beta prototype in the internal Studio (archive: src/prototypes/patrick/phishing-training-beta),

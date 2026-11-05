@@ -10,7 +10,7 @@ check), put it there and keep this file as the reason.
 
 Curves and route timings live in `src/styles/global.css`. Use a token instead
 of writing a curve by hand. In React, use `EASE` from
-`src/components/case-study/motion.ts`, which mirrors the demo curves (a test
+`packages/kit/src/case-study/motion.ts`, which mirrors the demo curves (a test
 keeps the two in step).
 
 | Job | Token |
@@ -40,7 +40,7 @@ Add a token only when none of these fits the job.
 ## Scenes
 
 Case study and Design Studio demos run on the scene player in
-`src/components/case-study/scene.tsx`.
+`packages/kit/src/case-study/scene.tsx`.
 
 - A scene starts when it scrolls into view and pauses when it leaves.
 - It loops by default, since a flow's last screen rarely tells the whole story.

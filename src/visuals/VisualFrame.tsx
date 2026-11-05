@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ComponentType } from 'react';
-import { FormatContext, type Format } from '@/components/case-study/scene';
+import { FormatContext, type Format } from '@itspatmorgan/kit/case-study/scene';
 import { formats, type FormatId } from './formats';
 import { products, type Detail, type Visual } from './library';
 

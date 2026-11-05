@@ -14,7 +14,7 @@ shows the one idea of that case study in about a second.
 
 Reference implementations, one per case study:
 
-- `src/components/sublime/SublimeCard.tsx`: an agent and its result. ADÉ's hub
+- `packages/kit/src/sublime/SublimeCard.tsx`: an agent and its result. ADÉ's hub
   card with its artwork behind; the rule it auto-accepted in front.
 - `src/components/query-builder/QueryCard.tsx`: a translation. The builder
   behind; the same query as code in front; each pair lights together.
@@ -29,7 +29,7 @@ Reference implementations, one per case study:
 
 Shared plumbing:
 
-- `src/components/case-study/ProjectCardStage.tsx` and `project-card.css`: the
+- `packages/kit/src/case-study/ProjectCardStage.tsx` and `project-card.css`: the
   400 × 225 frame, the `pc-bg` / `pc-fg` layers, `pc-title`, the hover lift and
   the play-once-and-replay-on-hover behavior.
 - `src/components/ProjectDemo.astro`: renders a slug's card visual inside an

@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
-import { NativeStage } from '../case-study/NativeStage';
+import { NativeStage } from '@itspatmorgan/kit/case-study/NativeStage';
 import { T, Tag, Bars, BotSignalsCard, CardHeader, Axis, ButtonGroup } from './ExpansionUI';
-import { DemoFrame, useScene } from '../case-study/scene';
+import { DemoFrame, useScene } from '@itspatmorgan/kit/case-study/scene';
 import { barColors, botSignalBars, badBotBars, botScoreBars } from './figma-bars';
 
 // Frame 400: six dashboard cards in a 3 × 2 grid. Card-relative positions from the source; cards are 308 units wide.

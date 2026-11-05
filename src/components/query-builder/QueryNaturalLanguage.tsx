@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { SourceIcon } from './NativeUI';
-import { NativeStage } from '../case-study/NativeStage';
-import { DemoFrame, useScene } from '../case-study/scene';
+import { NativeStage } from '@itspatmorgan/kit/case-study/NativeStage';
+import { DemoFrame, useScene } from '@itspatmorgan/kit/case-study/scene';
 
 // A plain-language question, then its J1QL translation one clause at a time; each clause lights the words it came from.
 const segments: { text: string; clause?: number }[] = [

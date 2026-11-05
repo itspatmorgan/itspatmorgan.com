@@ -1,7 +1,7 @@
 import { HugeiconsIcon } from '@hugeicons/react';
 import { ArrowDown01Icon, DashboardSquare01Icon, File01Icon, Menu01Icon, SquareIcon } from '@hugeicons/core-free-icons';
 import { motion, useReducedMotion } from 'motion/react';
-import { SceneFrame, Screens, useScene, useStage } from '../case-study/scene';
+import { SceneFrame, Screens, useScene, useStage } from '@itspatmorgan/kit/case-study/scene';
 import { Filters, PrototypeCard, Rail, icon, type Prototype } from './StudioUI';
 
 // Day one, then today. The first gallery (Drive: sublime-humble-beginning.jpg) held one project, Agent Configuration, in a list view
