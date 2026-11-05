@@ -4,6 +4,7 @@ import ProjectCard from "@/components/ProjectCard.astro";
 import ProjectDemo from "@/components/ProjectDemo.astro";
 import { liveDemoSlugs } from "@/data/project-demos";
 import PixelWaveText from "@/components/PixelWaveText.astro";
+import HomeAmbient from "@/components/HomeAmbient.astro";
 import LabCard from "@/components/lab/LabCard.astro";
 import StudioHomeModule from "@/components/design-studio/StudioHomeModule.astro";
 import { UAMark } from "@/lab/editorial-art/UAMark";
@@ -73,6 +74,8 @@ const homeWorkGrid = "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:gap-6";
 ---
 
 <PageLayout template="showcase">
+<div class="relative isolate">
+  <HomeAmbient />
 
   {/* ── Hero ────────────────────────────────────────────── */}
   <section class={`${homeShell} pt-0 pb-4 sm:pb-10 md:pt-16 lg:pt-16 lg:pb-14`}>
@@ -369,6 +372,8 @@ const homeWorkGrid = "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:gap-6";
       ))}
     </div>
   </section>
+
+</div>
 
   <style>
     .hero-mobile {
