@@ -11,7 +11,7 @@ for (const [n, attempt] of attempts.entries()) {
   for (let i = attempt.length - 1; i >= 0; i--) frames.push({ text: attempt.slice(0, i), ms: i ? 28 : 700 });
 }
 const durations = frames.map(f => f.ms);
-const captions = frames.map((f, i) => (i === 0 ? 'An empty box, with no hint of what to ask' : 'A new customer guesses at the syntax, then deletes it'));
+const captions = frames.map((_, i) => (i === 0 ? 'An empty box, with no hint of what to ask' : 'A new customer guesses at the syntax, then deletes it'));
 
 /** The original starting point: a free-form search box with no guidance. */
 export default function QuerySearchBlank() {

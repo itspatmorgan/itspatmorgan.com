@@ -37,13 +37,15 @@ How the site fits together and where each thing lives. Content rules are in
 ## The kit
 
 `packages/kit` holds the code the site shares with Patrick's Design Studio (the `pm-prototypes` repo, deployed at
-studio.itspatmorgan.com): the theme hooks, the scene player and stages, and the case study demos moved so far (Sublime).
+studio.itspatmorgan.com): the theme hooks, the scene player and stages, and the case study demos moved so far (Sublime, query builder, Expansion).
 The site imports it as `@itspatmorgan/kit/<path>`; Studio's Website system installs it from this repo at a pinned commit.
 Both sides render the same files, so a demo changed here reaches Studio when its pin moves, and a piece prototyped in
 Studio comes to the site by moving its file in.
 
 - Kit code is React and TypeScript that passes Studio's stricter settings (`verbatimModuleSyntax`, no unused locals
-  or parameters). It imports only itself, React, Motion and Hugeicons, never `@/` (a test checks).
+  or parameters), set in `packages/kit/tsconfig.json`. It imports only itself, React, Motion, Hugeicons and the
+  fonts it declares, never `@/`. Components don't import their CSS: the page that uses them does, because Studio
+  needs the scoped copy. A `.ts` module needs its own line in the kit's exports. The tests check all of this.
 - Images are imported with `?url` beside the component, never `/images/` URLs, so they resolve in Astro and Vite.
 - Studio scopes every style under its theme class. After changing a kit stylesheet, run
   `pnpm --filter @itspatmorgan/kit studio-css` to rewrite `studio/`; the tests fail while they disagree.

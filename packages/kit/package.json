@@ -8,6 +8,7 @@
     "./hooks": "./src/hooks.ts",
     "./case-study/motion": "./src/case-study/motion.ts",
     "./case-study/useDemoLoop": "./src/case-study/useDemoLoop.ts",
+    "./expansion/figma-bars": "./src/expansion/figma-bars.ts",
     "./studio/*.css": "./studio/*.css",
     "./*.css": "./src/*.css",
     "./*": "./src/*.tsx"
