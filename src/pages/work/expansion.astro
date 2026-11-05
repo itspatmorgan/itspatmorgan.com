@@ -2,15 +2,15 @@
 import CaseStudyLayout from '@/layouts/CaseStudyLayout.astro';
 import Slide from '@/components/case-study/Slide.astro';
 import { getCaseStudy } from '@/lib/case-study';
-import HeroBotSignals from '@/components/expansion/HeroBotSignals';
-import RuleEditor from '@/components/expansion/RuleEditor';
-import ThreePieces from '@/components/expansion/ThreePieces';
-import AgentFlow from '@/components/expansion/AgentFlow';
-import SignalChain from '@/components/expansion/SignalChain';
-import Dashboards from '@/components/expansion/Dashboards';
-import Kits from '@/components/expansion/Kits';
+import HeroBotSignals from '@itspatmorgan/kit/expansion/HeroBotSignals';
+import RuleEditor from '@itspatmorgan/kit/expansion/RuleEditor';
+import ThreePieces from '@itspatmorgan/kit/expansion/ThreePieces';
+import AgentFlow from '@itspatmorgan/kit/expansion/AgentFlow';
+import SignalChain from '@itspatmorgan/kit/expansion/SignalChain';
+import Dashboards from '@itspatmorgan/kit/expansion/Dashboards';
+import Kits from '@itspatmorgan/kit/expansion/Kits';
 import '@itspatmorgan/kit/case-study/case-study.css';
-import '@/components/expansion/expansion.css';
+import '@itspatmorgan/kit/expansion/expansion.css';
 
 const { project, slide } = await getCaseStudy('expansion');
 ---

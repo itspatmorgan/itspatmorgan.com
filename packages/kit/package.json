@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "version": "0.0.0",
-  "description": "The pieces itspatmorgan.com and Patrick's Design Studio share: theme hooks, the case study scene player and the demos.",
+  "description": "The pieces itspatmorgan.com and Patrick's Design Studio share: theme hooks, the case study scene player and the case study demos.",
   "exports": {
     "./hooks": "./src/hooks.ts",
     "./case-study/motion": "./src/case-study/motion.ts",
@@ -12,11 +12,16 @@
     "./*.css": "./src/*.css",
     "./*": "./src/*.tsx"
   },
-  "files": ["src", "studio"],
+  "files": [
+    "src",
+    "studio"
+  ],
   "scripts": {
     "studio-css": "node scripts/studio-css.mjs"
   },
   "peerDependencies": {
+    "@fontsource-variable/geist-mono": "^5.0.0",
+    "@fontsource/ibm-plex-mono": "^5.0.0",
     "@hugeicons/core-free-icons": "*",
     "@hugeicons/react": "*",
     "motion": "^12.0.0",

@@ -43,5 +43,5 @@ When the source is Figma:
   so it is not a substitute for real text.
 - Layer names can be stale. Confirm visible text against a zoomed view of the frame.
 - Extract repeated data (chart bars, sparklines) with a script into a data
-  module, as in `src/components/expansion/figma-bars.ts`.
+  module, as in `packages/kit/src/expansion/figma-bars.ts`.
 - Diagrams with no source frame follow the deck's visual style instead.

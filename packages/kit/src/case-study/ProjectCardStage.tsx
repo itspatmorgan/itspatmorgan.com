@@ -1,7 +1,6 @@
 import { useEffect, useRef, type ReactNode, type RefObject } from 'react';
 import { NativeStage } from './NativeStage';
 import type { DemoLoop } from './useDemoLoop';
-import './project-card.css';
 
 // The frame every project card's visual shares, after the feature cards on Stripe's and Linear's sites. Cards run 330 to 450 px wide, so
 // a card is drawn at 400 × 225, close to the size it shows at, so type stays at real UI sizes and lines stay crisp. Two layers, no more:

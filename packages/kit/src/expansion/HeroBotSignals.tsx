@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react';
-import { NativeStage } from '@itspatmorgan/kit/case-study/NativeStage';
-import { DemoFrame, useScene } from '@itspatmorgan/kit/case-study/scene';
+import { NativeStage } from '../case-study/NativeStage';
+import { DemoFrame, useScene } from '../case-study/scene';
 import { BotSignalsCard } from './ExpansionUI';
 import { botSignalBars } from './figma-bars';
 

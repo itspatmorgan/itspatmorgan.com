@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
-import { NativeStage } from '@itspatmorgan/kit/case-study/NativeStage';
-import { DemoFrame, useScene } from '@itspatmorgan/kit/case-study/scene';
+import { NativeStage } from '../case-study/NativeStage';
+import { DemoFrame, useScene } from '../case-study/scene';
 
 // The deck's "Defining the System" diagram: each bot defense question resolves to a piece the platform already had.
 const pieces: { question: ReactNode; piece: string }[] = [

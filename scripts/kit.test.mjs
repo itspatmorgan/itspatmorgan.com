@@ -23,5 +23,7 @@ test('kit code imports only itself and its declared packages', () => {
     const source = readFileSync(path.join(kit, 'src', file), 'utf8');
     for (const [, spec] of source.matchAll(/(?:from|import)\s*\(?\s*['"]([^'"]+)['"]/g))
       assert.match(spec, allowed, `src/${file} imports ${spec}; the kit can't use site paths such as @/`);
+    // Stylesheets are imported by whoever renders the component: the site's pages, or Studio's theme (scoped).
+    assert.doesNotMatch(source, /^import\s+['"][^'"]+\.css['"]/m, `src/${file} imports a stylesheet; import it where the component is used`);
   }
 });

@@ -12,7 +12,13 @@ import { fileURLToPath } from 'node:url';
 import postcss from 'postcss';
 
 const KIT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-export const SHEETS = ['case-study/case-study.css', 'case-study/project-card.css', 'sublime/sublime.css'];
+export const SHEETS = [
+  'case-study/case-study.css',
+  'case-study/project-card.css',
+  'sublime/sublime.css',
+  'query-builder/query-builder.css',
+  'expansion/expansion.css',
+];
 const THEME = '.website-theme';
 const DARK = `${THEME}[data-color-mode="dark"]`;
 
@@ -59,8 +65,10 @@ export function studioCss(sheet) {
   root.walkDecls(/^(animation|animation-name)$/, decl => {
     for (const [from, to] of frames) decl.value = decl.value.replace(new RegExp(`(^|[\\s,])${from}(?=$|[\\s,])`, 'g'), `$1${to}`);
   });
+  // A url() must name a package file (resolved from the kit's peers in both apps), never a relative or site path.
   root.walkDecls(decl => {
-    if (decl.value.includes('url(')) throw new Error(`${sheet}: url() in a kit stylesheet; import the image in the component instead`);
+    for (const [, url] of decl.value.matchAll(/url\(\s*['"]?([^'")]+)/g))
+      if (/^(\.|\/)/.test(url)) throw new Error(`${sheet}: ${url} is a relative or site path; import the file in the component or use a package path`);
   });
   return `/* Generated from src/${sheet} by scripts/studio-css.mjs. Edit the source, then run it again. */\n${root.toString()}`;
 }

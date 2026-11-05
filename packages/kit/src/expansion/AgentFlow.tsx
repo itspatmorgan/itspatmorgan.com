@@ -1,6 +1,6 @@
 import { useLayoutEffect, useState, type CSSProperties, type ReactNode } from 'react';
-import { NativeStage } from '@itspatmorgan/kit/case-study/NativeStage';
-import { DemoFrame, useScene } from '@itspatmorgan/kit/case-study/scene';
+import { NativeStage } from '../case-study/NativeStage';
+import { DemoFrame, useScene } from '../case-study/scene';
 
 // The Agent Processing section as one live diagram: the source's twelve 1920 × 1500 frames (001–005, 100–102, 200–202, 000)
 // become steps, and each element moves, stretches or fades between its positions in those frames.

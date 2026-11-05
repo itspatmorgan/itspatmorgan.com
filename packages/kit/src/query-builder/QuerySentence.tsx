@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
-import { NativeStage, zoomCrop } from '@itspatmorgan/kit/case-study/NativeStage';
-import { DemoFrame, usePhone, useScene } from '@itspatmorgan/kit/case-study/scene';
+import { NativeStage, zoomCrop } from '../case-study/NativeStage';
+import { DemoFrame, usePhone, useScene } from '../case-study/scene';
 
 function Kw({ children }: { children: string }) { return <span className="q-code-keyword">{children}</span>; }
 function Arrow({ children }: { children: string }) { return <span className="q-code-arrow">{children}</span>; }
