@@ -23,7 +23,7 @@ first; they set the bar.
   `xp`, `sb`, `sc`), passed to the layout as `product`.
 - References: Sublime agents (`packages/kit/src/sublime/`, the most current scene
   pattern), Query Builder, Expansion, and Design Studio
-  (`src/components/studio-case/`, a tool shown through real work made in it).
+  (`packages/kit/src/studio-case/`, a tool shown through real work made in it).
 
 Reuse these patterns before inventing new ones.
 

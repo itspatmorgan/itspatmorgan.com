@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { ArrowUp02Icon, ArrowUpRight01Icon, CheckmarkCircle02Icon, SquareLock02Icon } from '@hugeicons/core-free-icons';
 import { icon } from '../studio-case/StudioUI';
 import { StudioWindow } from './explore/StudioWindow';
-import { useReduced } from '@itspatmorgan/kit/hooks';
+import { useReduced } from '../hooks';
 import StepBar from './StepBar';
 
 // Sharing comes down to one thing: a link. You ask your agent to publish, it hands back one address, and that address opens the

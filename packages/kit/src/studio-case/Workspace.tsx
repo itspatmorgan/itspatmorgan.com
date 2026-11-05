@@ -1,7 +1,9 @@
 import { ArrowDown01Icon, CanvasIcon, CodeSquareIcon, LockPasswordIcon, Menu01Icon, Note01Icon, SecurityWarningIcon, Shield01Icon, Tick02Icon } from '@hugeicons/core-free-icons';
 import type { ReactNode } from 'react';
-import { SceneFrame, Screens, useScene, useStage } from '@itspatmorgan/kit/case-study/scene';
+import { SceneFrame, Screens, useScene, useStage } from '../case-study/scene';
 import { Rail, icon } from './StudioUI';
+import logoLight from './assets/logo-light-mode.svg?url';
+import logoDark from './assets/logo-dark-mode.svg?url';
 
 // The hero: Patrick's Phishing Training Beta prototype in the internal Studio (archive: src/prototypes/patrick/phishing-training-beta),
 // chosen because one prototype holds every kind of artifact: documents, a canvas, lo-fi views and hi-fi views. Its Landing page canvas
@@ -88,7 +90,7 @@ function Done() {
     <p>Thanks for completing this short security awareness training.</p>
     <div className="pt-attrib">
       <p>This simulation and training were conducted using Sublime Security. For questions, contact your security team.</p>
-      <img className="is-light" src="/images/studio-case/logo-light-mode.svg" alt="" /><img className="is-dark" src="/images/studio-case/logo-dark-mode.svg" alt="" />
+      <img className="is-light" src={logoLight} alt="" /><img className="is-dark" src={logoDark} alt="" />
     </div>
   </div>;
 }

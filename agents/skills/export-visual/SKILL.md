@@ -8,7 +8,7 @@ description: Draws case study scenes for formats beyond the site, such as a slid
 ## Purpose
 
 One source for each piece of work, drawn correctly for each place it is shown. The case study scenes in `packages/kit/src/sublime/`
-and `src/components/studio-case/` are the source: real product screens, recreated natively. The site shows them in its responsive
+and `packages/kit/src/studio-case/` are the source: real product screens, recreated natively. The site shows them in its responsive
 stage. The library (`src/visuals/`) draws the same scenes in fixed formats, a 1920 × 1080 slide or a 4:5 social post, laid out for
 that format rather than cropped from the site's stage, and records them for use elsewhere.
 

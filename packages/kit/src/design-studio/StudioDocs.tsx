@@ -1,10 +1,9 @@
 import { motion, useReducedMotion } from 'motion/react';
 import type { ReactNode } from 'react';
-import { DemoFrame, SceneFrame, Screens, useScene, useStage } from '@itspatmorgan/kit/case-study/scene';
-import { NativeStage } from '@itspatmorgan/kit/case-study/NativeStage';
+import { DemoFrame, SceneFrame, Screens, useScene, useStage } from '../case-study/scene';
+import { NativeStage } from '../case-study/NativeStage';
 import { OsRail } from '../studio-case/StudioUI';
 import { Doc, Nav } from './StudioShapes';
-import './studio-shapes.css';
 
 // One document, two ways in: the Feedback Inbox's project context (discovery/project-context.md) as the Studio renders it, and the
 // same file in the Studio's source editor ("Edit source" in the file's menu: its path, Save and Done, then the Markdown with line

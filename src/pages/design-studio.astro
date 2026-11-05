@@ -8,15 +8,18 @@ import { buttonVariants } from "@/components/ui/button";
 import { siteConfig } from "@/data/site-config";
 import { GithubIcon, UserIcon, Robot01Icon, ArrowUpRight01Icon, ArrowDown01Icon, ArrowRight01Icon, Copy01Icon } from "@hugeicons/core-free-icons";
 import Slide from "@/components/case-study/Slide.astro";
-import StudioHero from "@/components/design-studio/StudioHero";
-import StudioAsk from "@/components/design-studio/StudioAsk";
-import StudioRange from "@/components/design-studio/StudioRange";
-import StudioSystems from "@/components/design-studio/StudioSystems";
-import StudioShare from "@/components/design-studio/StudioShare";
-import StudioDocs from "@/components/design-studio/StudioDocs";
+import StudioHero from "@itspatmorgan/kit/design-studio/StudioHero";
+import StudioAsk from "@itspatmorgan/kit/design-studio/StudioAsk";
+import StudioRange from "@itspatmorgan/kit/design-studio/StudioRange";
+import StudioSystems from "@itspatmorgan/kit/design-studio/StudioSystems";
+import StudioShare from "@itspatmorgan/kit/design-studio/StudioShare";
+import StudioDocs from "@itspatmorgan/kit/design-studio/StudioDocs";
 import "@itspatmorgan/kit/case-study/case-study.css";
-import "@/components/studio-case/studio-case.css";
-import "@/components/design-studio/linework.css";
+import "@itspatmorgan/kit/design-studio/studio-shapes.css";
+import "@itspatmorgan/kit/design-studio/explore/explore.css";
+import "@itspatmorgan/kit/design-studio/studio-hero.css";
+import "@itspatmorgan/kit/studio-case/studio-case.css";
+import "@itspatmorgan/kit/design-studio/linework.css";
 
 const repository = "https://github.com/itspatmorgan/design-studio";
 const liveDemo = "https://itspatmorgan.com/design-studio-demo/";
@@ -79,7 +82,7 @@ const communityTools = [
       </div>
       <p class="ds-works">Works with
         {agentHarnesses.map((harness) => (
-          <span class="ds-harness"><span class="hero-vendor-logo ds-logo" style={"--vendor-logo: url(" + harness.logo + ")"} aria-hidden="true"></span>{harness.title}</span>
+          <span class="ds-harness"><span class="hero-vendor-logo ds-logo" style={`--vendor-logo: url("${harness.logo}")`} aria-hidden="true"></span>{harness.title}</span>
         ))}
       </p>
       <div class="ds-hero-studio"><StudioAsk client:load /></div>

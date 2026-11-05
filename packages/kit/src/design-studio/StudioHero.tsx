@@ -8,10 +8,7 @@ import { Canvas, Detail, Doc, Flow, Inbox, Overview } from './StudioShapes';
 import { Editor } from './StudioDocs';
 import StepBar from './StepBar';
 import { H, W, themeStyle, useFit } from './explore/StudioWindow';
-import { useDark, usePhone, useReduced } from '@itspatmorgan/kit/hooks';
-import './studio-shapes.css';
-import './explore/explore.css';
-import './studio-hero.css';
+import { useDark, usePhone, useReduced } from '../hooks';
 
 // The landing page's browse section: the open-source Studio's prototype view with the Feedback Inbox sample, worked the way the Studio is
 // worked. Artifacts open from the sidebar. A screen's menu makes it lo-fi or hi-fi (the file's `/** @lofi */` marker, FileTree's

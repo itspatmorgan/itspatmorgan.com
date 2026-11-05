@@ -44,8 +44,8 @@ export const visuals: Visual[] = [
     details: [{ id: 'verdicts', title: 'The settings per verdict', frames: ['table'], pad: 24, width: 1664 }] },
   { id: 'ade-page', title: 'ADÉ’s results and jobs', project: 'sublime-agents', load: () => import('@itspatmorgan/kit/sublime/AdeJobs'),
     details: [{ id: 'performance', title: 'Performance over 30 days', frames: ['tiles'], pad: [72, 32, 32, 32], width: 1472 }] },
-  { id: 'studio-workspace', title: 'A prototype’s workspace', project: 'design-studio', load: () => import('@/components/studio-case/Workspace') },
-  { id: 'studio-gallery', title: 'The team’s gallery, then and now', project: 'design-studio', load: () => import('@/components/studio-case/GalleryGrowth') },
-  { id: 'studio-handoff', title: 'Engineering builds from the prototype', project: 'design-studio', load: () => import('@/components/studio-case/Handoff') },
-  { id: 'studio-open', title: 'The open-source Design Studio', project: 'design-studio', load: () => import('@/components/studio-case/OpenStudio') },
+  { id: 'studio-workspace', title: 'A prototype’s workspace', project: 'design-studio', load: () => import('@itspatmorgan/kit/studio-case/Workspace') },
+  { id: 'studio-gallery', title: 'The team’s gallery, then and now', project: 'design-studio', load: () => import('@itspatmorgan/kit/studio-case/GalleryGrowth') },
+  { id: 'studio-handoff', title: 'Engineering builds from the prototype', project: 'design-studio', load: () => import('@itspatmorgan/kit/studio-case/Handoff') },
+  { id: 'studio-open', title: 'The open-source Design Studio', project: 'design-studio', load: () => import('@itspatmorgan/kit/studio-case/OpenStudio') },
 ];

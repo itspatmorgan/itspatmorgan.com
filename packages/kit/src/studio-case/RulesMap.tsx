@@ -1,5 +1,5 @@
-import { NativeStage } from '@itspatmorgan/kit/case-study/NativeStage';
-import { DemoFrame, useScene } from '@itspatmorgan/kit/case-study/scene';
+import { NativeStage } from '../case-study/NativeStage';
+import { DemoFrame, useScene } from '../case-study/scene';
 
 // How every agent learns the team's rules, drawn from Patrick's map of the internal Studio's agent setup (Drive:
 // sublime-agent-rules.jpg; the archive's AGENTS.md and agent/rules/agent-architecture.md). Every coding agent the team uses (Codex,
