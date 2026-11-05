@@ -9,6 +9,7 @@
     "./case-study/motion": "./src/case-study/motion.ts",
     "./case-study/useDemoLoop": "./src/case-study/useDemoLoop.ts",
     "./expansion/figma-bars": "./src/expansion/figma-bars.ts",
+    "./design-studio/harnesses": "./src/design-studio/harnesses.ts",
     "./studio/*.css": "./studio/*.css",
     "./*.css": "./src/*.css",
     "./*": "./src/*.tsx"
@@ -25,7 +26,8 @@
     "@hugeicons/core-free-icons": "*",
     "@hugeicons/react": "*",
     "motion": "^12.0.0",
-    "react": "^19.0.0"
+    "react": "^19.0.0",
+    "@fontsource/comic-neue": "^5.0.0"
   },
   "devDependencies": {
     "postcss": "^8.5.0"

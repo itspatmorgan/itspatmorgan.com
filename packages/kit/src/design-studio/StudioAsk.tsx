@@ -1,11 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { ArrowUp02Icon, ArrowLeft01Icon, ArrowRight01Icon, Comment01Icon, CursorMagicSelection02Icon, Refresh01Icon, Tick02Icon } from '@hugeicons/core-free-icons';
 import { icon } from '../studio-case/StudioUI';
-import { agentHarnesses } from '../../data/design-studio-setup';
+import { agentHarnesses } from './harnesses';
 import { SIDE, StudioWindow, W, type Key } from './explore/StudioWindow';
 import StepBar from './StepBar';
-import { usePhone, useReduced } from '@itspatmorgan/kit/hooks';
-import './studio-hero.css';
+import { usePhone, useReduced } from '../hooks';
 
 // How you work in Design Studio: in the coding agent you already use. On the left, a conversation in that agent; on the right, the
 // Studio rendering what each message makes. Each request writes or changes a file in the Feedback Inbox sample
@@ -130,7 +129,7 @@ export default function StudioAsk() {
     <header className="hx-agent-bar">
       <span className="hx-agent-dots" aria-hidden="true"><i /><i /><i /></span>
       <span className="hx-agent-name">Your coding agent</span>
-      <span className="hx-chat-agents">{agentHarnesses.map(h => <span key={h.title} className="dx-logo" title={h.title} style={{ ['--logo' as string]: `url(${h.logo})` }} />)}</span>
+      <span className="hx-chat-agents">{agentHarnesses.map(h => <span key={h.title} className="dx-logo" title={h.title} style={{ ['--logo' as string]: `url("${h.logo}")` }} />)}</span>
     </header>
     <div className="hx-agent-body">
       <div className="hx-chat">

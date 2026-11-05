@@ -1,8 +1,10 @@
 import { HugeiconsIcon } from '@hugeicons/react';
 import { ArrowDown01Icon, DashboardSquare01Icon, File01Icon, Menu01Icon, SquareIcon } from '@hugeicons/core-free-icons';
 import { motion, useReducedMotion } from 'motion/react';
-import { SceneFrame, Screens, useScene, useStage } from '@itspatmorgan/kit/case-study/scene';
+import { SceneFrame, Screens, useScene, useStage } from '../case-study/scene';
 import { Filters, PrototypeCard, Rail, icon, type Prototype } from './StudioUI';
+import logoLight from './assets/logo-light-mode.svg?url';
+import logoDark from './assets/logo-dark-mode.svg?url';
 
 // Day one, then today. The first gallery (Drive: sublime-humble-beginning.jpg) held one project, Agent Configuration, in a list view
 // under a Sublime header; today's (Drive: sublime-team-prototypes.png) is the catalog every teammate publishes to, newest first,
@@ -36,7 +38,7 @@ const pages: [string, typeof SquareIcon][] = [
 function FirstGallery() {
   return <div className="sc-first">
     <div className="sc-first-head">
-      <img className="is-light" src="/images/studio-case/logo-light-mode.svg" alt="" /><img className="is-dark" src="/images/studio-case/logo-dark-mode.svg" alt="" />
+      <img className="is-light" src={logoLight} alt="" /><img className="is-dark" src={logoDark} alt="" />
       <i />Design Prototypes
     </div>
     <div className="sc-first-body">

@@ -3,9 +3,8 @@ import {
   ArrowDown01Icon, ArrowLeft01Icon, ArrowRight01Icon, CodeIcon, Delete02Icon, File01Icon, Flowchart01Icon, Menu01Icon, Message01Icon,
   MoreHorizontalIcon, PencilEdit01Icon, PlusSignIcon, Presentation01Icon, Search01Icon, SquareArrowUpRightIcon, UnfoldMoreIcon,
 } from '@hugeicons/core-free-icons';
-import { Pointer, SceneFrame, Screens, useScene, useStage, useTargets } from '@itspatmorgan/kit/case-study/scene';
+import { Pointer, SceneFrame, Screens, useScene, useStage, useTargets } from '../case-study/scene';
 import { OsRail, icon } from '../studio-case/StudioUI';
-import './studio-shapes.css';
 
 // The landing page's hero: one idea in every shape Design Studio gives it. It is the Feedback Inbox sample that ships with the open-source
 // Studio (itspatmorgan/design-studio, src/prototypes/parker/feedback-inbox), opened in the Studio's prototype view: its artifacts in the

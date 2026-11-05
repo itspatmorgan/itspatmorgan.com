@@ -1,0 +1,153 @@
+/* Generated from src/design-studio/studio-hero.css by scripts/studio-css.mjs. Edit the source, then run it again. */
+/* The landing page hero (StudioHero.tsx): the Studio window, its menus and the tour pointer. Menus follow the Studio's own
+   (shadcn) context menu: a small raised panel with icon rows. */
+.website-theme .hx-window { user-select: none; -webkit-user-select: none; }
+/* Before the island measures its box, CSS holds the same size it will settle on (the window scales with the width, never below
+   0.62), so nothing jumps while the page scrolls; the scaled content fades in once it fits. */
+.website-theme .hx-window:not(.is-fit) { aspect-ratio: 1120 / 700; min-height: 434px; max-height: 700px; }
+.website-theme .hx-window .dx-native { transition: opacity 200ms ease; }
+/* Phones: the browse window's camera moves between the artifact pane and a closer look at the sidebar (StudioHero). */
+.website-theme .hx.is-phone .dx-native { transition: opacity 200ms ease, transform 1200ms var(--motion-ease-in-out); }
+@media (prefers-reduced-motion: reduce) { .website-theme .hx.is-phone .dx-native { transition: opacity 200ms ease; } }
+@media (max-width: 640px) { .website-theme .hx > .hx-window:not(.is-fit) { aspect-ratio: 1; min-height: 0; } }
+.website-theme .hx-os .ss-side h4 { gap: 8px; }
+.website-theme .hx-title { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.website-theme .hx-os .ss-side li { display: flex; align-items: center; gap: 8px; padding-right: 4px; }
+.website-theme .hx-label { flex: 1; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.website-theme .hx-tag { padding: 0 5px; border-radius: 4px; background: var(--os-muted); font: 500 10.5px/16px 'Geist Variable', sans-serif; font-style: normal; color: var(--os-weak); }
+.website-theme .hx-more { display: flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 5px; color: var(--os-weak); opacity: 0; cursor: pointer; transition: opacity 120ms, background 120ms; }
+.website-theme .hx-os .ss-side h4 .hx-more { opacity: 1; color: var(--os-weak); }
+.website-theme .hx-os .ss-side li:hover .hx-more, .website-theme .hx-os .ss-side li.is-on .hx-more { opacity: 1; }
+.website-theme .hx-more:hover { background: color-mix(in oklch, var(--os-fg) 8%, transparent); color: var(--os-fg); }
+@media (hover: none) { .website-theme .hx-more { opacity: .7; } }
+
+.website-theme .hx-menu {
+  position: absolute; z-index: 5; min-width: 200px; padding: 4px; border-radius: 8px; background: var(--os-bg); color: var(--os-fg);
+  box-shadow: 0 0 0 1px var(--os-line), 0 10px 28px -6px rgb(0 0 0 / .18), 0 2px 6px rgb(0 0 0 / .06);
+  font-size: 13px; animation: website-theme-hx-menu 140ms var(--motion-ease-arrival);
+}
+@keyframes website-theme-hx-menu { from { opacity: 0; transform: translateY(-4px) scale(.98); } }
+.website-theme .hx-menu-head { padding: 6px 8px 4px; font-size: 12px; color: var(--os-weak); }
+.website-theme .hx-item { display: flex; align-items: center; gap: 8px; width: 100%; height: 32px; padding: 0 8px; border-radius: 5px; text-align: left; color: var(--os-fg); }
+.website-theme .hx-item:hover { background: var(--os-muted); }
+.website-theme .hx-item > svg { color: var(--os-weak); }
+.website-theme .hx-item span { flex: 1; }
+.website-theme .hx-item em { display: flex; color: var(--os-fg); }
+.website-theme .ss-ed-btn.is-pickable { cursor: pointer; }
+
+.website-theme .hx-pointer { position: absolute; left: 0; top: 0; z-index: 6; pointer-events: none; opacity: 0; transition: transform 820ms var(--motion-ease-travel), opacity 240ms; filter: drop-shadow(0 2px 3px rgb(0 0 0 / .25)); }
+.website-theme .hx-pointer path { fill: #111; stroke: #fff; stroke-width: 1.4; stroke-linejoin: round; transform-origin: 2px 2px; transition: transform 120ms; }
+.website-theme .hx-pointer.is-shown { opacity: 1; }
+.website-theme .hx-pointer.is-pressing path { transform: scale(.86); }
+
+
+.website-theme .hx-os .ss-side h4 .hx-title { color: var(--os-fg); }
+
+/* How you work: one coding-agent window. The conversation runs on the left; the agent's own browser on the right shows the Studio
+   running locally, rendering each result. The window keeps one height; the thread scrolls inside it, as in any chat. */
+.website-theme .hx-ask-wrap { margin-top: 56px; text-align: left; }
+.website-theme .hx-agent { display: flex; flex-direction: column; height: 600px; border-radius: 14px; background: var(--card); box-shadow: 0 0 0 1px color-mix(in oklch, var(--foreground) 10%, transparent), 0 24px 48px -24px rgb(0 0 0 / .22); overflow: hidden; }
+.website-theme[data-color-mode="dark"] .hx-agent { box-shadow: 0 0 0 1px color-mix(in oklch, var(--foreground) 12%, transparent), 0 24px 48px -24px rgb(0 0 0 / .6); }
+.website-theme .hx-agent.is-fading .hx-thread, .website-theme .hx-agent.is-fading .hx-ask-window .ss-panes { opacity: 0; }
+.website-theme .hx-agent-bar { display: flex; align-items: center; gap: 14px; flex: none; height: 40px; padding: 0 14px; border-bottom: 1px solid var(--border); font-size: 13px; font-weight: 500; }
+.website-theme .hx-agent-dots { display: flex; gap: 6px; }
+.website-theme .hx-agent-dots i { width: 10px; height: 10px; border-radius: 50%; background: color-mix(in oklch, var(--foreground) 14%, transparent); }
+.website-theme .hx-agent-name { flex: 1; min-width: 0; }
+.website-theme .hx-chat-agents { display: flex; align-items: center; gap: 10px; color: var(--muted-foreground); }
+.website-theme .hx-agent-body { display: grid; grid-template-columns: minmax(0, 320px) minmax(0, 1fr); flex: 1; min-height: 0; }
+.website-theme .hx-chat { display: flex; flex-direction: column; min-height: 0; border-right: 1px solid var(--border); }
+.website-theme .hx-thread { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 18px; padding: 18px 16px; overflow-y: auto; scrollbar-width: none; transition: opacity 400ms; }
+.website-theme .hx-thread::-webkit-scrollbar { display: none; }
+.website-theme .hx-turn { display: flex; flex-direction: column; gap: 10px; animation: dx-in 300ms var(--motion-ease-arrival); }
+.website-theme .hx-msg { align-self: flex-end; max-width: 88%; padding: 9px 13px; border-radius: 14px 14px 4px 14px; background: var(--muted); font-size: 14px; line-height: 20px; }
+.website-theme .hx-reply { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; line-height: 20px; color: var(--muted-foreground); animation: dx-in 300ms var(--motion-ease-arrival); }
+.website-theme .hx-reply > svg { flex: none; margin-top: 3px; color: oklch(0.6 0.13 160); }
+.website-theme .hx-reply code { font: 12px/20px 'Geist Mono Variable', ui-monospace, monospace; color: var(--foreground); overflow-wrap: anywhere; }
+.website-theme .hx-reply.is-working i { flex: none; width: 12px; height: 12px; margin: 4px 1px 0; border-radius: 50%; border: 1.5px solid color-mix(in oklch, var(--foreground) 20%, transparent); border-top-color: var(--foreground); animation: website-theme-hx-spin 700ms linear infinite; }
+@keyframes website-theme-hx-spin { to { transform: rotate(360deg); } }
+.website-theme .hx-composer { display: flex; align-items: flex-end; gap: 10px; flex: none; margin: 0 12px 12px; padding: 10px 8px 8px 14px; border-radius: 14px; box-shadow: inset 0 0 0 1px var(--border); background: var(--background); }
+.website-theme .hx-composer p { flex: 1; height: 40px; overflow: hidden; font-size: 14px; line-height: 20px; }
+.website-theme .hx-composer p.is-empty { color: var(--muted-foreground); }
+.website-theme .hx-send { display: flex; align-items: center; justify-content: center; flex: none; width: 24px; height: 24px; border-radius: 50%; background: color-mix(in oklch, var(--foreground) 12%, transparent); color: var(--background); transition: background 200ms; }
+.website-theme .hx-send.is-ready { background: var(--foreground); }
+.website-theme .hx-browser { display: flex; flex-direction: column; min-width: 0; min-height: 0; background: var(--background); }
+.website-theme .hx-browser-bar { display: flex; align-items: center; gap: 12px; flex: none; height: 40px; padding: 0 12px; border-bottom: 1px solid var(--border); color: var(--muted-foreground); }
+.website-theme .hx-browser-nav { display: flex; gap: 8px; flex: none; }
+.website-theme .hx-browser-tools { display: flex; gap: 10px; flex: none; }
+.website-theme .hx-url { flex: 1; min-width: 0; display: flex; align-items: center; height: 24px; padding: 0 10px; border-radius: 6px; background: var(--muted); }
+.website-theme .hx-url i { width: 38%; max-width: 220px; height: 6px; border-radius: 3px; background: color-mix(in oklch, var(--foreground) 14%, transparent); }
+.website-theme .hx-browser-view { position: relative; flex: 1; min-height: 0; overflow: hidden; }
+.website-theme .hx-browser .dx-window { border-radius: 0; box-shadow: none; }
+.website-theme .hx-ask-window .ss-panes { transition: opacity 400ms; }
+.website-theme .hx-ask-window.is-empty .ss-panes { opacity: 0; }
+/* Phones (StudioAsk's camera): the window keeps its desktop layout at 780 x 520 inside a square frame (every phone visual on this
+   page is square), and the camera's transform moves
+   between the chat and the browser. The frame carries the window's ring, so the ring stays a hairline at every zoom. */
+@media (max-width: 640px) {
+  .website-theme .hx-cam { position: relative; aspect-ratio: 1; overflow: hidden; border-radius: 14px; background: var(--card); box-shadow: 0 0 0 1px color-mix(in oklch, var(--foreground) 10%, transparent), 0 24px 48px -24px rgb(0 0 0 / .22); }
+  .website-theme[data-color-mode="dark"] .hx-cam { box-shadow: 0 0 0 1px color-mix(in oklch, var(--foreground) 12%, transparent), 0 24px 48px -24px rgb(0 0 0 / .6); }
+  .website-theme .hx-cam .hx-agent { position: absolute; left: 0; top: 0; width: 780px; height: 520px; border-radius: 0; box-shadow: none; transform-origin: 0 0; opacity: 0; transition: opacity 240ms var(--motion-ease-arrival); }
+  .website-theme .hx-cam.is-ready .hx-agent { opacity: 1; }
+  .website-theme .hx-cam.is-settled .hx-agent { transition: opacity 240ms var(--motion-ease-arrival), transform 900ms var(--motion-ease-travel); }
+  /* The frame shows the window at about three quarters size, so the chat's type steps up to read at its desktop size. */
+  .website-theme .hx-cam .hx-msg { font-size: 18px; line-height: 26px; }
+  .website-theme .hx-cam .hx-reply { font-size: 17px; line-height: 25px; }
+  .website-theme .hx-cam .hx-reply code { font-size: 15.5px; line-height: 25px; }
+  .website-theme .hx-cam .hx-composer p { height: 52px; font-size: 18px; line-height: 26px; }
+  .website-theme .hx-cam .hx-agent-body { grid-template-columns: 300px minmax(0, 1fr); }
+}
+@media (max-width: 640px) and (prefers-reduced-motion: reduce) { .website-theme .hx-cam .hx-agent { transition: none; } }
+
+/* The Studio windows on this page. A screen fills its pane, so the app's background runs to the bottom edge. The rail's mark sits on
+   the same line as the sidebar title and the app's top bar (28px down), and the rail's icons center on the column beside its hairline. */
+.website-theme .dx-os .ss-pane > .ss-app { height: 100%; }
+.website-theme .dx-os .sc-rail { box-sizing: content-box; padding-top: 16px; }
+
+/* The browse tour sits under a slide's copy with the same gap as the case-study stages. */
+.website-theme .cs-slide .hx { margin-top: 48px; }
+@media (max-width: 760px) { .website-theme .cs-slide .hx { margin-top: 28px; } }
+
+/* Share (StudioShare.tsx): one idea, a link. The ask and the link sit on the left; the browser it opens comes up on the right. */
+.website-theme .ps { max-width: 1024px; margin: 48px auto 0; text-align: left; }
+.website-theme .ps-stage { position: relative; display: grid; grid-template-columns: minmax(0, 360px) minmax(0, 1fr); gap: 48px; align-items: center; min-height: 380px; padding: 40px 48px; border-radius: 16px; background: var(--card); box-shadow: inset 0 0 0 1px var(--border); overflow: hidden; }
+.website-theme .ps-chat { display: flex; flex-direction: column; gap: 12px; }
+.website-theme .ps-composer { display: flex; align-items: center; gap: 10px; padding: 9px 9px 9px 14px; border-radius: 14px; background: var(--background); box-shadow: inset 0 0 0 1px var(--border); transition: opacity 300ms ease; }
+.website-theme .ps-composer p { flex: 1; min-height: 20px; margin: 0; font-size: 14px; line-height: 20px; }
+.website-theme .ps-composer.is-sent { order: 9; }
+.website-theme .ps-composer.is-sent p::before { content: "Ask for a change"; color: var(--muted-foreground); }
+.website-theme .ps-caret { display: inline-block; width: 1.5px; height: 15px; margin-left: 1px; vertical-align: -2px; background: var(--foreground); animation: website-theme-ps-blink 1s steps(1) infinite; }
+@keyframes website-theme-ps-blink { 50% { opacity: 0; } }
+.website-theme .ps-ask { margin: 0; animation: dx-in 300ms var(--motion-ease-arrival); }
+.website-theme .ps-reply { display: flex; gap: 8px; margin: 4px 0 0; font-size: 14px; line-height: 20px; color: var(--muted-foreground); animation: dx-in 300ms var(--motion-ease-arrival) 120ms both; }
+.website-theme .ps-reply svg { flex: none; margin-top: 2px; color: oklch(0.6 0.13 160); }
+.website-theme .ps-link { align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 10px; background: var(--foreground); color: var(--background); font: 500 15px/20px 'Geist Mono Variable', ui-monospace, monospace; animation: dx-in 360ms var(--motion-ease-arrival) 260ms both; transition: transform 160ms ease; }
+.website-theme .ps-link.is-opened { animation: website-theme-ps-press 360ms ease; }
+@keyframes website-theme-ps-press { 40% { transform: scale(.95); } }
+.website-theme .ps-browser { overflow: hidden; border-radius: 10px; background: var(--background); box-shadow: 0 0 0 1px color-mix(in oklch, var(--foreground) 12%, transparent), 0 18px 40px -22px rgb(0 0 0 / .3); opacity: .35; transform: translateY(10px) scale(.98); transition: opacity 500ms ease 150ms, transform 600ms var(--motion-ease-arrival) 150ms; }
+.website-theme .ps-browser.is-open { opacity: 1; transform: none; }
+/* The Studio the link opens, scaled to the browser's width. */
+.website-theme .ps-window { pointer-events: none; }
+.website-theme .ps-bar { display: flex; align-items: center; gap: 12px; height: 36px; padding: 0 12px; border-bottom: 1px solid var(--border); }
+.website-theme .ps-bar span { display: flex; gap: 5px; }
+.website-theme .ps-bar span i { width: 8px; height: 8px; border-radius: 50%; background: color-mix(in oklch, var(--foreground) 14%, transparent); }
+.website-theme .ps-bar em { flex: 1; display: flex; align-items: center; gap: 6px; height: 22px; padding: 0 10px; border-radius: 6px; background: var(--muted); font: 12px/22px 'Geist Mono Variable', ui-monospace, monospace; font-style: normal; color: transparent; transition: color 300ms ease 300ms; }
+.website-theme .ps-bar em svg { color: transparent; transition: color 300ms ease 300ms; }
+.website-theme .ps-browser.is-open .ps-bar em, .website-theme .ps-browser.is-open .ps-bar em svg { color: var(--foreground); }
+@media (max-width: 760px) {
+  .website-theme .ps { margin-top: 28px; }
+  /* One box, one beat: the chat and the browser share a cell, and the browser slides in over the chat as the link opens. */
+  .website-theme .ps-stage { grid-template-columns: minmax(0, 1fr); grid-template-areas: "beat"; min-height: 0; aspect-ratio: 1; padding: 24px 20px; overflow: hidden; }
+  .website-theme .ps-chat, .website-theme .ps-browser { grid-area: beat; }
+  .website-theme .ps-chat { justify-content: flex-end; align-self: center; transition: opacity 360ms ease, transform 520ms var(--motion-ease-travel); }
+  .website-theme .ps-browser { align-self: center; opacity: 0; transform: translateX(24px); pointer-events: none; }
+  .website-theme .ps-browser.is-open { opacity: 1; transform: none; }
+  .website-theme .ps-stage.is-opened .ps-chat { opacity: 0; transform: translateX(-24px); }
+}
+@media (max-width: 760px) and (prefers-reduced-motion: reduce) { .website-theme .ps-chat { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .website-theme .ps-browser, .website-theme .ps-bar em, .website-theme .ps-bar em svg { transition: none; } .website-theme .ps-ask, .website-theme .ps-reply, .website-theme .ps-link { animation: none; } }
+
+/* Every phone visual on the page is square, but these two islands render the desktop frame on the server and only switch to their
+   phone layout once they hydrate. Hold the square until then so nothing below them jumps. */
+@media (max-width: 640px) {
+  .website-theme .ds-square astro-island[ssr] .cs-stage { aspect-ratio: 1; overflow: hidden; }
+}

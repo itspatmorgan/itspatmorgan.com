@@ -29,7 +29,7 @@ How the site fits together and where each thing lives. Content rules are in
 | Lab | Entry in `src/content/lab/<slug>.mdx`, page in `src/pages/lab/<slug>.astro`, code in `src/lab/<slug>/` |
 | Community and Kind Words | `src/pages/community.astro`, `src/data/community.ts`, `src/data/commendations.ts` |
 | Career timeline | `src/data/experience.ts` |
-| Design Studio landing page | `src/pages/design-studio.astro`, scenes in `src/components/design-studio/` |
+| Design Studio landing page | `src/pages/design-studio.astro`, scenes in `packages/kit/src/design-studio/` |
 | Design system reference | `/style-guide` (`src/pages/style-guide.astro`, noindex) |
 | Tokens and global styles | `src/styles/global.css` |
 | Scripts | `scripts/` (checks, review, starters, share cards, frame check, writing sync, favicons) |
@@ -37,7 +37,7 @@ How the site fits together and where each thing lives. Content rules are in
 ## The kit
 
 `packages/kit` holds the code the site shares with Patrick's Design Studio (the `pm-prototypes` repo, deployed at
-studio.itspatmorgan.com): the theme hooks, the scene player and stages, and the case study demos moved so far (Sublime, query builder, Expansion).
+studio.itspatmorgan.com): the theme hooks, the scene player and stages, and the case study demos (Sublime, query builder, Expansion, Design Studio and its landing page scenes).
 The site imports it as `@itspatmorgan/kit/<path>`; Studio's Website system installs it from this repo at a pinned commit.
 Both sides render the same files, so a demo changed here reaches Studio when its pin moves, and a piece prototyped in
 Studio comes to the site by moving its file in.

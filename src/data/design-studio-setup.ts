@@ -1,12 +1,9 @@
 export const setupGuide = 'https://github.com/itspatmorgan/design-studio/blob/v0.1.3/src/platform/context/installing.md';
 export const publishingGuide = 'https://github.com/itspatmorgan/design-studio/blob/main/src/platform/context/publishing.md';
 
-// Examples of agent harnesses, independent of the installation procedure.
-export const agentHarnesses = [
-  { title: 'Codex', logo: '/images/logos/square-chatgpt.svg' },
-  { title: 'Claude Code', logo: '/images/logos/square-claude.svg' },
-  { title: 'Cursor', logo: '/images/logos/cursor.svg' },
-];
+// Examples of agent harnesses, independent of the installation procedure. The kit keeps them, with their logos, because
+// the landing page's StudioAsk scene shows them too.
+export { agentHarnesses } from '@itspatmorgan/kit/design-studio/harnesses';
 
 export const publishingHosts = [
   { title: 'Vercel', logo: '/images/logos/vercel.svg' },

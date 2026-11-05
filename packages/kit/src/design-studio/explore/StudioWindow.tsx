@@ -1,9 +1,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
-import { useDark, useIsomorphicLayoutEffect, useReduced } from '@itspatmorgan/kit/hooks';
+import { useDark, useIsomorphicLayoutEffect, useReduced } from '../../hooks';
 import { OsRail } from '../../studio-case/StudioUI';
 import { Canvas, Doc, Flow, Inbox, Nav, type Key } from '../StudioShapes';
-import '../studio-shapes.css';
-import './explore.css';
 
 // Hero explorations for /design-studio (not linked from the site). Each one shows the open-source Studio's prototype view with the
 // Feedback Inbox sample, built from the same parts as the live hero (StudioShapes), but at a readable size and open to the visitor's hand.

@@ -18,6 +18,12 @@ export const SHEETS = [
   'sublime/sublime.css',
   'query-builder/query-builder.css',
   'expansion/expansion.css',
+  'design-studio/linework.css',
+  'design-studio/studio-card.css',
+  'design-studio/studio-hero.css',
+  'design-studio/studio-shapes.css',
+  'design-studio/explore/explore.css',
+  'studio-case/studio-case.css',
 ];
 const THEME = '.website-theme';
 const DARK = `${THEME}[data-color-mode="dark"]`;
@@ -69,7 +75,7 @@ export function studioCss(sheet) {
   // site paths don't exist there, so both are refused; relative paths are rewritten for the copy in studio/.
   root.walkDecls(decl => {
     decl.value = decl.value.replace(/url\(\s*(['"]?)([^'")]+)\1\s*\)/g, (match, quote, url) => {
-      if (url.startsWith('data:')) return match;
+      if (url.startsWith('data:') || url.startsWith('#')) return match;
       if (!url.startsWith('./') && !url.startsWith('../')) throw new Error(`${sheet}: ${url} must be a file in the kit, referenced by a relative path`);
       const file = path.join(KIT, 'src', path.dirname(sheet), url);
       if (!fs.existsSync(file)) throw new Error(`${sheet}: ${url} does not exist`);

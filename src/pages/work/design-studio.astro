@@ -2,19 +2,20 @@
 import CaseStudyLayout from '@/layouts/CaseStudyLayout.astro';
 import Slide from '@/components/case-study/Slide.astro';
 import { getCaseStudy } from '@/lib/case-study';
-import Workspace from '@/components/studio-case/Workspace';
-import StudioRange from '@/components/design-studio/StudioRange';
-import GalleryGrowth from '@/components/studio-case/GalleryGrowth';
-import RulesMap from '@/components/studio-case/RulesMap';
-import ScopeCheck from '@/components/studio-case/ScopeCheck';
-import Handoff from '@/components/studio-case/Handoff';
-import OpenStudio from '@/components/studio-case/OpenStudio';
+import Workspace from '@itspatmorgan/kit/studio-case/Workspace';
+import StudioRange from '@itspatmorgan/kit/design-studio/StudioRange';
+import GalleryGrowth from '@itspatmorgan/kit/studio-case/GalleryGrowth';
+import RulesMap from '@itspatmorgan/kit/studio-case/RulesMap';
+import ScopeCheck from '@itspatmorgan/kit/studio-case/ScopeCheck';
+import Handoff from '@itspatmorgan/kit/studio-case/Handoff';
+import OpenStudio from '@itspatmorgan/kit/studio-case/OpenStudio';
 import StudioQuote from '@/components/studio-case/StudioQuote.astro';
 import StudioLesson from '@/components/studio-case/StudioLesson.astro';
 import StudioPress from '@/components/studio-case/StudioPress.astro';
+import '@itspatmorgan/kit/design-studio/studio-shapes.css';
 import '@itspatmorgan/kit/case-study/case-study.css';
 import '@itspatmorgan/kit/sublime/sublime.css';
-import '@/components/studio-case/studio-case.css';
+import '@itspatmorgan/kit/studio-case/studio-case.css';
 
 const { project, slide } = await getCaseStudy('design-studio');
 ---

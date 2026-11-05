@@ -3,6 +3,8 @@ import {
   Book02Icon, BookOpen01Icon, CursorInWindowIcon, Layers01Icon, Moon02Icon, PanelLeftCloseIcon, Search01Icon, Settings01Icon, Shapes01Icon,
   Target01Icon, UserCircleIcon, WebDesign01Icon, Wrench01Icon,
 } from '@hugeicons/core-free-icons';
+import sublimeMark from './assets/sublime-mark.svg?url';
+import profilePicture from './assets/profile-picture.jpg?url';
 
 // Pieces shared by the Design Studio screens. The internal Studio's are ported from the Design Studio archive (src/studio/app:
 // GallerySidebar, CatalogPrototypeCard, CatalogFilterBar); the open-source Studio's from itspatmorgan/design-studio
@@ -15,7 +17,7 @@ export const icon = (i: IconSvg, size = 16, stroke = 1.6) => <HugeiconsIcon icon
 export function Rail({ on = 'prototypes' }: { on?: string }) {
   const items: [string, IconSvg][] = [['search', Search01Icon], ['prototypes', Layers01Icon], ['tools', Wrench01Icon], ['guide', Book02Icon], ['principles', Target01Icon], ['personas', UserCircleIcon], ['systems', Shapes01Icon], ['blueprints', WebDesign01Icon]];
   return <nav className="sc-rail" aria-hidden="true">
-    <img className="sc-mark" src="/images/studio-case/sublime-mark.svg" alt="" />
+    <img className="sc-mark" src={sublimeMark} alt="" />
     {items.map(([key, i]) => <span key={key} className={`sc-rail-item ${on === key ? 'is-on' : ''}`}>{icon(i, 18)}</span>)}
     <span className="sc-rail-item sc-rail-end">{icon(Moon02Icon, 18)}</span>
   </nav>;
@@ -49,7 +51,7 @@ const identicons: Record<string, [string, number[]]> = {
   Samantha: ['#d0605e', [0b11111, 0b00100, 0b11011, 0b00000, 0b01110]],
 };
 export function Avatar({ name }: { name: string }) {
-  if (name === 'Patrick') return <img className="sc-avatar" src="/images/brand/profile-picture.jpg" alt="" />;
+  if (name === 'Patrick') return <img className="sc-avatar" src={profilePicture} alt="" />;
   const id = identicons[name];
   if (id) return <svg className="sc-avatar is-id" viewBox="-1 -1 7 7" aria-hidden="true">{id[1].flatMap((row, y) => [0, 1, 2, 3, 4].filter(x => row & (1 << (4 - x))).map(x => <rect key={`${x}-${y}`} x={x} y={y} width="1" height="1" fill={id[0]} />))}</svg>;
   return <span className="sc-avatar">{name.slice(0, name === 'AJ' ? 2 : 1)}</span>;
