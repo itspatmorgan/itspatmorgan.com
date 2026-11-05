@@ -1,0 +1,50 @@
+---
+import CaseStudyLayout from '@/layouts/CaseStudyLayout.astro';
+import Slide from '@/components/case-study/Slide.astro';
+import { getCaseStudy } from '@/lib/case-study';
+import HeroBeforeAfter from '@/components/juno-design-system/HeroBeforeAfter';
+import Disconnected from '@/components/juno-design-system/Disconnected';
+import MaterialToJuno from '@/components/juno-design-system/MaterialToJuno';
+import Primitives from '@/components/juno-design-system/Primitives';
+import SharedParts from '@/components/juno-design-system/SharedParts';
+import Rollout from '@/components/juno-design-system/Rollout';
+import Operations from '@/components/juno-design-system/Operations';
+import BeforeAfter from '@/components/juno-design-system/BeforeAfter';
+import '@/components/case-study/case-study.css';
+import '@/components/juno-design-system/juno-design-system.css';
+
+// The words live in src/content/projects/juno-design-system.md; this page places the visuals, one Slide per point.
+const { project, slide } = await getCaseStudy('juno-design-system');
+---
+
+<CaseStudyLayout project={project} product="jds" noindex={project.data.draft}>
+  <HeroBeforeAfter slot="hero" client:load />
+
+  <Slide {...slide('problem')}>
+    <Disconnected client:visible />
+  </Slide>
+
+  <Slide {...slide('bet')}>
+    <MaterialToJuno client:visible />
+  </Slide>
+
+  <Slide {...slide('foundations')}>
+    <Primitives client:visible />
+  </Slide>
+
+  <Slide {...slide('parts')}>
+    <SharedParts client:visible />
+  </Slide>
+
+  <Slide {...slide('rollout')}>
+    <Rollout client:visible />
+  </Slide>
+
+  <Slide {...slide('governance')}>
+    <Operations client:visible />
+  </Slide>
+
+  <Slide {...slide('outcome')}>
+    <BeforeAfter client:visible />
+  </Slide>
+</CaseStudyLayout>
