@@ -1,8 +1,10 @@
 import { dissolvePixelWave, enablePixelHover } from "./pixel-wave";
+import { initHeroDots } from "./hero-dots";
 
 const SESSION_KEY = "pixelWaveSeen";
 
-// Headlines render in their final state; the two pixel dissolves below are the only load and scroll motion.
+// Headlines render in their final state; the two pixel dissolves below are the only load and scroll motion. The hero's dot halo
+// sends one soft ripple out with the first dissolve, and again when builder mode runs.
 // The hero dissolves on the first home visit of a session, and the closing line dissolves when it scrolls into view.
 // dissolvePixelWave enables hover once it finishes; everything else gets hover straight away.
 function initHomeInteractions() {
@@ -23,9 +25,14 @@ function initHomeInteractions() {
   }
 
   sessionStorage.setItem(SESSION_KEY, "1");
+  const dots = isMd ? initHeroDots() : null;
+  document.querySelector("[data-builder-photo]")?.addEventListener("click", () => dots?.ripple());
   if (heroWave) {
     if (seen) enablePixelHover(heroWave);
-    else dissolvePixelWave(heroWave);
+    else {
+      dissolvePixelWave(heroWave);
+      dots?.ripple();
+    }
   }
   releaseIntro();
 
