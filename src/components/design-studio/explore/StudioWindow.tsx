@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
-import { useDark, useIsomorphicLayoutEffect, useReduced } from '@/lib/hooks';
+import { useDark, useIsomorphicLayoutEffect, useReduced } from '@itspatmorgan/kit/hooks';
 import { OsRail } from '../../studio-case/StudioUI';
 import { Canvas, Doc, Flow, Inbox, Nav, type Key } from '../StudioShapes';
 import '../studio-shapes.css';

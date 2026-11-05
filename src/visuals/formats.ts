@@ -1,4 +1,4 @@
-import type { Format } from '@/components/case-study/scene';
+import type { Format } from '@itspatmorgan/kit/case-study/scene';
 
 // The formats a visual can be drawn in besides the site's own responsive stage. Each is a stage at the format's pixel size, with the
 // product card inset from the sides and top as the site's stage insets it (about 5% of the width), bleeding off the bottom edge unless

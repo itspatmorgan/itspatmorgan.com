@@ -2,14 +2,14 @@
 import CaseStudyLayout from '@/layouts/CaseStudyLayout.astro';
 import Slide from '@/components/case-study/Slide.astro';
 import { getCaseStudy } from '@/lib/case-study';
-import HeroRule from '@/components/sublime/HeroRule';
-import MessageDetail from '@/components/sublime/MessageDetail';
-import JobReview from '@/components/sublime/JobReview';
-import AutoAccepted from '@/components/sublime/AutoAccepted';
-import AutomationConfig from '@/components/sublime/AutomationConfig';
-import AdeJobs from '@/components/sublime/AdeJobs';
-import '@/components/case-study/case-study.css';
-import '@/components/sublime/sublime.css';
+import HeroRule from '@itspatmorgan/kit/sublime/HeroRule';
+import MessageDetail from '@itspatmorgan/kit/sublime/MessageDetail';
+import JobReview from '@itspatmorgan/kit/sublime/JobReview';
+import AutoAccepted from '@itspatmorgan/kit/sublime/AutoAccepted';
+import AutomationConfig from '@itspatmorgan/kit/sublime/AutomationConfig';
+import AdeJobs from '@itspatmorgan/kit/sublime/AdeJobs';
+import '@itspatmorgan/kit/case-study/case-study.css';
+import '@itspatmorgan/kit/sublime/sublime.css';
 
 const { project, slide } = await getCaseStudy('sublime-agents');
 ---

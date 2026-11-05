@@ -7,7 +7,7 @@ description: Draws case study scenes for formats beyond the site, such as a slid
 
 ## Purpose
 
-One source for each piece of work, drawn correctly for each place it is shown. The case study scenes in `src/components/sublime/`
+One source for each piece of work, drawn correctly for each place it is shown. The case study scenes in `packages/kit/src/sublime/`
 and `src/components/studio-case/` are the source: real product screens, recreated natively. The site shows them in its responsive
 stage. The library (`src/visuals/`) draws the same scenes in fixed formats, a 1920 × 1080 slide or a 4:5 social post, laid out for
 that format rather than cropped from the site's stage, and records them for use elsewhere.
@@ -18,7 +18,7 @@ product screen reaches both.
 
 ## How it fits together
 
-- `src/components/case-study/scene.tsx`: `FormatContext`. Under it, `useStage` lays the scene's screen out for the format and
+- `packages/kit/src/case-study/scene.tsx`: `FormatContext`. Under it, `useStage` lays the scene's screen out for the format and
   `SceneFrame` draws the stage at exactly the format's size, with no tour. Without it, nothing changes: the site never sets it.
 - `src/visuals/formats.ts`: the formats. Each is a stage size with the card's inset, top and ring, in the format's pixels.
 - `src/visuals/library.ts`: the visuals. Each names a scene (by lazy import), its props, its project, its `poster` step and its

@@ -1,4 +1,4 @@
-import { DemoFrame, useScene } from '../case-study/scene';
+import { DemoFrame, useScene } from '@itspatmorgan/kit/case-study/scene';
 import './studio-shapes.css';
 
 // Where Design Studio sits, as one spectrum: flexible to explore at one end, true to your product at the other. One-off prototypes

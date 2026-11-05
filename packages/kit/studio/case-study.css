@@ -1,0 +1,122 @@
+/* Generated from src/case-study/case-study.css by scripts/studio-css.mjs. Edit the source, then run it again. */
+/* One point per section: a headline, at most one line of copy, then the visual. Source UI keeps its original palette. */
+.website-theme .cs-page { max-width: 1120px; margin: auto; padding: 0 48px 160px; }
+.website-theme .cs-page *, .website-theme .cs-page *::before, .website-theme .cs-page *::after { box-sizing: border-box; }
+.website-theme .cs-page a { text-underline-offset: 4px; }
+.website-theme .cs-page a:hover { color: var(--foreground); }
+.website-theme .cs-page button:focus-visible, .website-theme .cs-page a:focus-visible { outline: 2px solid var(--ring); outline-offset: 3px; }
+.website-theme .cs-nav { padding: 34px 0; color: var(--muted-foreground); font: 12px var(--font-mono); }
+.website-theme .cs-nav a { display: inline-flex; align-items: center; gap: 8px; }
+
+/* Slides: a short headline, one line of context, then the visual, all within one viewport.
+   Spacing roughly doubles at each level: 24 within a group, 48 to its visual, 72 from the hero brief, 144 between sections. */
+.website-theme .cs-slide { padding-top: 144px; text-align: center; scroll-margin-top: 24px; }
+/* One page width: stages sit at the site's 1024px, and titles and copy keep narrower reading measures inside it. */
+/* Only the slide's own headings: a demo's headings inside the stage keep their product's type. */
+.website-theme .cs-slide > h1, .website-theme .cs-slide > h2 { max-width: 960px; margin-inline: auto; font-weight: 500; text-wrap: balance; }
+.website-theme .cs-slide > h1 { max-width: 15em; font-size: clamp(42px, 5.2vw, 76px); line-height: 1.02; letter-spacing: -.05em; }
+.website-theme .cs-slide > h2 { font-size: clamp(28px, 2.9vw, 40px); line-height: 1.05; letter-spacing: -.045em; }
+.website-theme .cs-slide > p { max-width: 840px; margin: 24px auto 0; font-size: clamp(17px, 1.4vw, 19px); line-height: 1.5; letter-spacing: -.012em; color: var(--muted-foreground); text-wrap: pretty; }
+.website-theme .cs-slide > .cs-stage, .website-theme .cs-slide .cs-scene { margin-top: 48px; }
+/* Hero rhythm: a tight title group (company, title, subline), a clear step to the brief, a larger step to the visual. */
+.website-theme .cs-hero { padding-top: 22px; container-type: inline-size; }
+.website-theme .cs-hero > h1 { font-size: clamp(38px, 3.9vw, 52px); line-height: 1.08; }
+.website-theme .cs-hero > p { margin-top: 28px; text-wrap: balance; }
+.website-theme .cs-hero > .cs-company { display: inline-flex; align-items: center; gap: 7px; margin: 0 0 32px; color: var(--foreground); font-size: 17px; font-weight: 500; letter-spacing: -.01em; }
+.website-theme .cs-company img { width: 30px; height: 30px; filter: invert(1); }.website-theme[data-color-mode="dark"] .cs-company img { filter: none; }
+.website-theme .cs-hero > .cs-stage, .website-theme .cs-hero .cs-scene { margin-top: 72px; }
+/* Project brief: four facts, read at a glance before the visuals take over. */
+.website-theme .cs-brief { display: grid; grid-template-columns: repeat(4, auto); justify-content: center; margin: 56px auto 0; }
+/* Facts are about 735px wide; padding takes whatever room is left, then the row wraps. */
+.website-theme .cs-brief > div { padding: 2px clamp(12px, calc((100cqi - 740px) / 8), 24px); }
+.website-theme :is(.cs-brief > div + div) { border-left: 1px solid var(--border); }
+.website-theme .cs-brief dt { font-size: 13px; line-height: 1.4; color: var(--muted-foreground); }
+.website-theme .cs-brief dd { margin-top: 8px; font-size: 15px; line-height: 1.4; font-weight: 500; letter-spacing: -.005em; white-space: nowrap; }
+/* One row while the four facts fit; a 2x2 grid only once the hero is narrower than the row. */
+@container (max-width: 840px) {
+  .website-theme .cs-brief { grid-template-columns: repeat(2, minmax(0, 260px)); gap: 20px 0; }
+  .website-theme .cs-brief > div:nth-child(3) { border-left: 0; }
+  .website-theme .cs-brief dd { white-space: normal; text-wrap: balance; }
+}
+
+/* Stage: the site texture surface; the source UI floats on it as a product shot. Capped so the panel hugs its window on wide screens. */
+.website-theme .cs-stage { position: relative; max-width: 1024px; margin: 0 auto; text-align: left; padding: clamp(16px, 4.5vw, 64px); border-radius: 16px; }
+/* One window size across slides, so the sequence reads like a deck. */
+.website-theme .cs-stage .cs-demo { max-width: 880px; margin-inline: auto; }
+
+/* Demos (NativeStage.tsx): a source frame on a canvas scaled to the stage, an optional corner play button, and a demo cursor.
+   Each product sets its own type, color and surface on .cs-native and .cs-native-stage. */
+.website-theme .cs-demo { position: relative; margin: 0; min-width: 0; }
+.website-theme .cs-native-stage { position: relative; width: 100%; overflow: clip; border-radius: 0; transition: opacity 240ms ease; }
+.website-theme .cs-loop-reset .cs-native-stage { opacity: 0; transition-duration: 180ms; }
+.website-theme .cs-canvas { position: absolute; top: 0; left: 0; transform-origin: top left; }
+/* On a phone, a stage zoomed in for a closer look eases between views, and fades at its edges, where the frame goes on. On desktop, a crop only trims a frame's margins. */
+@media (max-width: 640px) {
+  .website-theme .cs-native-stage.is-panning .cs-canvas { transition: transform 900ms var(--motion-ease-in-out); }
+  .website-theme .cs-native-stage.is-cropped { --fade: linear-gradient(to right, transparent, #000 24px, #000 calc(100% - 32px), transparent), linear-gradient(to bottom, #000 calc(100% - 48px), transparent); -webkit-mask-image: var(--fade); -webkit-mask-composite: source-in; mask-image: var(--fade); mask-composite: intersect; }
+}
+.website-theme .cs-native button, .website-theme .cs-native input { font: inherit; letter-spacing: inherit; color: inherit; }
+.website-theme .cs-native button { border: 0; background: transparent; cursor: pointer; }
+.website-theme .cs-native h4, .website-theme .cs-native p, .website-theme .cs-native ul { margin: 0; padding: 0; font-family: inherit; }.website-theme .cs-native ul { list-style: none; }
+.website-theme .cs-native svg { overflow: hidden; }
+.website-theme .cs-cursor { position: absolute; z-index: 100; color: #111; width: 26px; height: 28px; pointer-events: none; filter: drop-shadow(0 1px 1px #fff9) drop-shadow(0 2px 2px #0003); }
+.website-theme .cs-cursor svg { fill: white; }
+
+/* Scenes (scene.tsx): the screen carries its own margins, so the stage drops its padding and the card bleeds off the bottom.
+   Every stage shares the 1024px page width, so wide and normal scenes line up with the rest of the site. */
+.website-theme .cs-page .cs-frame { padding: 0; overflow: hidden; }
+.website-theme .cs-stage-bar { position: relative; z-index: 1; display: flex; justify-content: center; padding: clamp(14px, 3vw, 36px) 16px 0; margin-bottom: clamp(-36px, -2.8vw, 0px); }
+/* The shell holds the card and its ring, and fades both out toward the stage's bottom edge, so a crop reads as a bleed. */
+.website-theme .cs-shell { position: absolute; bottom: 0; -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 120px), transparent 100%); mask-image: linear-gradient(to bottom, #000 calc(100% - 120px), transparent 100%); }
+.website-theme .cs-shell.is-contained { -webkit-mask-image: none; mask-image: none; }
+.website-theme .cs-shell.is-contained .cs-card { border-radius: 24px; }
+.website-theme .cs-card { position: relative; height: 100%; overflow: hidden; background: var(--cs-card); border-radius: 24px 24px 0 0; box-shadow: 0 0 0 16px var(--cs-ring), var(--cs-drop); }
+
+/* Under each stage: the chapter's caption on the left, a segment per chapter and the play button on the right. */
+.website-theme .cs-tour { display: flex; align-items: flex-start; justify-content: space-between; gap: 32px; max-width: 1024px; margin: 18px auto 0; padding: 0 4px; text-align: left; }
+.website-theme .cs-tour-caption { position: relative; flex: 1; min-width: 0; min-height: 24px; font-size: 15px; line-height: 24px; letter-spacing: -.01em; color: var(--foreground); }
+.website-theme .cs-tour-caption > span { display: block; text-wrap: pretty; }
+.website-theme .cs-tour.is-quiet { justify-content: flex-end; }
+.website-theme .cs-tour-controls { display: flex; align-items: center; gap: 14px; flex-shrink: 0; height: 24px; }
+.website-theme .cs-beats { display: flex; gap: 4px; margin: 0; padding: 0; list-style: none; }
+.website-theme .cs-beats button { display: block; padding: 11px 0; background: none; border: 0; cursor: pointer; }
+.website-theme .cs-beats button > i { position: relative; display: block; width: 28px; height: 2px; border-radius: 1px; background: var(--border); overflow: hidden; transition: background 150ms ease; }
+.website-theme .cs-beats button > i::after { content: ''; position: absolute; inset: 0; background: var(--foreground); transform: scaleX(0); transform-origin: left; }
+.website-theme .cs-beats button:hover > i { background: color-mix(in srgb, var(--foreground) 28%, transparent); }
+.website-theme .cs-beats button.is-done > i::after { transform: scaleX(1); }
+.website-theme .cs-beats button.is-current > i::after { animation: website-theme-cs-fill linear forwards; animation-duration: inherit; animation-play-state: inherit; }
+.website-theme .cs-beats button:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; border-radius: 2px; }
+@keyframes website-theme-cs-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.website-theme .cs-tour-play { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--border); background: var(--background); color: var(--foreground); cursor: pointer; transition: transform 150ms var(--motion-ease-out-quick), background 150ms ease; }
+.website-theme .cs-tour-play:hover { background: var(--muted, #f2f2f1); }
+.website-theme .cs-tour-play:active { transform: scale(.94); }
+.website-theme .cs-tour-play:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+/* On a phone the controls sit right under the stage as one group (play first, then the steps), so they never move as captions change,
+   and the caption flows below them at full width. */
+@media (max-width: 640px) {
+  .website-theme .cs-tour { flex-direction: column-reverse; align-items: stretch; gap: 8px; margin-top: 12px; }
+  .website-theme .cs-tour-caption { font-size: 14px; line-height: 20px; }
+  .website-theme .cs-tour-controls { flex-direction: row-reverse; justify-content: flex-end; gap: 12px; }
+}
+@media (prefers-reduced-motion: reduce) { .website-theme .cs-beats button.is-current > i::after { animation: none; transform: scaleX(1); } }
+/* Content is laid out in source pixels and zoomed to fill the card, so type keeps the product's proportions at a readable size. */
+.website-theme .cs-zoom { position: absolute; top: 0; left: 0; transform-origin: top left; }
+.website-theme .cs-camera { position: relative; transform-origin: 0 0; }
+.website-theme .cs-pointer { position: absolute; z-index: 50; }
+
+@media (max-width: 1050px) { .website-theme .cs-page { padding-inline: 30px; } }
+
+@media (max-width: 760px) {
+  .website-theme .cs-page { padding-inline: 20px; }
+  .website-theme .cs-nav { padding-block: 24px; }
+  .website-theme .cs-slide { padding-top: 88px; }
+  .website-theme .cs-hero { padding-top: 28px; }
+  .website-theme .cs-slide > h1 { font-size: 36px; }
+  .website-theme .cs-brief { margin-top: 40px; }
+  .website-theme .cs-brief > div { padding: 0 12px; }
+  .website-theme .cs-slide > h2 { font-size: 28px; }
+  .website-theme .cs-slide > .cs-stage, .website-theme .cs-slide .cs-scene { margin-top: 28px; }
+  .website-theme .cs-stage { border-radius: 12px; }
+  }
+
+@media (prefers-reduced-motion: reduce) { .website-theme .cs-page *, .website-theme .cs-page *::before, .website-theme .cs-page *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }

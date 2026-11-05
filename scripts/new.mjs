@@ -71,7 +71,7 @@ import CaseStudyLayout from '@/layouts/CaseStudyLayout.astro';
 import Slide from '@/components/case-study/Slide.astro';
 import { getCaseStudy } from '@/lib/case-study';
 import ${name}Problem from '@/components/${slug}/${name}Problem';
-import '@/components/case-study/case-study.css';
+import '@itspatmorgan/kit/case-study/case-study.css';
 import '@/components/${slug}/${slug}.css';
 
 // The words live in src/content/projects/${slug}.md; this page places the visuals, one Slide per point.
@@ -87,7 +87,7 @@ const { project, slide } = await getCaseStudy('${slug}');
     [`src/components/${slug}/${slug}.css`]: `/* ${title}: the product's own styles, scoped by its namespace class. Shared layout and rhythm are in case-study.css. */
 .${ns} .${ns}-screen { display: grid; place-items: center; aspect-ratio: 16 / 10; padding: 32px; }
 `,
-    [`src/components/${slug}/${name}Problem.tsx`]: `import { DemoFrame, Screens, useScene } from '@/components/case-study/scene';
+    [`src/components/${slug}/${name}Problem.tsx`]: `import { DemoFrame, Screens, useScene } from '@itspatmorgan/kit/case-study/scene';
 
 // TODO: the first scene. Show the real product (screens rebuilt from Figma or the product's code), never a stand-in, and follow the
 // build-case-study-demo skill. Each step is one beat; the last holds at least 2s so the payoff reads (agents/context/motion.md).

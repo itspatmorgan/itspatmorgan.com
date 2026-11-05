@@ -8,7 +8,7 @@ import { Canvas, Detail, Doc, Flow, Inbox, Overview } from './StudioShapes';
 import { Editor } from './StudioDocs';
 import StepBar from './StepBar';
 import { H, W, themeStyle, useFit } from './explore/StudioWindow';
-import { useDark, usePhone, useReduced } from '@/lib/hooks';
+import { useDark, usePhone, useReduced } from '@itspatmorgan/kit/hooks';
 import './studio-shapes.css';
 import './explore/explore.css';
 import './studio-hero.css';

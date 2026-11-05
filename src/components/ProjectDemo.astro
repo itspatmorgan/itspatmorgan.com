@@ -2,14 +2,14 @@
 // A case study's project card visual, in place of a thumbnail. Each is a card-sized composition of its case study's real product
 // components (see ProjectCardStage): Sublime's recommended rule, Query Builder's query as code and as controls, and Signal Sciences' Bot
 // Signals card, and Design Studio's artifact types. It sits in an inert frame, so the card stays one link and nothing in the visual takes focus.
-import SublimeCard from "@/components/sublime/SublimeCard";
+import SublimeCard from "@itspatmorgan/kit/sublime/SublimeCard";
 import QueryCard from "@/components/query-builder/QueryCard";
 import ExpansionCard from "@/components/expansion/ExpansionCard";
 import StudioCard from "@/components/design-studio/StudioCard";
-import "@/components/case-study/case-study.css";
+import "@itspatmorgan/kit/case-study/case-study.css";
 import "@/components/query-builder/query-builder.css";
 import "@/components/expansion/expansion.css";
-import "@/components/sublime/sublime.css";
+import "@itspatmorgan/kit/sublime/sublime.css";
 
 interface Props {
   slug: string;

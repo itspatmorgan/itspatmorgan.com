@@ -4,7 +4,7 @@ import { icon } from '../studio-case/StudioUI';
 import { agentHarnesses } from '../../data/design-studio-setup';
 import { SIDE, StudioWindow, W, type Key } from './explore/StudioWindow';
 import StepBar from './StepBar';
-import { usePhone, useReduced } from '@/lib/hooks';
+import { usePhone, useReduced } from '@itspatmorgan/kit/hooks';
 import './studio-hero.css';
 
 // How you work in Design Studio: in the coding agent you already use. On the left, a conversation in that agent; on the right, the

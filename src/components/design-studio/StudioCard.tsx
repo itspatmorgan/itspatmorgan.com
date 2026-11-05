@@ -1,8 +1,8 @@
 import type { CSSProperties, ReactNode } from 'react';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { CanvasIcon, CodeIcon, File01Icon, Flowchart01Icon, Layers01Icon, PlusSignIcon } from '@hugeicons/core-free-icons';
-import { ProjectCardStage } from '../case-study/ProjectCardStage';
-import { useDemoLoop } from '../case-study/useDemoLoop';
+import { ProjectCardStage } from '@itspatmorgan/kit/case-study/ProjectCardStage';
+import { useDemoLoop } from '@itspatmorgan/kit/case-study/useDemoLoop';
 import './studio-card.css';
 
 // The homepage's Design Studio visual: one idea, in every shape Studio can give it. In front, the five kinds of artifact its landing page

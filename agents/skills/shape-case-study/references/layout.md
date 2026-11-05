@@ -1,6 +1,6 @@
 # Layout
 
-Use the shared rhythm in `src/components/case-study/case-study.css`:
+Use the shared rhythm in `packages/kit/src/case-study/case-study.css`:
 
 - Section titles cap at 40px; the hero title at 52px.
 - One 960px measure: titles and stages fit within it, descriptions up to 840px

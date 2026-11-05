@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useLayoutEffect, useRef, useState
 import { AnimatePresence, animate, motion, useMotionValue, useTransform, type MotionValue } from 'motion/react';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { ArrowReloadHorizontalIcon, Cursor01Icon, PauseIcon, PlayIcon } from '@hugeicons/core-free-icons';
-import { usePhone } from '@/lib/hooks';
+import { usePhone } from '../hooks';
 // Demos take their scene API from here, the phone breakpoint included.
 export { usePhone };
 import { useDemoLoop } from './useDemoLoop';

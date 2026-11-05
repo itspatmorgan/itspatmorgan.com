@@ -1,5 +1,5 @@
 import { ArrowDown01Icon, ArrowRight01Icon, CanvasIcon, CodeIcon, File01Icon, Folder01Icon, Note01Icon } from '@hugeicons/core-free-icons';
-import { SceneFrame, useScene, useStage } from '../case-study/scene';
+import { SceneFrame, useScene, useStage } from '@itspatmorgan/kit/case-study/scene';
 import { icon } from './StudioUI';
 
 // How engineering builds from a prototype, as Patrick tells it (2026-10-30): a prototype is just a folder, with its code, its canvas

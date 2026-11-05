@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
-import { ProjectCardStage } from '../case-study/ProjectCardStage';
-import { useDemoLoop } from '../case-study/useDemoLoop';
+import { ProjectCardStage } from '@itspatmorgan/kit/case-study/ProjectCardStage';
+import { useDemoLoop } from '@itspatmorgan/kit/case-study/useDemoLoop';
 import { EntityPill, SourceIcon } from './NativeUI';
 
 // The project card: every control maps to a piece of the language. Behind, the query in the visual builder; in front, the same query as

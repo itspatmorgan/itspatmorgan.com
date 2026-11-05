@@ -1,7 +1,7 @@
 import { HugeiconsIcon } from '@hugeicons/react';
 import { CheckmarkCircle02Icon, File01Icon, Folder01Icon, GitPullRequestIcon, UserGroupIcon } from '@hugeicons/core-free-icons';
-import { NativeStage } from '../case-study/NativeStage';
-import { DemoFrame, useScene } from '../case-study/scene';
+import { NativeStage } from '@itspatmorgan/kit/case-study/NativeStage';
+import { DemoFrame, useScene } from '@itspatmorgan/kit/case-study/scene';
 
 // Why a dozen people can push to one codebase without breaking each other's work (archive: agent/rules/contributor-scope.md, and the
 // Maven talk). Each contributor owns a folder under src/prototypes; the agent knows who you are from your Git identity and keeps

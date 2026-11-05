@@ -1,21 +1,31 @@
 // The hooks every interactive piece shares: the page's theme, the visitor's motion setting and the phone breakpoint. Use these
-// rather than reading the DOM or a media query in a component, so every demo answers the same way.
-import { useEffect, useLayoutEffect, useState } from 'react';
+// rather than reading the DOM or a media query in a component, so every demo answers the same way on the site and in Studio.
+import { useEffect, useLayoutEffect, useState, type RefObject } from 'react';
 
 /** useLayoutEffect in the browser, useEffect on the server (where layout effects warn and never run). */
 export const useIsomorphicLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect;
 
-/** Whether the page is in dark mode, following the site's theme switch. */
-export function useDark() {
+/** The element that sets this piece's color mode: the nearest `data-color-mode` boundary, then Studio's Website system boundary,
+ *  then <html>, where the site's theme switch toggles `.dark`. */
+function themeRoot(node?: Element | null): HTMLElement {
+  return (
+    node?.closest<HTMLElement>('[data-color-mode]') ??
+    document.querySelector<HTMLElement>('.website-theme[data-color-mode]') ??
+    document.documentElement
+  );
+}
+
+/** Whether the page is in dark mode, following the theme switch. Pass a ref when several themed areas share a page. */
+export function useDark(ref?: RefObject<Element | null>) {
   const [dark, setDark] = useState(false);
   useEffect(() => {
-    const root = document.documentElement;
-    const read = () => setDark(root.classList.contains('dark'));
+    const root = themeRoot(ref?.current);
+    const read = () => setDark(root.dataset.colorMode ? root.dataset.colorMode === 'dark' : root.classList.contains('dark'));
     read();
     const watch = new MutationObserver(read);
-    watch.observe(root, { attributes: true, attributeFilter: ['class'] });
+    watch.observe(root, { attributes: true, attributeFilter: ['class', 'data-color-mode'] });
     return () => watch.disconnect();
-  }, []);
+  }, [ref]);
   return dark;
 }
 
