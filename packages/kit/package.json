@@ -30,6 +30,6 @@
     "@fontsource/comic-neue": "^5.0.0"
   },
   "devDependencies": {
-    "postcss": "^8.5.0"
+    "postcss": "^8.5.32"
   }
 }
