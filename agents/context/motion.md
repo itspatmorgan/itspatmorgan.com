@@ -35,6 +35,11 @@ Add a token only when none of these fits the job.
   home visit of a session) and the same dissolve on the closing line when it
   scrolls into view. Both use `dissolvePixelWave` in
   `src/scripts/home-interactions.ts`. No load effects on the navigation logo.
+- The hero's dot halo (`src/scripts/hero-dots.ts`) rests exactly as the CSS halo
+  draws it. Near a fine pointer its dots bloom; it sends one soft ripple out from
+  the photo with the hero dissolve and with builder mode. Keep that ripple faint:
+  Patrick found a stronger one too much on first load. Phones and reduced motion
+  keep the still halo.
 - Primary content renders in its final position. Nothing jumps on load.
 
 ## Scenes
