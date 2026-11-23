@@ -497,7 +497,7 @@ export default function EditorialArtTool() {
   const generatorMenuRef = useRef<HTMLDivElement>(null);
   const panelScrollRef = useRef<HTMLDivElement>(null);
   const panelContentRef = useRef<HTMLDivElement>(null);
-  const panelScrollIdleRef = useRef<ReturnType<typeof window.setTimeout> | null>(null);
+  const panelScrollIdleRef = useRef<number | null>(null);
   const [scale, setScale]             = useState(0.6);
   const [canvasReady, setCanvasReady] = useState(false);
   const [downloading, setDownloading] = useState(false);

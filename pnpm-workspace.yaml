@@ -5,3 +5,8 @@ allowBuilds:
   esbuild: false
   sharp: false
   workerd: false
+
+# @astrojs/check otherwise resolves @emnapi/runtime 2.0 betas, which crash
+# `astro check` alongside @emnapi/core 1.x. Drop once both are on 2.x.
+overrides:
+  '@emnapi/runtime': ^1.11.3
