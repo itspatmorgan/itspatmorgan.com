@@ -42,6 +42,9 @@ Design Studio shares; type, the radius scale and the rest live in `src/styles/gl
 - Markdown prose uses custom `.prose` styles in `global.css`, not
   `@tailwindcss/typography`.
 - Keep visual work readable and consistent with the current portfolio aesthetic.
+- A screen inside a frame (a browser bar, a device, a window) sits flush: the
+  frame rounds the outer corners and draws the edge, and the screen keeps no
+  radius or ring of its own.
 - Render primary content in its final visible position. Route, load and
   scroll motion follow `motion.md`.
 
