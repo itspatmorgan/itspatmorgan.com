@@ -42,6 +42,9 @@ Read `agents/principles/design.md` and the design system at `/style-guide`
   snapped to whole pixels, nothing almost aligned.
 - **Before and after reads as time.** When a graphic shows a change over
   time, make the jump obvious with a date marker, not only a caption.
+- **Side by side shows the difference.** When a graphic sets two things next
+  to each other, draw what they share the same way and what sets them apart
+  visibly different. Identical cards read as duplicates.
 - **Lessons are quiet.** Closing-lesson slides use simple drawings on the
   textured stage, with no product UI.
 
