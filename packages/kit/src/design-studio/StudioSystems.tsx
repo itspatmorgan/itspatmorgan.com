@@ -8,7 +8,8 @@ import { useDark } from '../hooks';
 // each prototype names the one it builds with. The Studio ships two, Product and Marketing. The drawing lights each system with the
 // prototypes that use it, then both at once, since they sit side by side without touching. The thumbnails are the real sample
 // screens: Echo's inbox and overview in the Product system, and the Echo website's home in the Marketing system, the same cobalt as
-// Product, tuned for a different audience, as two systems at one company would be.
+// Product, tuned for a different audience, as two systems at one company would be. Each card shows that: the same cobalt swatch, then
+// the system's own type and button, small and compact for the app, large for the website.
 const timings = [2400, 2800, 2800, 3600];
 const captions = [
   'Each system holds its own theme, components and rules',
@@ -26,8 +27,8 @@ const protos: Proto[] = [
   { title: 'Website home', system: 'marketing', screen: 'home' },
 ];
 const systems = {
-  product: { name: 'Product', path: 'src/systems/product', theme: 'echo' as Theme, radius: 6, note: 'Echo cobalt, dense UI, quiet neutrals' },
-  marketing: { name: 'Marketing', path: 'src/systems/marketing', theme: 'echo-marketing' as Theme, radius: 6, note: 'Echo cobalt, large type, bold color' },
+  product: { name: 'Product', path: 'src/systems/product', theme: 'echo' as Theme, button: 'New feedback', note: 'Same cobalt, compact type and parts' },
+  marketing: { name: 'Marketing', path: 'src/systems/marketing', theme: 'echo-marketing' as Theme, button: 'Start free', note: 'Same cobalt, display type, big buttons' },
 };
 // Desktop: both systems in a row over the three prototypes, wired across. Phones: the same arrangement redrawn for a square frame
 // (every phone visual on this page is square), with larger type for its smaller scale, so names and notes stay readable and the
@@ -39,7 +40,7 @@ const desk = {
 };
 const PT = 176;
 const mobile = {
-  w: 600, h: 600, thumb: PT, cardH: 196,
+  w: 600, h: 600, thumb: PT, cardH: 212,
   systems: { product: { x: 24, y: 48, w: 264 }, marketing: { x: 312, y: 48, w: 264 } } as Record<'product' | 'marketing', Box>,
   protos: [{ x: 24, y: 334, w: PT }, { x: 212, y: 334, w: PT }, { x: 400, y: 334, w: PT }] as Box[],
 };
@@ -102,12 +103,11 @@ export default function StudioSystems() {
             return <div key={k} className={`sc-node sy-system ${wired(k) ? 'is-accent' : ''} ${lit(k) ? '' : 'is-dim'}`} style={{ left: b.x, top: b.y, width: b.w, height: L.cardH }}>
               <h3>{s.name}</h3>
               <p className="sy-path">{s.path}</p>
-              <div className="sy-tokens ss-os" style={themeStyle(s.theme, dark)}>
-                <i style={{ background: 'var(--e-primary)', borderRadius: s.radius }} />
-                <i style={{ background: 'var(--e-accent)', borderRadius: s.radius }} />
-                <i style={{ background: 'var(--e-bg)', borderRadius: s.radius }} />
-                <i style={{ background: 'var(--e-fg)', borderRadius: s.radius }} />
-                <span className="sy-btn" style={{ borderRadius: s.radius }}>Button</span>
+              {/* What the two share (the cobalt) beside what each makes its own: its type and its buttons. */}
+              <div className={`sy-tokens ss-os is-${k}`} style={themeStyle(s.theme, dark)}>
+                <i />
+                <b className="sy-type">Aa</b>
+                <span className="sy-btn">{s.button}</span>
               </div>
               <p className="sy-note">{s.note}</p>
             </div>;
