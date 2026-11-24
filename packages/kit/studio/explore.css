@@ -13,7 +13,7 @@
 .website-theme .dx-os .ss-side li.is-pickable { cursor: pointer; border-radius: 6px; }
 .website-theme .dx-os .ss-side li.is-pickable:hover:not(.is-on) { background: color-mix(in oklch, var(--os-select) 60%, transparent); }
 /* Echo's corner radius follows the theme. */
-.website-theme .dx-os .ss-btn, .website-theme .dx-os .ss-input, .website-theme .dx-os .ss-table, .website-theme .dx-os .ss-card, .website-theme .dx-os .ss-tabs, .website-theme .dx-os .ss-echo-top b i { border-radius: var(--e-radius, 0); }
+.website-theme .dx-os .ss-btn, .website-theme .dx-os .ss-input, .website-theme .dx-os .ss-table, .website-theme .dx-os .ss-tabs { border-radius: var(--e-radius, 0); }
 .website-theme .dx-os .ss-badge { border-radius: calc(var(--e-radius, 0px) * 2); }
 .website-theme .dx-os .ss-tabs span.is-on { border-radius: calc(var(--e-radius, 0px) * .7); }
 .website-theme .dx-mono { font-family: 'Geist Mono Variable', ui-monospace, monospace; font-size: 12px; letter-spacing: -.01em; }

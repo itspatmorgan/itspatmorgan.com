@@ -10,19 +10,19 @@ import { useDemoLoop } from '../case-study/useDemoLoop';
 // Drawn at 560 × 315 because the homepage's wide Design Studio card has a visual column is wider than a Work card, which puts type at the Work cards' size.
 // Phones, where that column is a Work card's width, get the same composition drawn at the Work cards' 400 × 225, and so does the Work
 // page's card (`size="card"`), which is a Work card at every width.
-// Content is the Feedback Inbox sample project that ships with Design Studio (src/prototypes/*/feedback-inbox in the Design Studio repo). Liberties: the list's
+// Content is the Echo app sample project that ships with Design Studio (src/prototypes/*/echo-app in the Design Studio repo). Liberties: the list's
 // icons are Hugeicons standing in for Studio's own; the wireframe keeps Studio's grays and outlines but not its sketch typeface; the
 // canvas shows the handoff canvas's screens as outlines; the inbox keeps three of its five filters and drops its description; the
 // diagram's labels are shortened and its last step ("Mark resolved") dropped; the canvas and document are trimmed, running off the panel.
 const icon = (i: typeof CodeIcon, size = 14) => <HugeiconsIcon icon={i} size={size} strokeWidth={1.6} />;
 
 const rows = [
+  ['Slack alerts for high-value accounts', 'New'],
   ['Export to CSV is missing columns', 'New'],
+  ['Dark mode makes the status badges hard to read', 'Triaged'],
   ['Let me bulk-assign items to a teammate', 'Planned'],
-  ['Search should look inside the description', 'New'],
-  ['I cannot tell which items are mine', 'Triaged'],
-  ['Notification emails link to the wrong page', 'Resolved'],
   ['Import from a spreadsheet drops line breaks', 'Planned'],
+  ['Notification emails link to the wrong page', 'Resolved'],
 ] as const;
 
 function Prototype({ lofi = false }: { lofi?: boolean }) {
@@ -57,7 +57,7 @@ function Diagram() {
 function Canvas() {
   const screen = (title: string, lines: number) => <div className="dc-screen"><p>{title}</p>{Array.from({ length: lines }, (_, i) => <span key={i} style={{ width: `${88 - (i % 4) * 14}%` }} />)}</div>;
   return <div className="dc-view dc-canvas">
-    <p className="dc-h">Eng Handoff</p>
+    <p className="dc-h">Echo app: Handoff</p>
     <div className="dc-board">
       <div className="dc-step">{screen('Overview', 6)}<p className="dc-sticky">Land on the overview: the key numbers are at the top.</p></div>
       <span className="dc-link">click a number</span>
@@ -71,14 +71,14 @@ function Canvas() {
 function Doc() {
   return <div className="dc-view dc-doc">
     <p className="dc-doc-h">Project Context</p>
-    <p className="dc-doc-p">The problem, working assumptions, and explorations behind the feedback tracker.</p>
+    <p className="dc-doc-p">The problem, working assumptions, and explorations behind Echo’s feedback inbox.</p>
     <p className="dc-doc-h2">The problem</p>
     <p className="dc-doc-p">Customer feedback is scattered across email, chat, interviews, surveys, and support tickets.</p>
     <p className="dc-doc-h2">Who it’s for</p>
     <ul className="dc-doc-list">
-      <li><b>Luis, support lead:</b> capture feedback quickly.</li>
-      <li><b>Priya, product manager:</b> triage new items and track planned work.</li>
-      <li><b>Maya, product designer:</b> find patterns worth exploring.</li>
+      <li><b>Sam, product lead:</b> triage new feedback and plan the roadmap.</li>
+      <li><b>Support leads:</b> capture feedback quickly, wherever they hear it.</li>
+      <li><b>Designers:</b> find patterns worth exploring.</li>
     </ul>
     <p className="dc-doc-h2">Working assumptions</p>
     <p className="dc-doc-p">Items move through New, Triaged, Planned, and Resolved.</p>

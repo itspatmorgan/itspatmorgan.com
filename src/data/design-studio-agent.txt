@@ -52,7 +52,7 @@ Defaults are shaped by real product and marketing work. Bring your own component
 Set up a local Design Studio to create and edit with your agent. For a viewing example, explore the published demo:
 https://itspatmorgan.com/design-studio-demo/
 
-The Feedback Inbox sample includes a guided tour of connected artifacts:
+The Echo app sample includes a guided tour of connected artifacts:
 https://itspatmorgan.com/design-studio-demo/prototypes/ccncfpcyaa1hvjts
 
 The published demo is read-only for artifact editing, but its prototypes are interactive. Published Design Studios share designs for others to explore. Run a local copy to edit artifacts and build with your coding agent.

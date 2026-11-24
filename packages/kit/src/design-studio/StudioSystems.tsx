@@ -1,13 +1,13 @@
 import { NativeStage } from '../case-study/NativeStage';
 import { DemoFrame, usePhone, useScene } from '../case-study/scene';
-import { Inbox, Overview } from './StudioShapes';
+import { EchoMark, Inbox, Overview } from './StudioShapes';
 import { themeStyle, type Theme } from './explore/StudioWindow';
 import { useDark } from '../hooks';
 
 // Systems in the open-source Studio: each lives in its own folder (src/systems/<name>) with its theme, components and rules, and
 // each prototype names the one it builds with. The Studio ships two, Product and Marketing. The drawing lights each system with the
 // prototypes that use it, then both at once, since they sit side by side without touching. The thumbnails are the real sample
-// screens (Echo's inbox and overview) in the Product system, and a launch page in Echo's Marketing system: the same brand green as
+// screens: Echo's inbox and overview in the Product system, and the Echo website's home in the Marketing system, the same cobalt as
 // Product, tuned for a different audience, as two systems at one company would be.
 const timings = [2400, 2800, 2800, 3600];
 const captions = [
@@ -18,16 +18,16 @@ const captions = [
 ];
 
 const TW = 272, TH = 170, TOP = 316;
-type Proto = { title: string; system: 'product' | 'marketing'; screen: 'inbox' | 'overview' | 'launch' };
+type Proto = { title: string; system: 'product' | 'marketing'; screen: 'inbox' | 'overview' | 'home' };
 type Box = { x: number; y: number; w: number };
 const protos: Proto[] = [
   { title: 'Feedback inbox', system: 'product', screen: 'inbox' },
   { title: 'Overview', system: 'product', screen: 'overview' },
-  { title: 'Launch page', system: 'marketing', screen: 'launch' },
+  { title: 'Website home', system: 'marketing', screen: 'home' },
 ];
 const systems = {
-  product: { name: 'Product', path: 'src/systems/product', theme: 'green' as Theme, radius: 0, note: 'Echo green, dense UI, square corners' },
-  marketing: { name: 'Marketing', path: 'src/systems/marketing', theme: 'echo-marketing' as Theme, radius: 12, note: 'Echo green, warm paper, round corners' },
+  product: { name: 'Product', path: 'src/systems/product', theme: 'echo' as Theme, radius: 6, note: 'Echo cobalt, dense UI, quiet neutrals' },
+  marketing: { name: 'Marketing', path: 'src/systems/marketing', theme: 'echo-marketing' as Theme, radius: 6, note: 'Echo cobalt, large type, bold color' },
 };
 // Desktop: both systems in a row over the three prototypes, wired across. Phones: the same arrangement redrawn for a square frame
 // (every phone visual on this page is square), with larger type for its smaller scale, so names and notes stay readable and the
@@ -50,23 +50,26 @@ function wire(s: Box, b: Box, cardH: number) {
   return `M${from} ${top} C ${from} ${top + 44}, ${to} ${top + 40}, ${to} ${b.y - 6}`;
 }
 
-/** A launch page in the Marketing system's tokens, at the Studio's native prototype size. */
-function Launch() {
-  return <div className="ss-echo ss-mk">
-    <header className="ss-mk-top"><b><i />Echo</b><span>Product</span><span>Pricing</span><span>Customers</span><em>Start free</em></header>
-    <section className="ss-mk-hero">
-      <h1>Hear every customer, in one place</h1>
-      <p>Echo gathers feedback from email, chat and calls, so your team sees what matters and acts on it.</p>
-      <div><span className="is-primary">Start free</span><span>Book a demo</span></div>
-    </section>
-    <div className="ss-mk-shot"><i /><i /><i /></div>
+/** The Echo website's home (echo-website/home.tsx) in the Marketing system's tokens, at the Studio's native prototype size: the
+ *  cobalt hero, and the app's inbox hanging below it onto the page. */
+function Home() {
+  return <div className="ss-mk">
+    <div className="ss-mk-band">
+      <header className="ss-mk-top"><b><EchoMark size={22} />Echo</b><span>Product</span><span>Customers</span><span>How it works</span><em>Start free</em></header>
+      <section className="ss-mk-hero">
+        <h1>Hear every customer.</h1>
+        <p>Echo brings feedback from email, chat, calls, and surveys into one inbox, tied to the accounts behind it.</p>
+        <div><span className="is-primary">Start free</span><span>See how it works</span></div>
+      </section>
+    </div>
+    <div className="ss-mk-shot"><div style={{ width: 1280, height: 760, transform: 'scale(.66)', transformOrigin: '0 0' }}><Inbox /></div></div>
   </div>;
 }
 
-function Thumb({ screen, theme, dark, w }: { screen: 'inbox' | 'overview' | 'launch'; theme: Theme; dark: boolean; w: number }) {
+function Thumb({ screen, theme, dark, w }: { screen: 'inbox' | 'overview' | 'home'; theme: Theme; dark: boolean; w: number }) {
   return <div className="sy-thumb" style={{ width: w, height: w * TH / TW }}>
     <div className="sc-os ss-os dx-os" style={{ ...themeStyle(theme, dark), width: 1120, height: 700, transform: `scale(${w / 1120})`, transformOrigin: '0 0' }}>
-      <div className="ss-panes"><div className="ss-pane"><div className="ss-app">{screen === 'inbox' ? <Inbox /> : screen === 'overview' ? <Overview /> : <Launch />}</div></div></div>
+      <div className="ss-panes"><div className="ss-pane"><div className="ss-app">{screen === 'inbox' ? <Inbox /> : screen === 'overview' ? <Overview /> : <Home />}</div></div></div>
     </div>
   </div>;
 }
@@ -81,7 +84,7 @@ export default function StudioSystems() {
   const lit = (s: 'product' | 'marketing') => step === 0 || step === 3 || (s === 'product' ? step === 1 : step === 2);
   const wired = (s: 'product' | 'marketing') => step === 3 || (s === 'product' ? step === 1 : step === 2);
   return <DemoFrame scene={scene} caption={false} stage="sc-plain" title="how systems and prototypes fit together"
-    label="Two design systems in Design Studio, Product and Marketing, each in its own folder with its own theme, components and rules. The feedback inbox and overview prototypes build with the Product system; the launch page builds with the Marketing system. Both systems sit side by side without conflicting">
+    label="Two design systems in Design Studio, Product and Marketing, each in its own folder with its own theme, components and rules. The feedback inbox and overview prototypes build with the Product system; the website's home page builds with the Marketing system. Both systems sit side by side without conflicting">
     <div className="cs-demo">
       <NativeStage width={L.w} height={L.h}>
         <div className={`sc-dia sy-dia ${phone ? 'is-phone' : ''}`}>

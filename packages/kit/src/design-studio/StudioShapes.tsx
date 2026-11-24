@@ -1,50 +1,63 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import {
-  ArrowDown01Icon, ArrowLeft01Icon, ArrowRight01Icon, CodeIcon, Delete02Icon, File01Icon, Flowchart01Icon, Menu01Icon, Message01Icon,
-  MoreHorizontalIcon, PencilEdit01Icon, PlusSignIcon, Presentation01Icon, Search01Icon, SquareArrowUpRightIcon, UnfoldMoreIcon,
+  ArrowDown01Icon, ArrowLeft01Icon, ArrowRight01Icon, CodeIcon, Delete02Icon, File01Icon, Flowchart01Icon,
+  Menu01Icon, MoreHorizontalIcon, PencilEdit01Icon, PlusSignIcon, Presentation01Icon, Search01Icon, SquareArrowUpRightIcon, UnfoldMoreIcon,
 } from '@hugeicons/core-free-icons';
 import { Pointer, SceneFrame, Screens, useScene, useStage, useTargets } from '../case-study/scene';
 import { OsRail, icon } from '../studio-case/StudioUI';
 
-// The landing page's hero: one idea in every shape Design Studio gives it. It is the Feedback Inbox sample that ships with the open-source
-// Studio (itspatmorgan/design-studio, src/prototypes/parker/feedback-inbox), opened in the Studio's prototype view: its artifacts in the
+// The landing page's hero: one idea in every shape Design Studio gives it. It is the Echo app sample that ships with the open-source
+// Studio (itspatmorgan/design-studio, src/prototypes/parker/echo-app), opened in the Studio's prototype view: its artifacts in the
 // section nav, the selected one beside it. A pointer walks the nav: the inbox itself, the same screen in lo-fi (discovery/lofi-inbox.tsx,
 // grayscale with handwritten type), the review flow (discovery/feedback-flow.mermaid), the engineering handoff canvas
 // (eng-handoff.excalidraw, at the 46% the Studio opens it at) and the project context document (discovery/project-context.md).
 // Copy, sample data and layout are the product's (store.ts, AppShell.tsx, feedback-inbox.tsx, overview.tsx and feedback-detail.tsx).
-// Liberties: type is the site's Geist rather than the Product system's Space Grotesk, as on every demo; the canvas
-// shows its first two sections, as the Studio's viewport does.
+// Liberties: every screen keeps its desktop layout at the sizes drawn here; the canvas shows its first two sections, as the Studio's
+// viewport does.
 
 type Status = 'new' | 'triaged' | 'planned' | 'resolved';
 type Priority = 'high' | 'medium' | 'low';
-type Item = { title: string; who: string; via: string; priority: Priority; status: Status; date: string };
+type Item = { title: string; who: string; company: string; mrr: string; via: string; tags: string; priority: Priority; status: Status; date: string };
+// The sample data, newest first, as the inbox lists it.
 const items: Item[] = [
-  { title: 'Export to CSV is missing columns', who: 'Maya Chen', via: 'Email', priority: 'high', status: 'new', date: 'Sep 28' },
-  { title: 'Dark mode makes the status badges hard to read', who: 'Luis Ortega', via: 'Chat', priority: 'medium', status: 'triaged', date: 'Sep 27' },
-  { title: 'Let me bulk-assign items to a teammate', who: 'Priya Nair', via: 'Interview', priority: 'high', status: 'planned', date: 'Sep 25' },
-  { title: 'Search should look inside the description', who: 'Tom Becker', via: 'Survey', priority: 'medium', status: 'new', date: 'Sep 26' },
-  { title: 'Notification emails link to the wrong page', who: 'Aiko Tanaka', via: 'Email', priority: 'low', status: 'resolved', date: 'Sep 20' },
-  { title: 'I cannot tell which items are mine', who: 'Dana Whitfield', via: 'Chat', priority: 'medium', status: 'triaged', date: 'Sep 24' },
-  { title: 'Keyboard shortcut for creating a new item', who: 'Omar Haddad', via: 'Survey', priority: 'low', status: 'new', date: 'Sep 23' },
-  { title: 'Import from a spreadsheet drops line breaks', who: 'Sofia Rossi', via: 'Email', priority: 'high', status: 'planned', date: 'Sep 22' },
+  { title: 'Slack alerts for high-value accounts', who: 'Marcus Bell', company: 'Arcadia Bank', mrr: '$18.9k', via: 'Chat', tags: 'integrations', priority: 'high', status: 'new', date: 'Sep 29' },
+  { title: 'Export to CSV is missing columns', who: 'Maya Chen', company: 'Northwind Labs', mrr: '$4.2k', via: 'Email', tags: 'export, tables', priority: 'high', status: 'new', date: 'Sep 28' },
+  { title: 'Dark mode makes the status badges hard to read', who: 'Luis Ortega', company: 'Brightline', mrr: '$1.9k', via: 'Chat', tags: 'dark mode, accessibility', priority: 'medium', status: 'triaged', date: 'Sep 27' },
+  { title: 'Search should look inside the description', who: 'Tom Becker', company: 'Fieldnote', mrr: '$860', via: 'Survey', tags: 'search', priority: 'medium', status: 'new', date: 'Sep 26' },
+  { title: 'Let me bulk-assign items to a teammate', who: 'Priya Nair', company: 'Kestrel Health', mrr: '$12.4k', via: 'Interview', tags: 'bulk actions', priority: 'high', status: 'planned', date: 'Sep 25' },
+  { title: 'I cannot tell which items are mine', who: 'Dana Whitfield', company: 'Orbit Freight', mrr: '$6.3k', via: 'Chat', tags: 'filters', priority: 'medium', status: 'triaged', date: 'Sep 24' },
+  { title: 'Keyboard shortcut for creating a new item', who: 'Omar Haddad', company: 'Tandem', mrr: '$1.2k', via: 'Survey', tags: 'keyboard', priority: 'low', status: 'new', date: 'Sep 23' },
+  { title: 'Import from a spreadsheet drops line breaks', who: 'Sofia Rossi', company: 'Arcadia Bank', mrr: '$18.9k', via: 'Email', tags: `import`, priority: 'high', status: 'planned', date: 'Sep 22' },
+  { title: 'Weekly digest should group by account', who: 'Hannah Weiss', company: 'Kestrel Health', mrr: '$12.4k', via: 'Email', tags: 'email, accounts', priority: 'medium', status: 'triaged', date: 'Sep 21' },
+  { title: 'Notification emails link to the wrong page', who: 'Aiko Tanaka', company: 'Parcel & Co', mrr: '', via: 'Email', tags: 'email', priority: 'low', status: 'resolved', date: 'Sep 20' },
+  { title: 'Let customers vote on planned items', who: 'Elena Park', company: 'Brightline', mrr: '$1.9k', via: 'Interview', tags: 'portal', priority: 'medium', status: 'planned', date: 'Sep 19' },
+  { title: 'SSO with Okta for the whole workspace', who: 'Jonas Berg', company: 'Northwind Labs', mrr: '$4.2k', via: 'Email', tags: 'security', priority: 'high', status: 'triaged', date: 'Sep 18' },
 ];
 const label = (s: string) => s[0].toUpperCase() + s.slice(1);
+const initials = (name: string) => name.split(' ').map(p => p[0]).join('');
 const Badge = ({ kind, value }: { kind: 'status' | 'priority'; value: string }) => <span className={`ss-badge is-${kind} is-${value}`}>{label(value)}</span>;
+
+/** Echo's mark (EchoMark.tsx): a dot with two widening arcs. */
+export const EchoMark = ({ size = 16 }: { size?: number }) => <svg viewBox="0 0 24 24" width={size} height={size} fill="none" aria-hidden="true">
+  <circle cx="7" cy="12" r="3.5" fill="currentColor" />
+  <path d="M13 6.5a7.5 7.5 0 0 1 0 11" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
+  <path d="M17.5 3.5a11.5 11.5 0 0 1 0 17" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" opacity=".5" />
+</svg>;
 
 /** Echo, the sample product: its top bar (AppShell) and a page. */
 function Echo({ on, children }: { on: 'overview' | 'inbox'; children: ReactNode }) {
   return <div className="ss-echo">
-    <header className="ss-echo-top"><div>
-      <b><i>{icon(Message01Icon, 14)}</i>Echo</b>
-      <span className={on === 'overview' ? 'is-on' : ''}>Overview</span>
-      <span className={on === 'inbox' ? 'is-on' : ''}>Feedback inbox</span>
-      <em>Reset sample data</em><span className="ss-echo-pm">PM</span>
-    </div></header>
+    <header className="ss-echo-top">
+      <div className="ss-echo-brand"><i><EchoMark /></i>Echo</div>
+      <nav><span className={on === 'overview' ? 'is-on' : ''}>Overview</span><span className={on === 'inbox' ? 'is-on' : ''}>Feedback inbox<small>12</small></span></nav>
+      <em>Reset sample data</em><span className="ss-echo-avatar">SR</span>
+    </header>
     <main className="ss-echo-page">{children}</main>
   </div>;
 }
 
-/** The feedback inbox (FeedbackInboxScreen), unfiltered or showing open issues, optionally with the New feedback panel open. */
+/** The feedback inbox (feedback-inbox.tsx), unfiltered or showing open issues, optionally with the New feedback panel open. Below
+ *  1280 px, as on every screen here, it leaves out the Received column. */
 export function Inbox({ open = false, panel }: { open?: boolean; panel?: 'new' | 'error' }) {
   const rows = open ? items.filter(f => f.status !== 'resolved') : items;
   return <Echo on="inbox">
@@ -58,11 +71,13 @@ export function Inbox({ open = false, panel }: { open?: boolean; panel?: 'new' |
     </div>
     {open && <div className="ss-showing">Showing <span className="ss-badge is-secondary">Open issues</span><span className="ss-ghost">✕ Clear</span></div>}
     <div className="ss-table">
-      <div className="ss-row is-head"><span>Feedback</span><span>From</span><span>Priority</span><span>Status</span><span>Received</span><span /></div>
+      <div className="ss-row is-head"><span>Feedback</span><span>Customer</span><span className="is-num">MRR</span><span>Priority</span><span>Status</span><span /></div>
       {rows.map(f => <div className="ss-row" key={f.title}>
-        <span className="ss-strong">{f.title}</span><span className="ss-weak">{f.who}<small> · {f.via}</small></span>
+        <span><b className="ss-strong">{f.title}</b><small>via {f.via} · {f.tags}</small></span>
+        <span className="ss-person"><i>{initials(f.who)}</i><span>{f.who}<small>{f.company}</small></span></span>
+        <span className="is-num ss-mono">{f.mrr || <span className="ss-weak">-</span>}</span>
         <span><Badge kind="priority" value={f.priority} /></span><span><Badge kind="status" value={f.status} /></span>
-        <span className="ss-weak">{f.date}</span><span className="ss-dots">{icon(MoreHorizontalIcon, 16)}</span>
+        <span className="ss-dots">{icon(MoreHorizontalIcon, 16)}</span>
       </div>)}
     </div>
     {panel && <>
@@ -81,31 +96,34 @@ export function Inbox({ open = false, panel }: { open?: boolean; panel?: 'new' |
   </Echo>;
 }
 
-/** The overview (overview.tsx): four numbers, two breakdowns and the newest feedback, computed from the sample data. */
+/** The overview (overview.tsx): four numbers, the status breakdown, the accounts asking and the newest feedback, from the sample data. */
 export function Overview() {
-  const bars = (rows: [string, number][]) => <ul className="ss-bars">{rows.map(([l, n]) => <li key={l}><span>{l}</span><i><b style={{ width: `${(n / 3) * 100}%` }} /></i><span>{n}</span></li>)}</ul>;
+  const bars = (rows: [string, number][]) => <ul className="ss-bars">{rows.map(([l, n]) => <li key={l}><span>{l}</span><i><b style={{ width: `${(n / 5) * 100}%` }} /></i><span>{n}</span></li>)}</ul>;
   return <Echo on="overview">
     <div className="ss-head"><div><h1>Overview</h1><p>Where the feedback stands. Click a number to see the feedback behind it.</p></div></div>
     <div className="ss-metrics">
-      {([['Open issues', 7, 'Not resolved yet'], ['New', 3, 'Waiting to be triaged'], ['High priority', 3, 'Open and high priority'], ['Resolved', 1, 'Closed out']] as const).map(([l, n, h]) =>
+      {([['Open issues', 12, 'Not resolved yet'], ['New', 4, 'Waiting to be triaged'], ['High priority', 5, 'Open and high priority'], ['Resolved', 2, 'Closed out']] as const).map(([l, n, h]) =>
         <div key={l} className="ss-card"><span className="ss-weak">{l}</span><b>{n}</b><small>{h}</small></div>)}
     </div>
     <div className="ss-split">
-      <div className="ss-card"><h3>By status</h3>{bars([['New', 3], ['Triaged', 2], ['Planned', 2], ['Resolved', 1]])}</div>
-      <div className="ss-card"><h3>By source</h3>{bars([['Email', 3], ['Chat', 2], ['Interview', 1], ['Survey', 2]])}</div>
+      <div className="ss-card"><h3>By status</h3>{bars([['New', 4], ['Triaged', 5], ['Planned', 3], ['Resolved', 2]])}</div>
+      <div className="ss-card"><h3>Accounts asking</h3>
+        <ul className="ss-accounts">{([['Arcadia Bank', 3, '$18.9k'], ['Kestrel Health', 2, '$12.4k'], ['Orbit Freight', 1, '$6.3k'], ['Northwind Labs', 2, '$4.2k']] as const).map(([c, n, m]) =>
+          <li key={c}><i>{c[0]}</i><span>{c}</span><small>{n} open</small><b className="ss-mono">{m}</b></li>)}</ul>
+      </div>
     </div>
     <div className="ss-card"><h3>Newest</h3>
-      <ul className="ss-newest">{[0, 1, 3, 2, 5].map(i => <li key={i}><span className="ss-strong">{items[i].title}</span><Badge kind="priority" value={items[i].priority} /><Badge kind="status" value={items[i].status} /><small>{items[i].date}</small></li>)}</ul>
+      <ul className="ss-newest">{items.slice(0, 5).map(f => <li key={f.title}><span className="ss-strong">{f.title}</span><small className="ss-company">{f.company}</small><Badge kind="priority" value={f.priority} /><Badge kind="status" value={f.status} /><small>{f.date}</small></li>)}</ul>
     </div>
   </Echo>;
 }
 
-/** One piece of feedback (feedback-detail.tsx), opened directly, so it shows the newest item. */
+/** One piece of feedback (feedback-detail.tsx), opened directly, so it shows the first sample item. */
 export function Detail() {
   return <Echo on="inbox">
     <span className="ss-back">{icon(ArrowLeft01Icon, 15)}Feedback inbox</span>
     <div className="ss-head">
-      <div><div className="ss-badges"><Badge kind="status" value="new" /><Badge kind="priority" value="high" /></div><h1>Export to CSV is missing columns</h1><p>Maya Chen · Team plan · via Email · Sep 28</p></div>
+      <div><div className="ss-badges"><Badge kind="status" value="new" /><Badge kind="priority" value="high" /></div><h1>Export to CSV is missing columns</h1><p>Maya Chen at Northwind Labs · Team plan · <span className="ss-mono">$4.2k/mo</span> · via Email · Sep 28</p></div>
       <div className="ss-badges"><span className="ss-btn">{icon(PencilEdit01Icon, 15)}Edit</span><span className="ss-btn">{icon(Delete02Icon, 15)}Delete</span></div>
     </div>
     <div className="ss-detail">
@@ -161,7 +179,7 @@ export function Canvas() {
   return <div className="ss-pane ss-canvas">
     <span className="ss-canvas-menu">{icon(Menu01Icon, 18)}</span>
     <div className="ss-board" style={{ transform: 'translate(28px, 86px) scale(.46)' }}>
-      <h2 className="ss-board-title" style={{ left: 50, top: -8 }}>Feedback Inbox: Handoff</h2>
+      <h2 className="ss-board-title" style={{ left: 50, top: -8 }}>Echo app: Handoff</h2>
       <p className="ss-board-sub" style={{ left: 50, top: 70 }}>The main flow, then each create, read, update, and delete state.</p>
       <div className="ss-frame" style={{ left: 50, top: 181, width: 1974, height: 538 }}><span>Flow</span></div>
       <Embed x={110} y={241} title="Overview"><Overview /></Embed>
@@ -188,13 +206,13 @@ export function Doc() {
   return <div className="ss-pane ss-doc">
     <article>
       <h1>Project Context</h1>
-      <p className="ss-doc-lead">The problem, working assumptions, and explorations behind the feedback tracker.</p>
+      <p className="ss-doc-lead">The problem, working assumptions, and explorations behind Echo's feedback inbox.</p>
       <h2>The problem</h2>
-      <p>Customer feedback is scattered across email, chat, interviews, surveys, and support tickets. The team needs one place to capture it, review recurring problems, and track what happens next.</p>
+      <p>Customer feedback is scattered across email, chat, interviews, surveys, and support tickets. The team needs one place to capture it, see which accounts are asking and what they're worth, and track what happens next.</p>
       <h2>Who it's for</h2>
-      <ul><li><b>Luis, support lead:</b> capture feedback quickly.</li><li><b>Priya, product manager:</b> triage new items and track planned work.</li><li><b>Maya, product designer:</b> find patterns worth exploring.</li></ul>
+      <ul><li><b>Sam, product lead:</b> triage new feedback and decide what goes on the roadmap.</li><li><b>Support leads and account managers:</b> capture feedback quickly, wherever they hear it.</li><li><b>Designers:</b> find patterns worth exploring.</li></ul>
       <h2>Working assumptions</h2>
-      <ul><li>Items move through <b>New, Triaged, Planned, and Resolved</b>.</li><li>Status and priority help the team decide what to address.</li><li>Notes stay with the feedback item so its history stays together.</li></ul>
+      <ul><li>Items move through <b>New, Triaged, Planned, and Resolved</b>.</li><li>Status and priority help the team decide what to address.</li><li>Notes stay with the feedback item so its history stays together.</li><li>Every item belongs to an account, so revenue can inform priority.</li></ul>
       <h2>Open questions</h2>
       <ul><li>Where should filtering live?</li><li>When should customers hear back?</li><li>How long should resolved feedback remain visible?</li></ul>
     </article>
@@ -208,7 +226,7 @@ export function Nav({ on, onPick }: { on: Key; onPick?: (key: Key) => void }) {
   const li = (i: typeof CodeIcon, t: string, key?: Key, child = true) => <li key={t} className={`${child ? 'is-child' : ''} ${key && key === on ? 'is-on' : ''} ${key && onPick ? 'is-pickable' : ''}`} onClick={key && onPick ? () => onPick(key) : undefined}>{icon(i, 15)}{t}{key && <i className="ss-aim" data-target={key} />}</li>;
   const group = (t: string, open = true) => <li className="is-group">{icon(open ? ArrowDown01Icon : ArrowRight01Icon, 14)}{t}</li>;
   return <aside className="sc-side ss-side">
-    <h4>Feedback Inbox <span>{icon(MoreHorizontalIcon, 16)}</span></h4>
+    <h4>Echo app <span>{icon(MoreHorizontalIcon, 16)}</span></h4>
     <p className="ss-side-system">System · Product ↗</p>
     <h5>Artifacts <span>{icon(Search01Icon, 15)}{icon(UnfoldMoreIcon, 15)}</span></h5>
     <ul>
@@ -262,7 +280,7 @@ export default function StudioShapes() {
     ? <div className="ss-pane"><div className="ss-app"><Inbox /></div><div className={`ss-app is-lofi ss-lofi-layer ${shown === 'lofi' ? 'is-shown' : ''}`}><Inbox /></div></div>
     : shown === 'flow' ? <Flow /> : shown === 'handoff' ? <Canvas /> : <Doc />;
   return <SceneFrame scene={scene} stage={stage} title="one prototype in every shape" focus={null}
-    label="Design Studio's prototype view with the Feedback Inbox sample: its artifacts listed in a sidebar, and beside it, in turn, the working inbox screen, the same screen in lo-fi, a diagram of the review flow, a handoff canvas with every screen and state, and a Markdown document with the project context">
+    label="Design Studio's prototype view with the Echo app sample: its artifacts listed in a sidebar, and beside it, in turn, the working inbox screen, the same screen in lo-fi, a diagram of the review flow, a handoff canvas with every screen and state, and a Markdown document with the project context">
     <div ref={t.ref} style={{ position: 'relative', height: stage.box.height }} aria-hidden="true">
       <div className="sc-os ss-os">
         <OsRail on="prototypes" />
