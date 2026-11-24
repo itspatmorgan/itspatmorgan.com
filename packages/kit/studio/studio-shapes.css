@@ -61,7 +61,7 @@
 .website-theme .ss-showing { display: flex; align-items: center; gap: 8px; margin: -4px 0 12px; color: var(--e-weak); }
 .website-theme .ss-ghost { font-size: 12px; font-weight: 500; color: var(--e-fg); }
 .website-theme .ss-table { overflow: hidden; border: 1px solid var(--e-line); border-radius: var(--e-radius); background: var(--e-card); }
-.website-theme .ss-row { display: grid; grid-template-columns: minmax(0, 1fr) 150px 64px 80px 80px 28px; align-items: center; height: 55px; padding: 0 8px; border-top: 1px solid var(--e-line); }
+.website-theme .ss-row { display: grid; grid-template-columns: minmax(0, 1fr) 88px 88px 21% 72px 36px; align-items: center; height: 55px; padding: 0 8px; border-top: 1px solid var(--e-line); }
 .website-theme .ss-row > span { padding: 0 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 .website-theme .ss-row.is-head { height: 40px; border-top: 0; font-weight: 500; }
 .website-theme .ss-row small { display: block; overflow: hidden; text-overflow: ellipsis; font-size: 12px; line-height: 16px; color: var(--e-weak); }
@@ -69,7 +69,12 @@
 .website-theme .ss-row .is-num { text-align: right; }
 .website-theme .ss-mono { font-family: 'Geist Mono Variable', ui-monospace, monospace; font-size: 12px; font-variant-numeric: tabular-nums; }
 .website-theme .ss-person { display: flex; align-items: center; gap: 10px; line-height: 16px; }
-.website-theme .ss-person > i { display: flex; flex: none; align-items: center; justify-content: center; width: 24px; height: 24px; border: 1px solid var(--e-line); border-radius: 999px; font-style: normal; font-size: 10px; color: var(--e-weak); }
+.website-theme .ss-logo { display: flex; flex: none; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: var(--e-radius); color: #fff; }
+.website-theme .ss-logo svg { width: 20px; height: 20px; }
+.website-theme .ss-accounts .ss-logo, .website-theme .ss-company .ss-logo { width: 24px; height: 24px; }
+.website-theme .ss-accounts .ss-logo svg { width: 16px; height: 16px; }
+.website-theme .ss-company .ss-logo { width: 20px; height: 20px; border-radius: 5px; }
+.website-theme .ss-company .ss-logo svg { width: 14px; height: 14px; }
 .website-theme .ss-person > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 .website-theme .ss-strong { font-weight: 500; }
 .website-theme .ss-weak { color: var(--e-weak); }
@@ -97,15 +102,14 @@
 .website-theme .ss-bars li > span:last-child { text-align: right; }
 .website-theme .ss-bars i { height: 8px; border-radius: 999px; background: var(--e-muted); }
 .website-theme .ss-bars b { display: block; height: 8px; border-radius: 999px; background: var(--e-primary); }
-.website-theme .ss-newest li { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid var(--e-line); }
+.website-theme .ss-newest li { display: grid; grid-template-columns: minmax(0, 1fr) 80px 80px 160px 56px; align-items: center; gap: 16px; padding: 10px 0; border-top: 1px solid var(--e-line); }
 .website-theme .ss-newest li:first-child { border-top: 0; }
-.website-theme .ss-newest li > span:first-child { flex: 1; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
-.website-theme .ss-newest .ss-company { width: 128px; text-align: left; }
+.website-theme .ss-newest li > span:first-child { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.website-theme .ss-newest small.ss-company { display: flex; align-items: center; gap: 8px; width: auto; text-align: left; }
 .website-theme .ss-accounts { display: grid; gap: 12px; }
 .website-theme .ss-accounts li { display: flex; align-items: center; gap: 12px; }
-.website-theme .ss-accounts i { display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: var(--e-radius); background: var(--e-accent); color: var(--e-accent-fg); font-style: normal; font-size: 12px; font-weight: 600; }
 .website-theme .ss-accounts span { flex: 1; }
-.website-theme .ss-accounts small { font-size: 12px; color: var(--e-weak); }
+.website-theme .ss-accounts small { width: 64px; text-align: right; font-size: 12px; color: var(--e-weak); }
 .website-theme .ss-accounts b { width: 56px; text-align: right; font-weight: 400; }
 .website-theme .ss-newest small { width: 56px; text-align: right; font-size: 12px; color: var(--e-weak); }
 .website-theme .ss-back { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 20px; color: var(--e-weak); }

@@ -4,7 +4,7 @@ import {
 } from '@hugeicons/core-free-icons';
 import { Pointer, SceneFrame, Screens, useScene, useStage, useTargets } from '../case-study/scene';
 import { OsRail, icon } from './StudioUI';
-import { EchoMark } from '../design-studio/StudioShapes';
+import { EchoMark, Logo } from '../design-studio/StudioShapes';
 
 // The open-source Studio, rebuilt from scratch (itspatmorgan/design-studio). Its home (platform/app/pages/home) lists the latest
 // prototypes and the systems; a prototype opens with its artifacts in the section nav: the app's views, their states, and the
@@ -94,11 +94,12 @@ function Prototype({ lofi, menu, pick }: { lofi: boolean; menu: boolean; pick: b
         </div>
         <div className="sc-echo-tabs"><span className="is-on">All</span><span>New</span><span>Triaged</span><span>Planned</span><span>Resolved</span></div>
         <div className="sc-echo-table">
-          <div className="sc-echo-row is-head"><span>Feedback</span><span>Customer</span><span className="is-num">MRR</span><span>Priority</span><span>Status</span></div>
+          <div className="sc-echo-row is-head"><span>Feedback</span><span>Priority</span><span>Status</span><span>Customer</span><span className="is-num">MRR</span></div>
           {rows.map(([title, who, company, mrr, priority, status]) => <div className="sc-echo-row" key={title}>
-            <span>{title}</span><span>{who} <small>· {company}</small></span><span className="is-num">{mrr}</span>
+            <span>{title}</span>
             <span className={`sc-badge is-${priority.toLowerCase()}`}>{priority}</span>
             <span className={`sc-badge is-${status.toLowerCase()}`}>{status}</span>
+            <span className="sc-echo-customer"><Logo company={company} />{company}<small>{who}</small></span><span className="is-num">{mrr}</span>
           </div>)}
         </div>
       </div>

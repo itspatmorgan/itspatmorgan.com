@@ -34,7 +34,18 @@ const items: Item[] = [
   { title: 'SSO with Okta for the whole workspace', who: 'Jonas Berg', company: 'Northwind Labs', mrr: '$4.2k', via: 'Email', tags: 'security', priority: 'high', status: 'triaged', date: 'Sep 18' },
 ];
 const label = (s: string) => s[0].toUpperCase() + s.slice(1);
-const initials = (name: string) => name.split(' ').map(p => p[0]).join('');
+/** Each sample account's made-up mark on its brand color (CompanyLogo.tsx). */
+const logos: Record<string, [string, ReactNode]> = {
+  'Arcadia Bank': ['#0f766e', <path d="M6 17V12a6 6 0 0 1 12 0v5" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" fill="none" />],
+  Brightline: ['#d97706', <path d="M6 16 18 8M6 11l7-4.5M11 17.5l7-4.5" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />],
+  Fieldnote: ['#15803d', <path d="M7 17c0-6 4-10 10-10 0 6-4 10-10 10Zm0 0 5-5" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" fill="none" />],
+  'Kestrel Health': ['#e11d48', <path d="M12 6.5v11M6.5 12h11" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />],
+  'Northwind Labs': ['#4338ca', <path d="M12 6 18 17H6z" fill="currentColor" />],
+  'Orbit Freight': ['#0284c7', <><circle cx="12" cy="12" r="5.5" stroke="currentColor" strokeWidth="2.2" fill="none" /><circle cx="17" cy="8" r="2" fill="currentColor" /></>],
+  'Parcel & Co': ['#92400e', <path d="M6.5 8.5 12 6l5.5 2.5v7L12 18l-5.5-2.5zM6.5 8.5 12 11l5.5-2.5M12 11v7" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" fill="none" />],
+  Tandem: ['#7c3aed', <><circle cx="9.5" cy="12" r="4" fill="currentColor" opacity=".6" /><circle cx="14.5" cy="12" r="4" fill="currentColor" /></>],
+};
+export const Logo = ({ company }: { company: string }) => <i className="ss-logo" style={{ background: logos[company]?.[0] }}><svg viewBox="0 0 24 24">{logos[company]?.[1]}</svg></i>;
 const Badge = ({ kind, value }: { kind: 'status' | 'priority'; value: string }) => <span className={`ss-badge is-${kind} is-${value}`}>{label(value)}</span>;
 
 /** Echo's mark (EchoMark.tsx): a dot with two widening arcs. */
@@ -71,12 +82,12 @@ export function Inbox({ open = false, panel }: { open?: boolean; panel?: 'new' |
     </div>
     {open && <div className="ss-showing">Showing <span className="ss-badge is-secondary">Open issues</span><span className="ss-ghost">✕ Clear</span></div>}
     <div className="ss-table">
-      <div className="ss-row is-head"><span>Feedback</span><span>Customer</span><span className="is-num">MRR</span><span>Priority</span><span>Status</span><span /></div>
+      <div className="ss-row is-head"><span>Feedback</span><span>Priority</span><span>Status</span><span>Customer</span><span className="is-num">MRR</span><span /></div>
       {rows.map(f => <div className="ss-row" key={f.title}>
         <span><b className="ss-strong">{f.title}</b><small>via {f.via} · {f.tags}</small></span>
-        <span className="ss-person"><i>{initials(f.who)}</i><span>{f.who}<small>{f.company}</small></span></span>
-        <span className="is-num ss-mono">{f.mrr || <span className="ss-weak">-</span>}</span>
         <span><Badge kind="priority" value={f.priority} /></span><span><Badge kind="status" value={f.status} /></span>
+        <span className="ss-person"><Logo company={f.company} /><span>{f.company}<small>{f.who}</small></span></span>
+        <span className="is-num ss-mono">{f.mrr || <span className="ss-weak">-</span>}</span>
         <span className="ss-dots">{icon(MoreHorizontalIcon, 16)}</span>
       </div>)}
     </div>
@@ -100,7 +111,7 @@ export function Inbox({ open = false, panel }: { open?: boolean; panel?: 'new' |
 export function Overview() {
   const bars = (rows: [string, number][]) => <ul className="ss-bars">{rows.map(([l, n]) => <li key={l}><span>{l}</span><i><b style={{ width: `${(n / 5) * 100}%` }} /></i><span>{n}</span></li>)}</ul>;
   return <Echo on="overview">
-    <div className="ss-head"><div><h1>Overview</h1><p>Where the feedback stands. Click a number to see the feedback behind it.</p></div></div>
+    <div className="ss-head"><div><h1>Overview</h1></div></div>
     <div className="ss-metrics">
       {([['Open issues', 12, 'Not resolved yet'], ['New', 4, 'Waiting to be triaged'], ['High priority', 5, 'Open and high priority'], ['Resolved', 2, 'Closed out']] as const).map(([l, n, h]) =>
         <div key={l} className="ss-card"><span className="ss-weak">{l}</span><b>{n}</b><small>{h}</small></div>)}
@@ -109,11 +120,11 @@ export function Overview() {
       <div className="ss-card"><h3>By status</h3>{bars([['New', 4], ['Triaged', 5], ['Planned', 3], ['Resolved', 2]])}</div>
       <div className="ss-card"><h3>Accounts asking</h3>
         <ul className="ss-accounts">{([['Arcadia Bank', 3, '$18.9k'], ['Kestrel Health', 2, '$12.4k'], ['Orbit Freight', 1, '$6.3k'], ['Northwind Labs', 2, '$4.2k']] as const).map(([c, n, m]) =>
-          <li key={c}><i>{c[0]}</i><span>{c}</span><small>{n} open</small><b className="ss-mono">{m}</b></li>)}</ul>
+          <li key={c}><Logo company={c} /><span>{c}</span><small>{n} open</small><b className="ss-mono">{m}</b></li>)}</ul>
       </div>
     </div>
     <div className="ss-card"><h3>Newest</h3>
-      <ul className="ss-newest">{items.slice(0, 5).map(f => <li key={f.title}><span className="ss-strong">{f.title}</span><small className="ss-company">{f.company}</small><Badge kind="priority" value={f.priority} /><Badge kind="status" value={f.status} /><small>{f.date}</small></li>)}</ul>
+      <ul className="ss-newest">{items.slice(0, 5).map(f => <li key={f.title}><span className="ss-strong">{f.title}</span><span><Badge kind="priority" value={f.priority} /></span><span><Badge kind="status" value={f.status} /></span><small className="ss-company"><Logo company={f.company} />{f.company}</small><small>{f.date}</small></li>)}</ul>
     </div>
   </Echo>;
 }
