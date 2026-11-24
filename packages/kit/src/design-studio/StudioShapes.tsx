@@ -46,7 +46,18 @@ const logos: Record<string, [string, ReactNode]> = {
   Tandem: ['#7c3aed', <><circle cx="9.5" cy="12" r="4" fill="currentColor" opacity=".6" /><circle cx="14.5" cy="12" r="4" fill="currentColor" /></>],
 };
 export const Logo = ({ company }: { company: string }) => <i className="ss-logo" style={{ background: logos[company]?.[0] }}><svg viewBox="0 0 24 24">{logos[company]?.[1]}</svg></i>;
-const Badge = ({ kind, value }: { kind: 'status' | 'priority'; value: string }) => <span className={`ss-badge is-${kind} is-${value}`}>{label(value)}</span>;
+/** Priority as signal bars and status as a circle that fills as feedback moves along (badges.tsx). */
+export const PriorityIcon = ({ value }: { value: Priority }) => <svg className={`ss-pri is-${value}`} viewBox="0 0 16 16" width="16" height="16" aria-label={`${label(value)} priority`} role="img">
+  {[0, 1, 2].map(i => <rect key={i} x={2 + i * 4.5} y={10 - i * 3.5} width="3" height={4 + i * 3.5} rx="1" fill="currentColor" opacity={i < { low: 1, medium: 2, high: 3 }[value] ? 1 : .25} />)}
+</svg>;
+const StatusIcon = ({ value }: { value: Status }) => <svg className={`ss-st is-${value}`} viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+  {value === 'new' && <circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" strokeWidth="1.5" strokeDasharray="2.4 2.2" />}
+  {value === 'triaged' && <><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" strokeWidth="1.5" /><path d="M8 4.5a3.5 3.5 0 0 1 0 7z" fill="currentColor" /></>}
+  {value === 'planned' && <><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" strokeWidth="1.5" /><circle cx="8" cy="8" r="3" fill="currentColor" /></>}
+  {value === 'resolved' && <><circle cx="8" cy="8" r="7" fill="currentColor" /><path d="m5.2 8.2 1.9 1.9 3.7-3.9" fill="none" stroke="var(--e-bg, var(--os-bg, #fff))" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></>}
+</svg>;
+export const StatusLabel = ({ value }: { value: Status }) => <span className="ss-label"><StatusIcon value={value} />{label(value)}</span>;
+const PriorityLabel = ({ value }: { value: Priority }) => <span className="ss-label"><PriorityIcon value={value} />{label(value)}</span>;
 
 /** Echo's mark (EchoMark.tsx): a dot with two widening arcs. */
 export const EchoMark = ({ size = 16 }: { size?: number }) => <svg viewBox="0 0 24 24" width={size} height={size} fill="none" aria-hidden="true">
@@ -82,12 +93,13 @@ export function Inbox({ open = false, panel }: { open?: boolean; panel?: 'new' |
     </div>
     {open && <div className="ss-showing">Showing <span className="ss-badge is-secondary">Open issues</span><span className="ss-ghost">✕ Clear</span></div>}
     <div className="ss-table">
-      <div className="ss-row is-head"><span>Feedback</span><span>Priority</span><span>Status</span><span>Customer</span><span className="is-num">MRR</span><span /></div>
+      <div className="ss-row is-head"><span /><span>Feedback</span><span>Status</span><span>Customer</span><span>MRR</span><span /></div>
       {rows.map(f => <div className="ss-row" key={f.title}>
-        <span><b className="ss-strong">{f.title}</b><small>via {f.via} · {f.tags}</small></span>
-        <span><Badge kind="priority" value={f.priority} /></span><span><Badge kind="status" value={f.status} /></span>
-        <span className="ss-person"><Logo company={f.company} /><span>{f.company}<small>{f.who}</small></span></span>
-        <span className="is-num ss-mono">{f.mrr || <span className="ss-weak">-</span>}</span>
+        <span><PriorityIcon value={f.priority} /></span>
+        <span className="ss-title"><b className="ss-strong">{f.title}</b><small>via {f.via}</small></span>
+        <span><StatusLabel value={f.status} /></span>
+        <span className="ss-person"><Logo company={f.company} /><span>{f.company}</span></span>
+        <span>{f.mrr || <span className="ss-weak">-</span>}</span>
         <span className="ss-dots">{icon(MoreHorizontalIcon, 16)}</span>
       </div>)}
     </div>
@@ -120,11 +132,11 @@ export function Overview() {
       <div className="ss-card"><h3>By status</h3>{bars([['New', 4], ['Triaged', 5], ['Planned', 3], ['Resolved', 2]])}</div>
       <div className="ss-card"><h3>Accounts asking</h3>
         <ul className="ss-accounts">{([['Arcadia Bank', 3, '$18.9k'], ['Kestrel Health', 2, '$12.4k'], ['Orbit Freight', 1, '$6.3k'], ['Northwind Labs', 2, '$4.2k']] as const).map(([c, n, m]) =>
-          <li key={c}><Logo company={c} /><span>{c}</span><small>{n} open</small><b className="ss-mono">{m}</b></li>)}</ul>
+          <li key={c}><Logo company={c} /><span>{c}</span><small>{n} open</small><b>{m}</b></li>)}</ul>
       </div>
     </div>
     <div className="ss-card"><h3>Newest</h3>
-      <ul className="ss-newest">{items.slice(0, 5).map(f => <li key={f.title}><span className="ss-strong">{f.title}</span><span><Badge kind="priority" value={f.priority} /></span><span><Badge kind="status" value={f.status} /></span><small className="ss-company"><Logo company={f.company} />{f.company}</small><small>{f.date}</small></li>)}</ul>
+      <ul className="ss-newest">{items.slice(0, 5).map(f => <li key={f.title}><PriorityIcon value={f.priority} /><span className="ss-strong">{f.title}</span><StatusLabel value={f.status} /><small className="ss-company"><Logo company={f.company} />{f.company}</small><small>{f.date}</small></li>)}</ul>
     </div>
   </Echo>;
 }
@@ -133,20 +145,25 @@ export function Overview() {
 export function Detail() {
   return <Echo on="inbox">
     <span className="ss-back">{icon(ArrowLeft01Icon, 15)}Feedback inbox</span>
-    <div className="ss-head">
-      <div><div className="ss-badges"><Badge kind="status" value="new" /><Badge kind="priority" value="high" /></div><h1>Export to CSV is missing columns</h1><p>Maya Chen at Northwind Labs · Team plan · <span className="ss-mono">$4.2k/mo</span> · via Email · Sep 28</p></div>
-      <div className="ss-badges"><span className="ss-btn">{icon(PencilEdit01Icon, 15)}Edit</span><span className="ss-btn">{icon(Delete02Icon, 15)}Delete</span></div>
-    </div>
     <div className="ss-detail">
       <div>
-        <h3>What they said</h3>
-        <p>When I export the table, the owner and last-updated columns are not included. I rebuild them by hand every week for my report.</p>
-        <div className="ss-badges"><span className="ss-badge is-secondary">export</span><span className="ss-badge is-secondary">tables</span></div>
-        <hr />
+        <div className="ss-head"><h1>Export to CSV is missing columns</h1><div className="ss-icons">{icon(PencilEdit01Icon, 16)}{icon(Delete02Icon, 16)}</div></div>
+        <div className="ss-quote">
+          <div className="ss-company"><Logo company="Northwind Labs" /><b className="ss-strong">Maya Chen</b><span className="ss-weak">at Northwind Labs</span><span className="ss-weak">via Email · Sep 28</span></div>
+          <p>When I export the table, the owner and last-updated columns are not included. I rebuild them by hand every week for my report.</p>
+          <div className="ss-badges"><span className="ss-badge is-secondary">export</span><span className="ss-badge is-secondary">tables</span></div>
+        </div>
         <h3>Notes</h3><p className="ss-weak">No notes yet.</p>
-        <label>Add a note</label><div className="ss-input is-area">What did you find out, or decide?</div>
+        <div className="ss-input is-area">Add a note: what did you find out, or decide?</div>
       </div>
-      <div className="ss-card"><h3>Triage</h3><label>Status</label><div className="ss-input">New{icon(ArrowDown01Icon, 14)}</div><label>Priority</label><div className="ss-input">High{icon(ArrowDown01Icon, 14)}</div></div>
+      <dl className="ss-props">
+        <dt className="ss-props-head">Properties</dt>
+        <div><dt>Status</dt><dd><StatusLabel value="new" />{icon(ArrowDown01Icon, 14)}</dd></div>
+        <div><dt>Priority</dt><dd><PriorityLabel value="high" />{icon(ArrowDown01Icon, 14)}</dd></div>
+        <hr />
+        <div><dt>Customer</dt><dd className="ss-company"><Logo company="Northwind Labs" />Northwind Labs</dd></div>
+        {([['Contact', 'Maya Chen'], ['Plan', 'Team'], ['MRR', '$4.2k a month'], ['Source', 'Email'], ['Received', 'Sep 28']] as const).map(([k, v]) => <div key={k}><dt>{k}</dt><dd>{v}</dd></div>)}
+      </dl>
     </div>
   </Echo>;
 }

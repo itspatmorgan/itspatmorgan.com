@@ -17,13 +17,24 @@ import { useDemoLoop } from '../case-study/useDemoLoop';
 const icon = (i: typeof CodeIcon, size = 14) => <HugeiconsIcon icon={i} size={size} strokeWidth={1.6} />;
 
 const rows = [
-  ['Slack alerts for high-value accounts', 'New'],
-  ['Export to CSV is missing columns', 'New'],
-  ['Dark mode makes the status badges hard to read', 'Triaged'],
-  ['Let me bulk-assign items to a teammate', 'Planned'],
-  ['Import from a spreadsheet drops line breaks', 'Planned'],
-  ['Notification emails link to the wrong page', 'Resolved'],
+  ['Slack alerts for high-value accounts', 3, 'New'],
+  ['Export to CSV is missing columns', 3, 'New'],
+  ['Dark mode makes the status badges hard to read', 2, 'Triaged'],
+  ['Let me bulk-assign items to a teammate', 3, 'Planned'],
+  ['Import from a spreadsheet drops line breaks', 3, 'Planned'],
+  ['Notification emails link to the wrong page', 1, 'Resolved'],
 ] as const;
+
+// The inbox's marks (badges.tsx): signal bars for priority, a circle that fills as an item moves along for status.
+const Bars = ({ level }: { level: number }) => <svg className={`dc-pri ${level === 3 ? 'is-high' : ''}`} viewBox="0 0 16 16">
+  {[0, 1, 2].map(i => <rect key={i} x={2 + i * 4.5} y={10 - i * 3.5} width="3" height={4 + i * 3.5} rx="1" fill="currentColor" opacity={i < level ? 1 : .25} />)}
+</svg>;
+const Circle = ({ status }: { status: string }) => <svg className={`dc-st is-${status.toLowerCase()}`} viewBox="0 0 16 16">
+  {status === 'New' && <circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" strokeWidth="1.6" strokeDasharray="2.4 2.2" />}
+  {status === 'Triaged' && <><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" strokeWidth="1.6" /><path d="M8 4.5a3.5 3.5 0 0 1 0 7z" fill="currentColor" /></>}
+  {status === 'Planned' && <><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" strokeWidth="1.6" /><circle cx="8" cy="8" r="3" fill="currentColor" /></>}
+  {status === 'Resolved' && <><circle cx="8" cy="8" r="7" fill="currentColor" /><path d="m5.2 8.2 1.9 1.9 3.7-3.9" fill="none" stroke="var(--dc-surface)" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></>}
+</svg>;
 
 function Prototype({ lofi = false }: { lofi?: boolean }) {
   return <div className={`dc-view dc-inbox ${lofi ? 'is-lofi' : ''}`}>
@@ -33,8 +44,8 @@ function Prototype({ lofi = false }: { lofi?: boolean }) {
     </div>
     <div className="dc-tabs"><span className="is-on">All</span><span>New</span><span>Planned</span></div>
     <div className="dc-table">
-      <div className="dc-row dc-th"><span>Feedback</span><span>Status</span></div>
-      {rows.map(([text, status]) => <div className="dc-row" key={text}><span className="dc-cell">{text}</span><span className={`dc-badge is-${status.toLowerCase()}`}>{status}</span></div>)}
+      <div className="dc-row dc-th"><span /><span>Feedback</span><span>Status</span></div>
+      {rows.map(([text, level, status]) => <div className="dc-row" key={text}><Bars level={level} /><span className="dc-cell">{text}</span><span className="dc-status"><Circle status={status} />{status}</span></div>)}
     </div>
   </div>;
 }

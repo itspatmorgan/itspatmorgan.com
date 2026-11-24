@@ -4,7 +4,7 @@ import {
 } from '@hugeicons/core-free-icons';
 import { Pointer, SceneFrame, Screens, useScene, useStage, useTargets } from '../case-study/scene';
 import { OsRail, icon } from './StudioUI';
-import { EchoMark, Logo } from '../design-studio/StudioShapes';
+import { EchoMark, Logo, PriorityIcon, StatusLabel } from '../design-studio/StudioShapes';
 
 // The open-source Studio, rebuilt from scratch (itspatmorgan/design-studio). Its home (platform/app/pages/home) lists the latest
 // prototypes and the systems; a prototype opens with its artifacts in the section nav: the app's views, their states, and the
@@ -23,11 +23,11 @@ const captions = [
 ];
 
 const rows = [
-  ['Slack alerts for high-value accounts', 'Marcus Bell', 'Arcadia Bank', '$18.9k', 'High', 'New'],
-  ['Export to CSV is missing columns', 'Maya Chen', 'Northwind Labs', '$4.2k', 'High', 'New'],
-  ['Dark mode makes the status badges hard to read', 'Luis Ortega', 'Brightline', '$1.9k', 'Medium', 'Triaged'],
-  ['Search should look inside the description', 'Tom Becker', 'Fieldnote', '$860', 'Medium', 'New'],
-  ['Let me bulk-assign items to a teammate', 'Priya Nair', 'Kestrel Health', '$12.4k', 'High', 'Planned'],
+  ['Slack alerts for high-value accounts', 'Chat', 'Arcadia Bank', '$18.9k', 'high', 'new'],
+  ['Export to CSV is missing columns', 'Email', 'Northwind Labs', '$4.2k', 'high', 'new'],
+  ['Dark mode makes the status badges hard to read', 'Chat', 'Brightline', '$1.9k', 'medium', 'triaged'],
+  ['Search should look inside the description', 'Survey', 'Fieldnote', '$860', 'medium', 'new'],
+  ['Let me bulk-assign items to a teammate', 'Interview', 'Kestrel Health', '$12.4k', 'high', 'planned'],
 ] as const;
 
 function Home({ hover }: { hover: boolean }) {
@@ -94,12 +94,12 @@ function Prototype({ lofi, menu, pick }: { lofi: boolean; menu: boolean; pick: b
         </div>
         <div className="sc-echo-tabs"><span className="is-on">All</span><span>New</span><span>Triaged</span><span>Planned</span><span>Resolved</span></div>
         <div className="sc-echo-table">
-          <div className="sc-echo-row is-head"><span>Feedback</span><span>Priority</span><span>Status</span><span>Customer</span><span className="is-num">MRR</span></div>
-          {rows.map(([title, who, company, mrr, priority, status]) => <div className="sc-echo-row" key={title}>
-            <span>{title}</span>
-            <span className={`sc-badge is-${priority.toLowerCase()}`}>{priority}</span>
-            <span className={`sc-badge is-${status.toLowerCase()}`}>{status}</span>
-            <span className="sc-echo-customer"><Logo company={company} />{company}<small>{who}</small></span><span className="is-num">{mrr}</span>
+          <div className="sc-echo-row is-head"><span /><span>Feedback</span><span>Status</span><span>Customer</span><span>MRR</span></div>
+          {rows.map(([title, via, company, mrr, priority, status]) => <div className="sc-echo-row" key={title}>
+            <PriorityIcon value={priority} />
+            <span className="sc-echo-title"><b>{title}</b><small>via {via}</small></span>
+            <StatusLabel value={status} />
+            <span className="sc-echo-customer"><Logo company={company} />{company}</span><span>{mrr}</span>
           </div>)}
         </div>
       </div>
