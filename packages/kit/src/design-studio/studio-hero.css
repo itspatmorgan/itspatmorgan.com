@@ -125,7 +125,8 @@
 .ps-browser { overflow: hidden; border-radius: 10px; background: var(--background); box-shadow: 0 0 0 1px color-mix(in oklch, var(--foreground) 12%, transparent), 0 18px 40px -22px rgb(0 0 0 / .3); opacity: .35; transform: translateY(10px) scale(.98); transition: opacity 500ms ease 150ms, transform 600ms var(--motion-ease-arrival) 150ms; }
 .ps-browser.is-open { opacity: 1; transform: none; }
 /* The Studio the link opens, scaled to the browser's width. */
-.ps-window { pointer-events: none; }
+/* It sits flush in the frame: the browser rounds the outer corners, so the window keeps none of its own corners or ring. */
+.ps-browser .ps-window { border-radius: 0; box-shadow: none; pointer-events: none; }
 .ps-bar { display: flex; align-items: center; gap: 12px; height: 36px; padding: 0 12px; border-bottom: 1px solid var(--border); }
 .ps-bar span { display: flex; gap: 5px; }
 .ps-bar span i { width: 8px; height: 8px; border-radius: 50%; background: color-mix(in oklch, var(--foreground) 14%, transparent); }
