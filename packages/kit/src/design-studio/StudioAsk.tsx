@@ -7,8 +7,8 @@ import StepBar from './StepBar';
 import { usePhone, useReduced } from '../hooks';
 
 // How you work in Design Studio: in the coding agent you already use. On the left, a conversation in that agent; on the right, the
-// Studio rendering what each message makes. Each request writes or changes a file in the Feedback Inbox sample
-// (src/prototypes/parker/feedback-inbox), and the Studio opens it. The chat is a neutral harness, not any one product's interface.
+// Studio rendering what each message makes. Each request writes or changes a file in the Echo app sample
+// (src/prototypes/parker/echo-app), and the Studio opens it. The chat is a neutral harness, not any one product's interface.
 //
 // Phones keep the same window, chat beside browser, at a fixed 780 x 520 in a square frame, and pan between the two at one scale: the
 // chat (with the browser's edge beside it) while a request is typed and worked on, then across to the whole browser as the result

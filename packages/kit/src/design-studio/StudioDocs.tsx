@@ -5,18 +5,18 @@ import { NativeStage } from '../case-study/NativeStage';
 import { OsRail } from '../studio-case/StudioUI';
 import { Doc, Nav } from './StudioShapes';
 
-// One document, two ways in: the Feedback Inbox's project context (discovery/project-context.md) as the Studio renders it, and the
+// One document, two ways in: the Echo app's project context (discovery/project-context.md) as the Studio renders it, and the
 // same file in the Studio's source editor ("Edit source" in the file's menu: its path, Save and Done, then the Markdown with line
 // numbers). People read and edit the page; agents read and write the same file. Lines are the file's own; the editor shows its first 28.
 const source: string[] = [
   '---', 'studioId: 9jmjq17bwtce5tq6', 'title: Project Context',
-  'description: The problem, working assumptions, and explorations behind the feedback tracker.', 'toc: true', '---', '',
+  "description: The problem, working assumptions, and explorations behind Echo's feedback inbox.", 'toc: true', '---', '',
   '## The problem', '',
-  'Customer feedback is scattered across email, chat, interviews, surveys, and support tickets. The team needs one place to capture it, review recurring problems, and track what happens next.',
+  'Customer feedback is scattered across email, chat, interviews, surveys, and support tickets. The team needs one place to capture it, see which accounts are asking and what they’re worth, and track what happens next.',
   '', "## Who it's for", '',
-  '- **Luis, support lead:** capture feedback quickly.', '- **Priya, product manager:** triage new items and track planned work.', '- **Maya, product designer:** find patterns worth exploring.',
+  '- **Sam, product lead:** triage new feedback and decide what goes on the roadmap.', '- **Support leads and account managers:** capture feedback quickly, wherever they hear it.', '- **Designers:** find patterns worth exploring.',
   '', '## Working assumptions', '',
-  '- Items move through **New, Triaged, Planned, and Resolved**.', '- Status and priority help the team decide what to address.', '- Notes stay with the feedback item so its history stays together.',
+  '- Items move through **New, Triaged, Planned, and Resolved**.', '- Status and priority help the team decide what to address.', '- Notes stay with the feedback item so its history stays together.', '- Every item belongs to an account, so revenue can inform priority.',
   '', '## Open questions', '',
   '- Where should filtering live?', '- When should customers hear back?', '- How long should resolved feedback remain visible?',
 ];
@@ -36,7 +36,7 @@ function Line({ text, front }: { text: string; front: boolean }) {
 
 export function Editor({ onDone }: { onDone?: () => void } = {}) {
   return <div className="ss-pane ss-editor">
-    <header><code>src/prototypes/parker/feedback-inbox/discovery/project-context.md</code><span className="ss-ed-btn is-disabled">Save</span><span className={`ss-ed-btn ${onDone ? 'is-pickable' : ''}`} onClick={onDone} data-hx="done">Done</span></header>
+    <header><code>src/prototypes/parker/echo-app/discovery/project-context.md</code><span className="ss-ed-btn is-disabled">Save</span><span className={`ss-ed-btn ${onDone ? 'is-pickable' : ''}`} onClick={onDone} data-hx="done">Done</span></header>
     <ol>{source.map((text, i) => <li key={i} className={i === 0 ? 'is-current' : ''}><span><Line text={text} front={i <= 5} /></span></li>)}</ol>
   </div>;
 }
@@ -57,7 +57,7 @@ export default function StudioDocs() {
       <span><b>{v}</b></span>
     </button>)}
   </div>;
-  const label = "The Feedback Inbox's project context in Design Studio, first as a rendered page with the problem, who it's for, working assumptions and open questions, then as the Markdown file behind it in the Studio's source editor";
+  const label = "The Echo app's project context in Design Studio, first as a rendered page with the problem, who it's for, working assumptions and open questions, then as the Markdown file behind it in the Studio's source editor";
   // Phones: the idea is the file, not the Studio around it, so the frame holds only the artifact pane, narrow enough that the page and
   // its Markdown read at a real size, and the toggle flips between them.
   if (stage.phone) return <DemoFrame scene={scene} title="the document and its Markdown" label={label} stage="ss-doc-stage">

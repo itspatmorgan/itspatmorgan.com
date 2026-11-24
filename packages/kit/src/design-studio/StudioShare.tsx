@@ -7,7 +7,7 @@ import StepBar from './StepBar';
 
 // Sharing comes down to one thing: a link. You ask your agent to publish, it hands back one address, and that address opens the
 // Studio in anyone's browser. The demo is those three beats and nothing else, in the page's own controls. The link opens the real
-// Studio, the Feedback Inbox sample, at a small scale: the point is the link, but what it opens is the product, never a wireframe. Phones show one beat at a time in the same box: the chat with its link,
+// Studio, the Echo app sample, at a small scale: the point is the link, but what it opens is the product, never a wireframe. Phones show one beat at a time in the same box: the chat with its link,
 // then the browser that link opens, sliding in over it, rather than both stacked into one tall card.
 const ASK = 'Publish the Studio to our site';
 const LINK = 'design.yourteam.com';

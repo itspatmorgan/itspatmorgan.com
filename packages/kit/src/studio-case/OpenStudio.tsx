@@ -1,16 +1,17 @@
 import {
   ArrowDown01Icon, ArrowRight01Icon, CodeIcon, CursorInWindowIcon, File01Icon, FileEditIcon, Flowchart01Icon,  
-  Link01Icon, Message01Icon, MoreHorizontalIcon, PaintBoardIcon, PlusSignIcon, Presentation01Icon, Search01Icon, Shapes01Icon,
+  Link01Icon, MoreHorizontalIcon, PaintBoardIcon, PlusSignIcon, Presentation01Icon, Search01Icon, Shapes01Icon,
 } from '@hugeicons/core-free-icons';
 import { Pointer, SceneFrame, Screens, useScene, useStage, useTargets } from '../case-study/scene';
 import { OsRail, icon } from './StudioUI';
+import { EchoMark, Logo, PriorityIcon, StatusLabel } from '../design-studio/StudioShapes';
 
 // The open-source Studio, rebuilt from scratch (itspatmorgan/design-studio). Its home (platform/app/pages/home) lists the latest
 // prototypes and the systems; a prototype opens with its artifacts in the section nav: the app's views, their states, and the
-// discovery work behind them (the Feedback Inbox sample, prototypes/parker/feedback-inbox). Any view turns lo-fi from the file
+// discovery work behind them (the Echo app sample, prototypes/parker/echo-app). Any view turns lo-fi from the file
 // tree's menu ("Make lo-fi"), which draws it in grayscale with handwritten type (modules/view/lofi.css).
 // Copy, names and sample data are the product's (Drive: 02-home.png, 12-view-feedback-inbox.png). Liberties: the context menu shows
-// three of its items; the inbox shows five of its eight rows.
+// three of its items; the inbox shows five of its twelve rows.
 const timings = [2200, 1300, 2800, 1500, 700, 3400];
 const captions = [
   'The open-source Studio: prototypes and systems in one place',
@@ -22,11 +23,11 @@ const captions = [
 ];
 
 const rows = [
-  ['Export to CSV is missing columns', 'Maya Chen', 'Email', 'High', 'New', 'Sep 28'],
-  ['Dark mode makes the status badges hard to read', 'Luis Ortega', 'Chat', 'Medium', 'Triaged', 'Sep 27'],
-  ['Let me bulk-assign items to a teammate', 'Priya Nair', 'Interview', 'High', 'Planned', 'Sep 25'],
-  ['Search should look inside the description', 'Tom Becker', 'Survey', 'Medium', 'New', 'Sep 26'],
-  ['Notification emails link to the wrong page', 'Aiko Tanaka', 'Email', 'Low', 'Resolved', 'Sep 20'],
+  ['Slack alerts for high-value accounts', 'Chat', 'Arcadia Bank', '$18.9k', 'high', 'new'],
+  ['Export to CSV is missing columns', 'Email', 'Northwind Labs', '$4.2k', 'high', 'new'],
+  ['Dark mode makes the status badges hard to read', 'Chat', 'Brightline', '$1.9k', 'medium', 'triaged'],
+  ['Search should look inside the description', 'Survey', 'Fieldnote', '$860', 'medium', 'new'],
+  ['Let me bulk-assign items to a teammate', 'Interview', 'Kestrel Health', '$12.4k', 'high', 'planned'],
 ] as const;
 
 function Home({ hover }: { hover: boolean }) {
@@ -39,8 +40,8 @@ function Home({ hover }: { hover: boolean }) {
       <div className="sc-os-search">{icon(Search01Icon, 16)}Search the studio<kbd>⌘K</kbd></div>
       <div className="sc-os-group">
         <p>Latest prototypes {icon(ArrowRight01Icon, 12)}</p>
-        {item(CursorInWindowIcon, 'Design Studio Marketing', 'Parker')}
-        {item(CursorInWindowIcon, 'Feedback Inbox', 'Parker', 'inbox', hover)}
+        {item(CursorInWindowIcon, 'Echo website', 'Parker')}
+        {item(CursorInWindowIcon, 'Echo app', 'Parker', 'inbox', hover)}
       </div>
       <div className="sc-os-group" style={{ paddingTop: 4 }}>
         <p>Systems {icon(ArrowRight01Icon, 12)}</p>
@@ -55,7 +56,7 @@ function Prototype({ lofi, menu, pick }: { lofi: boolean; menu: boolean; pick: b
   const li = (i: typeof CodeIcon, t: string, cls = '', target?: string) => <li className={cls} data-target={target}>{icon(i, 14)}{t}</li>;
   return <>
     <aside className="sc-side" style={{ width: 226 }}>
-      <h4 style={{ display: 'flex', justifyContent: 'space-between' }}>Feedback Inbox <span style={{ color: 'var(--os-weak)' }}>{icon(MoreHorizontalIcon, 15)}</span></h4>
+      <h4 style={{ display: 'flex', justifyContent: 'space-between' }}>Echo app <span style={{ color: 'var(--os-weak)' }}>{icon(MoreHorizontalIcon, 15)}</span></h4>
       <p style={{ padding: '4px 8px 0', fontSize: 12.5, color: 'var(--os-weak)' }}>System · Product ↗</p>
       <h5>Artifacts</h5>
       <ul>
@@ -83,8 +84,8 @@ function Prototype({ lofi, menu, pick }: { lofi: boolean; menu: boolean; pick: b
     </div>
     <div className={`sc-echo ${lofi ? 'is-lofi' : ''}`}>
       <div className="sc-echo-top">
-        <b><i>{icon(Message01Icon, 13)}</i>Echo</b><span>Overview</span><span className="is-on">Feedback inbox</span>
-        <span style={{ marginLeft: 'auto' }}>Reset sample data</span><span className="sc-echo-pm" style={{ marginLeft: 0 }}>PM</span>
+        <b><i><EchoMark size={15} /></i>Echo</b><nav><span>Overview</span><span className="is-on">Feedback inbox<small>12</small></span></nav>
+        <span style={{ marginLeft: 'auto' }}>Reset sample data</span><span className="sc-echo-pm">SR</span>
       </div>
       <div className="sc-echo-body">
         <div className="sc-echo-head">
@@ -93,12 +94,12 @@ function Prototype({ lofi, menu, pick }: { lofi: boolean; menu: boolean; pick: b
         </div>
         <div className="sc-echo-tabs"><span className="is-on">All</span><span>New</span><span>Triaged</span><span>Planned</span><span>Resolved</span></div>
         <div className="sc-echo-table">
-          <div className="sc-echo-row is-head"><span>Feedback</span><span>From</span><span>Priority</span><span>Status</span><span>Received</span></div>
-          {rows.map(([title, who, via, priority, status, date]) => <div className="sc-echo-row" key={title}>
-            <span>{title}</span><span>{who} <small>· {via}</small></span>
-            <span className={`sc-badge is-${priority.toLowerCase()}`}>{priority}</span>
-            <span className={`sc-badge is-${status.toLowerCase()}`}>{status}</span>
-            <span>{date}</span>
+          <div className="sc-echo-row is-head"><span /><span>Feedback</span><span>Status</span><span>Customer</span><span>MRR</span></div>
+          {rows.map(([title, via, company, mrr, priority, status]) => <div className="sc-echo-row" key={title}>
+            <PriorityIcon value={priority} />
+            <span className="sc-echo-title"><b>{title}</b><small>via {via}</small></span>
+            <StatusLabel value={status} />
+            <span className="sc-echo-customer"><Logo company={company} />{company}</span><span>{mrr}</span>
           </div>)}
         </div>
       </div>
@@ -106,7 +107,7 @@ function Prototype({ lofi, menu, pick }: { lofi: boolean; menu: boolean; pick: b
   </>;
 }
 
-/** The open-source Studio: its home, the Feedback Inbox sample prototype, and a view made lo-fi. */
+/** The open-source Studio: its home, the Echo app sample prototype, and a view made lo-fi. */
 export default function OpenStudio() {
   const scene = useScene(timings, captions);
   const stage = useStage({ wide: 1000, height: 760 });
@@ -114,7 +115,7 @@ export default function OpenStudio() {
   const t = useTargets(step);
   const at = step === 1 ? t.at('inbox') : step === 3 ? t.at('view') : step === 4 ? t.at('lofi') : null;
   return <SceneFrame scene={scene} stage={stage} title="the open-source Studio" focus={step >= 3 ? { x: 0, y: 80, w: 760, align: 'start', zoom: 1.3 } : null}
-    label="The open-source Design Studio: a home that lists the latest prototypes and the systems; the Feedback Inbox sample prototype, with its views, states and discovery work in a sidebar beside a working inbox; then the same inbox switched to lo-fi, in grayscale with handwritten type">
+    label="The open-source Design Studio: a home that lists the latest prototypes and the systems; the Echo app sample prototype, with its views, states and discovery work in a sidebar beside a working inbox; then the same inbox switched to lo-fi, in grayscale with handwritten type">
     <div ref={t.ref} style={{ position: 'relative', height: stage.box.height }} aria-hidden="true">
       <div className="sc-os">
         <OsRail on={step >= 2 ? 'prototypes' : 'home'} />

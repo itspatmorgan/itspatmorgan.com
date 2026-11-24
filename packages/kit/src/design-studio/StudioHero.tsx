@@ -10,7 +10,7 @@ import StepBar from './StepBar';
 import { H, W, themeStyle, useFit } from './explore/StudioWindow';
 import { useDark, usePhone, useReduced } from '../hooks';
 
-// The landing page's browse section: the open-source Studio's prototype view with the Feedback Inbox sample, worked the way the Studio is
+// The landing page's browse section: the open-source Studio's prototype view with the Echo app sample, worked the way the Studio is
 // worked. Artifacts open from the sidebar. A screen's menu makes it lo-fi or hi-fi (the file's `/** @lofi */` marker, FileTree's
 // "Make lo-fi"). A document's menu opens its source. A short tour shows each move once, and hands over the moment the visitor touches the window.
 
@@ -194,10 +194,10 @@ export default function StudioHero() {
   return <div className={`hx ${phone ? 'is-phone' : ''}`}>
     <div ref={box} className={`dx-window hx-window ${ready ? 'is-fit' : ''}`} style={ready ? { height: phone ? width : H * s } : undefined} onPointerDownCapture={takeOver}>
       <div className="sc cs-native dx-native" style={{ width: W, height: phone ? PHONE_H : H, transform: phone ? camT : `translateX(${x}px) scale(${s})`, opacity: ready ? 1 : 0 }}>
-        <div ref={os} className="sc-os ss-os dx-os hx-os" style={themeStyle('green', dark)} onClick={() => setMenu(null)}>
+        <div ref={os} className="sc-os ss-os dx-os hx-os" style={themeStyle('echo', dark)} onClick={() => setMenu(null)}>
           <OsRail on="prototypes" />
           <aside className="sc-side ss-side">
-            <h4><span className="hx-title">Feedback Inbox</span><span>{icon(MoreHorizontalIcon, 16)}</span></h4>
+            <h4><span className="hx-title">Echo app</span><span>{icon(MoreHorizontalIcon, 16)}</span></h4>
             <p className="ss-side-system">System · Product ↗</p>
             <h5>Artifacts <span>{icon(Search01Icon, 15)}{icon(UnfoldMoreIcon, 15)}</span></h5>
             <ul>

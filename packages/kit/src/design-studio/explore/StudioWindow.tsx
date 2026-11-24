@@ -4,7 +4,7 @@ import { OsRail } from '../../studio-case/StudioUI';
 import { Canvas, Doc, Flow, Inbox, Nav, type Key } from '../StudioShapes';
 
 // Hero explorations for /design-studio (not linked from the site). Each one shows the open-source Studio's prototype view with the
-// Feedback Inbox sample, built from the same parts as the live hero (StudioShapes), but at a readable size and open to the visitor's hand.
+// Echo app sample, built from the same parts as the live hero (StudioShapes), but at a readable size and open to the visitor's hand.
 
 export type { Key };
 export const artifacts: { key: Key; label: string }[] = [
@@ -16,14 +16,14 @@ export const artifacts: { key: Key; label: string }[] = [
 ];
 
 // Themes for Echo, the sample product, as a design system would set them: primary, accent and corner radius.
-export type Theme = 'green' | 'indigo' | 'clay' | 'marketing' | 'echo-marketing';
+export type Theme = 'echo' | 'indigo' | 'clay' | 'echo-marketing';
 export const themes: { key: Theme; label: string; swatch: string }[] = [
-  { key: 'green', label: 'Green', swatch: 'oklch(0.508 0.118 165.612)' },
+  { key: 'echo', label: 'Cobalt', swatch: 'oklch(0.55 0.24 265)' },
   { key: 'indigo', label: 'Indigo', swatch: 'oklch(0.511 0.262 276.966)' },
   { key: 'clay', label: 'Clay', swatch: 'oklch(0.553 0.195 38.402)' },
 ];
 const themeVars: Record<Theme, { light: Record<string, string>; dark: Record<string, string>; radius: string }> = {
-  green: { light: {}, dark: {}, radius: '0px' },
+  echo: { light: {}, dark: {}, radius: '8px' },
   indigo: {
     light: { '--e-primary': 'oklch(0.511 0.262 276.966)', '--e-primary-fg': 'oklch(0.962 0.018 272.314)', '--e-accent': 'oklch(0.93 0.034 272.788)', '--e-accent-fg': 'oklch(0.398 0.195 277.366)' },
     dark: { '--e-primary': 'oklch(0.673 0.182 276.935)', '--e-primary-fg': 'oklch(0.147 0.004 49.25)', '--e-accent': 'oklch(0.3 0.06 277)', '--e-accent-fg': 'oklch(0.87 0.065 274)' },
@@ -34,18 +34,12 @@ const themeVars: Record<Theme, { light: Record<string, string>; dark: Record<str
     dark: { '--e-primary': 'oklch(0.705 0.187 47.604)', '--e-primary-fg': 'oklch(0.147 0.004 49.25)', '--e-accent': 'oklch(0.3 0.06 45)', '--e-accent-fg': 'oklch(0.9 0.07 70)' },
     radius: '12px',
   },
-  // The Marketing system (src/systems/marketing/styles/theme.css): warm paper, near-black brand, 8 px corners.
-  marketing: {
-    light: { '--e-bg': '#f6f5f2', '--e-fg': '#0f0f0f', '--e-card': '#ffffff', '--e-primary': '#0f0f0f', '--e-primary-fg': '#f6f5f2', '--e-secondary': '#e8e7e2', '--e-secondary-fg': '#2a2a2a', '--e-muted': '#ecebe7', '--e-weak': '#5e5d59', '--e-accent': '#e8e7e2', '--e-accent-fg': '#2a2a2a', '--e-line': '#d7d6d1' },
-    dark: { '--e-bg': '#0f0f0f', '--e-fg': '#f6f5f2', '--e-card': '#1c1c1c', '--e-primary': '#f6f5f2', '--e-primary-fg': '#0f0f0f', '--e-secondary': '#2a2a2a', '--e-secondary-fg': '#f6f5f2', '--e-muted': '#1c1c1c', '--e-weak': '#a3a29d', '--e-accent': '#2a2a2a', '--e-accent-fg': '#d7d6d1', '--e-line': '#454545' },
-    radius: '8px',
-  },
-  // Echo's marketing system on the landing page's systems drawing: the same brand green as Product, on warm paper, with a deep
-  // green ink, a soft lime accent and rounder corners, so the two read as one company with two jobs.
+  // Echo's Marketing system (src/systems/marketing/styles/theme.css), used by the Echo website: the same cobalt as Product at full
+  // strength, on white with zinc ink, so the two read as one company with two jobs.
   'echo-marketing': {
-    light: { '--e-bg': 'oklch(0.972 0.012 90)', '--e-fg': 'oklch(0.24 0.04 165)', '--e-card': 'oklch(0.99 0.006 90)', '--e-secondary': 'oklch(0.93 0.02 120)', '--e-secondary-fg': 'oklch(0.24 0.04 165)', '--e-muted': 'oklch(0.95 0.014 100)', '--e-weak': 'oklch(0.45 0.03 160)', '--e-accent': 'oklch(0.9 0.09 125)', '--e-accent-fg': 'oklch(0.3 0.06 150)', '--e-line': 'oklch(0.88 0.02 110)' },
-    dark: { '--e-bg': 'oklch(0.19 0.02 165)', '--e-fg': 'oklch(0.96 0.015 100)', '--e-card': 'oklch(0.23 0.025 165)', '--e-secondary': 'oklch(0.28 0.03 160)', '--e-secondary-fg': 'oklch(0.96 0.015 100)', '--e-muted': 'oklch(0.25 0.025 165)', '--e-weak': 'oklch(0.75 0.03 140)', '--e-accent': 'oklch(0.42 0.09 130)', '--e-accent-fg': 'oklch(0.94 0.08 125)', '--e-line': 'oklch(1 0 0 / 14%)' },
-    radius: '12px',
+    light: { '--e-bg': '#ffffff', '--e-fg': '#09090b', '--e-card': '#ffffff', '--e-primary': '#2f5bff', '--e-primary-fg': '#ffffff', '--e-secondary': '#f4f4f5', '--e-secondary-fg': '#09090b', '--e-muted': '#f4f4f5', '--e-weak': '#71717a', '--e-accent': '#eef2ff', '--e-accent-fg': '#2149e6', '--e-line': '#e4e4e7' },
+    dark: { '--e-bg': '#09090b', '--e-fg': '#fafafa', '--e-card': '#18181b', '--e-primary': '#4d74ff', '--e-primary-fg': '#ffffff', '--e-secondary': '#18181b', '--e-secondary-fg': '#fafafa', '--e-muted': '#18181b', '--e-weak': '#a1a1aa', '--e-accent': '#1a2350', '--e-accent-fg': '#9db2ff', '--e-line': '#27272a' },
+    radius: '8px',
   },
 };
 
@@ -106,7 +100,7 @@ export function themeStyle(theme: Theme, dark: boolean) {
 }
 
 /** The Studio window at its desktop layout, showing one artifact. */
-export function StudioWindow({ shown, onPick, fidelity = 1, theme = 'green', min = 0.62, max = 1, crop = 'start', height = H, className = '', instant = false, side = true }: {
+export function StudioWindow({ shown, onPick, fidelity = 1, theme = 'echo', min = 0.62, max = 1, crop = 'start', height = H, className = '', instant = false, side = true }: {
   shown: Key; onPick?: (key: Key) => void; fidelity?: number; theme?: Theme; min?: number; max?: number; crop?: 'start' | 'pane'; height?: number; className?: string; instant?: boolean;
   /** false: the Studio with its artifact list collapsed (the rail's panel button), so the artifact gets the room. */
   side?: boolean;

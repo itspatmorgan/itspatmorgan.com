@@ -12,7 +12,7 @@
 .dx-os .ss-side li.is-pickable { cursor: pointer; border-radius: 6px; }
 .dx-os .ss-side li.is-pickable:hover:not(.is-on) { background: color-mix(in oklch, var(--os-select) 60%, transparent); }
 /* Echo's corner radius follows the theme. */
-.dx-os .ss-btn, .dx-os .ss-input, .dx-os .ss-table, .dx-os .ss-card, .dx-os .ss-tabs, .dx-os .ss-echo-top b i { border-radius: var(--e-radius, 0); }
+.dx-os .ss-btn, .dx-os .ss-input, .dx-os .ss-table, .dx-os .ss-tabs { border-radius: var(--e-radius, 0); }
 .dx-os .ss-badge { border-radius: calc(var(--e-radius, 0px) * 2); }
 .dx-os .ss-tabs span.is-on { border-radius: calc(var(--e-radius, 0px) * .7); }
 .dx-mono { font-family: 'Geist Mono Variable', ui-monospace, monospace; font-size: 12px; letter-spacing: -.01em; }

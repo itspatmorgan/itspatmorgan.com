@@ -6,7 +6,7 @@
 /* Design Studio case study. Two products share this namespace:
    - the internal Studio at Sublime (`sc-in`), ported from the Design Studio archive (src/studio: GallerySidebar, Index,
      CatalogPrototypeCard, CatalogFilterBar, styles/index.css). Inter, shadcn neutrals, Sublime's green as primary.
-   - the open-source Studio (`sc-os`), ported from itspatmorgan/design-studio (platform/app/shell, pages/home, the Feedback Inbox
+   - the open-source Studio (`sc-os`), ported from itspatmorgan/design-studio (platform/app/shell, pages/home, the Echo app
      sample prototype, modules/view/lofi.css). Geist, neutral grays.
    Diagrams (`sc-dia`) are drawn in the site's own quiet style, since no product UI exists for those points.
    The internal Studio's dark tokens are its own (`.dark` in styles/index.css), warmed to sit on the site's dark stage. */
@@ -142,35 +142,40 @@
 .website-theme .sc-os-item small { font-size: 12px; color: var(--os-weak); }
 .website-theme .sc-os-icon { display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 6px; background: var(--os-muted); color: var(--os-weak); }
 
-/* The Feedback Inbox prototype (parker/feedback-inbox/app). Lo-fi is Studio's own override: grayscale and Comic Neue. */
-.website-theme .sc-echo { position: relative; flex: 1; min-width: 0; background: color-mix(in srgb, var(--os-muted) 50%, var(--os-bg)); transition: filter 350ms ease; }
-.website-theme .sc-echo-top { display: flex; align-items: center; gap: 28px; height: 52px; padding: 0 28px; background: var(--os-bg); border-bottom: 1px solid var(--os-line); font-size: 13px; color: var(--os-weak); }
+/* The Echo app prototype (parker/echo-app/app): cobalt, zinc and a top bar. Lo-fi is Studio's own override: grayscale and Comic Neue. */
+.website-theme .sc-echo { --echo: #2f5bff; position: relative; flex: 1; min-width: 0; background: var(--os-bg); transition: filter 350ms ease; }
+.website-theme[data-color-mode="dark"] .sc-echo { --echo: #4d74ff; }
+.website-theme .sc-echo-top { display: flex; align-items: center; gap: 20px; height: 52px; padding: 0 28px; background: var(--os-bg); border-bottom: 1px solid var(--os-line); font-size: 13px; color: var(--os-weak); }
 .website-theme .sc-echo-top b { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; color: var(--os-fg); }
-.website-theme .sc-echo-top b i { display: flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 3px; background: #047857; color: #fff; }
-.website-theme .sc-echo-top span.is-on { align-self: stretch; display: flex; align-items: center; color: var(--os-fg); box-shadow: inset 0 -2px #047857; }
-.website-theme .sc-echo-top .sc-echo-pm { margin-left: auto; display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; border: 1px solid var(--os-line); border-radius: 999px; font-size: 10px; }
+.website-theme .sc-echo-top b i { display: flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 6px; background: var(--echo); color: #fff; }
+.website-theme .sc-echo-top nav { display: flex; gap: 2px; }
+.website-theme .sc-echo-top nav span { display: flex; align-items: center; gap: 6px; height: 28px; padding: 0 10px; border-radius: 6px; font-weight: 500; }
+.website-theme .sc-echo-top nav span.is-on { background: var(--os-muted); color: var(--os-fg); }
+.website-theme .sc-echo-top nav small { font-size: 11.5px; font-weight: 400; font-variant-numeric: tabular-nums; color: var(--os-weak); }
+.website-theme .sc-echo-top .sc-echo-pm { display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 999px; background: var(--os-muted); font-size: 10px; font-weight: 500; }
 .website-theme .sc-echo-body { padding: 26px 28px; }
 .website-theme .sc-echo-head { display: flex; align-items: center; justify-content: space-between; }
 .website-theme .sc-echo-head h2 { font-size: 18px; font-weight: 600; }
 .website-theme .sc-echo-head p { margin-top: 4px; font-size: 12.5px; color: var(--os-weak); }
-.website-theme .sc-echo-btn { display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 12px; border-radius: 2px; background: #047857; color: #fff; font-size: 12.5px; font-weight: 500; }
-.website-theme .sc-echo-tabs { display: flex; gap: 2px; margin: 18px 0 14px; font-size: 12.5px; color: var(--os-weak); }
-.website-theme .sc-echo-tabs span { padding: 3px 9px; border-radius: 5px; }
-.website-theme .sc-echo-tabs .is-on { background: var(--os-bg); color: var(--os-fg); box-shadow: 0 0 0 1px var(--os-line); }
+.website-theme .sc-echo-btn { display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 12px; border-radius: 6px; background: var(--echo); color: #fff; font-size: 12.5px; font-weight: 500; }
+.website-theme .sc-echo-tabs { display: inline-flex; gap: 2px; margin: 18px 0 14px; padding: 3px; border-radius: 7px; background: var(--os-muted); font-size: 12.5px; color: var(--os-weak); }
+.website-theme .sc-echo-tabs span { padding: 2px 9px; border-radius: 5px; }
+.website-theme .sc-echo-tabs .is-on { background: var(--os-bg); color: var(--os-fg); box-shadow: 0 1px 2px rgb(0 0 0 / .08); }
 .website-theme .sc-echo-table { border: 1px solid var(--os-line); border-radius: 8px; background: var(--os-bg); overflow: hidden; }
-.website-theme .sc-echo-row { display: grid; grid-template-columns: minmax(0, 1fr) 132px 66px 74px 50px; column-gap: 8px; align-items: center; height: 38px; padding: 0 14px; border-top: 1px solid var(--os-line); font-size: 12.5px; }
-.website-theme .sc-echo-row.is-head { border-top: 0; height: 34px; font-size: 12px; font-weight: 500; color: var(--os-weak); }
-.website-theme .sc-echo-row small { color: var(--os-weak); font-size: 11.5px; }
-.website-theme .sc-badge { justify-self: start; padding: 1px 7px; border-radius: 3px; font-size: 11.5px; font-weight: 500; line-height: 18px; }
-.website-theme .sc-badge.is-high { color: #c0143c; background: #fde4ea; }
-.website-theme .sc-badge.is-medium, .website-theme .sc-badge.is-low { color: var(--os-fg); box-shadow: inset 0 0 0 1px var(--os-line); background: var(--os-bg); }
-.website-theme .sc-badge.is-new { color: #0b7a55; background: #e3f5ee; }
-.website-theme .sc-badge.is-triaged { color: var(--os-fg); background: var(--os-select); }
-.website-theme .sc-badge.is-planned { color: #0b6b4b; background: #cff5e4; }
-.website-theme .sc-badge.is-resolved { color: var(--os-weak); background: var(--os-muted); }
-.website-theme[data-color-mode="dark"] .sc-badge.is-high { color: #ff8fa6; background: #4a1f29; }
-.website-theme[data-color-mode="dark"] .sc-badge.is-new { color: #6fe0b5; background: #173a2e; }
-.website-theme[data-color-mode="dark"] .sc-badge.is-planned { color: #8ff0c8; background: #1b4535; }
+.website-theme .sc-echo-row { display: grid; grid-template-columns: 16px minmax(0, 1fr) 84px 132px 48px; column-gap: 14px; align-items: center; height: 42px; padding: 0 14px; border-top: 1px solid var(--os-line); font-size: 12.5px; font-variant-numeric: tabular-nums; }
+.website-theme .sc-echo-row.is-head { border-top: 0; height: 32px; background: color-mix(in oklch, var(--os-muted) 50%, transparent); font-size: 11.5px; color: var(--os-weak); }
+.website-theme .sc-echo-title { display: flex; gap: 8px; min-width: 0; overflow: hidden; white-space: nowrap; font-weight: 500; }
+.website-theme .sc-echo-title b { overflow: hidden; text-overflow: ellipsis; font-weight: 500; }
+.website-theme .sc-echo-title small { flex: none; color: var(--os-weak); font-size: 11px; font-weight: 400; }
+.website-theme .sc-echo-customer { display: flex; align-items: center; gap: 8px; min-width: 0; overflow: hidden; white-space: nowrap; }
+.website-theme .sc-echo-customer .ss-logo { display: flex; flex: none; align-items: center; justify-content: center; width: 18px; height: 18px; border-radius: 4px; color: #fff; }
+.website-theme .sc-echo-customer .ss-logo svg { width: 12px; height: 12px; }
+.website-theme .sc-echo .ss-label { display: flex; align-items: center; gap: 7px; }
+.website-theme .sc-echo .ss-pri, .website-theme .sc-echo .ss-st { flex: none; width: 14px; height: 14px; color: var(--os-weak); }
+.website-theme .sc-echo .ss-pri.is-high { color: #dc2626; }
+.website-theme[data-color-mode="dark"] .sc-echo .ss-pri.is-high { color: #f87171; }
+.website-theme .sc-echo .ss-st.is-triaged { color: color-mix(in oklch, var(--os-fg) 70%, transparent); }
+.website-theme .sc-echo .ss-st.is-planned { color: var(--echo); }
 .website-theme .sc-echo.is-lofi { filter: grayscale(1); }
 .website-theme .sc-echo.is-lofi, .website-theme .sc-echo.is-lofi * { font-family: 'Comic Neue', 'Comic Sans MS', 'Chalkboard SE', cursive !important; }
 .website-theme .sc-lofi-toggle { display: inline-flex; align-items: center; gap: 6px; height: 26px; padding: 0 9px; border: 1px solid var(--os-line); border-radius: 6px; background: var(--os-bg); font-size: 12px; color: var(--os-fg); transition: background-color 200ms ease; }
