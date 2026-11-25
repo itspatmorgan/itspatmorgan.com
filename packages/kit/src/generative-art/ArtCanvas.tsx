@@ -1,6 +1,8 @@
 import { forwardRef } from 'react';
 import { UAMark } from './UAMark';
 import { GenerativeCanvas } from './GenerativeCanvas';
+import textureDark from './assets/debut_dark.png?url';
+import textureLight from './assets/debut_light.png?url';
 import {
   brand,
   isColorDark,
@@ -96,9 +98,7 @@ export const ArtCanvas = forwardRef<HTMLDivElement, CanvasProps>(function ArtCan
 ) {
   const isDark = isColorDark(bgColor);
   const fgColor    = isDark ? brand.offWhite   : brand.warmDarkGray;
-  const textureSrc = isDark
-    ? '/images/textures/debut_dark.png'
-    : '/images/textures/debut_light.png';
+  const textureSrc = isDark ? textureDark : textureLight;
   const textureBlend: React.CSSProperties['mixBlendMode'] = isDark ? 'screen' : 'multiply';
   const texOpacity    = sliderToTextureOpacity(texture);
   const grainOpacity  = sliderToGrainOpacity(grain);

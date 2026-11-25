@@ -14,7 +14,8 @@ function themeRoot(node?: Element | null): HTMLElement {
 /** Whether the page is in dark mode, following the theme switch. Pass a ref when several themed areas share a page. */
 export function useDark(ref?: RefObject<Element | null>) {
   const [dark, setDark] = useState(false);
-  useEffect(() => {
+  // Read before the first paint, so a piece that draws in dark mode never shows a light frame first.
+  useIsomorphicLayoutEffect(() => {
     const root = themeRoot(ref?.current);
     const read = () => setDark(root.dataset.colorMode ? root.dataset.colorMode === 'dark' : root.classList.contains('dark'));
     read();

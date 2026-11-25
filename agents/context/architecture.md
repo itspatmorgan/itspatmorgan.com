@@ -38,7 +38,7 @@ How the site fits together and where each thing lives. Content rules are in
 ## The kit
 
 `packages/kit` holds the code the site shares with Patrick's Design Studio (the `pm-prototypes` repo, deployed at
-studio.itspatmorgan.com): the theme hooks, the scene player and stages, and the case study demos (Sublime, query builder, Expansion, Design Studio and its landing page scenes).
+studio.itspatmorgan.com): the theme hooks, the scene player and stages, and the case study demos (Sublime, query builder, Expansion, Design Studio and its landing page scenes), and the generative art engine behind article visuals and the Pattern Engine.
 The site imports it as `@itspatmorgan/kit/<path>`; Studio's Website system installs it from this repo at a pinned commit.
 Both sides render the same files, so a demo changed here reaches Studio when its pin moves, and a piece prototyped in
 Studio comes to the site by moving its file in.
@@ -60,6 +60,9 @@ The kit is an ordinary package, shaped the way we'd recommend any team ship shar
 - Read the color mode with `useDark(ref)` from `hooks.ts`, passing the component's root: it follows the nearest
   `data-color-mode` boundary, then `.dark` on `<html>`.
 - Nothing in the kit knows about Studio. Studio scopes the kit's plain CSS to its Website theme itself.
+- The generative art engine's core (`generative-art/themes.ts` and `generative-art/generators/`) stays free of the DOM
+  and React and imports with `.ts` extensions, so Node scripts run it as is. Article art comes from this one engine,
+  live on the page and as share images; never copy a generator.
 - Words stay in `src/content/`; Studio snapshots them separately.
 
 ## Routes

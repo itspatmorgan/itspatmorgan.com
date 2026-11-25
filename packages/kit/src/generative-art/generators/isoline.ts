@@ -1,5 +1,5 @@
-import { CANVAS_W, CANVAS_H, type IsolineConfig, type RenderContext } from '../themes';
-import { noise } from './noise';
+import { CANVAS_W, CANVAS_H, type IsolineConfig, type RenderContext } from '../themes.ts';
+import { noise } from './noise.ts';
 
 const W = CANVAS_W;
 const H = CANVAS_H;

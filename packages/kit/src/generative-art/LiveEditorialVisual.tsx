@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useRef } from 'react';
+import { useDark } from '../hooks';
 import { GenerativeCanvas } from './GenerativeCanvas';
 import { brand, revealMotion, type GeneratorConfig, type LayerColor } from './themes';
 
@@ -20,19 +21,9 @@ interface Props {
   visual: VisualConfig;
 }
 
-function readIsDark(): boolean {
-  if (typeof document === 'undefined') return false;
-  return document.documentElement.classList.contains('dark');
-}
-
 export function LiveEditorialVisual({ visual }: Props) {
-  const [isDark, setIsDark] = useState(readIsDark);
-
-  useEffect(() => {
-    const observer = new MutationObserver(() => setIsDark(readIsDark()));
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
-    return () => observer.disconnect();
-  }, []);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const isDark = useDark(rootRef);
 
   const bgColor = isDark ? brand.warmDarkGray : brand.paper;
 
@@ -54,6 +45,7 @@ export function LiveEditorialVisual({ visual }: Props) {
 
   return (
     <div
+      ref={rootRef}
       aria-hidden="true"
       style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }}
     >

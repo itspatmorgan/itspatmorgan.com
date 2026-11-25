@@ -1,5 +1,5 @@
-import { CANVAS_W, CANVAS_H, type StrangeAttractorConfig, type RenderContext } from '../themes';
-import { makeRng } from './noise';
+import { CANVAS_W, CANVAS_H, type StrangeAttractorConfig, type RenderContext } from '../themes.ts';
+import { makeRng } from './noise.ts';
 
 const W = CANVAS_W;
 const H = CANVAS_H;
