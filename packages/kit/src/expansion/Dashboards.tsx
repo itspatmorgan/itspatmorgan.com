@@ -3,6 +3,8 @@ import { NativeStage } from '../case-study/NativeStage';
 import { T, Tag, Bars, BotSignalsCard, CardHeader, Axis, ButtonGroup } from './ExpansionUI';
 import { DemoFrame, useScene } from '../case-study/scene';
 import { barColors, botSignalBars, badBotBars, botScoreBars } from './figma-bars';
+import '../case-study/case-study.css';
+import './expansion.css';
 
 // Frame 400: six dashboard cards in a 3 × 2 grid. Card-relative positions from the source; cards are 308 units wide.
 const col = [20, 355.43, 690.86];

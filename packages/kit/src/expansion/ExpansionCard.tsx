@@ -1,6 +1,8 @@
 import { ProjectCardStage } from '../case-study/ProjectCardStage';
 import { useDemoLoop } from '../case-study/useDemoLoop';
 import { barColors, botSignalBars } from './figma-bars';
+import '../case-study/project-card.css';
+import './expansion.css';
 
 // The project card: bot traffic, sorted by ready-made signals and visible at a glance, which is where the case study ends. Behind, the
 // Bot Signals chart; in front, the card's title and its two largest signals with their counts, each in its chart color. The chart rises

@@ -4,6 +4,9 @@ import { DemoFrame, SceneFrame, Screens, useScene, useStage } from '../case-stud
 import { NativeStage } from '../case-study/NativeStage';
 import { OsRail } from '../studio-case/StudioUI';
 import { Doc, Nav } from './StudioShapes';
+import '../case-study/case-study.css';
+import '../studio-case/studio-case.css';
+import './studio-shapes.css';
 
 // One document, two ways in: the Echo app's project context (discovery/project-context.md) as the Studio renders it, and the
 // same file in the Studio's source editor ("Edit source" in the file's menu: its path, Save and Done, then the Markdown with line

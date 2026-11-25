@@ -1,22 +1,14 @@
-// The kit is shared with Patrick's Design Studio (studio.itspatmorgan.com), which imports it at a pinned commit. These checks keep
-// it importable there: Studio's copy of each stylesheet must match its source, kit code can't reach back into the site, every module
-// has an export, and the code type checks under Studio's stricter settings (packages/kit/tsconfig.json).
+// The kit is an ordinary package: the site imports it from this workspace, and Patrick's Design Studio (studio.itspatmorgan.com)
+// installs it at a pinned commit. These checks keep it portable: kit code can't reach back into the site, every module has an export,
+// and the code type checks under the kit's own strict settings (packages/kit/tsconfig.json).
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { SHEETS, studioCss } from '../packages/kit/scripts/studio-css.mjs';
 
 const kit = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../packages/kit');
-
-test('the Studio stylesheets match their sources', () => {
-  for (const sheet of SHEETS) {
-    const written = readFileSync(path.join(kit, 'studio', path.basename(sheet)), 'utf8');
-    assert.equal(written, studioCss(sheet), `studio/${path.basename(sheet)} is stale: run pnpm --filter @itspatmorgan/kit studio-css`);
-  }
-});
 
 test('kit code imports only itself and its declared packages', () => {
   const allowed = /^(\.{1,2}\/|react$|react\/|motion\/react$|@hugeicons\/)/;
@@ -25,8 +17,9 @@ test('kit code imports only itself and its declared packages', () => {
     const source = readFileSync(path.join(kit, 'src', file), 'utf8');
     for (const [, spec] of source.matchAll(/(?:from|import)\s*\(?\s*['"]([^'"]+)['"]/g))
       assert.match(spec, allowed, `src/${file} imports ${spec}; the kit can't use site paths such as @/`);
-    // Stylesheets are imported by whoever renders the component: the site's pages, or Studio's theme (scoped).
-    assert.doesNotMatch(source, /^import\s+['"][^'"]+\.css['"]/m, `src/${file} imports a stylesheet; import it where the component is used`);
+    // A component imports the stylesheets it uses, from inside the kit, so no consumer has to remember them.
+    for (const [, sheet] of source.matchAll(/^import\s+['"]([^'"]+\.css)['"]/gm))
+      assert.match(sheet, /^\.{1,2}\//, `src/${file} imports ${sheet}; import the kit's own stylesheets by relative path`);
   }
 });
 
@@ -36,7 +29,7 @@ test('every kit module can be imported by path', () => {
   for (const file of modules) assert.ok(exports.includes(`./src/${file}`), `add "./${file.replace(/\.ts$/, '')}" to the kit's exports: only .tsx files match "./*"`);
 });
 
-test("kit code type checks under Studio's settings", () => {
+test("kit code type checks under its own strict settings", () => {
   const tsc = path.resolve(kit, '../../node_modules/.bin/tsc');
   try { execFileSync(tsc, ['-p', kit], { encoding: 'utf8' }); }
   catch (error) { assert.fail(`tsc -p packages/kit failed:\n${error.stdout}`); }

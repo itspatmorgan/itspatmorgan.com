@@ -3,6 +3,8 @@ import { NativeStage } from '../case-study/NativeStage';
 import { DemoFrame, useScene } from '../case-study/scene';
 import { BotSignalsCard } from './ExpansionUI';
 import { botSignalBars } from './figma-bars';
+import '../case-study/case-study.css';
+import './expansion.css';
 
 // The hero-expansion frame: the Bot Signals card on a 2250 × 1500 frame, bleeding off the bottom.
 // Source card: 1178 wide at (536, 136); its content is the 308-unit dashboard card filling it (3.824×).

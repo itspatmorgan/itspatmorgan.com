@@ -10,17 +10,12 @@
     "./case-study/useDemoLoop": "./src/case-study/useDemoLoop.ts",
     "./expansion/figma-bars": "./src/expansion/figma-bars.ts",
     "./design-studio/harnesses": "./src/design-studio/harnesses.ts",
-    "./studio/*.css": "./studio/*.css",
     "./*.css": "./src/*.css",
     "./*": "./src/*.tsx"
   },
   "files": [
-    "src",
-    "studio"
+    "src"
   ],
-  "scripts": {
-    "studio-css": "node scripts/studio-css.mjs"
-  },
   "peerDependencies": {
     "@fontsource/ibm-plex-mono": "^5.0.0",
     "@hugeicons/core-free-icons": "*",
@@ -28,8 +23,5 @@
     "motion": "^12.0.0 || ^14.0.0",
     "react": "^19.0.0",
     "@fontsource/comic-neue": "^5.0.0"
-  },
-  "devDependencies": {
-    "postcss": "^8.5.33"
   }
 }

@@ -8,6 +8,7 @@ export { usePhone };
 import { useDemoLoop } from './useDemoLoop';
 import { NativeStage, PHONE_ZOOM } from './NativeStage';
 import { EASE, PAYOFF_HOLD_MS, SEAM_FADE_MS, travelTime } from './motion';
+import './case-study.css';
 
 // Scene plumbing for case-study demos, first built for the Sublime screens. A scene starts when it scrolls into view. By default it cycles: the last step holds for its
 // time, then the frame fades out and the scene starts again from its first frame, since a flow's last screen rarely tells the whole

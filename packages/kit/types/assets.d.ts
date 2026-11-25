@@ -6,3 +6,5 @@ declare module '*?url' {
 interface ImportMeta {
   readonly env: { readonly DEV: boolean };
 }
+// Components import their own stylesheets; the bundler loads them.
+declare module '*.css';

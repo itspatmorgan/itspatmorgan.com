@@ -43,14 +43,23 @@ The site imports it as `@itspatmorgan/kit/<path>`; Studio's Website system insta
 Both sides render the same files, so a demo changed here reaches Studio when its pin moves, and a piece prototyped in
 Studio comes to the site by moving its file in.
 
-- Kit code is React and TypeScript that passes Studio's stricter settings (`verbatimModuleSyntax`, no unused locals
-  or parameters), set in `packages/kit/tsconfig.json`. It imports only itself, React, Motion, Hugeicons and the
-  fonts it declares, never `@/`. Components don't import their CSS: the page that uses them does, because Studio
-  needs the scoped copy. A `.ts` module needs its own line in the kit's exports. The tests check all of this.
+The kit is an ordinary package, shaped the way we'd recommend any team ship shared components:
+
+- Kit code is React and TypeScript under strict settings (`verbatimModuleSyntax`, no unused locals or parameters),
+  set in `packages/kit/tsconfig.json`. It ships its source, which both consumers compile with Vite. It imports only
+  itself, React, Motion, Hugeicons and the fonts it declares, never `@/`. A `.ts` module needs its own line in the
+  kit's exports. The tests check all of this.
+- Each component imports the stylesheets it uses, by relative path, so a page never has to remember them. Tokens
+  are plain CSS variables on `:root`, with dark values on `.dark`, in `tokens.css`, which the site's
+  `global.css` imports.
+- A rule that overrides one from another kit stylesheet must win on specificity, never on file order: the bundler
+  splits stylesheets into chunks whose order differs from page to page. Name the base too, as in
+  `.cs-stage.sp-stage` or `.cs-native .ss-quote p`.
 - Images are imported with `?url` beside the component, never `/images/` URLs, so they resolve in Astro and Vite. A
-  stylesheet's `url()` points at a file beside it in the kit (Studio's CSS pipeline doesn't resolve package paths).
-- Studio scopes every style under its theme class. After changing a kit stylesheet, run
-  `pnpm --filter @itspatmorgan/kit studio-css` to rewrite `studio/`; the tests fail while they disagree.
+  stylesheet's `url()` points at a file beside it in the kit.
+- Read the color mode with `useDark(ref)` from `hooks.ts`, passing the component's root: it follows the nearest
+  `data-color-mode` boundary, then `.dark` on `<html>`.
+- Nothing in the kit knows about Studio. Studio scopes the kit's plain CSS to its Website theme itself.
 - Words stay in `src/content/`; Studio snapshots them separately.
 
 ## Routes

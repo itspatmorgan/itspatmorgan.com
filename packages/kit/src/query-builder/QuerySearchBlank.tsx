@@ -1,6 +1,8 @@
 import { SourceIcon } from './NativeUI';
 import { NativeStage } from '../case-study/NativeStage';
 import { DemoFrame, useScene } from '../case-study/scene';
+import '../case-study/case-study.css';
+import './query-builder.css';
 
 // Two false starts at J1QL syntax (the box only accepted queries), then back to an empty box.
 const attempts = ['FIND User THAT', 'FIND aws_'];

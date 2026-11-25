@@ -4,6 +4,7 @@ import { SceneFrame, Screens, useScene, useStage } from '../case-study/scene';
 import { Rail, icon } from './StudioUI';
 import logoLight from './assets/logo-light-mode.svg?url';
 import logoDark from './assets/logo-dark-mode.svg?url';
+import './studio-case.css';
 
 // The hero: Patrick's Phishing Training Beta prototype in the internal Studio (archive: src/prototypes/patrick/phishing-training-beta),
 // chosen because one prototype holds every kind of artifact: documents, a canvas, lo-fi views and hi-fi views. Its Landing page canvas

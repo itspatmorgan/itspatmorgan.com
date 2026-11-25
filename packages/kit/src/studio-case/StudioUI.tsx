@@ -5,6 +5,7 @@ import {
 } from '@hugeicons/core-free-icons';
 import sublimeMark from './assets/sublime-mark.svg?url';
 import profilePicture from './assets/profile-picture.jpg?url';
+import './studio-case.css';
 
 // Pieces shared by the Design Studio screens. The internal Studio's are ported from the Design Studio archive (src/studio/app:
 // GallerySidebar, CatalogPrototypeCard, CatalogFilterBar); the open-source Studio's from itspatmorgan/design-studio

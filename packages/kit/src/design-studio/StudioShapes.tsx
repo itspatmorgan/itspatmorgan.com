@@ -5,6 +5,8 @@ import {
 } from '@hugeicons/core-free-icons';
 import { Pointer, SceneFrame, Screens, useScene, useStage, useTargets } from '../case-study/scene';
 import { OsRail, icon } from '../studio-case/StudioUI';
+import '../studio-case/studio-case.css';
+import './studio-shapes.css';
 
 // The landing page's hero: one idea in every shape Design Studio gives it. It is the Echo app sample that ships with the open-source
 // Studio (itspatmorgan/design-studio, src/prototypes/parker/echo-app), opened in the Studio's prototype view: its artifacts in the

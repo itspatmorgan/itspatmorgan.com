@@ -2,6 +2,10 @@ import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { useDark, useIsomorphicLayoutEffect, useReduced } from '../../hooks';
 import { OsRail } from '../../studio-case/StudioUI';
 import { Canvas, Doc, Flow, Inbox, Nav, type Key } from '../StudioShapes';
+import '../../case-study/case-study.css';
+import '../../studio-case/studio-case.css';
+import '../studio-shapes.css';
+import './explore.css';
 
 // Hero explorations for /design-studio (not linked from the site). Each one shows the open-source Studio's prototype view with the
 // Echo app sample, built from the same parts as the live hero (StudioShapes), but at a readable size and open to the visitor's hand.
@@ -107,7 +111,7 @@ export function StudioWindow({ shown, onPick, fidelity = 1, theme = 'echo', min 
 }) {
   const base = side ? W : W - SIDE;
   const { ref, s, x, cropped } = useFit(min, max, crop, base);
-  const dark = useDark();
+  const dark = useDark(ref);
   const lofi = shown === 'lofi' ? 1 : shown === 'inbox' ? 1 - fidelity : 0;
   const pane = shown === 'inbox' || shown === 'lofi'
     ? <div className="ss-pane"><div className="ss-app"><Inbox /></div><div className={`ss-app is-lofi ss-lofi-layer ${instant ? 'is-instant' : ''}`} style={{ opacity: lofi }}><Inbox /></div></div>

@@ -5,14 +5,10 @@ import { useEffect, useLayoutEffect, useState, type RefObject } from 'react';
 /** useLayoutEffect in the browser, useEffect on the server (where layout effects warn and never run). */
 export const useIsomorphicLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect;
 
-/** The element that sets this piece's color mode: the nearest `data-color-mode` boundary, then Studio's Website system boundary,
- *  then <html>, where the site's theme switch toggles `.dark`. */
+/** The element that sets this piece's color mode: the nearest ancestor with a `data-color-mode` attribute (a themed area, such as
+ *  a design tool's preview), else <html>, where the site's theme switch toggles `.dark`. Pass a ref to find the nearest one. */
 function themeRoot(node?: Element | null): HTMLElement {
-  return (
-    node?.closest<HTMLElement>('[data-color-mode]') ??
-    document.querySelector<HTMLElement>('.website-theme[data-color-mode]') ??
-    document.documentElement
-  );
+  return node?.closest<HTMLElement>('[data-color-mode]') ?? document.documentElement;
 }
 
 /** Whether the page is in dark mode, following the theme switch. Pass a ref when several themed areas share a page. */

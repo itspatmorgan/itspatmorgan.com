@@ -5,6 +5,8 @@ import { agentHarnesses } from './harnesses';
 import { SIDE, StudioWindow, W, type Key } from './explore/StudioWindow';
 import StepBar from './StepBar';
 import { usePhone, useReduced } from '../hooks';
+import './explore/explore.css';
+import './studio-hero.css';
 
 // How you work in Design Studio: in the coding agent you already use. On the left, a conversation in that agent; on the right, the
 // Studio rendering what each message makes. Each request writes or changes a file in the Echo app sample

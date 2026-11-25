@@ -1,5 +1,5 @@
-/* itspatmorgan.com's color and motion tokens. The site imports this file from src/styles/global.css; Design Studio's
-   Website system copies the values into its theme.css with scripts/sync-from-site/tokens.mjs. */
+/* itspatmorgan.com's color and motion tokens: light values on :root, dark values on .dark. The site imports this file from
+   src/styles/global.css, and Design Studio's Website system imports it from its theme.css. */
 :root {
     /* Light mode — warm, minimal, cream-tinted (Unknown Arts aesthetic) */
     --background: oklch(0.98 0.004 80);

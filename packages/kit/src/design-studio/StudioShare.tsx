@@ -4,6 +4,7 @@ import { icon } from '../studio-case/StudioUI';
 import { StudioWindow } from './explore/StudioWindow';
 import { useReduced } from '../hooks';
 import StepBar from './StepBar';
+import './studio-hero.css';
 
 // Sharing comes down to one thing: a link. You ask your agent to publish, it hands back one address, and that address opens the
 // Studio in anyone's browser. The demo is those three beats and nothing else, in the page's own controls. The link opens the real

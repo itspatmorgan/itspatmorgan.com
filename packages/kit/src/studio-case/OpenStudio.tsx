@@ -5,6 +5,7 @@ import {
 import { Pointer, SceneFrame, Screens, useScene, useStage, useTargets } from '../case-study/scene';
 import { OsRail, icon } from './StudioUI';
 import { EchoMark, Logo, PriorityIcon, StatusLabel } from '../design-studio/StudioShapes';
+import './studio-case.css';
 
 // The open-source Studio, rebuilt from scratch (itspatmorgan/design-studio). Its home (platform/app/pages/home) lists the latest
 // prototypes and the systems; a prototype opens with its artifacts in the section nav: the app's views, their states, and the

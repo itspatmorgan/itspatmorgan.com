@@ -2,6 +2,8 @@ import { NativeStage } from '../case-study/NativeStage';
 import { DemoFrame, useScene } from '../case-study/scene';
 import { T, Tag } from './ExpansionUI';
 import { SigSciLogo } from './SigSciLogo';
+import '../case-study/case-study.css';
+import './expansion.css';
 
 // Frames 300, 500 and 600: a templated Signal, the rule that acts on it, and the timeline it leaves. Card-relative positions from the source.
 
