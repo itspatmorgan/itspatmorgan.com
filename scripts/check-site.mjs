@@ -55,8 +55,18 @@ export function metaProblems(html) {
   return problems;
 }
 
+/** The source paths of the build's _redirects rules, which the Worker answers with a redirect instead of a file. */
+export function redirectSources(dist) {
+  const file = join(dist, '_redirects');
+  if (!existsSync(file)) return new Set();
+  return new Set(readFileSync(file, 'utf8').split('\n')
+    .map((line) => line.trim().split(/\s+/)[0])
+    .filter((source) => source?.startsWith('/')));
+}
+
 export function checkSite(dist) {
   const skipStudio = !existsSync(join(dist, STUDIO_DEMO));
+  const redirected = redirectSources(dist);
   const problems = [];
   for (const file of pagesIn(dist)) {
     const html = readFileSync(file, 'utf8');
@@ -67,7 +77,7 @@ export function checkSite(dist) {
     }
     for (const url of new Set(localUrls(html))) {
       if (skipStudio && url.startsWith(STUDIO_DEMO)) continue;
-      if (!resolves(dist, url)) problems.push(`${page}: broken local link ${url}`);
+      if (!redirected.has(url) && !resolves(dist, url)) problems.push(`${page}: broken local link ${url}`);
     }
   }
   return { problems, skipStudio };

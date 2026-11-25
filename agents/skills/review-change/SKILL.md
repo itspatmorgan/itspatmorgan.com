@@ -81,7 +81,7 @@ for wrap-up.
 ## Mode 2: an area
 
 When asked for a maintenance or refactor pass, review one focused slice rather
-than the whole repository: routes, content and schemas, scripts, Lab, shared
+than the whole repository: routes, content and schemas, scripts, Snapshots, shared
 components, agent docs, or CI. Look for dead code, duplication, rules that only
 live in docs but could be checks, and anything that makes the next change
 harder. Report ranked findings with the scope and verification for each, and

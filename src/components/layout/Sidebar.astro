@@ -2,7 +2,7 @@
 import { siteConfig } from "@/data/site-config";
 import Logo from "./Logo.astro";
 import Icon from "@/components/icons/Icon.astro";
-import { Home01Icon, UserIcon, Briefcase01Icon, CanvasIcon, TestTube01Icon, Pen01Icon, UserGroupIcon, Globe02Icon, Moon02Icon, Sun03Icon } from "@hugeicons/core-free-icons";
+import { Home01Icon, UserIcon, Briefcase01Icon, CanvasIcon, PlayCircleIcon, Pen01Icon, UserGroupIcon, Globe02Icon, Moon02Icon, Sun03Icon } from "@hugeicons/core-free-icons";
 
 const currentPath = Astro.url.pathname;
 
@@ -38,9 +38,9 @@ const navItems = [
     icon: Pen01Icon,
   },
   {
-    label: "Lab",
-    href: "/lab",
-    icon: TestTube01Icon,
+    label: "Snapshots",
+    href: "/snapshots",
+    icon: PlayCircleIcon,
   },
   {
     label: "Community",

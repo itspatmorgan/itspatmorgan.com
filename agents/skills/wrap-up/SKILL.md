@@ -1,6 +1,6 @@
 ---
 name: wrap-up
-description: Turns Patrick's corrections and the lessons from a finished piece of work into rules in the site's principles, context or skills, and into review checks where they can run, so the same correction never has to be made twice. Use when a pull request merges, a case study or Lab experiment launches, or Patrick says a piece of work is done.
+description: Turns Patrick's corrections and the lessons from a finished piece of work into rules in the site's principles, context or skills, and into review checks where they can run, so the same correction never has to be made twice. Use when a pull request merges, a case study launches, or Patrick says a piece of work is done.
 ---
 
 # Wrap Up

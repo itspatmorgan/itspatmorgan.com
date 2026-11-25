@@ -1,0 +1,30 @@
+---
+import PageLayout from "@/layouts/PageLayout.astro";
+import PageHeader from "@/components/layout/PageHeader.astro";
+import SnapshotCard from "@/components/snapshots/SnapshotCard.astro";
+import { featured, featuredWorkUrl } from "@/data/featured";
+---
+
+<PageLayout
+  title="Snapshots — Patrick Morgan"
+  description="Tools, experiments, and interactions from my studio, shown in use."
+  image="/images/share/snapshots.jpg"
+>
+  <PageHeader>
+    <Fragment slot="title">Snapshots</Fragment>
+    <Fragment slot="lead">Tools, experiments, and interactions from my studio, shown in use. Open one to try it there.</Fragment>
+  </PageHeader>
+
+  <section class="mx-auto max-w-3xl px-6 pb-24">
+    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+      {featured.map((entry) => <SnapshotCard entry={entry} />)}
+    </div>
+    <p class="mt-10 text-sm text-muted-foreground">
+      <a href={featuredWorkUrl} class="underline underline-offset-4 transition-colors hover:text-foreground">See all featured work in the studio →</a>
+    </p>
+  </section>
+</PageLayout>
+
+<script>
+  import "@/scripts/snapshots";
+</script>

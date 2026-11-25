@@ -4,6 +4,7 @@ import { ArrowLeft01Icon } from "@hugeicons/core-free-icons";
 import PageLayout from "./PageLayout.astro";
 import { Badge } from "@/components/ui/badge";
 import { LiveEditorialVisual } from "@itspatmorgan/kit/generative-art/LiveEditorialVisual";
+import { patternEngineUrl } from "@/data/featured";
 import type { CollectionEntry } from "astro:content";
 
 interface Props {
@@ -14,9 +15,17 @@ interface Props {
   visual?: CollectionEntry<"writing">["data"]["visual"];
   image?: string;
   canonicalUrl?: string;
+  /** A website-owned update shown above the article. Plain text with [links](url). */
+  note?: string;
 }
 
-const { title, description, publishedDate, theme, visual, image, canonicalUrl } = Astro.props;
+const { title, description, publishedDate, theme, visual, image, canonicalUrl, note } = Astro.props;
+
+// The note's text and links, from Markdown-style [text](url) links in plain text.
+const noteParts = (note ?? "").split(/(\[[^\]]+\]\([^)\s]+\))/).filter(Boolean).map((part) => {
+  const link = part.match(/^\[([^\]]+)\]\(([^)\s]+)\)$/);
+  return link ? { text: link[1], href: link[2] } : { text: part };
+});
 
 function generatorLabel(type: string): string {
   return type.split("-").map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
@@ -50,7 +59,7 @@ function addParams(params: URLSearchParams, entries: [string, unknown][]): void 
 }
 
 function visualToolHref(visual: Props["visual"]): string {
-  if (!visual) return "/lab/pattern-engine";
+  if (!visual) return patternEngineUrl;
   const generator = visual.generator;
   const params = new URLSearchParams();
 
@@ -96,7 +105,7 @@ function visualToolHref(visual: Props["visual"]): string {
   }
 
   const query = params.toString();
-  return query ? `/lab/pattern-engine?${query}` : "/lab/pattern-engine";
+  return query ? `${patternEngineUrl}?${query}` : patternEngineUrl;
 }
 
 const generatedCaption = visualCaption(visual);
@@ -139,6 +148,14 @@ const generatedToolHref = visualToolHref(visual);
         )}
       </div>
     </header>
+
+    {note && (
+      <aside class="mb-12 rounded-lg border border-border bg-card px-5 py-4 text-sm leading-relaxed text-muted-foreground" aria-label="Update">
+        {noteParts.map((part) => (part.href
+          ? <a href={part.href} class="text-foreground underline underline-offset-4 transition-colors hover:text-muted-foreground">{part.text}</a>
+          : part.text))}
+      </aside>
+    )}
 
     {/* Hero image */}
     {visual && (

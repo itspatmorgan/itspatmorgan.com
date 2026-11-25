@@ -113,20 +113,10 @@ const writing = defineCollection({
     visual: writingVisual.optional(),
     image: z.string().optional(),
     canonicalUrl: z.url().optional(),
+    // Website-owned: an update shown above the article, kept when the article resyncs from Obsidian.
+    note: z.string().optional(),
     draft: z.boolean().default(false),
   }),
 });
 
-const lab = defineCollection({
-  loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/lab" }),
-  schema: z.object({
-    title: z.string(),
-    description: z.string(),
-    slug: z.string(),
-    preview: z.string(),
-    experience: z.enum(["app", "demo"]),
-    draft: z.boolean().default(false),
-  }),
-});
-
-export const collections = { projects, writing, lab };
+export const collections = { projects, writing };

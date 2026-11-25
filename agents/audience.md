@@ -12,7 +12,7 @@ has to clear. Every design, copy and engineering decision serves these people.
    behind it, and outcomes they can trust, in a couple of minutes.
 2. **Designers and builders.** Peers who know Patrick from Unknown Arts,
    Design Studio, talks or the community. They come for the ideas, the tools
-   and the craft, and they may stay to read or try something in the Lab.
+   and the craft, and they may stay to read or try something from the studio.
 3. **Engineers and technical collaborators.** People who look at how the work
    is built: the live demos, Design Studio, and this repository itself, which
    is public and is part of the proof that Patrick designs and builds.
@@ -46,5 +46,5 @@ language are not. Community copy stays location-agnostic.
 ## Non-goals
 
 - A marketing-heavy landing page. The work makes the case.
-- Half-finished Lab experiments in public.
+- Half-finished experiments in public.
 - Broad abstractions or new libraries that don't clearly cut future work.

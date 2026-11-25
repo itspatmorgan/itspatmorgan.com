@@ -4,7 +4,8 @@ import ProjectCard from "@/components/ProjectCard.astro";
 import ProjectDemo from "@/components/ProjectDemo.astro";
 import { liveDemoSlugs } from "@/data/project-demos";
 import PixelWaveText from "@/components/PixelWaveText.astro";
-import LabCard from "@/components/lab/LabCard.astro";
+import SnapshotCard from "@/components/snapshots/SnapshotCard.astro";
+import { featured } from "@/data/featured";
 import StudioHomeModule from "@/components/design-studio/StudioHomeModule.astro";
 import { UAMark } from "@itspatmorgan/kit/generative-art/UAMark";
 import { siteConfig } from "@/data/site-config";
@@ -15,16 +16,6 @@ import { communityPhotos, featuredCommunityCommendations } from "@/data/communit
 import { getCollection } from "astro:content";
 
 const allProjects = await getCollection("projects", ({ data }) => !data.draft);
-const preferredLabOrder = ["pattern-engine", "pixel-wave", "pixel-mark"];
-const labEntries = (await getCollection("lab", ({ data }) => !data.draft))
-  .sort((a, b) => {
-    const aIndex = preferredLabOrder.indexOf(a.data.slug);
-    const bIndex = preferredLabOrder.indexOf(b.data.slug);
-    if (aIndex !== -1 || bIndex !== -1) {
-      return (aIndex === -1 ? Number.MAX_SAFE_INTEGER : aIndex) - (bIndex === -1 ? Number.MAX_SAFE_INTEGER : bIndex);
-    }
-    return a.data.title.localeCompare(b.data.title);
-  });
 // The homepage's writing list drops a title's closing aside, like "(And That's Okay)", so each title fits on one line.
 const shortTitle = (title: string) => title.replace(/\s*\([^)]*\)$/, "");
 const writingPosts = (await getCollection("writing", ({ data }) => !data.draft))
@@ -323,22 +314,16 @@ const homeWorkGrid = "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:gap-6";
     </div>
   </section>
 
-  {/* ── Lab: small experiments, kept after the work and the people so the page leads with the work ── */}
+  {/* ── Snapshots: work from the studio, kept after the work and the people so the page leads with the work ── */}
   <section class={`${homeSection} pb-20 sm:pb-24 lg:pb-28`}>
     <div class={homeSectionHeader} data-home-section-header>
-      <h2 class="text-lg font-semibold tracking-tight sm:text-xl">Lab</h2>
-      <a href="/lab" class="text-sm text-muted-foreground transition-colors hover:text-foreground">View all →</a>
+      <h2 class="text-lg font-semibold tracking-tight sm:text-xl">Snapshots</h2>
+      <a href="/snapshots" class="text-sm text-muted-foreground transition-colors hover:text-foreground">View all →</a>
     </div>
     <div class={homeCardGrid}>
-      {labEntries.slice(0, 3).map((entry) => (
+      {featured.slice(0, 3).map((entry) => (
         <div class="flex" data-project-card-item>
-          <LabCard
-            title={entry.data.title}
-            description={entry.data.description}
-            href={`/lab/${entry.data.slug}`}
-            preview={entry.data.preview}
-            headingLevel="h3"
-          />
+          <SnapshotCard entry={entry} headingLevel="h3" />
         </div>
       ))}
     </div>
@@ -598,7 +583,7 @@ const homeWorkGrid = "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:gap-6";
 
   <script>
     import "@/scripts/home-interactions";
-    import "@/scripts/lab-previews";
+    import "@/scripts/snapshots";
 
     function initBuilderPhotos() {
       document.querySelectorAll<HTMLButtonElement>("[data-builder-photo]").forEach((button) => {

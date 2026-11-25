@@ -63,7 +63,7 @@ if (!existsSync(NEWSLETTERS_DIR)) {
 const OUTPUT_DIR = resolve('src/content/writing');
 const OBSIDIAN_ONLY = new Set(['created', 'website', 'author']);
 const REQUIRED = ['title', 'description', 'publishedDate'];
-const WEBSITE_OWNED = ['theme', 'visual', 'image'];
+const WEBSITE_OWNED = ['theme', 'visual', 'image', 'note'];
 
 let synced = 0, skipped = 0, errors = 0;
 let syncedSlug = null;
@@ -165,7 +165,7 @@ function slugify(title) {
 function serializeFrontmatter(fields) {
   const ORDER = [
     'title', 'description', 'publishedDate', 'categories', 'theme', 'tags',
-    'visual', 'image', 'canonicalUrl', 'draft',
+    'visual', 'image', 'note', 'canonicalUrl', 'draft',
   ];
   const lines = [];
   // Known fields in order

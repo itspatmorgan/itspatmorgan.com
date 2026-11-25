@@ -18,7 +18,7 @@ The full rules are in `agents/context/assets.md` (Share Images). In short:
 
 - **Lockup.** Company case studies (Sublime Security, JupiterOne, Signal
   Sciences) show their own logo, and both Design Studio cards show the Design
-  Studio mark. Every other card, Lab pages included, says Patrick Morgan with
+  Studio mark. Every other card says Patrick Morgan with
   the site mark.
 - **Words.** The headline and line reuse the page's own heading and lead,
   word for word. For a case study, that's the entry's `title` and
@@ -38,7 +38,7 @@ The full rules are in `agents/context/assets.md` (Share Images). In short:
 ## Workflow
 
 1. Find the page's headline, line and route. Name the file after the route:
-   `work-<slug>`, `lab-<slug>` or the page name.
+   `work-<slug>` or the page name.
 2. Pick the visual. For a case study, capture the hero screen from a running
    site: start `pnpm dev`, then pass `--capture` with a selector that frames
    the screen itself (for Sublime, `.cs-hero .sb-page` is tighter than the
