@@ -2,6 +2,7 @@ import type { CSSProperties, ReactNode } from 'react';
 import { CountUp, Expand } from '../case-study/scene';
 import adeArt from './assets/ade_triangle.webp?url';
 import asaArt from './assets/asa_cube.webp?url';
+import './sublime.css';
 
 // Primitives for the Sublime screens. Sizes are the source's Tailwind values in CSS pixels.
 

@@ -1,8 +1,13 @@
+import { useRef } from 'react';
 import { NativeStage } from '../case-study/NativeStage';
 import { DemoFrame, usePhone, useScene } from '../case-study/scene';
 import { EchoMark, Inbox, Overview } from './StudioShapes';
 import { themeStyle, type Theme } from './explore/StudioWindow';
 import { useDark } from '../hooks';
+import '../case-study/case-study.css';
+import '../studio-case/studio-case.css';
+import './studio-shapes.css';
+import './explore/explore.css';
 
 // Systems in the open-source Studio: each lives in its own folder (src/systems/<name>) with its theme, components and rules, and
 // each prototype names the one it builds with. The Studio ships two, Product and Marketing. The drawing lights each system with the
@@ -79,14 +84,15 @@ function Thumb({ screen, theme, dark, w }: { screen: 'inbox' | 'overview' | 'hom
 export default function StudioSystems() {
   const scene = useScene(timings, captions, { loop: false });
   const step = scene.step;
-  const dark = useDark();
+  const root = useRef<HTMLDivElement>(null);
+  const dark = useDark(root);
   const phone = usePhone();
   const L = phone ? mobile : desk;
   const lit = (s: 'product' | 'marketing') => step === 0 || step === 3 || (s === 'product' ? step === 1 : step === 2);
   const wired = (s: 'product' | 'marketing') => step === 3 || (s === 'product' ? step === 1 : step === 2);
   return <DemoFrame scene={scene} caption={false} stage="sc-plain" title="how systems and prototypes fit together"
     label="Two design systems in Design Studio, Product and Marketing, each in its own folder with its own theme, components and rules. The feedback inbox and overview prototypes build with the Product system; the website's home page builds with the Marketing system. Both systems sit side by side without conflicting">
-    <div className="cs-demo">
+    <div ref={root} className="cs-demo">
       <NativeStage width={L.w} height={L.h}>
         <div className={`sc-dia sy-dia ${phone ? 'is-phone' : ''}`}>
           <svg className="sc-line" viewBox={`0 0 ${L.w} ${L.h}`} aria-hidden="true">

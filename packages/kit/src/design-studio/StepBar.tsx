@@ -1,5 +1,6 @@
 import { HugeiconsIcon } from '@hugeicons/react';
 import { ArrowReloadHorizontalIcon, PauseIcon, PlayIcon } from '@hugeicons/core-free-icons';
+import '../case-study/case-study.css';
 
 // The case studies' controls under a stage (SceneTour in case-study/scene.tsx), for demos on this page that run their own steps:
 // the caption on the left, then a segment per step that fills while it plays, and the play, pause or replay button. Same classes,

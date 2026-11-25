@@ -2,6 +2,8 @@ import type { ReactNode } from 'react';
 import { NativeBuilder } from './NativeUI';
 import { NativeStage } from '../case-study/NativeStage';
 import { DemoFrame, useScene } from '../case-study/scene';
+import '../case-study/case-study.css';
+import './query-builder.css';
 
 function Kw({ children }: { children: string }) { return <span className="q-code-keyword">{children}</span>; }
 function Arrow({ children }: { children: string }) { return <span className="q-code-arrow">{children}</span>; }

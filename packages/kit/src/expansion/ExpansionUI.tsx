@@ -2,6 +2,8 @@ import { useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode }
 import { HugeiconsIcon } from '@hugeicons/react';
 import { ArrowDown01Icon, Delete02Icon } from '@hugeicons/core-free-icons';
 import { barColors, type Bar } from './figma-bars';
+import '../case-study/case-study.css';
+import './expansion.css';
 
 // Primitives for the Signal Sciences screens. Every number is a position or size from the Figma source, in the frame's own units.
 

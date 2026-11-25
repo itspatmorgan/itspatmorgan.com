@@ -9,6 +9,11 @@ import { Editor } from './StudioDocs';
 import StepBar from './StepBar';
 import { H, W, themeStyle, useFit } from './explore/StudioWindow';
 import { useDark, usePhone, useReduced } from '../hooks';
+import '../case-study/case-study.css';
+import '../studio-case/studio-case.css';
+import './studio-shapes.css';
+import './explore/explore.css';
+import './studio-hero.css';
 
 // The landing page's browse section: the open-source Studio's prototype view with the Echo app sample, worked the way the Studio is
 // worked. Artifacts open from the sidebar. A screen's menu makes it lo-fi or hi-fi (the file's `/** @lofi */` marker, FileTree's
@@ -77,7 +82,7 @@ export default function StudioHero() {
   const [cam, setCam] = useState<Cam>({ at: 'pane' });
   const phoneRef = useRef(phone);
   phoneRef.current = phone;
-  const dark = useDark();
+  const dark = useDark(box);
   const reduced = useReduced();
   const os = useRef<HTMLDivElement>(null);
   const [view, setView] = useState<View>(start.view);

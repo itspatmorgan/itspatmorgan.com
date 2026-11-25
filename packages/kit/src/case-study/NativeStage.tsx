@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 're
 import { AnimatePresence, MotionConfig, motion } from 'motion/react';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { Cursor01Icon } from '@hugeicons/core-free-icons';
+import './case-study.css';
 
 // Shared plumbing for case-study demos: a source frame scaled crisply to its stage, and a demo cursor. Playback lives in scene.tsx.
 // A `crop` shows one region of the frame at a larger scale (a phone's closer look); a new crop eases to it.

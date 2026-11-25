@@ -1,6 +1,8 @@
 import { ProjectCardStage } from '../case-study/ProjectCardStage';
 import { useDemoLoop } from '../case-study/useDemoLoop';
 import { ART, Icon, StatusPill } from './SublimeUI';
+import '../case-study/project-card.css';
+import './sublime.css';
 
 // The project card: an AI teammate that finishes its own work, within the bar the team set. Behind, ADÉ's card from the Agents hub, whole,
 // its art glowing; in front, inset from its sides and over its bottom edge, the rule it is writing. The rule starts In Progress; the art eases up and grows (the hub card's own hover); then

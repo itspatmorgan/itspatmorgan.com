@@ -1,5 +1,5 @@
 {
-  "//": "Design Studio's stricter settings, so kit code type checks in both the site and Studio.",
+  "//": "Strict settings, so kit code type checks wherever it is compiled.",
   "compilerOptions": {
     "target": "ES2022",
     "module": "ESNext",

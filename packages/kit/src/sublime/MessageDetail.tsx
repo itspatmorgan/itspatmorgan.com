@@ -1,6 +1,7 @@
 import { Icon, JobHeading, Page, TimelineItem, TimelineTitle, Triggered, VerdictIcon, VerdictPanel, job } from './SublimeUI';
 import { useEffect, useState } from 'react';
 import { Camera, Expand, Pointer, SceneFrame, Screens, Typing, frame, onCard, useScene, useShot, useStage, useTargets } from '../case-study/scene';
+import './sublime.css';
 
 // The message detail page (patrick/ade-workflow user-reports, MessageDetailView and AdeStatusCard): ASA's verdict on a message no rule caught.
 // `gap` is the page before ADÉ: a malicious verdict over an empty Matched Detection Rules section, and the way to coverage running through

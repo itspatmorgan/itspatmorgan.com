@@ -5,6 +5,7 @@ import { SceneFrame, Screens, useScene, useStage } from '../case-study/scene';
 import { Filters, PrototypeCard, Rail, icon, type Prototype } from './StudioUI';
 import logoLight from './assets/logo-light-mode.svg?url';
 import logoDark from './assets/logo-dark-mode.svg?url';
+import './studio-case.css';
 
 // Day one, then today. The first gallery (Drive: sublime-humble-beginning.jpg) held one project, Agent Configuration, in a list view
 // under a Sublime header; today's (Drive: sublime-team-prototypes.png) is the catalog every teammate publishes to, newest first,

@@ -1,6 +1,7 @@
 import { createElement, useEffect, useState, type ReactNode } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import glyphs from './source-glyphs.json';
+import './query-builder.css';
 
 type Glyph = keyof typeof glyphs;
 export type SourceGlyph = Glyph;

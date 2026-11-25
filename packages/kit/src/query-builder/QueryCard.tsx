@@ -2,6 +2,8 @@ import type { ReactNode } from 'react';
 import { ProjectCardStage } from '../case-study/ProjectCardStage';
 import { useDemoLoop } from '../case-study/useDemoLoop';
 import { EntityPill, SourceIcon } from './NativeUI';
+import '../case-study/project-card.css';
+import './query-builder.css';
 
 // The project card: every control maps to a piece of the language. Behind, the query in the visual builder; in front, the same query as
 // J1QL, over the builder's top edge and aligned with the controls. Each part of the code lights with the control it became, one pair at a

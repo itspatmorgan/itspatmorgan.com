@@ -1,5 +1,7 @@
 import { NativeStage } from '../case-study/NativeStage';
 import { DemoFrame, useScene } from '../case-study/scene';
+import '../case-study/case-study.css';
+import './expansion.css';
 
 // The deck's "Defense Kits" diagram: the same three pieces, regrouped for each use case. No ship status.
 const kits = ['Bot Kit', 'API Security Kit', 'OWASP Attack Kit'];

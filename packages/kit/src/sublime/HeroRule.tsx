@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { HuntEntry, JobHeading, Page, Recommendation, TimelineItem, Triggered, Worked, job } from './SublimeUI';
 import { Camera, HOME, SceneFrame, useScene, useStage, useTargets } from '../case-study/scene';
+import './sublime.css';
 
 // The hero: ADÉ's recommended rule on its job page (patrick/ade-workflow ade/ade-job-completed-review, JobCompletedCard), the one frame
 // that carries the case study's argument. The MQL arrives a line at a time, as if from the agent, and then the rule waits for review.

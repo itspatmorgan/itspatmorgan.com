@@ -2,6 +2,8 @@ import { AnimatePresence, motion } from 'motion/react';
 import { SourceIcon, NativeBuilder, EntityPill, AddConnection, menuMotion, type SourceGlyph } from './NativeUI';
 import { NativeStage, DemoCursor } from '../case-study/NativeStage';
 import { DemoFrame, useScene } from '../case-study/scene';
+import '../case-study/case-study.css';
+import './query-builder.css';
 
 type Flow = 'select' | 'filter' | 'direction';
 const flowTitles = { select: 'the entity picker', filter: 'the property filter', direction: 'the relationship direction' };

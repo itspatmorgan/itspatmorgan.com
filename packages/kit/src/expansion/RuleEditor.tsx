@@ -2,6 +2,8 @@ import type { ReactNode } from 'react';
 import { NativeStage, zoomCrop } from '../case-study/NativeStage';
 import { DemoFrame, usePhone, useScene } from '../case-study/scene';
 import { T, Box, Select, IconButton } from './ExpansionUI';
+import '../case-study/case-study.css';
+import './expansion.css';
 
 // Frame 700's rule editor, filled in as a customer's workaround: a rule that exists only to tag likely bot traffic with a signal of their own.
 // Positions are card-relative from the source; the card sits at (110, 80) on a 1240 × 900 frame.

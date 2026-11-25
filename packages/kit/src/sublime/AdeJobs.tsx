@@ -3,6 +3,7 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { FilterHorizontalIcon } from '@hugeicons/core-free-icons';
 import { ART, CheckCircle, Icon, Page, StatusPill, VerdictLabel, type Status } from './SublimeUI';
 import { Camera, CountUp, HOME, SceneFrame, useScene, useStage, useTargets } from '../case-study/scene';
+import './sublime.css';
 
 // The ADÉ page with data (patrick/mttc ade-states/active): the agent header and its jobs, most of them started and accepted by ADÉ.
 // Rows are sample data from the prototypes' job lists; one of the visible rows was started by a person, so the list shows people start

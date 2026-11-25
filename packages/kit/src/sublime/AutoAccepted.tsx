@@ -1,5 +1,6 @@
 import { Accepted, HuntEntry, JobHeading, Page, Recommendation, TimelineItem, Triggered, Worked, job } from './SublimeUI';
 import { Camera, SceneFrame, frame, onCard, useScene, useShot, useStage, useTargets } from '../case-study/scene';
+import './sublime.css';
 
 // The same job when automation is on (patrick/ade-workflow ade/ade-job-completed-auto-accepted): ADÉ accepted its own rule because the
 // hunt's match cleared the threshold. The scene reads it the way a reviewer would: the match in the recommendation, the hunt it came from
