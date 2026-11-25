@@ -2,7 +2,7 @@ import { useRef, useState, useEffect, useCallback } from 'react';
 import { toPng } from 'html-to-image';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { ArrowDown01Icon, RefreshIcon, SlidersHorizontalIcon, Cancel01Icon } from '@hugeicons/core-free-icons';
-import { ArtCanvas } from './ArtCanvas';
+import { ArtCanvas } from '@itspatmorgan/kit/generative-art/ArtCanvas';
 import {
   themes,
   brand,
@@ -23,7 +23,7 @@ import {
   type VoronoiConfig,
   type StrangeAttractorConfig,
   type TextFont,
-} from './themes';
+} from '@itspatmorgan/kit/generative-art/themes';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 

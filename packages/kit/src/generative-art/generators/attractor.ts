@@ -1,5 +1,5 @@
-import { CANVAS_W, CANVAS_H, type StrangeAttractorConfig, type RenderContext } from '../themes';
-import { makeRng } from './noise';
+import { CANVAS_W, CANVAS_H, type StrangeAttractorConfig, type RenderContext } from '../themes.ts';
+import { makeRng } from './noise.ts';
 
 const W = CANVAS_W;
 const H = CANVAS_H;
@@ -71,6 +71,37 @@ export function generateAttractor(cfg: StrangeAttractorConfig): AttractorData {
 
 const PAD = 0.07;
 
+export interface AttractorDensity {
+  density: Uint32Array;
+  maxDensity: number;
+}
+
+// Hit counts per pixel on the logical CANVAS_W x CANVAS_H grid. Pure, so the page art and
+// the article share images (scripts/generate-writing-art.mjs) draw the same attractor.
+export function attractorDensity(data: AttractorData, progress = 1): AttractorDensity {
+  const { xs, ys, count, minX, maxX, minY, maxY } = data;
+  const visibleCount = Math.floor(count * Math.min(progress, 1));
+  const density = new Uint32Array(W * H);
+  let maxDensity = 0;
+
+  for (let i = 0; i < visibleCount; i++) {
+    const px = Math.floor(toScreen(xs[i], minX, maxX, W));
+    const py = Math.floor(toScreen(ys[i], minY, maxY, H));
+    if (px >= 0 && px < W && py >= 0 && py < H) {
+      const val = ++density[py * W + px];
+      if (val > maxDensity) maxDensity = val;
+    }
+  }
+  return { density, maxDensity };
+}
+
+// Alpha (0-255) for one pixel's hit count, as the page draws it.
+export function attractorAlpha(hits: number, maxDensity: number, opacity: number): number {
+  if (!hits) return 0;
+  const logMax = Math.log1p(maxDensity) || 1;
+  return Math.round((Math.log1p(hits) / logMax) * (opacity / 100) * 0.92 * 255);
+}
+
 function toScreen(
   v: number, min: number, max: number, size: number,
 ): number {
@@ -125,25 +156,11 @@ export function drawAttractor(
     return;
   }
 
-  const visibleCount = Math.floor(count * Math.min(render.progress, 1));
-
   // Accumulate density at logical resolution so richness is canvas-size-independent
   const logW = W;
   const logH = H;
-  const density = new Uint32Array(logW * logH);
-  let maxDensity = 0;
+  const { density, maxDensity } = attractorDensity(data, render.progress);
 
-  for (let i = 0; i < visibleCount; i++) {
-    const px = Math.floor(toScreen(xs[i], minX, maxX, logW));
-    const py = Math.floor(toScreen(ys[i], minY, maxY, logH));
-    if (px >= 0 && px < logW && py >= 0 && py < logH) {
-      const idx = py * logW + px;
-      const val = ++density[idx];
-      if (val > maxDensity) maxDensity = val;
-    }
-  }
-
-  const logMax = Math.log1p(maxDensity) || 1;
   const offscreen = new OffscreenCanvas(logW, logH);
   const offCtx = offscreen.getContext('2d') as OffscreenCanvasRenderingContext2D;
   const imageData = offCtx.createImageData(logW, logH);
@@ -151,12 +168,11 @@ export function drawAttractor(
 
   for (let i = 0; i < logW * logH; i++) {
     if (!density[i]) continue;
-    const t = Math.log1p(density[i]) / logMax;
     const px = i * 4;
     pixels[px]     = r;
     pixels[px + 1] = g;
     pixels[px + 2] = b;
-    pixels[px + 3] = Math.round(t * maxA * 255);
+    pixels[px + 3] = attractorAlpha(density[i], maxDensity, opacity);
   }
   offCtx.putImageData(imageData, 0, 0);
   ctx.imageSmoothingEnabled = true;

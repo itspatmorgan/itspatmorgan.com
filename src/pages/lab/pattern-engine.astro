@@ -3,7 +3,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import Header from '@/components/layout/Header.astro';
 import MobileNav from '@/components/layout/MobileNav.astro';
 import Sidebar from '@/components/layout/Sidebar.astro';
-import PatternEngine from '@/lab/editorial-art/index';
+import PatternEngine from '@/lab/pattern-engine/PatternEngine';
 import { getCollection } from "astro:content";
 
 const entry = (await getCollection("lab")).find((item) => item.data.slug === "pattern-engine");

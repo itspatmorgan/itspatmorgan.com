@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { useDark } from '../hooks';
 import { GenerativeCanvas } from './GenerativeCanvas';
 import { brand, revealMotion, type GeneratorConfig, type MotionConfig } from './themes';
 
@@ -11,11 +12,6 @@ interface Props {
   duration?: number;
   interactive?: boolean;
   motion?: MotionConfig;
-}
-
-function readIsDark(): boolean {
-  if (typeof document === 'undefined') return false;
-  return document.documentElement.classList.contains('dark');
 }
 
 function readReducedMotion(): boolean {
@@ -43,14 +39,8 @@ export function GenerativePatternSurface({
   motion = revealMotion,
 }: Props) {
   const rootRef = useRef<HTMLDivElement>(null);
-  const [isDark, setIsDark] = useState(readIsDark);
+  const isDark = useDark(rootRef);
   const [replayKey, setReplayKey] = useState(0);
-
-  useEffect(() => {
-    const observer = new MutationObserver(() => setIsDark(readIsDark()));
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
-    return () => observer.disconnect();
-  }, []);
 
   useEffect(() => {
     if (!interactive) return;

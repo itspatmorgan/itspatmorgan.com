@@ -1,7 +1,7 @@
 import { defineCollection } from "astro:content";
 import { z } from "astro/zod";
 import { glob } from "astro/loaders";
-import { LAYER_COLORS } from "./lab/editorial-art/themes";
+import { LAYER_COLORS } from "@itspatmorgan/kit/generative-art/themes";
 
 // The words on a case study page (src/pages/work/<id>.astro). The page places the visuals and the
 // order of slides; this holds what they say.
