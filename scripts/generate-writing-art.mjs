@@ -18,7 +18,7 @@ import { generateFlowField } from '@itspatmorgan/kit/generative-art/generators/f
 import { generateDotGrid } from '@itspatmorgan/kit/generative-art/generators/dotGrid';
 import { generateIsolines } from '@itspatmorgan/kit/generative-art/generators/isoline';
 import { generateVoronoi } from '@itspatmorgan/kit/generative-art/generators/voronoi';
-import { makeRng } from '@itspatmorgan/kit/generative-art/generators/noise';
+import { attractorAlpha, attractorDensity, generateAttractor } from '@itspatmorgan/kit/generative-art/generators/attractor';
 
 const CLI = parseArgs(process.argv.slice(2));
 const DRY_RUN = CLI.flags.has('dry-run');
@@ -180,118 +180,16 @@ function backgroundColor(visual) {
   return brand.warmDarkGray;
 }
 
-function isRichAttractor(a, b, c, d) {
-  const grid = 32;
-  const seen = new Uint8Array(grid * grid);
-  let uniqueCells = 0;
-  let x = 0.1;
-  let y = 0.2;
-
-  for (let i = 0; i < 2500; i++) {
-    const nx = Math.sin(a * y) + c * Math.cos(a * x);
-    const ny = Math.sin(b * x) + d * Math.cos(b * y);
-    x = nx;
-    y = ny;
-
-    if (i > 100) {
-      const gx = Math.floor(((x + 3) / 6) * grid);
-      const gy = Math.floor(((y + 3) / 6) * grid);
-      if (gx >= 0 && gx < grid && gy >= 0 && gy < grid) {
-        const idx = gy * grid + gx;
-        if (seen[idx] === 0) {
-          seen[idx] = 1;
-          uniqueCells++;
-          if (uniqueCells >= 120) return true;
-        }
-      }
-    }
-  }
-
-  return false;
-}
-
-function cliffordParams(seed) {
-  for (let attempt = 0; attempt < 20; attempt++) {
-    const rng = makeRng(seed * 2053 + 7919 + attempt * 31337);
-    const a = rng() * 3.6 - 1.8;
-    const b = rng() * 3.6 - 1.8;
-    const c = rng() * 3.6 - 1.8;
-    const d = rng() * 3.6 - 1.8;
-    if (isRichAttractor(a, b, c, d)) return [a, b, c, d];
-  }
-  return [-1.4, 1.6, 1.0, 0.7];
-}
-
+// The same attractor the article page draws, so the share image matches the page art.
 function renderAttractorBuffer(visual) {
   const generator = visual.generator;
   const bg = hexToRgb(backgroundColor(visual));
   const fg = hexToRgb(resolveLayerColor(generator.color));
-  const iterations = 250000;
-  const warmup = 300;
-  const pad = 0.07;
-
-  const buildDensity = ([a, b, c, d]) => {
-    const density = new Uint32Array(W * H);
-    let x = 0.1;
-    let y = 0.2;
-    let minX = Infinity;
-    let maxX = -Infinity;
-    let minY = Infinity;
-    let maxY = -Infinity;
-
-    for (let i = 0; i < iterations + warmup; i++) {
-      const nx = Math.sin(a * y) + c * Math.cos(a * x);
-      const ny = Math.sin(b * x) + d * Math.cos(b * y);
-      x = nx;
-      y = ny;
-      if (i >= warmup) {
-        minX = Math.min(minX, x);
-        maxX = Math.max(maxX, x);
-        minY = Math.min(minY, y);
-        maxY = Math.max(maxY, y);
-      }
-    }
-
-    const rangeX = maxX - minX || 1;
-    const rangeY = maxY - minY || 1;
-    let maxDensity = 0;
-    let uniquePixels = 0;
-    x = 0.1;
-    y = 0.2;
-
-    for (let i = 0; i < iterations + warmup; i++) {
-      const nx = Math.sin(a * y) + c * Math.cos(a * x);
-      const ny = Math.sin(b * x) + d * Math.cos(b * y);
-      x = nx;
-      y = ny;
-
-      if (i >= warmup) {
-        const cx = Math.floor(((x - minX) / rangeX * (1 - 2 * pad) + pad) * W);
-        const cy = Math.floor(((y - minY) / rangeY * (1 - 2 * pad) + pad) * H);
-        if (cx >= 0 && cx < W && cy >= 0 && cy < H) {
-          const idx = cy * W + cx;
-          if (density[idx] === 0) uniquePixels++;
-          const val = ++density[idx];
-          if (val > maxDensity) maxDensity = val;
-        }
-      }
-    }
-
-    return { density, maxDensity, uniquePixels };
-  };
-
-  let result = buildDensity(cliffordParams(generator.seed));
-  if (result.uniquePixels < 4000) {
-    result = buildDensity([-1.4, 1.6, 1.0, 0.7]);
-  }
-
+  const { density, maxDensity } = attractorDensity(generateAttractor(generator));
   const output = Buffer.alloc(W * H * 3);
-  const logMax = Math.log1p(result.maxDensity) || 1;
-  const maxA = (generator.opacity / 100) * 0.92;
 
   for (let i = 0; i < W * H; i++) {
-    const count = result.density[i];
-    const alpha = count === 0 ? 0 : (Math.log1p(count) / logMax) * maxA;
+    const alpha = attractorAlpha(density[i], maxDensity, generator.opacity) / 255;
     const px = i * 3;
     output[px] = Math.round(bg[0] * (1 - alpha) + fg[0] * alpha);
     output[px + 1] = Math.round(bg[1] * (1 - alpha) + fg[1] * alpha);
