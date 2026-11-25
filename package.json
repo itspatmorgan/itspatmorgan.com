@@ -17,6 +17,7 @@
     "image": "node scripts/image.mjs",
     "test": "node --test 'scripts/*.test.mjs'",
     "sync-writing": "node scripts/sync-writing.mjs",
+    "sync-featured": "node scripts/sync-featured.mjs",
     "generate:writing-art": "node scripts/generate-writing-art.mjs"
   },
   "dependencies": {

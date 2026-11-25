@@ -24,25 +24,19 @@ test('a case study starter writes a draft entry, its page, a stylesheet and one 
   assert.match(entry, /^    problem:$/m);
 });
 
-test('a Lab starter writes a draft entry and a page on LabLayout', () => {
-  const files = starter('lab', 'ink-flow', 'Ink Flow');
-  assert.match(files['src/content/lab/ink-flow.mdx'], /^draft: true$/m);
-  assert.match(files['src/pages/lab/ink-flow.astro'], /<LabLayout entry=\{entry\}>/);
-});
-
 test('starters reject bad slugs and never overwrite a file', () => {
-  assert.throws(() => starter('lab', 'Ink Flow', 'Ink Flow'), /slug/);
-  assert.throws(() => starter('lab', 'ink-flow', ''), /title/);
-  assert.throws(() => starter('poster', 'ink-flow', 'Ink Flow'), /Usage/);
+  assert.throws(() => starter('case-study', 'Ink Flow', 'Ink Flow', root), /slug/);
+  assert.throws(() => starter('case-study', 'ink-flow', '', root), /title/);
+  assert.throws(() => starter('lab', 'ink-flow', 'Ink Flow'), /Usage/);
   const dir = mkdtempSync(path.join(tmpdir(), 'starter-'));
-  write(starter('lab', 'ink-flow', 'Ink Flow'), dir);
-  assert.ok(existsSync(path.join(dir, 'src/pages/lab/ink-flow.astro')));
-  assert.throws(() => write(starter('lab', 'ink-flow', 'Ink Flow'), dir), /Already exists/);
+  write(starter('case-study', 'ink-flow', 'Ink Flow', root), dir);
+  assert.ok(existsSync(path.join(dir, 'src/pages/work/ink-flow.astro')));
+  assert.throws(() => write(starter('case-study', 'ink-flow', 'Ink Flow', root), dir), /Already exists/);
 });
 
-test('no published case study or Lab entry still has a TODO', () => {
+test('no published case study still has a TODO', () => {
   const leftovers = [];
-  for (const [content, pages] of [['src/content/projects', 'src/pages/work'], ['src/content/lab', 'src/pages/lab']]) {
+  for (const [content, pages] of [['src/content/projects', 'src/pages/work']]) {
     for (const file of readdirSync(path.join(root, content))) {
       const text = readFileSync(path.join(root, content, file), 'utf8');
       if (/^draft:\s*true\b/m.test(text)) continue;

@@ -1,0 +1,8 @@
+# The Lab became Snapshots (/snapshots), and its pieces moved to pm-studio. /lab/pattern-engine is a page instead
+# (src/pages/lab/pattern-engine.astro), so the settings in its address reach the Studio.
+/lab                /snapshots   301
+/lab/               /snapshots/  301
+/lab/pixel-mark     https://studio.itspatmorgan.com/systems/v4576ka1mbpbqdp1/components/logo   301
+/lab/pixel-mark/    https://studio.itspatmorgan.com/systems/v4576ka1mbpbqdp1/components/logo   301
+/lab/pixel-wave     https://studio.itspatmorgan.com/systems/v4576ka1mbpbqdp1/components/pixel-wave-text   301
+/lab/pixel-wave/    https://studio.itspatmorgan.com/systems/v4576ka1mbpbqdp1/components/pixel-wave-text   301

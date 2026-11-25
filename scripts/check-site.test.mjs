@@ -35,6 +35,14 @@ test('passes a site whose links resolve', () => {
   assert.deepEqual(checkSite(dist).problems, []);
 });
 
+test('treats the sources of _redirects rules as resolved', () => {
+  const dist = site({
+    'index.html': `${head()}<a href="/lab/">Lab</a><a href="/lab/pixel-mark/">Mark</a><a href="/old/">Old</a>`,
+    '_redirects': '# moved\n/lab/ /snapshots/ 301\n/lab/pixel-mark/ https://studio.example.com/logo 301\n',
+  });
+  assert.deepEqual(checkSite(dist).problems, ['/index.html: broken local link /old/']);
+});
+
 test('reports broken links, missing metadata and a missing share image', () => {
   const dist = site({
     'index.html': `${head()}<a href="/gone/">Gone</a><img src="/images/missing.png">`,

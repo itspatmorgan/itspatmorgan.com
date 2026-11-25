@@ -97,7 +97,7 @@ function parseFrontmatter(content) {
 function serializeFrontmatter(fields) {
   const order = [
     'title', 'description', 'publishedDate', 'categories', 'theme', 'tags',
-    'visual', 'image', 'canonicalUrl', 'draft',
+    'visual', 'image', 'note', 'canonicalUrl', 'draft',
   ];
   const lines = [];
 

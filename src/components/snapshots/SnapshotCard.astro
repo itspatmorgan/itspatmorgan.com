@@ -1,0 +1,32 @@
+---
+import type { FeaturedEntry } from "@/data/featured";
+
+interface Props {
+  entry: FeaturedEntry;
+  headingLevel?: "h2" | "h3";
+}
+
+const { entry, headingLevel: Heading = "h2" } = Astro.props;
+---
+
+<a href={entry.href} class="group block w-full" data-snapshot>
+  <article class="h-full overflow-hidden rounded-xl border border-border bg-card transition-all duration-300 group-hover:-translate-y-0.5 group-hover:shadow-md group-hover:shadow-black/5 motion-reduce:transition-none motion-reduce:group-hover:translate-y-0 dark:group-hover:shadow-black/20">
+    <div class="relative aspect-[1200/630] overflow-hidden border-b border-border bg-muted">
+      <video
+        src={entry.snapshot.clip}
+        poster={entry.snapshot.poster}
+        muted
+        loop
+        playsinline
+        preload="none"
+        aria-hidden="true"
+        class="absolute inset-0 h-full w-full object-contain"
+        data-snapshot-clip
+      ></video>
+    </div>
+    <div class="p-4">
+      <Heading class="mb-2 text-base font-semibold tracking-tight">{entry.title}</Heading>
+      <p class="text-sm leading-relaxed text-muted-foreground">{entry.line}</p>
+    </div>
+  </article>
+</a>

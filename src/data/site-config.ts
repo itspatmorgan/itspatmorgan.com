@@ -11,7 +11,7 @@ export const siteConfig = {
     { label: "Work", href: "/work" },
     { label: "Design Studio", href: "/design-studio" },
     { label: "Writing", href: "/writing" },
-    { label: "Lab", href: "/lab" },
+    { label: "Snapshots", href: "/snapshots" },
     { label: "Community", href: "/community" },
   ],
   social: {

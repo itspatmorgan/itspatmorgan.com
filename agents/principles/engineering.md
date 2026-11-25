@@ -15,7 +15,7 @@ as nothing needs it.
 ## 2. Pick the right tool for each job
 
 TypeScript and React for demos and anything interactive. Content collections
-in Markdown for words: case study copy, articles, Lab entries. Data files for
+in Markdown for words: case study copy, articles. Data files for
 lists. Words people edit should never be buried in component code when a
 content file can hold them.
 

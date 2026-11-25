@@ -18,7 +18,7 @@
 
 - Use "Work", not "Projects" or "Experience", for the public portfolio/career section.
 - Use "Writing", not "Blog".
-- Use "Lab", not "Tools", for hosted experiments, utilities, and interaction showcases.
+- Use "Snapshots" for the page of work featured from pm-studio. The Lab is retired; don't bring the name back.
 - Use "Kind Words", not "Commendations" or "Testimonials".
 
 The internal content collection for Work is still named `projects`; do not
@@ -86,25 +86,15 @@ writing. Obsidian sync preserves those fields.
 Use `theme` for broad reader-facing grouping, such as `AI`, `Design`, `Systems
 Thinking`, or `Creative Practice`. Use `tags` for lower-level metadata.
 
-## Lab
+## Snapshots
 
-Lab entries live in `src/content/lab/*.mdx` and are hosted under `/lab/<slug>`.
-Start one with `pnpm new lab <slug> "Title"`: a draft entry and a page on
-`LabLayout` (back link, title, description and intro), with the experiment
-below it. Give it a live card preview in `src/components/lab/LabPreview.astro`
-before launch.
+Experiments, tools and interaction showcases are built in pm-studio, not on the
+site. `/snapshots` shows the pieces featured there, each as a clip of it in use
+that links to the piece in the Studio. The list comes from pm-studio's Featured
+work module through its published manifest (`src/data/featured.ts`); a build
+falls back to `src/data/featured.json`, which `pnpm sync-featured` refreshes.
+To show a new piece, feature it in pm-studio. Don't build one on the site.
 
-Common frontmatter:
+A writing article can carry a website-owned `note`: plain text with
+Markdown-style links, shown above the article and kept when it resyncs from Obsidian.
 
-```yaml
-title: "Lab Item"
-description: "Short description"
-slug: "lab-item"
-preview: "lab-item"
-experience: "demo"
-draft: false
-```
-
-Use `experience: "app"` for immersive tools and `experience: "demo"` for
-focused interaction showcases. Put implementation code under `src/lab/<slug>/`
-when an item needs dedicated components, React islands, or supporting logic.

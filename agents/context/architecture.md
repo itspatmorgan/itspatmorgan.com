@@ -7,7 +7,7 @@ How the site fits together and where each thing lives. Content rules are in
 
 - Astro 7, static output, `compressHTML: true`.
 - Tailwind CSS v4 through `@tailwindcss/vite` (not PostCSS).
-- React for stateful UI, demos and Lab experiences; `.astro` for everything else.
+- React for stateful UI and demos; `.astro` for everything else.
 - shadcn/ui primitives (base-nova style, `components.json`) in `src/components/ui/`.
 - Content collections with Zod 4 schemas from `astro/zod`, in `src/content.config.ts`.
 - Markdown and MDX run through `unified()` from `@astrojs/markdown-remark` in
@@ -26,7 +26,7 @@ How the site fits together and where each thing lives. Content rules are in
 | Code shared with Studio | `packages/kit` (see below) |
 | Visual library | `src/visuals/` (formats, visuals, the `/visuals` gallery), recorded with `scripts/visuals-record.mjs` |
 | Writing | `src/content/writing/`, synced from Obsidian (see `publishing.md`) |
-| Lab | Entry in `src/content/lab/<slug>.mdx`, page in `src/pages/lab/<slug>.astro`, code in `src/lab/<slug>/` |
+| Snapshots | `src/pages/snapshots.astro` and `src/components/snapshots/`, fed by pm-studio's featured list (`src/data/featured.ts`) |
 | Community and Kind Words | `src/pages/community.astro`, `src/data/community.ts`, `src/data/commendations.ts` |
 | Career timeline | `src/data/experience.ts` |
 | Design Studio landing page | `src/pages/design-studio.astro`, scenes in `packages/kit/src/design-studio/` |
@@ -69,12 +69,12 @@ The kit is an ordinary package, shaped the way we'd recommend any team ship shar
 
 | Route | Purpose |
 | --- | --- |
-| `/` | Home: hero, Work (with the Design Studio card), Writing, Community, Lab, closing line |
+| `/` | Home: hero, Work (with the Design Studio card), Writing, Community, Snapshots, closing line |
 | `/about` | Personal narrative |
 | `/work` | Career timeline and case studies |
 | `/work/<slug>` | One case study per page. An entry with `draft: true` is hidden from Work and the homepage and not indexed |
 | `/writing`, `/writing/<slug>` | Curated Unknown Arts articles with theme filters |
-| `/lab`, `/lab/<slug>` | Lab experiments |
+| `/snapshots` | Work featured in pm-studio, each opening in the Studio. `/lab` and its old entries redirect (`public/_redirects`, and `src/pages/lab/pattern-engine.astro`, which keeps an article's settings) |
 | `/community` | Community story, photos and Kind Words |
 | `/colophon` | How the site is made |
 | `/design-studio` | Design Studio product page |
@@ -85,14 +85,14 @@ The kit is an ordinary package, shaped the way we'd recommend any team ship shar
 
 ## Layouts
 
-`BaseLayout` → `PageLayout` → `CaseStudyLayout`, `LabLayout` or `WritingLayout`.
+`BaseLayout` → `PageLayout` → `CaseStudyLayout` or `WritingLayout`.
 
 `PageLayout` takes a `template`:
 
 - `showcase`: 1024px of content in a 1136px shell. Home, case study stages,
   Design Studio.
 - `reading` (default): a 720px column with the shared `PageHeader`. About,
-  Work, Community, Lab, Writing, articles, Colophon.
+  Work, Community, Snapshots, Writing, articles, Colophon.
 
 Photo rows may break out to `max-w-5xl`; the footer follows the template. Don't
 add other widths.

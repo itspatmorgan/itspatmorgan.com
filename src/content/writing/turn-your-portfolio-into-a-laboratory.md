@@ -28,6 +28,7 @@ visual:
   texture: 0
   grain: 24
 image: /images/writing/turn-your-portfolio-into-a-laboratory/feature.jpg
+note: "Update, November 2026: the Lab has moved. Its pieces now live in [my studio](https://studio.itspatmorgan.com/featured), where you can use them, and this site shows them as [Snapshots](/snapshots). The links below take you to their new homes."
 canonicalUrl: "https://www.unknownarts.com/p/turn-your-portfolio-into-a-laboratory"
 draft: false
 ---

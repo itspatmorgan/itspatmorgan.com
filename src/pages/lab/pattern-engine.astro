@@ -1,44 +1,22 @@
 ---
-import BaseLayout from '@/layouts/BaseLayout.astro';
-import Header from '@/components/layout/Header.astro';
-import MobileNav from '@/components/layout/MobileNav.astro';
-import Sidebar from '@/components/layout/Sidebar.astro';
-import PatternEngine from '@/lab/pattern-engine/PatternEngine';
-import { getCollection } from "astro:content";
-
-const entry = (await getCollection("lab")).find((item) => item.data.slug === "pattern-engine");
+// The Pattern Engine moved to pm-studio. Articles' older links, and the laboratory article, still point here, often
+// with an article's settings in the address, so this page passes them on. public/_redirects handles the rest of /lab.
+import { patternEngineUrl } from "@/data/featured";
 ---
 
-<BaseLayout
-  title={`${entry?.data.title ?? "Pattern Engine"} — Patrick Morgan`}
-  description={entry?.data.description ?? "Generate deterministic visual patterns for Unknown Arts articles and publishing assets."}
-  image="/images/share/lab-pattern-engine.jpg"
-  noindex
->
-  <Header />
-  <MobileNav />
-  <div class="pattern-engine-shell md:flex md:min-h-dvh">
-    <Sidebar />
-    <main class="min-w-0 flex-1">
-      <div class="pattern-engine-surface">
-        <PatternEngine client:only="react" />
-      </div>
-    </main>
-  </div>
-</BaseLayout>
-
-<style>
-  .pattern-engine-shell {
-    --pattern-engine-height: calc(100dvh - 3.5rem);
-  }
-
-  .pattern-engine-surface {
-    min-height: var(--pattern-engine-height);
-  }
-
-  @media (min-width: 48rem) {
-    .pattern-engine-shell {
-      --pattern-engine-height: 100dvh;
-    }
-  }
-</style>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex" />
+    <title>Pattern Engine — Patrick Morgan</title>
+    <link rel="canonical" href={patternEngineUrl} />
+    <meta http-equiv="refresh" content={`0; url=${patternEngineUrl}`} />
+    <script is:inline define:vars={{ patternEngineUrl }}>
+      location.replace(patternEngineUrl + location.search);
+    </script>
+  </head>
+  <body>
+    <p>The Pattern Engine now lives in my studio: <a href={patternEngineUrl}>open it there</a>.</p>
+  </body>
+</html>
