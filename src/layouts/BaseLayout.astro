@@ -2,6 +2,9 @@
 import "../styles/global.css";
 import { siteConfig } from "@/data/site-config";
 import geistLatin from "@fontsource-variable/geist/files/geist-latin-wght-normal.woff2?url";
+import { createHash } from "node:crypto";
+import { existsSync, readFileSync } from "node:fs";
+import { join } from "node:path";
 
 interface Props {
   title?: string;
@@ -19,7 +22,14 @@ const pageTitle = title ?? siteConfig.title;
 const pageDescription = description ?? siteConfig.description;
 const canonicalURL = canonicalUrl ?? new URL(Astro.url.pathname, siteConfig.url).toString();
 // Share images are 1200x630. Pages without their own use the homepage card.
-const ogImage = new URL(image ?? "/images/share/home.jpg", siteConfig.url).toString();
+const ogImageUrl = new URL(image ?? "/images/share/home.jpg", siteConfig.url);
+// X, LinkedIn and Slack cache a share image by its URL, so a redrawn card keeps showing the old
+// one. A version from the file's contents gives every redraw a new URL.
+const ogImageFile = join(process.cwd(), "public", decodeURI(ogImageUrl.pathname));
+if (ogImageUrl.origin === new URL(siteConfig.url).origin && existsSync(ogImageFile)) {
+  ogImageUrl.searchParams.set("v", createHash("sha256").update(readFileSync(ogImageFile)).digest("hex").slice(0, 8));
+}
+const ogImage = ogImageUrl.toString();
 ---
 
 <!doctype html>
